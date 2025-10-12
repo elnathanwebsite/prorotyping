@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,6 +29,39 @@
         body {
             background-color: var(--light-gray);
             color: var(--black);
+            transition: all 0.3s ease;
+        }
+
+        /* RTL Support */
+        body[dir="rtl"] {
+            font-family: 'Tahoma', 'Arial', sans-serif;
+        }
+
+        body[dir="rtl"] .carousel-control.prev {
+            left: auto;
+            right: 10px;
+        }
+
+        body[dir="rtl"] .carousel-control.next {
+            right: auto;
+            left: 10px;
+        }
+
+        body[dir="rtl"] .book-detail-content {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .info-row {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .info-label {
+            width: auto;
+            margin-left: 10px;
+        }
+
+        body[dir="rtl"] .footer-content {
+            direction: rtl;
         }
 
         /* Page Management */
@@ -110,6 +143,67 @@
 
         .back-btn:hover {
             color: var(--yellow);
+        }
+
+        /* Language and Currency Switcher */
+        .lang-currency-switcher {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-toggle:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--white);
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            min-width: 120px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: var(--black);
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--light-gray);
+        }
+
+        .dropdown-item.active {
+            background-color: var(--light-blue);
+            color: var(--white);
         }
 
         /* Hero Section */
@@ -832,11 +926,11 @@
                         <i class="fas fa-arrow-left"></i>
                     </button>
                     <div class="navbar-brand" onclick="showHomePage()">
-                        <span>دار الإمام القرافي</span>
+                        <span id="brandName">دار الإمام القرافي</span>
                     </div>
                 </div>
                 <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Cari buku, penulis, penerbit...">
+                    <input type="text" class="search-input" id="searchPlaceholder" placeholder="Cari buku, penulis, penerbit...">
                     <button class="search-btn">
                         <i class="fas fa-search"></i>
                     </button>
@@ -845,11 +939,29 @@
                     <div class="nav-icon">
                         <i class="fab fa-whatsapp"></i>
                     </div>
-                    <div class="nav-icon">
-                        IDR
-                    </div>
-                    <div class="nav-icon">
-                        ID
+                    <div class="lang-currency-switcher">
+                        <div class="dropdown">
+                            <button class="dropdown-toggle" id="langDropdown">
+                                <span id="currentLang">ID</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" id="langMenu">
+                                <div class="dropdown-item" data-lang="id">Indonesia</div>
+                                <div class="dropdown-item" data-lang="en">English</div>
+                                <div class="dropdown-item" data-lang="ar">العربية</div>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle" id="currencyDropdown">
+                                <span id="currentCurrency">IDR</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" id="currencyMenu">
+                                <div class="dropdown-item" data-currency="idr">IDR</div>
+                                <div class="dropdown-item" data-currency="usd">USD</div>
+                                <div class="dropdown-item" data-currency="egp">EGP</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -861,16 +973,16 @@
         <!-- Hero Section -->
         <section class="hero-section">
             <div class="container">
-                <h1 class="hero-title">New Arrivals</h1>
-                <p class="hero-subtitle">Islamic Heritage Library</p>
+                <h1 class="hero-title" id="heroTitle">New Arrivals</h1>
+                <p class="hero-subtitle" id="heroSubtitle">Islamic Heritage Library</p>
             </div>
         </section>
 
         <!-- Publishers Section -->
         <section class="publishers-section">
             <div class="container">
-                <h2 class="section-title">Publishers</h2>
-                <p class="section-subtitle">Choose from distinguished publishers</p>
+                <h2 class="section-title" id="publishersTitle">Publishers</h2>
+                <p class="section-subtitle" id="publishersSubtitle">Choose from distinguished publishers</p>
                 
                 <div class="publishers-container">
                     <button class="carousel-control prev" onclick="movePublishers(-1)">
@@ -890,8 +1002,8 @@
         <!-- Library Sections -->
         <section class="library-sections">
             <div class="container">
-                <h2 class="section-title">Library Sections</h2>
-                <p class="section-subtitle">Browse books by specialization</p>
+                <h2 class="section-title" id="sectionsTitle">Library Sections</h2>
+                <p class="section-subtitle" id="sectionsSubtitle">Browse books by specialization</p>
                 
                 <div class="category-grid" id="categoryGrid">
                     <!-- Category cards will be generated by JavaScript -->
@@ -904,8 +1016,8 @@
             <div class="container">
                 <div class="flash-sale-header">
                     <div>
-                        <h2 class="flash-sale-title">Flash Sale</h2>
-                        <p class="flash-sale-subtitle">Penawaran terbatas waktu</p>
+                        <h2 class="flash-sale-title" id="flashSaleTitle">Flash Sale</h2>
+                        <p class="flash-sale-subtitle" id="flashSaleSubtitle">Penawaran terbatas waktu</p>
                     </div>
                     <div class="countdown">
                         <div class="countdown-item">12</div>
@@ -925,8 +1037,8 @@
         <!-- Bestsellers Section -->
         <section class="bestsellers-section">
             <div class="container">
-                <h2 class="section-title">Buku Terlaris</h2>
-                <p class="section-subtitle">Buku terlaris tahun ini</p>
+                <h2 class="section-title" id="bestsellersTitle">Buku Terlaris</h2>
+                <p class="section-subtitle" id="bestsellersSubtitle">Buku terlaris tahun ini</p>
                 
                 <div class="books-container" id="bestsellerBooks">
                     <!-- Book cards will be generated by JavaScript -->
@@ -953,43 +1065,43 @@
                         
                         <div class="book-detail-info">
                             <div class="info-row">
-                                <div class="info-label">Tahun Terbit:</div>
+                                <div class="info-label" id="yearLabel">Tahun Terbit:</div>
                                 <div class="info-value" id="detailBookYear">2023</div>
                             </div>
                             <div class="info-row">
-                                <div class="info-label">Jumlah Volume:</div>
+                                <div class="info-label" id="volumesLabel">Jumlah Volume:</div>
                                 <div class="info-value" id="detailBookVolumes">5</div>
                             </div>
                             <div class="info-row">
-                                <div class="info-label">Jumlah Halaman:</div>
+                                <div class="info-label" id="pagesLabel">Jumlah Halaman:</div>
                                 <div class="info-value" id="detailBookPages">2200</div>
                             </div>
                             <div class="info-row">
-                                <div class="info-label">Jenis Cover:</div>
-                                <div class="info-value">Hard Cover</div>
+                                <div class="info-label" id="coverLabel">Jenis Cover:</div>
+                                <div class="info-value" id="detailBookCover">Hard Cover</div>
                             </div>
                         </div>
                         
                         <div class="order-form-container">
-                            <h3 class="order-form-title">Form Pemesanan</h3>
+                            <h3 class="order-form-title" id="orderFormTitle">Form Pemesanan</h3>
                             <form id="orderForm">
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label class="form-label">Nama Lengkap</label>
+                                        <label class="form-label" id="nameLabel">Nama Lengkap</label>
                                         <input type="text" class="form-control" id="orderName" placeholder="Masukkan nama lengkap Anda" required>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Nomor WhatsApp</label>
+                                        <label class="form-label" id="phoneLabel">Nomor WhatsApp</label>
                                         <input type="tel" class="form-control" id="orderPhone" placeholder="08xxxxxxxxxx" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Alamat Pengiriman</label>
+                                    <label class="form-label" id="addressLabel">Alamat Pengiriman</label>
                                     <input type="text" class="form-control" id="orderAddress" placeholder="Masukkan alamat lengkap" required>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label class="form-label">Jumlah</label>
+                                        <label class="form-label" id="quantityLabel">Jumlah</label>
                                         <div class="quantity-control">
                                             <button type="button" class="quantity-btn" onclick="decreaseQuantity()">
                                                 <i class="fas fa-minus"></i>
@@ -1001,11 +1113,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Total Harga</label>
+                                        <label class="form-label" id="totalLabel">Total Harga</label>
                                         <input type="text" class="form-control" id="totalPrice" value="Rp 0" readonly>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn-order">
+                                <button type="submit" class="btn-order" id="orderButton">
                                     <i class="fas fa-shopping-cart"></i> Pesan Sekarang
                                 </button>
                             </form>
@@ -1015,7 +1127,7 @@
                 
                 <!-- Related Books Section -->
                 <div class="related-books">
-                    <h3 class="related-books-title">Related Books</h3>
+                    <h3 class="related-books-title" id="relatedBooksTitle">Related Books</h3>
                     <div class="related-books-grid" id="relatedBooksGrid">
                         <!-- Related books will be generated by JavaScript -->
                     </div>
@@ -1029,48 +1141,48 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <h3>دار الإمام القرافي</h3>
-                    <p>Toko Arab untuk menjual buku warisan Islam dan kami mengirimkan pembelian Anda ke seluruh dunia</p>
+                    <h3 id="footerBrand">دار الإمام القرافي</h3>
+                    <p id="footerDesc">Toko Arab untuk menjual buku warisan Islam dan kami mengirimkan pembelian Anda ke seluruh dunia</p>
                     <div class="footer-info">
-                        <i class="fas fa-clock"></i> Senin - Jumat: 09:00 - 17:00
+                        <i class="fas fa-clock"></i> <span id="footerHours">Senin - Jumat: 09:00 - 17:00</span>
                     </div>
                     <div class="footer-info">
-                        <i class="fas fa-map-marker-alt"></i> Jl. Masjid Al-Hikmah No. 12, Jakarta
+                        <i class="fas fa-map-marker-alt"></i> <span id="footerAddress">Jl. Masjid Al-Hikmah No. 12, Jakarta</span>
                     </div>
                     <div class="footer-info">
-                        <i class="fas fa-envelope"></i> info@daralimam.com
+                        <i class="fas fa-envelope"></i> <span id="footerEmail">info@daralimam.com</span>
                     </div>
                     <div class="footer-info">
-                        <i class="fas fa-globe"></i> www.daralimam.com
+                        <i class="fas fa-globe"></i> <span id="footerWebsite">www.daralimam.com</span>
                     </div>
                 </div>
                 
                 <div>
-                    <h4 class="footer-title">Tautan Cepat</h4>
+                    <h4 class="footer-title" id="quickLinksTitle">Tautan Cepat</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Beranda</a></li>
-                        <li><a href="#">Buku</a></li>
-                        <li><a href="#">Penulis</a></li>
-                        <li><a href="#">Penerbit</a></li>
-                        <li><a href="#">Tentang Kami</a></li>
-                        <li><a href="#">Kontak</a></li>
+                        <li><a href="#" id="homeLink">Beranda</a></li>
+                        <li><a href="#" id="booksLink">Buku</a></li>
+                        <li><a href="#" id="authorsLink">Penulis</a></li>
+                        <li><a href="#" id="publishersLink">Penerbit</a></li>
+                        <li><a href="#" id="aboutLink">Tentang Kami</a></li>
+                        <li><a href="#" id="contactLink">Kontak</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 class="footer-title">Kategori</h4>
+                    <h4 class="footer-title" id="categoriesTitle">Kategori</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Hadits</a></li>
-                        <li><a href="#">Tafsir</a></li>
-                        <li><a href="#">Fiqih</a></li>
-                        <li><a href="#">Sejarah Islam</a></li>
-                        <li><a href="#">Bahasa Arab</a></li>
-                        <li><a href="#">Lainnya</a></li>
+                        <li><a href="#" id="hadithLink">Hadits</a></li>
+                        <li><a href="#" id="tafsirLink">Tafsir</a></li>
+                        <li><a href="#" id="fiqhLink">Fiqih</a></li>
+                        <li><a href="#" id="historyLink">Sejarah Islam</a></li>
+                        <li><a href="#" id="arabicLink">Bahasa Arab</a></li>
+                        <li><a href="#" id="othersLink">Lainnya</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 class="footer-title">Metode Pembayaran</h4>
+                    <h4 class="footer-title" id="paymentTitle">Metode Pembayaran</h4>
                     <div class="payment-methods">
                         <div class="payment-icon">VISA</div>
                         <div class="payment-icon">MC</div>
@@ -1082,7 +1194,7 @@
                 </div>
             </div>
             
-            <div class="copyright">
+            <div class="copyright" id="copyright">
                 © 2025 Dar Al-Imam Al-Qarafi. Semua hak dilindungi.
             </div>
         </div>
@@ -1095,6 +1207,264 @@
         // Global variables
         let currentBook = null;
         let currentPublisherPosition = 0;
+        let currentLanguage = 'id'; // Default language: Indonesian
+        let currentCurrency = 'idr'; // Default currency: IDR
+        
+        // Language translations
+        const translations = {
+            id: {
+                brandName: 'دار الإمام القرافي',
+                searchPlaceholder: 'Cari buku, penulis, penerbit...',
+                heroTitle: 'New Arrivals',
+                heroSubtitle: 'Islamic Heritage Library',
+                publishersTitle: 'Publishers',
+                publishersSubtitle: 'Choose from distinguished publishers',
+                sectionsTitle: 'Library Sections',
+                sectionsSubtitle: 'Browse books by specialization',
+                flashSaleTitle: 'Flash Sale',
+                flashSaleSubtitle: 'Penawaran terbatas waktu',
+                bestsellersTitle: 'Buku Terlaris',
+                bestsellersSubtitle: 'Buku terlaris tahun ini',
+                yearLabel: 'Tahun Terbit:',
+                volumesLabel: 'Jumlah Volume:',
+                pagesLabel: 'Jumlah Halaman:',
+                coverLabel: 'Jenis Cover:',
+                orderFormTitle: 'Form Pemesanan',
+                nameLabel: 'Nama Lengkap',
+                phoneLabel: 'Nomor WhatsApp',
+                addressLabel: 'Alamat Pengiriman',
+                quantityLabel: 'Jumlah',
+                totalLabel: 'Total Harga',
+                orderButton: 'Pesan Sekarang',
+                relatedBooksTitle: 'Related Books',
+                footerBrand: 'دار الإمام القرافي',
+                footerDesc: 'Toko Arab untuk menjual buku warisan Islam dan kami mengirimkan pembelian Anda ke seluruh dunia',
+                footerHours: 'Senin - Jumat: 09:00 - 17:00',
+                footerAddress: 'Jl. Masjid Al-Hikmah No. 12, Jakarta',
+                footerEmail: 'info@daralimam.com',
+                footerWebsite: 'www.daralimam.com',
+                quickLinksTitle: 'Tautan Cepat',
+                homeLink: 'Beranda',
+                booksLink: 'Buku',
+                authorsLink: 'Penulis',
+                publishersLink: 'Penerbit',
+                aboutLink: 'Tentang Kami',
+                contactLink: 'Kontak',
+                categoriesTitle: 'Kategori',
+                hadithLink: 'Hadits',
+                tafsirLink: 'Tafsir',
+                fiqhLink: 'Fiqih',
+                historyLink: 'Sejarah Islam',
+                arabicLink: 'Bahasa Arab',
+                othersLink: 'Lainnya',
+                paymentTitle: 'Metode Pembayaran',
+                copyright: '© 2025 Dar Al-Imam Al-Qarafi. Semua hak dilindungi.',
+                namePlaceholder: 'Masukkan nama lengkap Anda',
+                phonePlaceholder: '08xxxxxxxxxx',
+                addressPlaceholder: 'Masukkan alamat lengkap',
+                orderSuccess: 'Pesanan berhasil!',
+                orderError: 'Mohon lengkapi semua field!',
+                hardCover: 'Hard Cover'
+            },
+            en: {
+                brandName: 'Dar Al-Imam Al-Qarafi',
+                searchPlaceholder: 'Search for books, authors, publishers...',
+                heroTitle: 'New Arrivals',
+                heroSubtitle: 'Islamic Heritage Library',
+                publishersTitle: 'Publishers',
+                publishersSubtitle: 'Choose from distinguished publishers',
+                sectionsTitle: 'Library Sections',
+                sectionsSubtitle: 'Browse books by specialization',
+                flashSaleTitle: 'Flash Sale',
+                flashSaleSubtitle: 'Limited time offer',
+                bestsellersTitle: 'Bestsellers',
+                bestsellersSubtitle: 'Bestselling books this year',
+                yearLabel: 'Publication Year:',
+                volumesLabel: 'Number of Volumes:',
+                pagesLabel: 'Number of Pages:',
+                coverLabel: 'Cover Type:',
+                orderFormTitle: 'Order Form',
+                nameLabel: 'Full Name',
+                phoneLabel: 'WhatsApp Number',
+                addressLabel: 'Shipping Address',
+                quantityLabel: 'Quantity',
+                totalLabel: 'Total Price',
+                orderButton: 'Order Now',
+                relatedBooksTitle: 'Related Books',
+                footerBrand: 'Dar Al-Imam Al-Qarafi',
+                footerDesc: 'Arabic store to sell Islamic heritage books and we ship your purchases worldwide',
+                footerHours: 'Monday - Friday: 09:00 - 17:00',
+                footerAddress: '123 Islamic Street, Cairo, Egypt',
+                footerEmail: 'info@daralimam.com',
+                footerWebsite: 'www.daralimam.com',
+                quickLinksTitle: 'Quick Links',
+                homeLink: 'Home',
+                booksLink: 'Books',
+                authorsLink: 'Authors',
+                publishersLink: 'Publishers',
+                aboutLink: 'About Us',
+                contactLink: 'Contact',
+                categoriesTitle: 'Categories',
+                hadithLink: 'Hadith',
+                tafsirLink: 'Tafsir',
+                fiqhLink: 'Fiqh',
+                historyLink: 'Islamic History',
+                arabicLink: 'Arabic Language',
+                othersLink: 'Others',
+                paymentTitle: 'Payment Methods',
+                copyright: '© 2025 Dar Al-Imam Al-Qarafi. All rights reserved.',
+                namePlaceholder: 'Enter your full name',
+                phonePlaceholder: '+1234567890',
+                addressPlaceholder: 'Enter your full address',
+                orderSuccess: 'Order successful!',
+                orderError: 'Please complete all fields!',
+                hardCover: 'Hard Cover'
+            },
+            ar: {
+                brandName: 'دار الإمام القرافي',
+                searchPlaceholder: 'ابحث عن كتب ومؤلفين وناشرين...',
+                heroTitle: 'وصل حديثا',
+                heroSubtitle: 'مكتبة التراث الإسلامي',
+                publishersTitle: 'الناشرون',
+                publishersSubtitle: 'اختر من الناشرين المتميزين',
+                sectionsTitle: 'أقسام المكتبة',
+                sectionsSubtitle: 'تصفح الكتب حسب التخصص',
+                flashSaleTitle: 'تخفيضات سريعة',
+                flashSaleSubtitle: 'عرض لفترة محدودة',
+                bestsellersTitle: 'الأكثر مبيعا',
+                bestsellersSubtitle: 'أكثر الكتب مبيعا هذا العام',
+                yearLabel: 'سنة النشر:',
+                volumesLabel: 'عدد المجلدات:',
+                pagesLabel: 'عدد الصفحات:',
+                coverLabel: 'نوع الغلاف:',
+                orderFormTitle: 'نموذج الطلب',
+                nameLabel: 'الاسم الكامل',
+                phoneLabel: 'رقم الواتساب',
+                addressLabel: 'عنوان الشحن',
+                quantityLabel: 'الكمية',
+                totalLabel: 'السعر الإجمالي',
+                orderButton: 'اطلب الآن',
+                relatedBooksTitle: 'كتب ذات صلة',
+                footerBrand: 'دار الإمام القرافي',
+                footerDesc: 'متجر عربي لبيع كتب التراث الإسلامي ونحن نشترياتك في جميع أنحاء العالم',
+                footerHours: 'الإثنين - الجمعة: 09:00 - 17:00',
+                footerAddress: '123 شارع إسلامي، القاهرة، مصر',
+                footerEmail: 'info@daralimam.com',
+                footerWebsite: 'www.daralimam.com',
+                quickLinksTitle: 'روابط سريعة',
+                homeLink: 'الرئيسية',
+                booksLink: 'الكتب',
+                authorsLink: 'المؤلفون',
+                publishersLink: 'الناشرون',
+                aboutLink: 'من نحن',
+                contactLink: 'اتصل بنا',
+                categoriesTitle: 'الفئات',
+                hadithLink: 'الحديث',
+                tafsirLink: 'التفسير',
+                fiqhLink: 'الفقه',
+                historyLink: 'التاريخ الإسلامي',
+                arabicLink: 'اللغة العربية',
+                othersLink: 'أخرى',
+                paymentTitle: 'طرق الدفع',
+                copyright: '© 2025 دار الإمام القرافي. جميع الحقوق محفوظة.',
+                namePlaceholder: 'أدخل اسمك الكامل',
+                phonePlaceholder: '+201234567890',
+                addressPlaceholder: 'أدخل عنوانك الكامل',
+                orderSuccess: 'تم الطلب بنجاح!',
+                orderError: 'يرجى ملء جميع الحقول!',
+                hardCover: 'غلاف صلب'
+            }
+        };
+        
+        // Currency conversion rates (relative to IDR)
+        const currencyRates = {
+            idr: 1,
+            usd: 0.000064, // 1 IDR = 0.000064 USD
+            egp: 0.002 // 1 IDR = 0.002 EGP
+        };
+        
+        // Currency symbols
+        const currencySymbols = {
+            idr: 'Rp',
+            usd: '$',
+            egp: 'E£'
+        };
+
+        // Categories data with translations
+        const categories = [
+            { 
+                id: 'hadith',
+                name: { id: 'Hadith', en: 'Hadith', ar: 'الحديث' },
+                desc: { id: 'Hadith and Sciences', en: 'Hadith and Sciences', ar: 'الحديث وعلومه' },
+                color: "#4285F4" 
+            },
+            { 
+                id: 'quran',
+                name: { id: 'Quran', en: 'Quran', ar: 'القرآن' },
+                desc: { id: 'Quran and Sciences', en: 'Quran and Sciences', ar: 'القرآن وعلومه' },
+                color: "#EA4335" 
+            },
+            { 
+                id: 'sufism',
+                name: { id: 'Sufism', en: 'Sufism', ar: 'التصوف' },
+                desc: { id: 'Sufism and Mysticism', en: 'Sufism and Mysticism', ar: 'التصوف والتصوف' },
+                color: "#FBBC05" 
+            },
+            { 
+                id: 'islamic',
+                name: { id: 'Islamic', en: 'Islamic', ar: 'إسلامي' },
+                desc: { id: 'Islamic Studies', en: 'Islamic Studies', ar: 'الدراسات الإسلامية' },
+                color: "#34A853" 
+            },
+            { 
+                id: 'fiqh',
+                name: { id: 'Fiqh', en: 'Fiqh', ar: 'الفقه' },
+                desc: { id: 'Islamic Jurisprudence', en: 'Islamic Jurisprudence', ar: 'الفقه الإسلامي' },
+                color: "#9C27B0" 
+            },
+            { 
+                id: 'arabic',
+                name: { id: 'Arabic', en: 'Arabic', ar: 'العربية' },
+                desc: { id: 'Arabic Language', en: 'Arabic Language', ar: 'اللغة العربية' },
+                color: "#FF5722" 
+            },
+            { 
+                id: 'logic',
+                name: { id: 'Logic', en: 'Logic', ar: 'المنطق' },
+                desc: { id: 'Logic and Philosophy', en: 'Logic and Philosophy', ar: 'المنطق والفلسفة' },
+                color: "#795548" 
+            },
+            { 
+                id: 'history',
+                name: { id: 'History', en: 'History', ar: 'التاريخ' },
+                desc: { id: 'Islamic History', en: 'Islamic History', ar: 'التاريخ الإسلامي' },
+                color: "#607D8B" 
+            },
+            { 
+                id: 'islamic_studies',
+                name: { id: 'Islamic Studies', en: 'Islamic Studies', ar: 'الدراسات الإسلامية' },
+                desc: { id: 'Comprehensive Studies', en: 'Comprehensive Studies', ar: 'دراسات شاملة' },
+                color: "#3F51B5" 
+            },
+            { 
+                id: 'seerah',
+                name: { id: 'Seerah', en: 'Seerah', ar: 'السيرة' },
+                desc: { id: 'Prophet\'s Biography', en: 'Prophet\'s Biography', ar: 'سيرة النبي' },
+                color: "#009688" 
+            },
+            { 
+                id: 'complete_works',
+                name: { id: 'Complete Works', en: 'Complete Works', ar: 'الأعمال الكاملة' },
+                desc: { id: 'Complete Collections', en: 'Complete Collections', ar: 'مجموعات كاملة' },
+                color: "#E91E63" 
+            },
+            { 
+                id: 'other',
+                name: { id: 'Other', en: 'Other', ar: 'أخرى' },
+                desc: { id: 'Other Categories', en: 'Other Categories', ar: 'فئات أخرى' },
+                color: "#00BCD4" 
+            }
+        ];
 
         // Publishers data
         const publishers = [
@@ -1108,31 +1478,15 @@
             { name: "Dar Al - Ilmi", letter: "D", discount: "30%" }
         ];
 
-        // Categories data
-        const categories = [
-            { name: "Hadith", desc: "Hadith and Sciences", color: "#4285F4" },
-            { name: "Quran", desc: "Quran and Sciences", color: "#EA4335" },
-            { name: "Sufism", desc: "Sufism and Mysticism", color: "#FBBC05" },
-            { name: "Islamic", desc: "Islamic Studies", color: "#34A853" },
-            { name: "Fiqh", desc: "Islamic Jurisprudence", color: "#9C27B0" },
-            { name: "Arabic", desc: "Arabic Language", color: "#FF5722" },
-            { name: "Logic", desc: "Logic and Philosophy", color: "#795548" },
-            { name: "History", desc: "Islamic History", color: "#607D8B" },
-            { name: "Islamic Studies", desc: "Comprehensive Studies", color: "#3F51B5" },
-            { name: "Seerah", desc: "Prophet's Biography", color: "#009688" },
-            { name: "Complete Works", desc: "Complete Collections", color: "#E91E63" },
-            { name: "Other", desc: "Other Categories", color: "#00BCD4" }
-        ];
-
-        // Books data
+        // Books data with base prices in IDR
         const allBooks = [
             {
                 id: "book1",
                 title: "Sharh Usul I'tiqad Ahl Al-Sunnah",
                 author: "Al - Lalikai",
                 publisher: "Dar Al - Hadith",
-                currentPrice: "Rp604.800",
-                originalPrice: "Rp756.000",
+                basePrice: 604800, // Base price in IDR
+                originalPrice: 756000,
                 discount: "20%",
                 volumes: "3",
                 pages: "1200",
@@ -1144,8 +1498,8 @@
                 title: "Sharh Fath Al - Qadeer fi Elm Al - Usul",
                 author: "Ibn Al - Humam",
                 publisher: "Dar Al - Fath",
-                currentPrice: "Rp928.200",
-                originalPrice: "Rp1.092.000",
+                basePrice: 928200,
+                originalPrice: 1092000,
                 discount: "15%",
                 volumes: "4",
                 pages: "1800",
@@ -1157,8 +1511,8 @@
                 title: "Al - Fiqh Ala Al - Madhab Al - Arba'a",
                 author: "Abd Al - Rahman Al - Jaziri",
                 publisher: "Dar Al - Taqwa",
-                currentPrice: "Rp1.428.000",
-                originalPrice: "",
+                basePrice: 1428000,
+                originalPrice: null,
                 discount: "",
                 volumes: "5",
                 pages: "2200",
@@ -1170,8 +1524,8 @@
                 title: "Tafsir Ibn Kathir",
                 author: "Ibn Kathir",
                 publisher: "Dar Al - Taqwa",
-                currentPrice: "Rp850.000",
-                originalPrice: "Rp1.000.000",
+                basePrice: 850000,
+                originalPrice: 1000000,
                 discount: "15%",
                 volumes: "10",
                 pages: "5000",
@@ -1183,8 +1537,8 @@
                 title: "Sahih Al-Bukhari",
                 author: "Imam Al-Bukhari",
                 publisher: "Dar Al - Hadith",
-                currentPrice: "Rp1.200.000",
-                originalPrice: "",
+                basePrice: 1200000,
+                originalPrice: null,
                 discount: "",
                 volumes: "9",
                 pages: "4500",
@@ -1196,8 +1550,8 @@
                 title: "Riyadhus Salihin",
                 author: "Imam Nawawi",
                 publisher: "Dar Al - Minhaj",
-                currentPrice: "Rp450.000",
-                originalPrice: "Rp500.000",
+                basePrice: 450000,
+                originalPrice: 500000,
                 discount: "10%",
                 volumes: "2",
                 pages: "800",
@@ -1214,9 +1568,228 @@
             book.badges.includes("Bestseller") || book.badges.includes("Popular")
         );
 
+        // Initialize language and currency
+        function initLanguageAndCurrency() {
+            // Check if language and currency are stored in localStorage
+            const savedLanguage = localStorage.getItem('language');
+            const savedCurrency = localStorage.getItem('currency');
+            
+            if (savedLanguage) {
+                currentLanguage = savedLanguage;
+                document.getElementById('currentLang').textContent = currentLanguage.toUpperCase();
+                
+                // Mark the active language in the dropdown
+                document.querySelectorAll('#langMenu .dropdown-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.lang === currentLanguage) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+            
+            if (savedCurrency) {
+                currentCurrency = savedCurrency;
+                document.getElementById('currentCurrency').textContent = currentCurrency.toUpperCase();
+                
+                // Mark the active currency in the dropdown
+                document.querySelectorAll('#currencyMenu .dropdown-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.currency === currentCurrency) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+            
+            // Apply language and currency
+            applyLanguage();
+            applyCurrency();
+            
+            // Set text direction for Arabic
+            if (currentLanguage === 'ar') {
+                document.body.setAttribute('dir', 'rtl');
+            } else {
+                document.body.setAttribute('dir', 'ltr');
+            }
+        }
+
+        // Apply language translations
+        function applyLanguage() {
+            const lang = translations[currentLanguage];
+            
+            // Update all text elements with data-lang attributes
+            document.querySelectorAll('[id]').forEach(element => {
+                const id = element.id;
+                if (lang[id]) {
+                    element.textContent = lang[id];
+                }
+            });
+            
+            // Update placeholders
+            document.getElementById('searchPlaceholder').placeholder = lang.searchPlaceholder;
+            document.getElementById('orderName').placeholder = lang.namePlaceholder;
+            document.getElementById('orderPhone').placeholder = lang.phonePlaceholder;
+            document.getElementById('orderAddress').placeholder = lang.addressPlaceholder;
+            
+            // Update book detail cover type
+            document.getElementById('detailBookCover').textContent = lang.hardCover;
+            
+            // Update order button with icon
+            document.getElementById('orderButton').innerHTML = `<i class="fas fa-shopping-cart"></i> ${lang.orderButton}`;
+            
+            // Update categories
+            generateCategories();
+            
+            // Update books
+            generateBookCards(flashSaleBooks, 'flashSaleBooks');
+            generateBookCards(bestsellerBooks, 'bestsellerBooks');
+            
+            // If on book detail page, update related books
+            if (!document.getElementById('bookDetailPage').classList.contains('hidden')) {
+                generateRelatedBooks();
+            }
+        }
+
+        // Apply currency conversion
+        function applyCurrency() {
+            // Update all price elements
+            document.querySelectorAll('.current-price, .book-detail-price, .related-book-price, #totalPrice').forEach(element => {
+                const text = element.textContent;
+                const priceMatch = text.match(/[\d,.]+/);
+                
+                if (priceMatch) {
+                    const priceString = priceMatch[0].replace(/[^\d]/g, '');
+                    const idrPrice = parseInt(priceString);
+                    
+                    // Convert to current currency
+                    const convertedPrice = idrPrice * currencyRates[currentCurrency];
+                    const formattedPrice = formatCurrency(convertedPrice);
+                    
+                    element.textContent = formattedPrice;
+                }
+            });
+            
+            // Update original prices
+            document.querySelectorAll('.original-price').forEach(element => {
+                const text = element.textContent;
+                const priceMatch = text.match(/[\d,.]+/);
+                
+                if (priceMatch) {
+                    const priceString = priceMatch[0].replace(/[^\d]/g, '');
+                    const idrPrice = parseInt(priceString);
+                    
+                    // Convert to current currency
+                    const convertedPrice = idrPrice * currencyRates[currentCurrency];
+                    const formattedPrice = formatCurrency(convertedPrice);
+                    
+                    element.textContent = formattedPrice;
+                }
+            });
+            
+            // Update total price if on book detail page
+            if (!document.getElementById('bookDetailPage').classList.contains('hidden') && currentBook) {
+                updateTotalPrice();
+            }
+        }
+
+        // Format currency based on current currency
+        function formatCurrency(amount) {
+            const symbol = currencySymbols[currentCurrency];
+            
+            if (currentCurrency === 'idr') {
+                return `${symbol}${amount.toLocaleString('id-ID')}`;
+            } else if (currentCurrency === 'usd') {
+                return `${symbol}${amount.toFixed(2)}`;
+            } else if (currentCurrency === 'egp') {
+                return `${symbol}${amount.toFixed(2)}`;
+            }
+            
+            return `${symbol}${amount}`;
+        }
+
+        // Convert price from IDR to current currency
+        function convertPrice(idrPrice) {
+            const convertedPrice = idrPrice * currencyRates[currentCurrency];
+            return formatCurrency(convertedPrice);
+        }
+
+        // Language dropdown functionality
+        document.getElementById('langDropdown').addEventListener('click', function() {
+            document.getElementById('langMenu').classList.toggle('show');
+        });
+
+        // Currency dropdown functionality
+        document.getElementById('currencyDropdown').addEventListener('click', function() {
+            document.getElementById('currencyMenu').classList.toggle('show');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.matches('#langDropdown') && !event.target.closest('#langDropdown')) {
+                document.getElementById('langMenu').classList.remove('show');
+            }
+            
+            if (!event.target.matches('#currencyDropdown') && !event.target.closest('#currencyDropdown')) {
+                document.getElementById('currencyMenu').classList.remove('show');
+            }
+        });
+
+        // Language selection
+        document.querySelectorAll('#langMenu .dropdown-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const lang = this.dataset.lang;
+                currentLanguage = lang;
+                
+                // Save to localStorage
+                localStorage.setItem('language', lang);
+                
+                // Update UI
+                document.getElementById('currentLang').textContent = lang.toUpperCase();
+                
+                // Mark as active
+                document.querySelectorAll('#langMenu .dropdown-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Apply language
+                applyLanguage();
+                
+                // Set text direction for Arabic
+                if (lang === 'ar') {
+                    document.body.setAttribute('dir', 'rtl');
+                } else {
+                    document.body.setAttribute('dir', 'ltr');
+                }
+            });
+        });
+
+        // Currency selection
+        document.querySelectorAll('#currencyMenu .dropdown-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const currency = this.dataset.currency;
+                currentCurrency = currency;
+                
+                // Save to localStorage
+                localStorage.setItem('currency', currency);
+                
+                // Update UI
+                document.getElementById('currentCurrency').textContent = currency.toUpperCase();
+                
+                // Mark as active
+                document.querySelectorAll('#currencyMenu .dropdown-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Apply currency
+                applyCurrency();
+            });
+        });
+
         // Generate publisher cards
         function generatePublishers() {
             const carousel = document.getElementById('publishersCarousel');
+            carousel.innerHTML = '';
             
             publishers.forEach(publisher => {
                 const card = document.createElement('div');
@@ -1235,17 +1808,21 @@
         // Generate category cards
         function generateCategories() {
             const grid = document.getElementById('categoryGrid');
+            grid.innerHTML = '';
             
             categories.forEach(category => {
                 const card = document.createElement('div');
                 card.className = 'category-card';
                 
+                const categoryName = category.name[currentLanguage];
+                const categoryDesc = category.desc[currentLanguage];
+                
                 card.innerHTML = `
                     <div class="category-icon" style="background-color: ${category.color}20; color: ${category.color}">
                         <i class="fas fa-book"></i>
                     </div>
-                    <div class="category-name">${category.name}</div>
-                    <div class="category-desc">${category.desc}</div>
+                    <div class="category-name">${categoryName}</div>
+                    <div class="category-desc">${categoryDesc}</div>
                 `;
                 
                 grid.appendChild(card);
@@ -1255,6 +1832,7 @@
         // Generate book cards
         function generateBookCards(books, containerId) {
             const container = document.getElementById(containerId);
+            container.innerHTML = '';
             
             books.forEach(book => {
                 const card = document.createElement('div');
@@ -1264,6 +1842,15 @@
                 let badgesHTML = '';
                 if (book.badges && book.badges.length > 0) {
                     badgesHTML = book.badges.map(badge => `<div class="book-badge">${badge}</div>`).join('');
+                }
+                
+                // Convert prices
+                const currentPrice = convertPrice(book.basePrice);
+                let originalPriceHTML = '';
+                
+                if (book.originalPrice) {
+                    const originalPrice = convertPrice(book.originalPrice);
+                    originalPriceHTML = `<span class="original-price">${originalPrice}</span>`;
                 }
                 
                 card.innerHTML = `
@@ -1279,8 +1866,8 @@
                         <span>${book.pages} Pages</span>
                     </div>
                     <div class="book-price">
-                        <span class="current-price">${book.currentPrice}</span>
-                        ${book.originalPrice ? `<span class="original-price">${book.originalPrice}</span>` : ''}
+                        <span class="current-price">${currentPrice}</span>
+                        ${originalPriceHTML}
                         ${book.discount ? `<span class="discount-percent">-${book.discount}</span>` : ''}
                     </div>
                     <div class="made-by">MADE BY MGX</div>
@@ -1298,7 +1885,7 @@
             document.getElementById('detailBookTitle').textContent = book.title;
             document.getElementById('detailBookAuthor').textContent = book.author;
             document.getElementById('detailBookPublisher').textContent = book.publisher;
-            document.getElementById('detailBookPrice').textContent = book.currentPrice;
+            document.getElementById('detailBookPrice').textContent = convertPrice(book.basePrice);
             document.getElementById('detailBookYear').textContent = book.year;
             document.getElementById('detailBookVolumes').textContent = book.volumes;
             document.getElementById('detailBookPages').textContent = book.pages;
@@ -1356,7 +1943,7 @@
                         <i class="fas fa-book fa-2x"></i>
                     </div>
                     <div class="related-book-title">${book.title}</div>
-                    <div class="related-book-price">${book.currentPrice}</div>
+                    <div class="related-book-price">${convertPrice(book.basePrice)}</div>
                 `;
                 
                 grid.appendChild(card);
@@ -1383,9 +1970,11 @@
             if (!currentBook) return;
             
             const quantity = parseInt(document.getElementById('orderQuantity').value);
-            const numericPrice = currentBook.currentPrice.replace(/[^\d]/g, '');
-            const totalPrice = parseInt(numericPrice) * quantity;
-            const formattedTotal = `Rp${totalPrice.toLocaleString('id-ID')}`;
+            const totalPrice = currentBook.basePrice * quantity;
+            
+            // Convert to current currency
+            const convertedPrice = totalPrice * currencyRates[currentCurrency];
+            const formattedTotal = formatCurrency(convertedPrice);
             
             document.getElementById('totalPrice').value = formattedTotal;
         }
@@ -1399,13 +1988,19 @@
             const address = document.getElementById('orderAddress').value;
             const quantity = document.getElementById('orderQuantity').value;
             
+            // Validation
+            if (!name || !phone || !address) {
+                showToast(translations[currentLanguage].orderError, 'error');
+                return;
+            }
+            
             // Calculate total price
-            const numericPrice = currentBook.currentPrice.replace(/[^\d]/g, '');
-            const totalPrice = parseInt(numericPrice) * parseInt(quantity);
-            const formattedTotal = `Rp${totalPrice.toLocaleString('id-ID')}`;
+            const totalPrice = currentBook.basePrice * parseInt(quantity);
+            const convertedPrice = totalPrice * currencyRates[currentCurrency];
+            const formattedTotal = formatCurrency(convertedPrice);
             
             // Show success message
-            showToast(`Pesanan berhasil! ${quantity}x ${currentBook.title} - Total: ${formattedTotal}`, 'success');
+            showToast(`${translations[currentLanguage].orderSuccess} ${quantity}x ${currentBook.title} - Total: ${formattedTotal}`, 'success');
             
             // In a real application, you would send this data to a server
             console.log('Order placed:', {
@@ -1414,7 +2009,9 @@
                 phone,
                 address,
                 quantity,
-                totalPrice: formattedTotal
+                totalPrice: formattedTotal,
+                currency: currentCurrency,
+                language: currentLanguage
             });
             
             // Reset form after 2 seconds
@@ -1483,6 +2080,10 @@
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize language and currency
+            initLanguageAndCurrency();
+            
+            // Generate content
             generatePublishers();
             generateCategories();
             generateBookCards(flashSaleBooks, 'flashSaleBooks');
