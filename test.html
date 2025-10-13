@@ -1511,9 +1511,7 @@
                                     </div>
                                     
                                     <div class="paypal-button-container" id="paypalButtonContainer">
-                                        <button type="button" class="btn-paypal" id="paypalButton">
-                                            <i class="fab fa-paypal"></i> Bayar dengan PayPal
-                                        </button>
+                                        <div id="paypalButton"></div>
                                     </div>
                                 </div>
                                 
@@ -1615,7 +1613,7 @@
                 </div>
                 
                 <div>
-                    <h4 class="footer-title" id="paymentTitle">Metode Pembayaran</h4>
+                    <h4 class="footer-title" id="paymentTitle">Terima Pembayaran</h4>
                     <div class="payment-methods">
                         <div class="payment-icon">VISA</div>
                         <div class="payment-icon">MC</div>
@@ -1730,7 +1728,7 @@
                 historyLink: 'Sejarah Islam',
                 arabicLink: 'Bahasa Arab',
                 othersLink: 'Lainnya',
-                paymentTitle: 'Metode Pembayaran',
+                paymentTitle: 'Terima Pembayaran',
                 copyright: '© 2025 Dar Al-Imam Al-Qarafi. Semua hak dilindungi.',
                 namePlaceholder: 'Masukkan nama lengkap Anda',
                 phonePlaceholder: '08xxxxxxxxxx',
@@ -2174,13 +2172,16 @@
             radio.addEventListener('change', function() {
                 const transferInfo = document.getElementById('transferInfo');
                 const paypalButtonContainer = document.getElementById('paypalButtonContainer');
+                const orderButton = document.getElementById('orderButton');
                 
                 if (this.value === 'transfer') {
                     transferInfo.classList.add('show');
                     paypalButtonContainer.classList.remove('show');
+                    orderButton.style.display = 'flex';
                 } else if (this.value === 'paypal') {
                     transferInfo.classList.remove('show');
                     paypalButtonContainer.classList.add('show');
+                    orderButton.style.display = 'none';
                     
                     // Initialize PayPal button if not already initialized
                     if (!paypalInitialized) {
@@ -2305,54 +2306,98 @@
         // ============================================================= -->
         <!-- PAYPAL INTEGRATION - PENTING: FUNGSI PAYPAL               -->
         <!-- NEW API KEY: AZ2cnKPiKDjRpbkGunx3cLwLkXzwESEpOf-SPXtW5HcsOQ1hTjOqLYq_8GR3X5CW7JC2swF6tbUMm3CeEAstvW_J1K02uIdex-PYcxx8BE_1yEx2HH_-qD5IJjUjzz9NPLJTFj_AYp4GIYR3zxychyjLL_c9xiNt -->
+        <!-- LANGSUNG KE PAYPAL SAAT MEMILIH METODE PEMBAYARAN        -->
         <!-- JANGAN MENGUBAH ATAU MENGHAPUS BARIS INI                    -->
         // ============================================================= -->
         function initializePayPalButton() {
+            // Get current form values
+            const name = document.getElementById('orderName').value;
+            const phone = document.getElementById('orderPhone').value;
+            const address = document.getElementById('orderAddress').value;
+            const quantity = parseInt(document.getElementById('orderQuantity').value);
+            
+            // Validate form before showing PayPal button
+            if (!name || !phone || !address) {
+                showToast(translations[currentLanguage].orderError, 'error');
+                return;
+            }
+            
+            // Calculate total price from book data
+            const totalPrice = currentBook.base_price * quantity;
+            
+            // Convert to current currency
+            const convertedPrice = totalPrice * currencyRates[currentCurrency];
+            
+            // Render PayPal button
             paypal.Buttons({
+                // ============================================================= -->
+                <!-- PAYPAL CREATE ORDER - HARGA DARI DATA BUKU               -->
+                <!-- MENGGUNAKAN HARGA YANG ADA DI DATABASE                   -->
+                // ============================================================= -->
                 createOrder: function(data, actions) {
-                    // Calculate total price in the selected currency
-                    const quantity = parseInt(document.getElementById('orderQuantity').value);
-                    const totalPrice = currentBook.base_price * quantity;
-                    
-                    // Convert to current currency
-                    const convertedPrice = totalPrice * currencyRates[currentCurrency];
-                    
-                    // Return the order details to PayPal
                     return actions.order.create({
                         purchase_units: [{
                             amount: {
                                 value: convertedPrice.toFixed(2),
-                                currency_code: currentCurrency.toUpperCase()
+                                currency_code: currentCurrency.toUpperCase(),
+                                breakdown: {
+                                    item_total: {
+                                        currency_code: currentCurrency.toUpperCase(),
+                                        value: convertedPrice.toFixed(2)
+                                    }
+                                }
                             },
-                            description: `${quantity}x ${currentBook.title}`,
+                            items: [{
+                                name: currentBook.title,
+                                description: `${currentBook.author} - ${currentBook.publisher_name}`,
+                                unit_amount: {
+                                    currency_code: currentCurrency.toUpperCase(),
+                                    value: (currentBook.base_price * currencyRates[currentCurrency]).toFixed(2)
+                                },
+                                quantity: quantity
+                            }],
+                            description: `Order for ${quantity}x ${currentBook.title}`,
                             custom_id: currentBook.id
                         }]
                     });
                 },
+                // ============================================================= -->
+                <!-- PAYPAL ON APPROVE - PEMBAYARAN BERHASIL                 -->
+                <!-- SIMPAN KE DATABASE DAN KIRIM KE WHATSAPP                 -->
+                // ============================================================= -->
                 onApprove: function(data, actions) {
-                    // Capture the payment
                     return actions.order.capture().then(function(details) {
-                        // Show a success message
+                        // Show success message
                         showToast(`${translations[currentLanguage].orderSuccess} Payment ID: ${details.id}`, 'success');
                         
-                        // Save order to Supabase
-                        saveOrderToDatabase('paypal', details.id);
-                        
-                        // Send order to WhatsApp
-                        sendOrderToWhatsApp();
-                        
-                        // Reset form after 2 seconds
-                        setTimeout(() => {
-                            document.getElementById('orderForm').reset();
-                            document.getElementById('orderQuantity').value = 1;
-                            updateTotalPrice();
-                            document.getElementById('orderSummary').style.display = 'none';
-                        }, 2000);
+                        // Save order to database
+                        saveOrderToDatabase('paypal', details.id).then(orderData => {
+                            if (orderData) {
+                                // Send order to WhatsApp
+                                sendOrderToWhatsApp();
+                                
+                                // Reset form after 2 seconds
+                                setTimeout(() => {
+                                    document.getElementById('orderForm').reset();
+                                    document.getElementById('orderQuantity').value = 1;
+                                    updateTotalPrice();
+                                    document.getElementById('orderSummary').style.display = 'none';
+                                }, 2000);
+                            }
+                        });
                     });
                 },
+                // ============================================================= -->
+                <!-- PAYPAL ON ERROR - PEMBAYARAN GAGAL                      -->
+                // ============================================================= -->
                 onError: function(err) {
-                    // Show an error message
                     showToast('Payment error: ' + err.message, 'error');
+                },
+                // ============================================================= -->
+                <!-- PAYPAL ON CANCEL - PEMBAYARAN DIBATALKAN                  -->
+                // ============================================================= -->
+                onCancel: function(data) {
+                    showToast('Payment cancelled', 'error');
                 }
             }).render('#paypalButton');
         }
@@ -2550,6 +2595,7 @@
             document.getElementById('transferPayment').checked = true;
             document.getElementById('transferInfo').classList.add('show');
             document.getElementById('paypalButtonContainer').classList.remove('show');
+            document.getElementById('orderButton').style.display = 'flex';
             
             // Reset location
             document.getElementById('addressDisplay').classList.remove('show');
@@ -2558,6 +2604,12 @@
             
             // Hide order summary
             document.getElementById('orderSummary').style.display = 'none';
+            
+            // Reset PayPal button
+            if (paypalInitialized) {
+                document.getElementById('paypalButton').innerHTML = '';
+                paypalInitialized = false;
+            }
             
             // Generate related books
             generateRelatedBooks();
@@ -2685,7 +2737,7 @@
         // ============================================================= -->
         <!-- WHATSAPP ORDER - PENTING: KIRIM PESAN KE WHATSAPP          -->
         <!-- NOMOR WHATSAPP: +6283180667700                             -->
-        <!-- FUNGSI INI AKAN MENGIRIM TEMPLATE PESANAN KE WHATSAPP      -->
+        <!-- TEMPLATE PESANAN LENGKAP DENGAN DATA DARI FORM               -->
         // ============================================================= -->
         function sendOrderToWhatsApp() {
             const name = document.getElementById('orderName').value;
@@ -2723,6 +2775,9 @@
    • Buku: ${currentBook.title}
    • Penulis: ${currentBook.author}
    • Penerbit: ${currentBook.publisher_name}
+   • Tahun: ${currentBook.year}
+   • Volume: ${currentBook.volumes}
+   • Halaman: ${currentBook.pages}
    • Jumlah: ${quantity} buku
    • Total Harga: ${totalPrice}
 
