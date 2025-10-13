@@ -2195,11 +2195,12 @@
         // ============================================================= -->
         <!-- WHATSAPP FUNCTION - PENTING: NOMOR WHATSAPP KRUSIAL          -->
         <!-- NOMOR WHATSAPP: +6283180667700                             -->
-        <!-- FUNGSI INI AKAN MEMBUKA WHATSAPP DENGAN NOMOR TERSEBUT      -->
+        <!-- LANGSUNG KE APLIKASI WHATSAPP (api.whatsapp.com)            -->
         // ============================================================= -->
         function openWhatsApp() {
             const message = encodeURIComponent("Halo, saya tertarik dengan buku di Dar Al-Imam Al-Qarafi. Mohon informasikan lebih lanjut.");
-            window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${message}`, '_blank');
+            // Use api.whatsapp.com for direct app opening
+            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER.replace('+', '')}&text=${message}`, '_blank');
         }
 
         // ============================================================= -->
@@ -2737,6 +2738,7 @@
         // ============================================================= -->
         <!-- WHATSAPP ORDER - PENTING: KIRIM PESAN KE WHATSAPP          -->
         <!-- NOMOR WHATSAPP: +6283180667700                             -->
+        <!-- LANGSUNG KE APLIKASI WHATSAPP (api.whatsapp.com)            -->
         <!-- TEMPLATE PESANAN LENGKAP DENGAN DATA DARI FORM               -->
         // ============================================================= -->
         function sendOrderToWhatsApp() {
@@ -2787,9 +2789,9 @@
 *Terima kasih telah berbelanja di Dar Al-Imam Al-Qarafi!*
             `.trim();
             
-            // Open WhatsApp with message
+            // Open WhatsApp with message - use api.whatsapp.com for direct app opening
             const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${encodedMessage}`, '_blank');
+            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER.replace('+', '')}&text=${encodedMessage}`, '_blank');
         }
 
         // Save order to database
