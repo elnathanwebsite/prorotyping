@@ -382,6 +382,10 @@
             background-color: var(--red);
         }
 
+        .toast.info {
+            background-color: var(--light-blue);
+        }
+
         @keyframes slideIn {
             from {
                 transform: translateX(100%);
@@ -479,6 +483,23 @@
 
         .tab-content.active {
             display: block;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-blue);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Responsive Design */
@@ -1044,9 +1065,9 @@
     <script>
         // Initialize Supabase client
         const { createClient } = supabase;
-        const supabaseUrl = 'https://dtotsxwsvplvjzmcguyk.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0b3RzeHdzdnBsdmp6bWNndXlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMDM5MTcsImV4cCI6MjA3NTg3OTkxN30.Aeg5J7WLnrmZkprZynXIvAD5kiH9-K7RALx5Rvvp49k';
-       const supabaseClient = createClient(supabaseUrl, supabaseKey);
+        const supabaseUrl = 'https://fywkkwzuzzxvjwswkdeq.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5d2trd3p1enp4dmp3c3drZGVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMDU2MzEsImV4cCI6MjA3NTg4MTYzMX0.pqnpt3Jb0IaXkiJChR0hQbnaV39E31kKxW9xCryqVvE';
+        const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
         // Global variables
         let currentPage = 'dashboard';
@@ -1219,9 +1240,11 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
                         removeBtn.onclick = function() {
                             previewItem.remove();
                             // Remove from uploaded files
-                            const index = uploadedFiles.bookGallery.findIndex(f => f.name === file.name);
-                            if (index > -1) {
-                                uploadedFiles.bookGallery.splice(index, 1);
+                            if (storageKey === 'bookGallery') {
+                                const index = uploadedFiles.bookGallery.findIndex(f => f.name === file.name);
+                                if (index > -1) {
+                                    uploadedFiles.bookGallery.splice(index, 1);
+                                }
                             }
                         };
                         
@@ -1603,24 +1626,39 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
         // Upload file to Supabase Storage
         async function uploadFileToStorage(file, path) {
             try {
+                console.log('Starting upload:', file.name, 'to path:', path);
+                
+                // Show loading toast
+                showToast(`Uploading ${file.name}...`, 'info');
+                
                 const { data, error } = await supabaseClient.storage
                     .from('images')
                     .upload(path, file, {
                         cacheControl: '3600',
-                        upsert: false
+                        upsert: true
                     });
                 
-                if (error) throw error;
+                if (error) {
+                    console.error('Upload error:', error);
+                    showToast(`Upload failed: ${error.message}`, 'error');
+                    return null;
+                }
+                
+                console.log('Upload success:', data);
                 
                 // Get public URL
                 const { data: { publicUrl } } = supabaseClient.storage
                     .from('images')
                     .getPublicUrl(data.path);
                 
+                console.log('Public URL:', publicUrl);
+                showToast(`${file.name} uploaded successfully!`, 'success');
+                
                 return publicUrl;
             } catch (error) {
                 console.error('Error uploading file:', error);
-                throw error;
+                showToast(`Upload error: ${error.message}`, 'error');
+                return null;
             }
         }
 
@@ -1752,6 +1790,9 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
         // Save book
         async function saveBook() {
             try {
+                // Show loading
+                showToast('Saving book...', 'info');
+                
                 const bookId = document.getElementById('bookId').value;
                 const title = document.getElementById('bookTitle').value;
                 const author = document.getElementById('bookAuthor').value;
@@ -1785,7 +1826,13 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
                 // Upload cover image if file is selected
                 if (uploadedFiles.bookCover) {
                     const fileName = `book-cover-${Date.now()}.${uploadedFiles.bookCover.name.split('.').pop()}`;
-                    coverImageUrl = await uploadFileToStorage(uploadedFiles.bookCover, fileName);
+                    const uploadedUrl = await uploadFileToStorage(uploadedFiles.bookCover, fileName);
+                    if (uploadedUrl) {
+                        coverImageUrl = uploadedUrl;
+                    } else {
+                        showToast('Failed to upload cover image', 'error');
+                        return;
+                    }
                 }
                 
                 // Upload gallery images if files are selected
@@ -1794,7 +1841,14 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
                     for (const file of uploadedFiles.bookGallery) {
                         const fileName = `book-gallery-${Date.now()}-${Math.random().toString(36).substring(7)}.${file.name.split('.').pop()}`;
                         const url = await uploadFileToStorage(file, fileName);
-                        galleryUrls.push(url);
+                        if (url) {
+                            galleryUrls.push(url);
+                        }
+                    }
+                    
+                    if (galleryUrls.length === 0 && uploadedFiles.bookGallery.length > 0) {
+                        showToast('Failed to upload gallery images', 'error');
+                        return;
                     }
                 }
                 
@@ -1859,7 +1913,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
                 showToast(bookId ? 'Book updated successfully' : 'Book added successfully');
             } catch (error) {
                 console.error('Error saving book:', error);
-                showToast('Error saving book', 'error');
+                showToast('Error saving book: ' + error.message, 'error');
             }
         }
 
@@ -1966,6 +2020,8 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
         // Save category
         async function saveCategory() {
             try {
+                showToast('Saving category...', 'info');
+                
                 const categoryId = document.getElementById('categoryId').value;
                 const nameId = document.getElementById('categoryNameId').value;
                 const nameEn = document.getElementById('categoryNameEn').value;
@@ -1987,7 +2043,13 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
                 // Upload image if file is selected
                 if (uploadedFiles.categoryImage) {
                     const fileName = `category-${Date.now()}.${uploadedFiles.categoryImage.name.split('.').pop()}`;
-                    imageUrl = await uploadFileToStorage(uploadedFiles.categoryImage, fileName);
+                    const uploadedUrl = await uploadFileToStorage(uploadedFiles.categoryImage, fileName);
+                    if (uploadedUrl) {
+                        imageUrl = uploadedUrl;
+                    } else {
+                        showToast('Failed to upload category image', 'error');
+                        return;
+                    }
                 }
                 
                 let categoryData = {
@@ -2024,7 +2086,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
                 showToast(categoryId ? 'Category updated successfully' : 'Category added successfully');
             } catch (error) {
                 console.error('Error saving category:', error);
-                showToast('Error saving category', 'error');
+                showToast('Error saving category: ' + error.message, 'error');
             }
         }
 
@@ -2127,6 +2189,8 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
         // Save publisher
         async function savePublisher() {
             try {
+                showToast('Saving publisher...', 'info');
+                
                 const publisherId = document.getElementById('publisherId').value;
                 const name = document.getElementById('publisherName').value;
                 const letter = document.getElementById('publisherLetter').value;
@@ -2144,7 +2208,13 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
                 // Upload logo if file is selected
                 if (uploadedFiles.publisherLogo) {
                     const fileName = `publisher-logo-${Date.now()}.${uploadedFiles.publisherLogo.name.split('.').pop()}`;
-                    logoUrl = await uploadFileToStorage(uploadedFiles.publisherLogo, fileName);
+                    const uploadedUrl = await uploadFileToStorage(uploadedFiles.publisherLogo, fileName);
+                    if (uploadedUrl) {
+                        logoUrl = uploadedUrl;
+                    } else {
+                        showToast('Failed to upload publisher logo', 'error');
+                        return;
+                    }
                 }
                 
                 let publisherData = {
@@ -2177,7 +2247,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
                 showToast(publisherId ? 'Publisher updated successfully' : 'Publisher added successfully');
             } catch (error) {
                 console.error('Error saving publisher:', error);
-                showToast('Error saving publisher', 'error');
+                showToast('Error saving publisher: ' + error.message, 'error');
             }
         }
 
@@ -2296,9 +2366,10 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
         function showToast(message, type = 'success') {
             const toastContainer = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-            toast.className = `toast ${type === 'error' ? 'error' : ''}`;
+            toast.className = `toast ${type === 'error' ? 'error' : ''} ${type === 'info' ? 'info' : ''}`;
             
-            const icon = type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle';
+            const icon = type === 'error' ? 'fa-exclamation-circle' : 
+                       type === 'info' ? 'fa-info-circle' : 'fa-check-circle';
             
             toast.innerHTML = `
                 <i class="fas ${icon}"></i>
