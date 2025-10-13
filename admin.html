@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islamic Heritage Library</title>
+    <title>Admin Panel - Islamic Heritage Library</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -29,598 +29,151 @@
         body {
             background-color: var(--light-gray);
             color: var(--black);
-            transition: all 0.3s ease;
         }
 
-        /* RTL Support */
-        body[dir="rtl"] {
-            font-family: 'Tahoma', 'Arial', sans-serif;
-        }
-
-        body[dir="rtl"] .carousel-control.prev {
-            left: auto;
-            right: 10px;
-        }
-
-        body[dir="rtl"] .carousel-control.next {
-            right: auto;
-            left: 10px;
-        }
-
-        body[dir="rtl"] .book-detail-content {
-            flex-direction: row-reverse;
-        }
-
-        body[dir="rtl"] .info-row {
-            flex-direction: row-reverse;
-        }
-
-        body[dir="rtl"] .info-label {
-            width: auto;
-            margin-left: 10px;
-        }
-
-        body[dir="rtl"] .footer-content {
-            direction: rtl;
-        }
-
-        /* Page Management */
-        .page {
-            display: block;
-        }
-
-        .page.hidden {
-            display: none;
-        }
-
-        /* Navigation Bar */
-        .navbar {
-            background-color: var(--primary-blue);
-            padding: 10px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: sticky;
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
             top: 0;
-            z-index: 1000;
-        }
-
-        .navbar-brand {
-            color: var(--white);
-            font-weight: bold;
-            font-size: 1.5rem;
-            margin-right: 30px;
-            cursor: pointer;
-        }
-
-        .search-container {
-            position: relative;
-            width: 40%;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 8px 40px 8px 15px;
-            border-radius: 20px;
-            border: none;
-            background-color: rgba(255,255,255,0.9);
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--primary-blue);
-        }
-
-        .nav-icons {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-icon {
-            color: var(--white);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .nav-icon:hover {
-            color: var(--yellow);
-        }
-
-        .back-btn {
-            background: none;
-            border: none;
-            color: var(--white);
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-right: 15px;
-            transition: all 0.3s;
-        }
-
-        .back-btn:hover {
-            color: var(--yellow);
-        }
-
-        /* Language and Currency Switcher */
-        .lang-currency-switcher {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-toggle {
-            background: none;
-            border: none;
-            color: var(--white);
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .dropdown-toggle:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: var(--white);
-            border-radius: 5px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            min-width: 120px;
-            z-index: 1000;
-            display: none;
-        }
-
-        .dropdown-menu.show {
-            display: block;
-        }
-
-        .dropdown-item {
-            padding: 8px 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            color: var(--black);
-        }
-
-        .dropdown-item:hover {
-            background-color: var(--light-gray);
-        }
-
-        .dropdown-item.active {
-            background-color: var(--light-blue);
-            color: var(--white);
-        }
-
-        /* Hero Section */
-        .hero-section {
-            background-color: var(--primary-blue);
-            padding: 40px 0;
-            text-align: center;
-            color: var(--white);
-        }
-
-        .hero-title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        /* Publishers Section */
-        .publishers-section {
-            background-color: var(--white);
-            padding: 40px 0;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--dark-blue);
-        }
-
-        .section-subtitle {
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .publishers-container {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .publishers-carousel {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-
-        .publisher-card {
-            flex: 0 0 200px;
-            margin: 0 15px;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: var(--white);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            text-align: center;
-            position: relative;
-            transition: transform 0.3s;
-        }
-
-        .publisher-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .publisher-logo {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: var(--light-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            color: var(--white);
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-
-        .discount-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--red);
-            color: var(--white);
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .carousel-control {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: var(--primary-blue);
-            color: var(--white);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: background-color 0.3s;
-        }
-
-        .carousel-control:hover {
-            background-color: var(--light-blue);
-        }
-
-        .carousel-control.prev {
-            left: 10px;
-        }
-
-        .carousel-control.next {
-            right: 10px;
-        }
-
-        /* Library Sections */
-        .library-sections {
-            padding: 40px 0;
-        }
-
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 20px;
-        }
-
-        .category-card {
-            background-color: var(--white);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-            cursor: pointer;
-        }
-
-        .category-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .category-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-        }
-
-        .category-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .category-desc {
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        /* Flash Sale Section */
-        .flash-sale-section {
-            background-color: var(--white);
-            padding: 40px 0;
-        }
-
-        .flash-sale-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .flash-sale-title {
-            color: var(--red);
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-
-        .flash-sale-subtitle {
-            color: #666;
-        }
-
-        .countdown {
-            display: flex;
-            gap: 10px;
-        }
-
-        .countdown-item {
+            left: 0;
+            height: 100vh;
+            width: 250px;
             background-color: var(--dark-blue);
             color: var(--white);
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-weight: bold;
+            padding-top: 20px;
+            z-index: 1000;
+            transition: all 0.3s;
         }
 
-        .books-container {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding-bottom: 20px;
-        }
-
-        .book-card {
-            flex: 0 0 280px;
-            background-color: var(--yellow);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .book-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: var(--red);
-            color: var(--white);
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .book-image {
-            width: 100%;
-            height: 180px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-        }
-
-        .book-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 1rem;
-        }
-
-        .book-author {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-
-        .book-publisher {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
-        .book-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-
-        .book-price {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .current-price {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .original-price {
-            text-decoration: line-through;
-            color: #999;
-        }
-
-        .discount-percent {
-            color: var(--red);
-            font-weight: bold;
-        }
-
-        .made-by {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            font-size: 0.7rem;
-            color: #999;
-        }
-
-        /* Bestsellers Section */
-        .bestsellers-section {
-            padding: 40px 0;
-        }
-
-        /* Book Detail Page */
-        .book-detail-container {
-            background-color: var(--white);
-            padding: 40px 0;
-            min-height: calc(100vh - 200px);
-        }
-
-        .book-detail-content {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .book-image-container {
-            flex: 0 0 300px;
-        }
-
-        .book-image-large {
-            width: 100%;
-            height: 400px;
-            background-color: #f0f0f0;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .book-info-container {
-            flex: 1;
-        }
-
-        .book-detail-title {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--dark-blue);
-        }
-
-        .book-detail-author {
-            font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .book-detail-publisher {
-            font-size: 1rem;
-            color: #666;
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 20px;
         }
 
-        .book-detail-price {
+        .sidebar-header h3 {
             font-size: 1.5rem;
             font-weight: bold;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
         }
 
-        .book-detail-info {
-            background-color: var(--light-gray);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+        .sidebar-menu {
+            list-style: none;
         }
 
-        .info-row {
-            display: flex;
-            margin-bottom: 10px;
+        .sidebar-menu li {
+            margin-bottom: 5px;
         }
 
-        .info-label {
-            font-weight: bold;
-            width: 120px;
+        .sidebar-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--white);
+            text-decoration: none;
+            transition: background-color 0.3s;
         }
 
-        .info-value {
-            flex: 1;
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: var(--primary-blue);
         }
 
-        .order-form-container {
-            background-color: var(--light-gray);
-            padding: 25px;
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .content-header {
+            background-color: var(--white);
+            padding: 20px;
             border-radius: 10px;
-            margin-top: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .order-form-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 20px;
+        .content-header h2 {
+            margin: 0;
             color: var(--dark-blue);
         }
 
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
+        .content-body {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: var(--light-gray);
+            font-weight: bold;
+        }
+
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Image Preview */
+        .image-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .image-preview:hover {
+            transform: scale(1.1);
+        }
+
+        .image-gallery {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .image-gallery img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* Forms */
         .form-group {
-            flex: 1;
+            margin-bottom: 20px;
         }
 
         .form-label {
-            font-weight: 600;
-            margin-bottom: 5px;
             display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
         }
 
         .form-control {
@@ -637,185 +190,171 @@
             box-shadow: 0 0 0 2px rgba(10, 77, 140, 0.2);
         }
 
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        /* Image Upload Area */
+        .image-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
         }
 
-        .quantity-btn {
-            width: 35px;
-            height: 35px;
-            border: 1px solid #ddd;
-            background-color: var(--white);
+        .image-upload-area:hover {
+            border-color: var(--primary-blue);
+        }
+
+        .image-upload-area i {
+            font-size: 2rem;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .image-upload-area.dragover {
+            border-color: var(--primary-blue);
+            background-color: rgba(10, 77, 140, 0.05);
+        }
+
+        .image-preview-container {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .image-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             border-radius: 5px;
-            cursor: pointer;
+        }
+
+        .image-preview-item .remove-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
             transition: all 0.3s;
         }
 
-        .quantity-btn:hover {
+        .btn-primary {
             background-color: var(--primary-blue);
             color: var(--white);
         }
 
-        .quantity-input {
-            width: 60px;
-            text-align: center;
+        .btn-primary:hover {
+            background-color: var(--light-blue);
         }
 
-        .btn-order {
-            padding: 12px 30px;
+        .btn-success {
             background-color: var(--green);
             color: var(--white);
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 20px;
         }
 
-        .btn-order:hover {
+        .btn-success:hover {
             background-color: #45a049;
         }
 
-        /* Related Books */
-        .related-books {
-            margin-top: 50px;
+        .btn-danger {
+            background-color: var(--red);
+            color: var(--white);
         }
 
-        .related-books-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: var(--dark-blue);
+        .btn-danger:hover {
+            background-color: #d32f2f;
         }
 
-        .related-books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+        .btn-secondary {
+            background-color: #6c757d;
+            color: var(--white);
         }
 
-        .related-book-card {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.3s;
+        .btn-secondary:hover {
+            background-color: #5a6268;
         }
 
-        .related-book-card:hover {
-            transform: translateY(-5px);
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.875rem;
         }
 
-        .related-book-image {
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 150px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            display: flex;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
             align-items: center;
             justify-content: center;
-            color: #999;
         }
 
-        .related-book-title {
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-
-        .related-book-price {
-            color: var(--primary-blue);
-            font-weight: bold;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--dark-blue);
-            color: var(--white);
-            padding: 40px 0 20px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .footer-brand h3 {
-            margin-bottom: 15px;
-        }
-
-        .footer-brand p {
-            margin-bottom: 15px;
-            opacity: 0.9;
-        }
-
-        .footer-info {
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-
-        .footer-title {
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 8px;
-        }
-
-        .footer-links a {
-            color: var(--white);
-            text-decoration: none;
-            opacity: 0.9;
-            transition: opacity 0.3s;
-        }
-
-        .footer-links a:hover {
-            opacity: 1;
-            text-decoration: underline;
-        }
-
-        .payment-methods {
+        .modal.show {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
         }
 
-        .payment-icon {
-            width: 40px;
-            height: 25px;
+        .modal-content {
             background-color: var(--white);
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--dark-blue);
-            font-size: 0.7rem;
-            font-weight: bold;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.9rem;
-            opacity: 0.9;
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
         /* Toast Notification */
@@ -839,6 +378,14 @@
             animation: slideIn 0.3s ease;
         }
 
+        .toast.error {
+            background-color: var(--red);
+        }
+
+        .toast.info {
+            background-color: var(--light-blue);
+        }
+
         @keyframes slideIn {
             from {
                 transform: translateX(100%);
@@ -850,355 +397,666 @@
             }
         }
 
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.blue {
+            background-color: rgba(10, 77, 140, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .stat-icon.green {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--green);
+        }
+
+        .stat-icon.red {
+            background-color: rgba(229, 57, 53, 0.1);
+            color: var(--red);
+        }
+
+        .stat-icon.yellow {
+            background-color: rgba(255, 249, 196, 1);
+            color: #f9a825;
+        }
+
+        .stat-info h3 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .stat-info p {
+            margin: 0;
+            color: #666;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab-nav button {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-nav button.active {
+            border-bottom-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-blue);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Responsive Design */
-        @media (max-width: 992px) {
-            .category-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .book-card {
-                flex: 0 0 300px;
-            }
-            
-            .book-detail-content {
-                flex-direction: column;
-            }
-            
-            .book-image-container {
-                flex: 0 0 auto;
-                align-self: center;
-            }
-        }
-
         @media (max-width: 768px) {
-            .search-container {
-                width: 100%;
-                margin: 10px 0;
+            .sidebar {
+                transform: translateX(-100%);
             }
-            
-            .category-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .book-card {
-                flex: 0 0 280px;
-            }
-            
-            .form-row {
-                flex-direction: column;
-            }
-        }
 
-        @media (max-width: 576px) {
-            .hero-title {
-                font-size: 1.8rem;
+            .sidebar.show {
+                transform: translateX(0);
             }
-            
-            .category-grid {
-                grid-template-columns: 1fr;
+
+            .main-content {
+                margin-left: 0;
             }
-            
-            .book-card {
-                flex: 0 0 100%;
-            }
-            
-            .related-books-grid {
+
+            .stats-container {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="d-flex align-items-center justify-content-between w-100">
-                <div class="d-flex align-items-center">
-                    <button class="back-btn hidden" id="backBtn" onclick="showHomePage()">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                    <div class="navbar-brand" onclick="showHomePage()">
-                        <span id="brandName">دار الإمام القرافي</span>
-                    </div>
-                </div>
-                <div class="search-container">
-                    <input type="text" class="search-input" id="searchPlaceholder" placeholder="Cari buku, penulis, penerbit...">
-                    <button class="search-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-                <div class="nav-icons">
-                    <div class="nav-icon">
-                        <i class="fab fa-whatsapp"></i>
-                    </div>
-                    <div class="lang-currency-switcher">
-                        <div class="dropdown">
-                            <button class="dropdown-toggle" id="langDropdown">
-                                <span id="currentLang">ID</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="dropdown-menu" id="langMenu">
-                                <div class="dropdown-item" data-lang="id">Indonesia</div>
-                                <div class="dropdown-item" data-lang="en">English</div>
-                                <div class="dropdown-item" data-lang="ar">العربية</div>
-                            </div>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Panel</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="menu-item active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#" class="menu-item" data-page="books"><i class="fas fa-book"></i> Books</a></li>
+            <li><a href="#" class="menu-item" data-page="categories"><i class="fas fa-tags"></i> Categories</a></li>
+            <li><a href="#" class="menu-item" data-page="publishers"><i class="fas fa-building"></i> Publishers</a></li>
+            <li><a href="#" class="menu-item" data-page="orders"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+            <li><a href="#" class="menu-item" data-page="users"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="#" class="menu-item" data-page="settings"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard Page -->
+        <div id="dashboardPage" class="page-content">
+            <div class="content-header">
+                <h2>Dashboard</h2>
+                <button class="btn btn-primary" id="refreshDashboard">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="content-body">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-book"></i>
                         </div>
-                        <div class="dropdown">
-                            <button class="dropdown-toggle" id="currencyDropdown">
-                                <span id="currentCurrency">IDR</span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="dropdown-menu" id="currencyMenu">
-                                <div class="dropdown-item" data-currency="idr">IDR</div>
-                                <div class="dropdown-item" data-currency="usd">USD</div>
-                                <div class="dropdown-item" data-currency="egp">EGP</div>
-                            </div>
+                        <div class="stat-info">
+                            <h3 id="totalBooks">0</h3>
+                            <p>Total Books</p>
                         </div>
                     </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalOrders">0</h3>
+                            <p>Total Orders</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalCategories">0</h3>
+                            <p>Total Categories</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon yellow">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalPublishers">0</h3>
+                            <p>Total Publishers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <h4>Recent Orders</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Book</th>
+                                <th>Quantity</th>
+                                <th>Total Price</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentOrdersTable">
+                            <!-- Orders will be populated here -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </nav>
 
-    <!-- Home Page -->
-    <div id="homePage" class="page">
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="container">
-                <h1 class="hero-title" id="heroTitle">New Arrivals</h1>
-                <p class="hero-subtitle" id="heroSubtitle">Islamic Heritage Library</p>
+        <!-- Books Page -->
+        <div id="booksPage" class="page-content" style="display: none;">
+            <div class="content-header">
+                <h2>Books</h2>
+                <button class="btn btn-primary" id="addBookBtn">
+                    <i class="fas fa-plus"></i> Add Book
+                </button>
             </div>
-        </section>
+            <div class="content-body">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Publisher</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booksTable">
+                            <!-- Books will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        <!-- Publishers Section -->
-        <section class="publishers-section">
-            <div class="container">
-                <h2 class="section-title" id="publishersTitle">Publishers</h2>
-                <p class="section-subtitle" id="publishersSubtitle">Choose from distinguished publishers</p>
-                
-                <div class="publishers-container">
-                    <button class="carousel-control prev" onclick="movePublishers(-1)">
-                        <i class="fas fa-chevron-left"></i>
+        <!-- Categories Page -->
+        <div id="categoriesPage" class="page-content" style="display: none;">
+            <div class="content-header">
+                <h2>Categories</h2>
+                <button class="btn btn-primary" id="addCategoryBtn">
+                    <i class="fas fa-plus"></i> Add Category
+                </button>
+            </div>
+            <div class="content-body">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name (ID)</th>
+                                <th>Name (EN)</th>
+                                <th>Name (AR)</th>
+                                <th>Color</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesTable">
+                            <!-- Categories will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Publishers Page -->
+        <div id="publishersPage" class="page-content" style="display: none;">
+            <div class="content-header">
+                <h2>Publishers</h2>
+                <button class="btn btn-primary" id="addPublisherBtn">
+                    <i class="fas fa-plus"></i> Add Publisher
+                </button>
+            </div>
+            <div class="content-body">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Logo</th>
+                                <th>Name</th>
+                                <th>Letter</th>
+                                <th>Discount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="publishersTable">
+                            <!-- Publishers will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Page -->
+        <div id="ordersPage" class="page-content" style="display: none;">
+            <div class="content-header">
+                <h2>Orders</h2>
+                <div>
+                    <select class="form-control" id="orderStatusFilter" style="width: auto; display: inline-block;">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <button class="btn btn-primary" id="filterOrdersBtn" style="margin-left: 10px;">
+                        <i class="fas fa-filter"></i> Filter
                     </button>
-                    <button class="carousel-control next" onclick="movePublishers(1)">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Book</th>
+                                <th>Quantity</th>
+                                <th>Total Price</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable">
+                            <!-- Orders will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Page -->
+        <div id="usersPage" class="page-content" style="display: none;">
+            <div class="content-header">
+                <h2>Users</h2>
+                <button class="btn btn-primary" id="addUserBtn">
+                    <i class="fas fa-plus"></i> Add User
+                </button>
+            </div>
+            <div class="content-body">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <!-- Users will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settingsPage" class="page-content" style="display: none;">
+            <div class="content-header">
+                <h2>Settings</h2>
+            </div>
+            <div class="content-body">
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label class="form-label">Site Name</label>
+                        <input type="text" class="form-control" id="siteName" value="Islamic Heritage Library">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Site Description</label>
+                        <textarea class="form-control" id="siteDescription" rows="3">Toko Arab untuk menjual buku warisan Islam dan kami mengirimkan pembelian Anda ke seluruh dunia</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contact Email</label>
+                        <input type="email" class="form-control" id="contactEmail" value="info@daralimam.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contact Phone</label>
+                        <input type="tel" class="form-control" id="contactPhone" value="+628123456789">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-control" id="address" rows="3">Jl. Masjid Al-Hikmah No. 12, Jakarta</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Book Modal -->
+    <div class="modal" id="bookModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="bookModalTitle">Add Book</h3>
+                <button class="close" onclick="closeModal('bookModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="bookForm">
+                    <input type="hidden" id="bookId">
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" id="bookTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Author</label>
+                        <input type="text" class="form-control" id="bookAuthor" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Publisher</label>
+                        <select class="form-control" id="bookPublisher" required>
+                            <!-- Publishers will be populated here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Base Price (IDR)</label>
+                        <input type="number" class="form-control" id="bookBasePrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Original Price (IDR)</label>
+                        <input type="number" class="form-control" id="bookOriginalPrice">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Discount</label>
+                        <input type="text" class="form-control" id="bookDiscount" placeholder="e.g. 20%">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Volumes</label>
+                        <input type="text" class="form-control" id="bookVolumes" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pages</label>
+                        <input type="text" class="form-control" id="bookPages" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Year</label>
+                        <input type="text" class="form-control" id="bookYear" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Badges (comma separated)</label>
+                        <input type="text" class="form-control" id="bookBadges" placeholder="e.g. New, Bestseller">
+                    </div>
                     
-                    <div class="publishers-carousel" id="publishersCarousel">
-                        <!-- Publisher cards will be generated by JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Library Sections -->
-        <section class="library-sections">
-            <div class="container">
-                <h2 class="section-title" id="sectionsTitle">Library Sections</h2>
-                <p class="section-subtitle" id="sectionsSubtitle">Browse books by specialization</p>
-                
-                <div class="category-grid" id="categoryGrid">
-                    <!-- Category cards will be generated by JavaScript -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Flash Sale Section -->
-        <section class="flash-sale-section">
-            <div class="container">
-                <div class="flash-sale-header">
-                    <div>
-                        <h2 class="flash-sale-title" id="flashSaleTitle">Flash Sale</h2>
-                        <p class="flash-sale-subtitle" id="flashSaleSubtitle">Penawaran terbatas waktu</p>
-                    </div>
-                    <div class="countdown">
-                        <div class="countdown-item">12</div>
-                        <div class="countdown-item">:</div>
-                        <div class="countdown-item">34</div>
-                        <div class="countdown-item">:</div>
-                        <div class="countdown-item">56</div>
-                    </div>
-                </div>
-                
-                <div class="books-container" id="flashSaleBooks">
-                    <!-- Book cards will be generated by JavaScript -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Bestsellers Section -->
-        <section class="bestsellers-section">
-            <div class="container">
-                <h2 class="section-title" id="bestsellersTitle">Buku Terlaris</h2>
-                <p class="section-subtitle" id="bestsellersSubtitle">Buku terlaris tahun ini</p>
-                
-                <div class="books-container" id="bestsellerBooks">
-                    <!-- Book cards will be generated by JavaScript -->
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Book Detail Page -->
-    <div id="bookDetailPage" class="page hidden">
-        <div class="book-detail-container">
-            <div class="container">
-                <div class="book-detail-content">
-                    <div class="book-image-container">
-                        <div class="book-image-large" id="detailBookImage">
-                            <i class="fas fa-book fa-5x"></i>
-                        </div>
-                    </div>
-                    <div class="book-info-container">
-                        <h1 class="book-detail-title" id="detailBookTitle">Book Title</h1>
-                        <p class="book-detail-author" id="detailBookAuthor">Author</p>
-                        <p class="book-detail-publisher" id="detailBookPublisher">Publisher</p>
-                        <div class="book-detail-price" id="detailBookPrice">Rp 0</div>
-                        
-                        <div class="book-detail-info">
-                            <div class="info-row">
-                                <div class="info-label" id="yearLabel">Tahun Terbit:</div>
-                                <div class="info-value" id="detailBookYear">2023</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label" id="volumesLabel">Jumlah Volume:</div>
-                                <div class="info-value" id="detailBookVolumes">5</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label" id="pagesLabel">Jumlah Halaman:</div>
-                                <div class="info-value" id="detailBookPages">2200</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label" id="coverLabel">Jenis Cover:</div>
-                                <div class="info-value" id="detailBookCover">Hard Cover</div>
-                            </div>
+                    <!-- Image Upload Section -->
+                    <div class="form-group">
+                        <label class="form-label">Cover Image</label>
+                        <div class="tab-nav">
+                            <button type="button" class="tab-btn active" data-tab="bookCoverUrl">URL</button>
+                            <button type="button" class="tab-btn" data-tab="bookCoverUpload">Upload</button>
                         </div>
                         
-                        <div class="order-form-container">
-                            <h3 class="order-form-title" id="orderFormTitle">Form Pemesanan</h3>
-                            <form id="orderForm">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label class="form-label" id="nameLabel">Nama Lengkap</label>
-                                        <input type="text" class="form-control" id="orderName" placeholder="Masukkan nama lengkap Anda" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label" id="phoneLabel">Nomor WhatsApp</label>
-                                        <input type="tel" class="form-control" id="orderPhone" placeholder="08xxxxxxxxxx" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" id="addressLabel">Alamat Pengiriman</label>
-                                    <input type="text" class="form-control" id="orderAddress" placeholder="Masukkan alamat lengkap" required>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label class="form-label" id="quantityLabel">Jumlah</label>
-                                        <div class="quantity-control">
-                                            <button type="button" class="quantity-btn" onclick="decreaseQuantity()">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <input type="number" class="form-control quantity-input" id="orderQuantity" value="1" min="1" readonly>
-                                            <button type="button" class="quantity-btn" onclick="increaseQuantity()">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label" id="totalLabel">Total Harga</label>
-                                        <input type="text" class="form-control" id="totalPrice" value="Rp 0" readonly>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn-order" id="orderButton">
-                                    <i class="fas fa-shopping-cart"></i> Pesan Sekarang
-                                </button>
-                            </form>
+                        <div class="tab-content active" id="bookCoverUrl">
+                            <input type="text" class="form-control" id="bookCoverImage" placeholder="https://example.com/image.jpg">
+                            <div class="image-preview-container" id="bookCoverPreview"></div>
+                        </div>
+                        
+                        <div class="tab-content" id="bookCoverUpload">
+                            <div class="image-upload-area" id="bookCoverUploadArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload or drag and drop</p>
+                                <p>PNG, JPG, GIF up to 10MB</p>
+                                <input type="file" id="bookCoverFile" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="image-preview-container" id="bookCoverUploadPreview"></div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Related Books Section -->
-                <div class="related-books">
-                    <h3 class="related-books-title" id="relatedBooksTitle">Related Books</h3>
-                    <div class="related-books-grid" id="relatedBooksGrid">
-                        <!-- Related books will be generated by JavaScript -->
+                    
+                    <div class="form-group">
+                        <label class="form-label">Gallery Images</label>
+                        <div class="tab-nav">
+                            <button type="button" class="tab-btn active" data-tab="bookGalleryUrl">URL</button>
+                            <button type="button" class="tab-btn" data-tab="bookGalleryUpload">Upload</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="bookGalleryUrl">
+                            <input type="text" class="form-control" id="bookGalleryImages" placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg">
+                            <div class="image-preview-container" id="bookGalleryPreview"></div>
+                        </div>
+                        
+                        <div class="tab-content" id="bookGalleryUpload">
+                            <div class="image-upload-area" id="bookGalleryUploadArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload or drag and drop</p>
+                                <p>PNG, JPG, GIF up to 10MB</p>
+                                <input type="file" id="bookGalleryFiles" accept="image/*" multiple style="display: none;">
+                            </div>
+                            <div class="image-preview-container" id="bookGalleryUploadPreview"></div>
+                        </div>
                     </div>
-                </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Categories</label>
+                        <div id="bookCategories">
+                            <!-- Categories will be populated here -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('bookModal')">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveBook()">Save</button>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3 id="footerBrand">دار الإمام القرافي</h3>
-                    <p id="footerDesc">Toko Arab untuk menjual buku warisan Islam dan kami mengirimkan pembelian Anda ke seluruh dunia</p>
-                    <div class="footer-info">
-                        <i class="fas fa-clock"></i> <span id="footerHours">Senin - Jumat: 09:00 - 17:00</span>
-                    </div>
-                    <div class="footer-info">
-                        <i class="fas fa-map-marker-alt"></i> <span id="footerAddress">Jl. Masjid Al-Hikmah No. 12, Jakarta</span>
-                    </div>
-                    <div class="footer-info">
-                        <i class="fas fa-envelope"></i> <span id="footerEmail">info@daralimam.com</span>
-                    </div>
-                    <div class="footer-info">
-                        <i class="fas fa-globe"></i> <span id="footerWebsite">www.daralimam.com</span>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="footer-title" id="quickLinksTitle">Tautan Cepat</h4>
-                    <ul class="footer-links">
-                        <li><a href="#" id="homeLink">Beranda</a></li>
-                        <li><a href="#" id="booksLink">Buku</a></li>
-                        <li><a href="#" id="authorsLink">Penulis</a></li>
-                        <li><a href="#" id="publishersLink">Penerbit</a></li>
-                        <li><a href="#" id="aboutLink">Tentang Kami</a></li>
-                        <li><a href="#" id="contactLink">Kontak</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="footer-title" id="categoriesTitle">Kategori</h4>
-                    <ul class="footer-links">
-                        <li><a href="#" id="hadithLink">Hadits</a></li>
-                        <li><a href="#" id="tafsirLink">Tafsir</a></li>
-                        <li><a href="#" id="fiqhLink">Fiqih</a></li>
-                        <li><a href="#" id="historyLink">Sejarah Islam</a></li>
-                        <li><a href="#" id="arabicLink">Bahasa Arab</a></li>
-                        <li><a href="#" id="othersLink">Lainnya</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="footer-title" id="paymentTitle">Metode Pembayaran</h4>
-                    <div class="payment-methods">
-                        <div class="payment-icon">VISA</div>
-                        <div class="payment-icon">MC</div>
-                        <div class="payment-icon">GPay</div>
-                        <div class="payment-icon">PP</div>
-                        <div class="payment-icon">BCA</div>
-                        <div class="payment-icon">Mandiri</div>
-                    </div>
-                </div>
+    <!-- Category Modal -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="categoryModalTitle">Add Category</h3>
+                <button class="close" onclick="closeModal('categoryModal')">&times;</button>
             </div>
-            
-            <div class="copyright" id="copyright">
-                © 2025 Dar Al-Imam Al-Qarafi. Semua hak dilindungi.
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <input type="hidden" id="categoryId">
+                    <div class="form-group">
+                        <label class="form-label">Name (Indonesian)</label>
+                        <input type="text" class="form-control" id="categoryNameId" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Name (English)</label>
+                        <input type="text" class="form-control" id="categoryNameEn" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Name (Arabic)</label>
+                        <input type="text" class="form-control" id="categoryNameAr" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description (Indonesian)</label>
+                        <textarea class="form-control" id="categoryDescId" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description (English)</label>
+                        <textarea class="form-control" id="categoryDescEn" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description (Arabic)</label>
+                        <textarea class="form-control" id="categoryDescAr" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Color</label>
+                        <input type="color" class="form-control" id="categoryColor" required>
+                    </div>
+                    
+                    <!-- Image Upload Section -->
+                    <div class="form-group">
+                        <label class="form-label">Image</label>
+                        <div class="tab-nav">
+                            <button type="button" class="tab-btn active" data-tab="categoryImageUrl">URL</button>
+                            <button type="button" class="tab-btn" data-tab="categoryImageUpload">Upload</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="categoryImageUrl">
+                            <input type="text" class="form-control" id="categoryImage" placeholder="https://example.com/image.jpg">
+                            <div class="image-preview-container" id="categoryImagePreview"></div>
+                        </div>
+                        
+                        <div class="tab-content" id="categoryImageUpload">
+                            <div class="image-upload-area" id="categoryImageUploadArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload or drag and drop</p>
+                                <p>PNG, JPG, GIF up to 10MB</p>
+                                <input type="file" id="categoryImageFile" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="image-preview-container" id="categoryImageUploadPreview"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('categoryModal')">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveCategory()">Save</button>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- Publisher Modal -->
+    <div class="modal" id="publisherModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="publisherModalTitle">Add Publisher</h3>
+                <button class="close" onclick="closeModal('publisherModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="publisherForm">
+                    <input type="hidden" id="publisherId">
+                    <div class="form-group">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" id="publisherName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Letter</label>
+                        <input type="text" class="form-control" id="publisherLetter" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Discount</label>
+                        <input type="text" class="form-control" id="publisherDiscount" placeholder="e.g. 20%">
+                    </div>
+                    
+                    <!-- Logo Upload Section -->
+                    <div class="form-group">
+                        <label class="form-label">Logo</label>
+                        <div class="tab-nav">
+                            <button type="button" class="tab-btn active" data-tab="publisherLogoUrl">URL</button>
+                            <button type="button" class="tab-btn" data-tab="publisherLogoUpload">Upload</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="publisherLogoUrl">
+                            <input type="text" class="form-control" id="publisherLogo" placeholder="https://example.com/logo.jpg">
+                            <div class="image-preview-container" id="publisherLogoPreview"></div>
+                        </div>
+                        
+                        <div class="tab-content" id="publisherLogoUpload">
+                            <div class="image-upload-area" id="publisherLogoUploadArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload or drag and drop</p>
+                                <p>PNG, JPG, GIF up to 10MB</p>
+                                <input type="file" id="publisherLogoFile" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="image-preview-container" id="publisherLogoUploadPreview"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('publisherModal')">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="savePublisher()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Order Details</h3>
+                <button class="close" onclick="closeModal('orderModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="orderDetails">
+                    <!-- Order details will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('orderModal')">Close</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
@@ -1212,489 +1070,298 @@
         const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
         // Global variables
-        let currentBook = null;
-        let currentPublisherPosition = 0;
-        let currentLanguage = 'id'; // Default language: Indonesian
-        let currentCurrency = 'idr'; // Default currency: IDR
-        let allBooks = [];
+        let currentPage = 'dashboard';
         let publishers = [];
         let categories = [];
-        
-        // Language translations
-        const translations = {
-            id: {
-                brandName: 'دار الإمام القرافي',
-                searchPlaceholder: 'Cari buku, penulis, penerbit...',
-                heroTitle: 'New Arrivals',
-                heroSubtitle: 'Islamic Heritage Library',
-                publishersTitle: 'Publishers',
-                publishersSubtitle: 'Choose from distinguished publishers',
-                sectionsTitle: 'Library Sections',
-                sectionsSubtitle: 'Browse books by specialization',
-                flashSaleTitle: 'Flash Sale',
-                flashSaleSubtitle: 'Penawaran terbatas waktu',
-                bestsellersTitle: 'Buku Terlaris',
-                bestsellersSubtitle: 'Buku terlaris tahun ini',
-                yearLabel: 'Tahun Terbit:',
-                volumesLabel: 'Jumlah Volume:',
-                pagesLabel: 'Jumlah Halaman:',
-                coverLabel: 'Jenis Cover:',
-                orderFormTitle: 'Form Pemesanan',
-                nameLabel: 'Nama Lengkap',
-                phoneLabel: 'Nomor WhatsApp',
-                addressLabel: 'Alamat Pengiriman',
-                quantityLabel: 'Jumlah',
-                totalLabel: 'Total Harga',
-                orderButton: 'Pesan Sekarang',
-                relatedBooksTitle: 'Related Books',
-                footerBrand: 'دار الإمام القرافي',
-                footerDesc: 'Toko Arab untuk menjual buku warisan Islam dan kami mengirimkan pembelian Anda ke seluruh dunia',
-                footerHours: 'Senin - Jumat: 09:00 - 17:00',
-                footerAddress: 'Jl. Masjid Al-Hikmah No. 12, Jakarta',
-                footerEmail: 'info@daralimam.com',
-                footerWebsite: 'www.daralimam.com',
-                quickLinksTitle: 'Tautan Cepat',
-                homeLink: 'Beranda',
-                booksLink: 'Buku',
-                authorsLink: 'Penulis',
-                publishersLink: 'Penerbit',
-                aboutLink: 'Tentang Kami',
-                contactLink: 'Kontak',
-                categoriesTitle: 'Kategori',
-                hadithLink: 'Hadits',
-                tafsirLink: 'Tafsir',
-                fiqhLink: 'Fiqih',
-                historyLink: 'Sejarah Islam',
-                arabicLink: 'Bahasa Arab',
-                othersLink: 'Lainnya',
-                paymentTitle: 'Metode Pembayaran',
-                copyright: '© 2025 Dar Al-Imam Al-Qarafi. Semua hak dilindungi.',
-                namePlaceholder: 'Masukkan nama lengkap Anda',
-                phonePlaceholder: '08xxxxxxxxxx',
-                addressPlaceholder: 'Masukkan alamat lengkap',
-                orderSuccess: 'Pesanan berhasil!',
-                orderError: 'Mohon lengkapi semua field!',
-                hardCover: 'Hard Cover'
-            },
-            en: {
-                brandName: 'Dar Al-Imam Al-Qarafi',
-                searchPlaceholder: 'Search for books, authors, publishers...',
-                heroTitle: 'New Arrivals',
-                heroSubtitle: 'Islamic Heritage Library',
-                publishersTitle: 'Publishers',
-                publishersSubtitle: 'Choose from distinguished publishers',
-                sectionsTitle: 'Library Sections',
-                sectionsSubtitle: 'Browse books by specialization',
-                flashSaleTitle: 'Flash Sale',
-                flashSaleSubtitle: 'Limited time offer',
-                bestsellersTitle: 'Bestsellers',
-                bestsellersSubtitle: 'Bestselling books this year',
-                yearLabel: 'Publication Year:',
-                volumesLabel: 'Number of Volumes:',
-                pagesLabel: 'Number of Pages:',
-                coverLabel: 'Cover Type:',
-                orderFormTitle: 'Order Form',
-                nameLabel: 'Full Name',
-                phoneLabel: 'WhatsApp Number',
-                addressLabel: 'Shipping Address',
-                quantityLabel: 'Quantity',
-                totalLabel: 'Total Price',
-                orderButton: 'Order Now',
-                relatedBooksTitle: 'Related Books',
-                footerBrand: 'Dar Al-Imam Al-Qarafi',
-                footerDesc: 'Arabic store to sell Islamic heritage books and we ship your purchases worldwide',
-                footerHours: 'Monday - Friday: 09:00 - 17:00',
-                footerAddress: '123 Islamic Street, Cairo, Egypt',
-                footerEmail: 'info@daralimam.com',
-                footerWebsite: 'www.daralimam.com',
-                quickLinksTitle: 'Quick Links',
-                homeLink: 'Home',
-                booksLink: 'Books',
-                authorsLink: 'Authors',
-                publishersLink: 'Publishers',
-                aboutLink: 'About Us',
-                contactLink: 'Contact',
-                categoriesTitle: 'Categories',
-                hadithLink: 'Hadith',
-                tafsirLink: 'Tafsir',
-                fiqhLink: 'Fiqh',
-                historyLink: 'Islamic History',
-                arabicLink: 'Arabic Language',
-                othersLink: 'Others',
-                paymentTitle: 'Payment Methods',
-                copyright: '© 2025 Dar Al-Imam Al-Qarafi. All rights reserved.',
-                namePlaceholder: 'Enter your full name',
-                phonePlaceholder: '+1234567890',
-                addressPlaceholder: 'Enter your full address',
-                orderSuccess: 'Order successful!',
-                orderError: 'Please complete all fields!',
-                hardCover: 'Hard Cover'
-            },
-            ar: {
-                brandName: 'دار الإمام القرافي',
-                searchPlaceholder: 'ابحث عن كتب ومؤلفين وناشرين...',
-                heroTitle: 'وصل حديثا',
-                heroSubtitle: 'مكتبة التراث الإسلامي',
-                publishersTitle: 'الناشرون',
-                publishersSubtitle: 'اختر من الناشرين المتميزين',
-                sectionsTitle: 'أقسام المكتبة',
-                sectionsSubtitle: 'تصفح الكتب حسب التخصص',
-                flashSaleTitle: 'تخفيضات سريعة',
-                flashSaleSubtitle: 'عرض لفترة محدودة',
-                bestsellersTitle: 'الأكثر مبيعا',
-                bestsellersSubtitle: 'أكثر الكتب مبيعا هذا العام',
-                yearLabel: 'سنة النشر:',
-                volumesLabel: 'عدد المجلدات:',
-                pagesLabel: 'عدد الصفحات:',
-                coverLabel: 'نوع الغلاف:',
-                orderFormTitle: 'نموذج الطلب',
-                nameLabel: 'الاسم الكامل',
-                phoneLabel: 'رقم الواتساب',
-                addressLabel: 'عنوان الشحن',
-                quantityLabel: 'الكمية',
-                totalLabel: 'السعر الإجمالي',
-                orderButton: 'اطلب الآن',
-                relatedBooksTitle: 'كتب ذات صلة',
-                footerBrand: 'دار الإمام القرافي',
-                footerDesc: 'متجر عربي لبيع كتب التراث الإسلامي ونحن نشترياتك في جميع أنحاء العالم',
-                footerHours: 'الإثنين - الجمعة: 09:00 - 17:00',
-                footerAddress: '123 شارع إسلامي، القاهرة، مصر',
-                footerEmail: 'info@daralimam.com',
-                footerWebsite: 'www.daralimam.com',
-                quickLinksTitle: 'روابط سريعة',
-                homeLink: 'الرئيسية',
-                booksLink: 'الكتب',
-                authorsLink: 'المؤلفون',
-                publishersLink: 'الناشرون',
-                aboutLink: 'من نحن',
-                contactLink: 'اتصل بنا',
-                categoriesTitle: 'الفئات',
-                hadithLink: 'الحديث',
-                tafsirLink: 'التفسير',
-                fiqhLink: 'الفقه',
-                historyLink: 'التاريخ الإسلامي',
-                arabicLink: 'اللغة العربية',
-                othersLink: 'أخرى',
-                paymentTitle: 'طرق الدفع',
-                copyright: '© 2025 دار الإمام القرافي. جميع الحقوق محفوظة.',
-                namePlaceholder: 'أدخل اسمك الكامل',
-                phonePlaceholder: '+201234567890',
-                addressPlaceholder: 'أدخل عنوانك الكامل',
-                orderSuccess: 'تم الطلب بنجاح!',
-                orderError: 'يرجى ملء جميع الحقول!',
-                hardCover: 'غلاف صلب'
-            }
-        };
-        
-        // Currency conversion rates (relative to IDR)
-        const currencyRates = {
-            idr: 1,
-            usd: 0.000064, // 1 IDR = 0.000064 USD
-            egp: 0.002 // 1 IDR = 0.002 EGP
-        };
-        
-        // Currency symbols
-        const currencySymbols = {
-            idr: 'Rp',
-            usd: '$',
-            egp: 'E£'
+        let uploadedFiles = {
+            bookCover: null,
+            bookGallery: [],
+            categoryImage: null,
+            publisherLogo: null
         };
 
-        // Categories data with translations
-        const categoryData = [
-            { 
-                id: 'hadith',
-                name: { id: 'Hadith', en: 'Hadith', ar: 'الحديث' },
-                desc: { id: 'Hadith and Sciences', en: 'Hadith and Sciences', ar: 'الحديث وعلومه' },
-                color: "#4285F4" 
-            },
-            { 
-                id: 'quran',
-                name: { id: 'Quran', en: 'Quran', ar: 'القرآن' },
-                desc: { id: 'Quran and Sciences', en: 'Quran and Sciences', ar: 'القرآن وعلومه' },
-                color: "#EA4335" 
-            },
-            { 
-                id: 'sufism',
-                name: { id: 'Sufism', en: 'Sufism', ar: 'التصوف' },
-                desc: { id: 'Sufism and Mysticism', en: 'Sufism and Mysticism', ar: 'التصوف والتصوف' },
-                color: "#FBBC05" 
-            },
-            { 
-                id: 'islamic',
-                name: { id: 'Islamic', en: 'Islamic', ar: 'إسلامي' },
-                desc: { id: 'Islamic Studies', en: 'Islamic Studies', ar: 'الدراسات الإسلامية' },
-                color: "#34A853" 
-            },
-            { 
-                id: 'fiqh',
-                name: { id: 'Fiqh', en: 'Fiqh', ar: 'الفقه' },
-                desc: { id: 'Islamic Jurisprudence', en: 'Islamic Jurisprudence', ar: 'الفقه الإسلامي' },
-                color: "#9C27B0" 
-            },
-            { 
-                id: 'arabic',
-                name: { id: 'Arabic', en: 'Arabic', ar: 'العربية' },
-                desc: { id: 'Arabic Language', en: 'Arabic Language', ar: 'اللغة العربية' },
-                color: "#FF5722" 
-            },
-            { 
-                id: 'logic',
-                name: { id: 'Logic', en: 'Logic', ar: 'المنطق' },
-                desc: { id: 'Logic and Philosophy', en: 'Logic and Philosophy', ar: 'المنطق والفلسفة' },
-                color: "#795548" 
-            },
-            { 
-                id: 'history',
-                name: { id: 'History', en: 'History', ar: 'التاريخ' },
-                desc: { id: 'Islamic History', en: 'Islamic History', ar: 'التاريخ الإسلامي' },
-                color: "#607D8B" 
-            },
-            { 
-                id: 'islamic_studies',
-                name: { id: 'Islamic Studies', en: 'Islamic Studies', ar: 'الدراسات الإسلامية' },
-                desc: { id: 'Comprehensive Studies', en: 'Comprehensive Studies', ar: 'دراسات شاملة' },
-                color: "#3F51B5" 
-            },
-            { 
-                id: 'seerah',
-                name: { id: 'Seerah', en: 'Seerah', ar: 'السيرة' },
-                desc: { id: 'Prophet\'s Biography', en: 'Prophet\'s Biography', ar: 'سيرة النبي' },
-                color: "#009688" 
-            },
-            { 
-                id: 'complete_works',
-                name: { id: 'Complete Works', en: 'Complete Works', ar: 'الأعمال الكاملة' },
-                desc: { id: 'Complete Collections', en: 'Complete Collections', ar: 'مجموعات كاملة' },
-                color: "#E91E63" 
-            },
-            { 
-                id: 'other',
-                name: { id: 'Other', en: 'Other', ar: 'أخرى' },
-                desc: { id: 'Other Categories', en: 'Other Categories', ar: 'فئات أخرى' },
-                color: "#00BCD4" 
-            }
-        ];
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load initial data
+            loadPublishers();
+            loadCategories();
+            loadDashboardData();
 
-        // Initialize language and currency
-        function initLanguageAndCurrency() {
-            // Check if language and currency are stored in localStorage
-            const savedLanguage = localStorage.getItem('language');
-            const savedCurrency = localStorage.getItem('currency');
-            
-            if (savedLanguage) {
-                currentLanguage = savedLanguage;
-                document.getElementById('currentLang').textContent = currentLanguage.toUpperCase();
-                
-                // Mark the active language in the dropdown
-                document.querySelectorAll('#langMenu .dropdown-item').forEach(item => {
-                    item.classList.remove('active');
-                    if (item.dataset.lang === currentLanguage) {
-                        item.classList.add('active');
-                    }
+            // Set up event listeners
+            setupEventListeners();
+        });
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.dataset.page;
+                    showPage(page);
                 });
-            }
-            
-            if (savedCurrency) {
-                currentCurrency = savedCurrency;
-                document.getElementById('currentCurrency').textContent = currentCurrency.toUpperCase();
-                
-                // Mark the active currency in the dropdown
-                document.querySelectorAll('#currencyMenu .dropdown-item').forEach(item => {
-                    item.classList.remove('active');
-                    if (item.dataset.currency === currentCurrency) {
-                        item.classList.add('active');
-                    }
+            });
+
+            // Add buttons
+            document.getElementById('addBookBtn').addEventListener('click', function() {
+                openBookModal();
+            });
+
+            document.getElementById('addCategoryBtn').addEventListener('click', function() {
+                openCategoryModal();
+            });
+
+            document.getElementById('addPublisherBtn').addEventListener('click', function() {
+                openPublisherModal();
+            });
+
+            // Filter orders
+            document.getElementById('filterOrdersBtn').addEventListener('click', function() {
+                loadOrders();
+            });
+
+            // Refresh dashboard
+            document.getElementById('refreshDashboard').addEventListener('click', function() {
+                loadDashboardData();
+            });
+
+            // Settings form
+            document.getElementById('settingsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveSettings();
+            });
+
+            // Tab navigation
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.dataset.tab;
+                    const parent = this.closest('.form-group');
+                    
+                    // Update active tab button
+                    parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update active tab content
+                    parent.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(tabId).classList.add('active');
                 });
-            }
+            });
+
+            // Image upload listeners
+            setupImageUpload('bookCoverUploadArea', 'bookCoverFile', 'bookCoverUploadPreview', 'bookCover');
+            setupImageUpload('bookGalleryUploadArea', 'bookGalleryFiles', 'bookGalleryUploadPreview', 'bookGallery', true);
+            setupImageUpload('categoryImageUploadArea', 'categoryImageFile', 'categoryImageUploadPreview', 'categoryImage');
+            setupImageUpload('publisherLogoUploadArea', 'publisherLogoFile', 'publisherLogoUploadPreview', 'publisherLogo');
+
+            // URL input listeners
+            document.getElementById('bookCoverImage').addEventListener('input', function() {
+                previewImage(this.value, 'bookCoverPreview');
+            });
+
+            document.getElementById('bookGalleryImages').addEventListener('input', function() {
+                previewGalleryImages(this.value, 'bookGalleryPreview');
+            });
+
+            document.getElementById('categoryImage').addEventListener('input', function() {
+                previewImage(this.value, 'categoryImagePreview');
+            });
+
+            document.getElementById('publisherLogo').addEventListener('input', function() {
+                previewImage(this.value, 'publisherLogoPreview');
+            });
+        }
+
+        // Setup image upload functionality
+        function setupImageUpload(areaId, fileId, previewId, storageKey, isMultiple = false) {
+            const uploadArea = document.getElementById(areaId);
+            const fileInput = document.getElementById(fileId);
+            const previewContainer = document.getElementById(previewId);
             
-            // Apply language and currency
-            applyLanguage();
-            applyCurrency();
+            // Click to upload
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
             
-            // Set text direction for Arabic
-            if (currentLanguage === 'ar') {
-                document.body.setAttribute('dir', 'rtl');
+            // File change
+            fileInput.addEventListener('change', function() {
+                handleFileSelect(this.files, previewId, storageKey, isMultiple);
+            });
+            
+            // Drag and drop
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                handleFileSelect(e.dataTransfer.files, previewId, storageKey, isMultiple);
+            });
+        }
+
+        // Handle file selection
+        function handleFileSelect(files, previewId, storageKey, isMultiple) {
+            if (isMultiple) {
+                uploadedFiles[storageKey] = Array.from(files);
             } else {
-                document.body.setAttribute('dir', 'ltr');
+                uploadedFiles[storageKey] = files[0];
             }
+            
+            displayFilePreviews(files, previewId);
         }
 
-        // Apply language translations
-        function applyLanguage() {
-            const lang = translations[currentLanguage];
+        // Display file previews
+        function displayFilePreviews(files, previewId) {
+            const previewContainer = document.getElementById(previewId);
+            previewContainer.innerHTML = '';
             
-            // Update all text elements with data-lang attributes
-            document.querySelectorAll('[id]').forEach(element => {
-                const id = element.id;
-                if (lang[id]) {
-                    element.textContent = lang[id];
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'image-preview-item';
+                        
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = 'remove-btn';
+                        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                        removeBtn.onclick = function() {
+                            previewItem.remove();
+                            // Remove from uploaded files
+                            if (storageKey === 'bookGallery') {
+                                const index = uploadedFiles.bookGallery.findIndex(f => f.name === file.name);
+                                if (index > -1) {
+                                    uploadedFiles.bookGallery.splice(index, 1);
+                                }
+                            }
+                        };
+                        
+                        previewItem.appendChild(img);
+                        previewItem.appendChild(removeBtn);
+                        previewContainer.appendChild(previewItem);
+                    };
+                    
+                    reader.readAsDataURL(file);
                 }
             });
-            
-            // Update placeholders
-            document.getElementById('searchPlaceholder').placeholder = lang.searchPlaceholder;
-            document.getElementById('orderName').placeholder = lang.namePlaceholder;
-            document.getElementById('orderPhone').placeholder = lang.phonePlaceholder;
-            document.getElementById('orderAddress').placeholder = lang.addressPlaceholder;
-            
-            // Update book detail cover type
-            document.getElementById('detailBookCover').textContent = lang.hardCover;
-            
-            // Update order button with icon
-            document.getElementById('orderButton').innerHTML = `<i class="fas fa-shopping-cart"></i> ${lang.orderButton}`;
-            
-            // Update categories
-            generateCategories();
-            
-            // Update books
-            generateBookCards(allBooks, 'flashSaleBooks');
-            generateBookCards(allBooks, 'bestsellerBooks');
-            
-            // If on book detail page, update related books
-            if (!document.getElementById('bookDetailPage').classList.contains('hidden')) {
-                generateRelatedBooks();
-            }
         }
 
-        // Apply currency conversion
-        function applyCurrency() {
-            // Update all price elements
-            document.querySelectorAll('.current-price, .book-detail-price, .related-book-price, #totalPrice').forEach(element => {
-                const text = element.textContent;
-                const priceMatch = text.match(/[\d,.]+/);
-                
-                if (priceMatch) {
-                    const priceString = priceMatch[0].replace(/[^\d]/g, '');
-                    const idrPrice = parseInt(priceString);
-                    
-                    // Convert to current currency
-                    const convertedPrice = idrPrice * currencyRates[currentCurrency];
-                    const formattedPrice = formatCurrency(convertedPrice);
-                    
-                    element.textContent = formattedPrice;
-                }
+        // Show page
+        function showPage(page) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(p => {
+                p.style.display = 'none';
             });
-            
-            // Update original prices
-            document.querySelectorAll('.original-price').forEach(element => {
-                const text = element.textContent;
-                const priceMatch = text.match(/[\d,.]+/);
-                
-                if (priceMatch) {
-                    const priceString = priceMatch[0].replace(/[^\d]/g, '');
-                    const idrPrice = parseInt(priceString);
-                    
-                    // Convert to current currency
-                    const convertedPrice = idrPrice * currencyRates[currentCurrency];
-                    const formattedPrice = formatCurrency(convertedPrice);
-                    
-                    element.textContent = formattedPrice;
-                }
+
+            // Show selected page
+            document.getElementById(page + 'Page').style.display = 'block';
+
+            // Update active menu item
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
             });
-            
-            // Update total price if on book detail page
-            if (!document.getElementById('bookDetailPage').classList.contains('hidden') && currentBook) {
-                updateTotalPrice();
+            document.querySelector(`.menu-item[data-page="${page}"]`).classList.add('active');
+
+            // Load page-specific data
+            currentPage = page;
+            switch (page) {
+                case 'dashboard':
+                    loadDashboardData();
+                    break;
+                case 'books':
+                    loadBooks();
+                    break;
+                case 'categories':
+                    loadCategories();
+                    break;
+                case 'publishers':
+                    loadPublishers();
+                    break;
+                case 'orders':
+                    loadOrders();
+                    break;
+                case 'users':
+                    loadUsers();
+                    break;
             }
         }
 
-        // Format currency based on current currency
-        function formatCurrency(amount) {
-            const symbol = currencySymbols[currentCurrency];
-            
-            if (currentCurrency === 'idr') {
-                return `${symbol}${amount.toLocaleString('id-ID')}`;
-            } else if (currentCurrency === 'usd') {
-                return `${symbol}${amount.toFixed(2)}`;
-            } else if (currentCurrency === 'egp') {
-                return `${symbol}${amount.toFixed(2)}`;
-            }
-            
-            return `${symbol}${amount}`;
-        }
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                // Get counts
+                const { count: booksCount } = await supabaseClient
+                    .from('books')
+                    .select('*', { count: 'exact', head: true });
 
-        // Convert price from IDR to current currency
-        function convertPrice(idrPrice) {
-            const convertedPrice = idrPrice * currencyRates[currentCurrency];
-            return formatCurrency(convertedPrice);
-        }
+                const { count: ordersCount } = await supabaseClient
+                    .from('orders')
+                    .select('*', { count: 'exact', head: true });
 
-        // Language dropdown functionality
-        document.getElementById('langDropdown').addEventListener('click', function() {
-            document.getElementById('langMenu').classList.toggle('show');
-        });
+                const { count: categoriesCount } = await supabaseClient
+                    .from('categories')
+                    .select('*', { count: 'exact', head: true });
 
-        // Currency dropdown functionality
-        document.getElementById('currencyDropdown').addEventListener('click', function() {
-            document.getElementById('currencyMenu').classList.toggle('show');
-        });
+                const { count: publishersCount } = await supabaseClient
+                    .from('publishers')
+                    .select('*', { count: 'exact', head: true });
 
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.matches('#langDropdown') && !event.target.closest('#langDropdown')) {
-                document.getElementById('langMenu').classList.remove('show');
-            }
-            
-            if (!event.target.matches('#currencyDropdown') && !event.target.closest('#currencyDropdown')) {
-                document.getElementById('currencyMenu').classList.remove('show');
-            }
-        });
-
-        // Language selection
-        document.querySelectorAll('#langMenu .dropdown-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const lang = this.dataset.lang;
-                currentLanguage = lang;
-                
-                // Save to localStorage
-                localStorage.setItem('language', lang);
-                
                 // Update UI
-                document.getElementById('currentLang').textContent = lang.toUpperCase();
-                
-                // Mark as active
-                document.querySelectorAll('#langMenu .dropdown-item').forEach(i => {
-                    i.classList.remove('active');
-                });
-                this.classList.add('active');
-                
-                // Apply language
-                applyLanguage();
-                
-                // Set text direction for Arabic
-                if (lang === 'ar') {
-                    document.body.setAttribute('dir', 'rtl');
-                } else {
-                    document.body.setAttribute('dir', 'ltr');
+                document.getElementById('totalBooks').textContent = booksCount || 0;
+                document.getElementById('totalOrders').textContent = ordersCount || 0;
+                document.getElementById('totalCategories').textContent = categoriesCount || 0;
+                document.getElementById('totalPublishers').textContent = publishersCount || 0;
+
+                // Get recent orders
+                const { data: recentOrders, error } = await supabaseClient
+                    .from('orders_with_book')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+
+                if (error) throw error;
+
+                // Update recent orders table
+                const recentOrdersTable = document.getElementById('recentOrdersTable');
+                recentOrdersTable.innerHTML = '';
+
+                if (recentOrders.length === 0) {
+                    recentOrdersTable.innerHTML = '<tr><td colspan="7" class="text-center">No recent orders</td></tr>';
+                    return;
                 }
-            });
-        });
 
-        // Currency selection
-        document.querySelectorAll('#currencyMenu .dropdown-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const currency = this.dataset.currency;
-                currentCurrency = currency;
-                
-                // Save to localStorage
-                localStorage.setItem('currency', currency);
-                
-                // Update UI
-                document.getElementById('currentCurrency').textContent = currency.toUpperCase();
-                
-                // Mark as active
-                document.querySelectorAll('#currencyMenu .dropdown-item').forEach(i => {
-                    i.classList.remove('active');
+                recentOrders.forEach(order => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${order.id.substring(0, 8)}...</td>
+                        <td>${order.name}</td>
+                        <td>${order.book_title}</td>
+                        <td>${order.quantity}</td>
+                        <td>${formatCurrency(order.total_price, order.currency)}</td>
+                        <td><span class="badge bg-${getStatusColor(order.status)}">${order.status}</span></td>
+                        <td>${formatDate(order.created_at)}</td>
+                    `;
+                    recentOrdersTable.appendChild(row);
                 });
-                this.classList.add('active');
-                
-                // Apply currency
-                applyCurrency();
-            });
-        });
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showToast('Error loading dashboard data', 'error');
+            }
+        }
 
-        // Load books from Supabase
+        // Load books
         async function loadBooks() {
             try {
                 const { data: books, error } = await supabaseClient
@@ -1704,38 +1371,46 @@
 
                 if (error) throw error;
 
-                allBooks = books;
-                
-                // Generate book cards
-                generateBookCards(allBooks, 'flashSaleBooks');
-                generateBookCards(allBooks, 'bestsellerBooks');
+                // Update books table
+                const booksTable = document.getElementById('booksTable');
+                booksTable.innerHTML = '';
+
+                if (books.length === 0) {
+                    booksTable.innerHTML = '<tr><td colspan="6" class="text-center">No books found</td></tr>';
+                    return;
+                }
+
+                books.forEach(book => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            ${book.cover_image_url ? 
+                                `<img src="${book.cover_image_url}" alt="${book.title}" class="image-preview">` : 
+                                '<div class="image-preview" style="background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;"><i class="fas fa-book"></i></div>'
+                            }
+                        </td>
+                        <td>${book.title}</td>
+                        <td>${book.author}</td>
+                        <td>${book.publisher_name}</td>
+                        <td>${formatCurrency(book.base_price, 'idr')}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="editBook('${book.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteBook('${book.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    booksTable.appendChild(row);
+                });
             } catch (error) {
                 console.error('Error loading books:', error);
                 showToast('Error loading books', 'error');
             }
         }
 
-        // Load publishers from Supabase
-        async function loadPublishers() {
-            try {
-                const { data: publishersData, error } = await supabaseClient
-                    .from('publishers')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-
-                publishers = publishersData;
-                
-                // Generate publisher cards
-                generatePublishers();
-            } catch (error) {
-                console.error('Error loading publishers:', error);
-                showToast('Error loading publishers', 'error');
-            }
-        }
-
-        // Load categories from Supabase
+        // Load categories
         async function loadCategories() {
             try {
                 const { data: categoriesData, error } = await supabaseClient
@@ -1746,295 +1421,955 @@
                 if (error) throw error;
 
                 categories = categoriesData;
-                
-                // Generate category cards
-                generateCategories();
+
+                // Update categories table
+                const categoriesTable = document.getElementById('categoriesTable');
+                categoriesTable.innerHTML = '';
+
+                if (categories.length === 0) {
+                    categoriesTable.innerHTML = '<tr><td colspan="6" class="text-center">No categories found</td></tr>';
+                    return;
+                }
+
+                categories.forEach(category => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            ${category.image_url ? 
+                                `<img src="${category.image_url}" alt="${category.name_id}" class="image-preview">` : 
+                                '<div class="image-preview" style="background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;"><i class="fas fa-tag"></i></div>'
+                            }
+                        </td>
+                        <td>${category.name_id}</td>
+                        <td>${category.name_en}</td>
+                        <td>${category.name_ar}</td>
+                        <td>
+                            <span style="display: inline-block; width: 20px; height: 20px; background-color: ${category.color}; border-radius: 3px;"></span>
+                            ${category.color}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="editCategory('${category.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteCategory('${category.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    categoriesTable.appendChild(row);
+                });
             } catch (error) {
                 console.error('Error loading categories:', error);
                 showToast('Error loading categories', 'error');
             }
         }
 
-        // Generate publisher cards
-        function generatePublishers() {
-            const carousel = document.getElementById('publishersCarousel');
-            carousel.innerHTML = '';
-            
-            publishers.forEach(publisher => {
-                const card = document.createElement('div');
-                card.className = 'publisher-card';
-                
-                card.innerHTML = `
-                    <div class="publisher-logo">
-                        ${publisher.logo_url ? 
-                            `<img src="${publisher.logo_url}" alt="${publisher.name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` : 
-                            publisher.letter
-                        }
-                    </div>
-                    <h4>${publisher.name}</h4>
-                    ${publisher.discount ? `<div class="discount-badge">-${publisher.discount}</div>` : ''}
-                `;
-                
-                carousel.appendChild(card);
-            });
+        // Load publishers
+        async function loadPublishers() {
+            try {
+                const { data: publishersData, error } = await supabaseClient
+                    .from('publishers')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                publishers = publishersData;
+
+                // Update publishers table
+                const publishersTable = document.getElementById('publishersTable');
+                publishersTable.innerHTML = '';
+
+                if (publishers.length === 0) {
+                    publishersTable.innerHTML = '<tr><td colspan="5" class="text-center">No publishers found</td></tr>';
+                    return;
+                }
+
+                publishers.forEach(publisher => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            ${publisher.logo_url ? 
+                                `<img src="${publisher.logo_url}" alt="${publisher.name}" class="image-preview">` : 
+                                '<div class="image-preview" style="background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;"><i class="fas fa-building"></i></div>'
+                            }
+                        </td>
+                        <td>${publisher.name}</td>
+                        <td>${publisher.letter}</td>
+                        <td>${publisher.discount || '-'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="editPublisher('${publisher.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deletePublisher('${publisher.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    publishersTable.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading publishers:', error);
+                showToast('Error loading publishers', 'error');
+            }
         }
 
-        // Generate category cards
-        function generateCategories() {
-            const grid = document.getElementById('categoryGrid');
-            grid.innerHTML = '';
-            
-            categories.forEach(category => {
-                const card = document.createElement('div');
-                card.className = 'category-card';
+        // Load orders
+        async function loadOrders() {
+            try {
+                const statusFilter = document.getElementById('orderStatusFilter').value;
                 
-                const categoryName = category.name_id || category.name_en || category.name_ar;
-                const categoryDesc = category.description_id || category.description_en || category.description_ar || 'Islamic Books';
-                
-                card.innerHTML = `
-                    <div class="category-icon" style="background-color: ${category.color || '#4285F4'}20; color: ${category.color || '#4285F4'}">
-                        ${category.image_url ? 
-                            `<img src="${category.image_url}" alt="${categoryName}" style="width: 100%; height: 100%; border-radius: 10px; object-fit: cover;">` : 
-                            '<i class="fas fa-book"></i>'
-                        }
-                    </div>
-                    <div class="category-name">${categoryName}</div>
-                    <div class="category-desc">${categoryDesc}</div>
-                `;
-                
-                grid.appendChild(card);
-            });
+                let query = supabaseClient
+                    .from('orders_with_book')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (statusFilter) {
+                    query = query.eq('status', statusFilter);
+                }
+
+                const { data: orders, error } = await query;
+
+                if (error) throw error;
+
+                // Update orders table
+                const ordersTable = document.getElementById('ordersTable');
+                ordersTable.innerHTML = '';
+
+                if (orders.length === 0) {
+                    ordersTable.innerHTML = '<tr><td colspan="8" class="text-center">No orders found</td></tr>';
+                    return;
+                }
+
+                orders.forEach(order => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${order.id.substring(0, 8)}...</td>
+                        <td>${order.name}</td>
+                        <td>${order.book_title}</td>
+                        <td>${order.quantity}</td>
+                        <td>${formatCurrency(order.total_price, order.currency)}</td>
+                        <td>
+                            <select class="form-control form-control-sm" onchange="updateOrderStatus('${order.id}', this.value)">
+                                <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Processing</option>
+                                <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </td>
+                        <td>${formatDate(order.created_at)}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="viewOrder('${order.id}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    `;
+                    ordersTable.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                showToast('Error loading orders', 'error');
+            }
         }
 
-        // Generate book cards
-        function generateBookCards(books, containerId) {
+        // Load users
+        async function loadUsers() {
+            try {
+                // Since we don't have a users table in the schema, we'll show a placeholder
+                const usersTable = document.getElementById('usersTable');
+                usersTable.innerHTML = '<tr><td colspan="6" class="text-center">User management not implemented yet</td></tr>';
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showToast('Error loading users', 'error');
+            }
+        }
+
+        // Preview image
+        function previewImage(url, containerId) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             
-            books.forEach(book => {
-                const card = document.createElement('div');
-                card.className = 'book-card';
-                card.onclick = () => showBookDetail(book);
-                
-                let badgesHTML = '';
-                if (book.badges && book.badges.length > 0) {
-                    badgesHTML = book.badges.map(badge => `<div class="book-badge">${badge}</div>`).join('');
-                }
-                
-                // Convert prices
-                const currentPrice = convertPrice(book.base_price);
-                let originalPriceHTML = '';
-                
-                if (book.original_price) {
-                    const originalPrice = convertPrice(book.original_price);
-                    originalPriceHTML = `<span class="original-price">${originalPrice}</span>`;
-                }
-                
-                card.innerHTML = `
-                    ${badgesHTML}
-                    <div class="book-image">
-                        ${book.cover_image_url ? 
-                            `<img src="${book.cover_image_url}" alt="${book.title}" style="width: 100%; height: 100%; border-radius: 5px; object-fit: cover;">` : 
-                            '<i class="fas fa-book fa-3x"></i>'
-                        }
-                    </div>
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-author">${book.author}</div>
-                    <div class="book-publisher">${book.publisher_name}</div>
-                    <div class="book-details">
-                        <span>${book.volumes} Volume</span>
-                        <span>${book.pages} Pages</span>
-                    </div>
-                    <div class="book-price">
-                        <span class="current-price">${currentPrice}</span>
-                        ${originalPriceHTML}
-                        ${book.discount ? `<span class="discount-percent">-${book.discount}</span>` : ''}
-                    </div>
-                    <div class="made-by">MADE BY MGX</div>
-                `;
-                
-                container.appendChild(card);
-            });
+            if (url) {
+                const img = document.createElement('img');
+                img.src = url;
+                img.className = 'image-preview-item';
+                img.style.width = '100px';
+                img.style.height = '100px';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '5px';
+                container.appendChild(img);
+            }
         }
 
-        // Show book detail page
-        function showBookDetail(book) {
-            currentBook = book;
+        // Preview gallery images
+        function previewGalleryImages(urls, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
             
-            // Update book detail information
-            document.getElementById('detailBookTitle').textContent = book.title;
-            document.getElementById('detailBookAuthor').textContent = book.author;
-            document.getElementById('detailBookPublisher').textContent = book.publisher_name;
-            document.getElementById('detailBookPrice').textContent = convertPrice(book.base_price);
-            document.getElementById('detailBookYear').textContent = book.year;
-            document.getElementById('detailBookVolumes').textContent = book.volumes;
-            document.getElementById('detailBookPages').textContent = book.pages;
-            
-            // Update book image
-            const bookImage = document.getElementById('detailBookImage');
-            if (book.cover_image_url) {
-                bookImage.innerHTML = `<img src="${book.cover_image_url}" alt="${book.title}" style="width: 100%; height: 100%; border-radius: 10px; object-fit: cover;">`;
-            } else {
-                bookImage.innerHTML = '<i class="fas fa-book fa-5x"></i>';
+            if (urls) {
+                const urlArray = urls.split(',').map(url => url.trim()).filter(url => url);
+                urlArray.forEach(url => {
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.className = 'image-preview-item';
+                    img.style.width = '80px';
+                    img.style.height = '80px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '5px';
+                    img.style.marginRight = '5px';
+                    container.appendChild(img);
+                });
             }
+        }
+
+        // Upload file to Supabase Storage
+        async function uploadFileToStorage(file, path) {
+            try {
+                console.log('Starting upload:', file.name, 'to path:', path);
+                
+                // Show loading toast
+                showToast(`Uploading ${file.name}...`, 'info');
+                
+                const { data, error } = await supabaseClient.storage
+                    .from('images')
+                    .upload(path, file, {
+                        cacheControl: '3600',
+                        upsert: true
+                    });
+                
+                if (error) {
+                    console.error('Upload error:', error);
+                    showToast(`Upload failed: ${error.message}`, 'error');
+                    return null;
+                }
+                
+                console.log('Upload success:', data);
+                
+                // Get public URL
+                const { data: { publicUrl } } = supabaseClient.storage
+                    .from('images')
+                    .getPublicUrl(data.path);
+                
+                console.log('Public URL:', publicUrl);
+                showToast(`${file.name} uploaded successfully!`, 'success');
+                
+                return publicUrl;
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                showToast(`Upload error: ${error.message}`, 'error');
+                return null;
+            }
+        }
+
+        // Open book modal
+        function openBookModal(bookId = null) {
+            const modal = document.getElementById('bookModal');
+            const form = document.getElementById('bookForm');
             
             // Reset form
-            document.getElementById('orderForm').reset();
-            document.getElementById('orderQuantity').value = 1;
-            updateTotalPrice();
+            form.reset();
+            document.getElementById('bookId').value = '';
             
-            // Generate related books
-            generateRelatedBooks();
+            // Reset uploaded files
+            uploadedFiles.bookCover = null;
+            uploadedFiles.bookGallery = [];
             
-            // Show detail page, hide home page
-            document.getElementById('homePage').classList.add('hidden');
-            document.getElementById('bookDetailPage').classList.remove('hidden');
-            document.getElementById('backBtn').classList.remove('hidden');
+            // Clear image previews
+            document.getElementById('bookCoverPreview').innerHTML = '';
+            document.getElementById('bookCoverUploadPreview').innerHTML = '';
+            document.getElementById('bookGalleryPreview').innerHTML = '';
+            document.getElementById('bookGalleryUploadPreview').innerHTML = '';
             
-            // Scroll to top
-            window.scrollTo(0, 0);
-        }
-
-        // Show home page
-        function showHomePage() {
-            document.getElementById('bookDetailPage').classList.add('hidden');
-            document.getElementById('homePage').classList.remove('hidden');
-            document.getElementById('backBtn').classList.add('hidden');
-        }
-
-        // Generate related books
-        function generateRelatedBooks() {
-            const grid = document.getElementById('relatedBooksGrid');
-            grid.innerHTML = '';
-            
-            if (!currentBook) return;
-            
-            // Get books from same publisher or category
-            const relatedBooks = allBooks.filter(book => 
-                book.id !== currentBook.id && 
-                (book.publisher_name === currentBook.publisher_name || book.author === currentBook.author)
-            ).slice(0, 4);
-            
-            // If not enough related books, add random books
-            if (relatedBooks.length < 4) {
-                const otherBooks = allBooks.filter(book => 
-                    book.id !== currentBook.id && !relatedBooks.includes(book)
-                );
-                relatedBooks.push(...otherBooks.slice(0, 4 - relatedBooks.length));
-            }
-            
-            relatedBooks.forEach(book => {
-                const card = document.createElement('div');
-                card.className = 'related-book-card';
-                card.onclick = () => showBookDetail(book);
-                
-                card.innerHTML = `
-                    <div class="related-book-image">
-                        ${book.cover_image_url ? 
-                            `<img src="${book.cover_image_url}" alt="${book.title}" style="width: 100%; height: 100%; border-radius: 5px; object-fit: cover;">` : 
-                            '<i class="fas fa-book fa-2x"></i>'
-                        }
-                    </div>
-                    <div class="related-book-title">${book.title}</div>
-                    <div class="related-book-price">${convertPrice(book.base_price)}</div>
-                `;
-                
-                grid.appendChild(card);
+            // Reset tabs to URL
+            document.querySelectorAll('#bookModal .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.tab.includes('Url')) {
+                    btn.classList.add('active');
+                }
             });
-        }
-
-        // Quantity controls
-        function increaseQuantity() {
-            const input = document.getElementById('orderQuantity');
-            input.value = parseInt(input.value) + 1;
-            updateTotalPrice();
-        }
-
-        function decreaseQuantity() {
-            const input = document.getElementById('orderQuantity');
-            if (parseInt(input.value) > 1) {
-                input.value = parseInt(input.value) - 1;
-                updateTotalPrice();
-            }
-        }
-
-        // Update total price
-        function updateTotalPrice() {
-            if (!currentBook) return;
             
-            const quantity = parseInt(document.getElementById('orderQuantity').value);
-            const totalPrice = currentBook.base_price * quantity;
+            document.querySelectorAll('#bookModal .tab-content').forEach(content => {
+                content.classList.remove('active');
+                if (content.id.includes('Url')) {
+                    content.classList.add('active');
+                }
+            });
             
-            // Convert to current currency
-            const convertedPrice = totalPrice * currencyRates[currentCurrency];
-            const formattedTotal = formatCurrency(convertedPrice);
+            // Populate publishers dropdown
+            const publisherSelect = document.getElementById('bookPublisher');
+            publisherSelect.innerHTML = '';
             
-            document.getElementById('totalPrice').value = formattedTotal;
-        }
-
-        // Handle order form submission
-        document.getElementById('orderForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+            publishers.forEach(publisher => {
+                const option = document.createElement('option');
+                option.value = publisher.id;
+                option.textContent = publisher.name;
+                publisherSelect.appendChild(option);
+            });
             
-            const name = document.getElementById('orderName').value;
-            const phone = document.getElementById('orderPhone').value;
-            const address = document.getElementById('orderAddress').value;
-            const quantity = document.getElementById('orderQuantity').value;
+            // Populate categories checkboxes
+            const categoriesContainer = document.getElementById('bookCategories');
+            categoriesContainer.innerHTML = '';
             
-            // Validation
-            if (!name || !phone || !address) {
-                showToast(translations[currentLanguage].orderError, 'error');
-                return;
+            categories.forEach(category => {
+                const div = document.createElement('div');
+                div.className = 'form-check';
+                div.innerHTML = `
+                    <input class="form-check-input" type="checkbox" value="${category.id}" id="category_${category.id}">
+                    <label class="form-check-label" for="category_${category.id}">
+                        ${category.name_id}
+                    </label>
+                `;
+                categoriesContainer.appendChild(div);
+            });
+            
+            // Set modal title
+            document.getElementById('bookModalTitle').textContent = bookId ? 'Edit Book' : 'Add Book';
+            
+            // If editing, load book data
+            if (bookId) {
+                loadBookData(bookId);
             }
             
-            // Calculate total price
-            const totalPrice = currentBook.base_price * parseInt(quantity);
-            const convertedPrice = totalPrice * currencyRates[currentCurrency];
-            const formattedTotal = formatCurrency(convertedPrice);
-            
+            // Show modal
+            modal.classList.add('show');
+        }
+
+        // Load book data
+        async function loadBookData(bookId) {
             try {
-                // Save order to Supabase
-                const { data, error } = await supabaseClient
-                    .from('orders')
-                    .insert({
-                        book_id: currentBook.id,
-                        name: name,
-                        phone: phone,
-                        address: address,
-                        quantity: parseInt(quantity),
-                        total_price: totalPrice,
-                        currency: currentCurrency,
-                        status: 'pending'
-                    });
+                // Get book data
+                const { data: book, error } = await supabaseClient
+                    .from('books')
+                    .select('*')
+                    .eq('id', bookId)
+                    .single();
                 
                 if (error) throw error;
                 
-                // Show success message
-                showToast(`${translations[currentLanguage].orderSuccess} ${quantity}x ${currentBook.title} - Total: ${formattedTotal}`, 'success');
+                // Fill form with book data
+                document.getElementById('bookId').value = book.id;
+                document.getElementById('bookTitle').value = book.title;
+                document.getElementById('bookAuthor').value = book.author;
+                document.getElementById('bookPublisher').value = book.publisher_id;
+                document.getElementById('bookBasePrice').value = book.base_price;
+                document.getElementById('bookOriginalPrice').value = book.original_price || '';
+                document.getElementById('bookDiscount').value = book.discount || '';
+                document.getElementById('bookVolumes').value = book.volumes;
+                document.getElementById('bookPages').value = book.pages;
+                document.getElementById('bookYear').value = book.year;
+                document.getElementById('bookBadges').value = book.badges ? book.badges.join(', ') : '';
+                document.getElementById('bookCoverImage').value = book.cover_image_url || '';
+                document.getElementById('bookGalleryImages').value = book.gallery_urls ? book.gallery_urls.join(', ') : '';
                 
-                // Reset form after 2 seconds
-                setTimeout(() => {
-                    document.getElementById('orderForm').reset();
-                    document.getElementById('orderQuantity').value = 1;
-                    updateTotalPrice();
-                }, 2000);
+                // Preview images
+                previewImage(book.cover_image_url, 'bookCoverPreview');
+                previewGalleryImages(book.gallery_urls ? book.gallery_urls.join(', ') : '', 'bookGalleryPreview');
+                
+                // Get book categories
+                const { data: bookCategories, error: categoriesError } = await supabaseClient
+                    .from('book_categories')
+                    .select('category_id')
+                    .eq('book_id', bookId);
+                
+                if (categoriesError) throw categoriesError;
+                
+                // Check categories checkboxes
+                bookCategories.forEach(bookCategory => {
+                    const checkbox = document.getElementById(`category_${bookCategory.category_id}`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
             } catch (error) {
-                console.error('Error saving order:', error);
-                showToast('Error saving order', 'error');
+                console.error('Error loading book data:', error);
+                showToast('Error loading book data', 'error');
             }
-        });
+        }
+
+        // Save book
+        async function saveBook() {
+            try {
+                // Show loading
+                showToast('Saving book...', 'info');
+                
+                const bookId = document.getElementById('bookId').value;
+                const title = document.getElementById('bookTitle').value;
+                const author = document.getElementById('bookAuthor').value;
+                const publisherId = document.getElementById('bookPublisher').value;
+                const basePrice = parseInt(document.getElementById('bookBasePrice').value);
+                const originalPrice = document.getElementById('bookOriginalPrice').value ? parseInt(document.getElementById('bookOriginalPrice').value) : null;
+                const discount = document.getElementById('bookDiscount').value;
+                const volumes = document.getElementById('bookVolumes').value;
+                const pages = document.getElementById('bookPages').value;
+                const year = document.getElementById('bookYear').value;
+                const badgesText = document.getElementById('bookBadges').value;
+                const badges = badgesText ? badgesText.split(',').map(b => b.trim()) : [];
+                
+                // Get selected categories
+                const selectedCategories = [];
+                document.querySelectorAll('#bookCategories input:checked').forEach(checkbox => {
+                    selectedCategories.push(checkbox.value);
+                });
+                
+                // Validate form
+                if (!title || !author || !publisherId || !basePrice || !volumes || !pages || !year) {
+                    showToast('Please fill all required fields', 'error');
+                    return;
+                }
+                
+                // Handle image uploads
+                let coverImageUrl = document.getElementById('bookCoverImage').value;
+                let galleryUrls = document.getElementById('bookGalleryImages').value ? 
+                    document.getElementById('bookGalleryImages').value.split(',').map(url => url.trim()) : [];
+                
+                // Upload cover image if file is selected
+                if (uploadedFiles.bookCover) {
+                    const fileName = `book-cover-${Date.now()}.${uploadedFiles.bookCover.name.split('.').pop()}`;
+                    const uploadedUrl = await uploadFileToStorage(uploadedFiles.bookCover, fileName);
+                    if (uploadedUrl) {
+                        coverImageUrl = uploadedUrl;
+                    } else {
+                        showToast('Failed to upload cover image', 'error');
+                        return;
+                    }
+                }
+                
+                // Upload gallery images if files are selected
+                if (uploadedFiles.bookGallery.length > 0) {
+                    galleryUrls = [];
+                    for (const file of uploadedFiles.bookGallery) {
+                        const fileName = `book-gallery-${Date.now()}-${Math.random().toString(36).substring(7)}.${file.name.split('.').pop()}`;
+                        const url = await uploadFileToStorage(file, fileName);
+                        if (url) {
+                            galleryUrls.push(url);
+                        }
+                    }
+                    
+                    if (galleryUrls.length === 0 && uploadedFiles.bookGallery.length > 0) {
+                        showToast('Failed to upload gallery images', 'error');
+                        return;
+                    }
+                }
+                
+                let bookData = {
+                    title,
+                    author,
+                    publisher_id: publisherId,
+                    base_price: basePrice,
+                    original_price: originalPrice,
+                    discount,
+                    volumes,
+                    pages,
+                    year,
+                    badges,
+                    cover_image_url: coverImageUrl,
+                    gallery_urls: galleryUrls
+                };
+                
+                let result;
+                
+                if (bookId) {
+                    // Update existing book
+                    const { data, error } = await supabaseClient
+                        .from('books')
+                        .update(bookData)
+                        .eq('id', bookId)
+                        .select();
+                    
+                    if (error) throw error;
+                    result = data;
+                    
+                    // Delete existing book categories
+                    await supabaseClient
+                        .from('book_categories')
+                        .delete()
+                        .eq('book_id', bookId);
+                } else {
+                    // Create new book
+                    const { data, error } = await supabaseClient
+                        .from('books')
+                        .insert(bookData)
+                        .select();
+                    
+                    if (error) throw error;
+                    result = data;
+                    bookId = result[0].id;
+                }
+                
+                // Add book categories
+                for (const categoryId of selectedCategories) {
+                    await supabaseClient
+                        .from('book_categories')
+                        .insert({
+                            book_id: bookId,
+                            category_id: categoryId
+                        });
+                }
+                
+                // Close modal and refresh books table
+                closeModal('bookModal');
+                loadBooks();
+                showToast(bookId ? 'Book updated successfully' : 'Book added successfully');
+            } catch (error) {
+                console.error('Error saving book:', error);
+                showToast('Error saving book: ' + error.message, 'error');
+            }
+        }
+
+        // Edit book
+        function editBook(bookId) {
+            openBookModal(bookId);
+        }
+
+        // Delete book
+        async function deleteBook(bookId) {
+            if (!confirm('Are you sure you want to delete this book?')) {
+                return;
+            }
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('books')
+                    .delete()
+                    .eq('id', bookId);
+                
+                if (error) throw error;
+                
+                loadBooks();
+                showToast('Book deleted successfully');
+            } catch (error) {
+                console.error('Error deleting book:', error);
+                showToast('Error deleting book', 'error');
+            }
+        }
+
+        // Open category modal
+        function openCategoryModal(categoryId = null) {
+            const modal = document.getElementById('categoryModal');
+            const form = document.getElementById('categoryForm');
+            
+            // Reset form
+            form.reset();
+            document.getElementById('categoryId').value = '';
+            
+            // Reset uploaded files
+            uploadedFiles.categoryImage = null;
+            
+            // Clear image previews
+            document.getElementById('categoryImagePreview').innerHTML = '';
+            document.getElementById('categoryImageUploadPreview').innerHTML = '';
+            
+            // Reset tabs to URL
+            document.querySelectorAll('#categoryModal .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.tab.includes('Url')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            document.querySelectorAll('#categoryModal .tab-content').forEach(content => {
+                content.classList.remove('active');
+                if (content.id.includes('Url')) {
+                    content.classList.add('active');
+                }
+            });
+            
+            // Set modal title
+            document.getElementById('categoryModalTitle').textContent = categoryId ? 'Edit Category' : 'Add Category';
+            
+            // If editing, load category data
+            if (categoryId) {
+                loadCategoryData(categoryId);
+            }
+            
+            // Show modal
+            modal.classList.add('show');
+        }
+
+        // Load category data
+        async function loadCategoryData(categoryId) {
+            try {
+                const { data: category, error } = await supabaseClient
+                    .from('categories')
+                    .select('*')
+                    .eq('id', categoryId)
+                    .single();
+                
+                if (error) throw error;
+                
+                // Fill form with category data
+                document.getElementById('categoryId').value = category.id;
+                document.getElementById('categoryNameId').value = category.name_id;
+                document.getElementById('categoryNameEn').value = category.name_en;
+                document.getElementById('categoryNameAr').value = category.name_ar;
+                document.getElementById('categoryDescId').value = category.description_id || '';
+                document.getElementById('categoryDescEn').value = category.description_en || '';
+                document.getElementById('categoryDescAr').value = category.description_ar || '';
+                document.getElementById('categoryColor').value = category.color;
+                document.getElementById('categoryImage').value = category.image_url || '';
+                
+                // Preview image
+                previewImage(category.image_url, 'categoryImagePreview');
+            } catch (error) {
+                console.error('Error loading category data:', error);
+                showToast('Error loading category data', 'error');
+            }
+        }
+
+        // Save category
+        async function saveCategory() {
+            try {
+                showToast('Saving category...', 'info');
+                
+                const categoryId = document.getElementById('categoryId').value;
+                const nameId = document.getElementById('categoryNameId').value;
+                const nameEn = document.getElementById('categoryNameEn').value;
+                const nameAr = document.getElementById('categoryNameAr').value;
+                const descId = document.getElementById('categoryDescId').value;
+                const descEn = document.getElementById('categoryDescEn').value;
+                const descAr = document.getElementById('categoryDescAr').value;
+                const color = document.getElementById('categoryColor').value;
+                
+                // Validate form
+                if (!nameId || !nameEn || !nameAr || !color) {
+                    showToast('Please fill all required fields', 'error');
+                    return;
+                }
+                
+                // Handle image upload
+                let imageUrl = document.getElementById('categoryImage').value;
+                
+                // Upload image if file is selected
+                if (uploadedFiles.categoryImage) {
+                    const fileName = `category-${Date.now()}.${uploadedFiles.categoryImage.name.split('.').pop()}`;
+                    const uploadedUrl = await uploadFileToStorage(uploadedFiles.categoryImage, fileName);
+                    if (uploadedUrl) {
+                        imageUrl = uploadedUrl;
+                    } else {
+                        showToast('Failed to upload category image', 'error');
+                        return;
+                    }
+                }
+                
+                let categoryData = {
+                    name_id: nameId,
+                    name_en: nameEn,
+                    name_ar: nameAr,
+                    description_id: descId,
+                    description_en: descEn,
+                    description_ar: descAr,
+                    color,
+                    image_url: imageUrl
+                };
+                
+                if (categoryId) {
+                    // Update existing category
+                    const { error } = await supabaseClient
+                        .from('categories')
+                        .update(categoryData)
+                        .eq('id', categoryId);
+                    
+                    if (error) throw error;
+                } else {
+                    // Create new category
+                    const { error } = await supabaseClient
+                        .from('categories')
+                        .insert(categoryData);
+                    
+                    if (error) throw error;
+                }
+                
+                // Close modal and refresh categories table
+                closeModal('categoryModal');
+                loadCategories();
+                showToast(categoryId ? 'Category updated successfully' : 'Category added successfully');
+            } catch (error) {
+                console.error('Error saving category:', error);
+                showToast('Error saving category: ' + error.message, 'error');
+            }
+        }
+
+        // Edit category
+        function editCategory(categoryId) {
+            openCategoryModal(categoryId);
+        }
+
+        // Delete category
+        async function deleteCategory(categoryId) {
+            if (!confirm('Are you sure you want to delete this category?')) {
+                return;
+            }
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('categories')
+                    .delete()
+                    .eq('id', categoryId);
+                
+                if (error) throw error;
+                
+                loadCategories();
+                showToast('Category deleted successfully');
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                showToast('Error deleting category', 'error');
+            }
+        }
+
+        // Open publisher modal
+        function openPublisherModal(publisherId = null) {
+            const modal = document.getElementById('publisherModal');
+            const form = document.getElementById('publisherForm');
+            
+            // Reset form
+            form.reset();
+            document.getElementById('publisherId').value = '';
+            
+            // Reset uploaded files
+            uploadedFiles.publisherLogo = null;
+            
+            // Clear image previews
+            document.getElementById('publisherLogoPreview').innerHTML = '';
+            document.getElementById('publisherLogoUploadPreview').innerHTML = '';
+            
+            // Reset tabs to URL
+            document.querySelectorAll('#publisherModal .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.tab.includes('Url')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            document.querySelectorAll('#publisherModal .tab-content').forEach(content => {
+                content.classList.remove('active');
+                if (content.id.includes('Url')) {
+                    content.classList.add('active');
+                }
+            });
+            
+            // Set modal title
+            document.getElementById('publisherModalTitle').textContent = publisherId ? 'Edit Publisher' : 'Add Publisher';
+            
+            // If editing, load publisher data
+            if (publisherId) {
+                loadPublisherData(publisherId);
+            }
+            
+            // Show modal
+            modal.classList.add('show');
+        }
+
+        // Load publisher data
+        async function loadPublisherData(publisherId) {
+            try {
+                const { data: publisher, error } = await supabaseClient
+                    .from('publishers')
+                    .select('*')
+                    .eq('id', publisherId)
+                    .single();
+                
+                if (error) throw error;
+                
+                // Fill form with publisher data
+                document.getElementById('publisherId').value = publisher.id;
+                document.getElementById('publisherName').value = publisher.name;
+                document.getElementById('publisherLetter').value = publisher.letter;
+                document.getElementById('publisherDiscount').value = publisher.discount || '';
+                document.getElementById('publisherLogo').value = publisher.logo_url || '';
+                
+                // Preview logo
+                previewImage(publisher.logo_url, 'publisherLogoPreview');
+            } catch (error) {
+                console.error('Error loading publisher data:', error);
+                showToast('Error loading publisher data', 'error');
+            }
+        }
+
+        // Save publisher
+        async function savePublisher() {
+            try {
+                showToast('Saving publisher...', 'info');
+                
+                const publisherId = document.getElementById('publisherId').value;
+                const name = document.getElementById('publisherName').value;
+                const letter = document.getElementById('publisherLetter').value;
+                const discount = document.getElementById('publisherDiscount').value;
+                
+                // Validate form
+                if (!name || !letter) {
+                    showToast('Please fill all required fields', 'error');
+                    return;
+                }
+                
+                // Handle logo upload
+                let logoUrl = document.getElementById('publisherLogo').value;
+                
+                // Upload logo if file is selected
+                if (uploadedFiles.publisherLogo) {
+                    const fileName = `publisher-logo-${Date.now()}.${uploadedFiles.publisherLogo.name.split('.').pop()}`;
+                    const uploadedUrl = await uploadFileToStorage(uploadedFiles.publisherLogo, fileName);
+                    if (uploadedUrl) {
+                        logoUrl = uploadedUrl;
+                    } else {
+                        showToast('Failed to upload publisher logo', 'error');
+                        return;
+                    }
+                }
+                
+                let publisherData = {
+                    name,
+                    letter,
+                    discount,
+                    logo_url: logoUrl
+                };
+                
+                if (publisherId) {
+                    // Update existing publisher
+                    const { error } = await supabaseClient
+                        .from('publishers')
+                        .update(publisherData)
+                        .eq('id', publisherId);
+                    
+                    if (error) throw error;
+                } else {
+                    // Create new publisher
+                    const { error } = await supabaseClient
+                        .from('publishers')
+                        .insert(publisherData);
+                    
+                    if (error) throw error;
+                }
+                
+                // Close modal and refresh publishers table
+                closeModal('publisherModal');
+                loadPublishers();
+                showToast(publisherId ? 'Publisher updated successfully' : 'Publisher added successfully');
+            } catch (error) {
+                console.error('Error saving publisher:', error);
+                showToast('Error saving publisher: ' + error.message, 'error');
+            }
+        }
+
+        // Edit publisher
+        function editPublisher(publisherId) {
+            openPublisherModal(publisherId);
+        }
+
+        // Delete publisher
+        async function deletePublisher(publisherId) {
+            if (!confirm('Are you sure you want to delete this publisher?')) {
+                return;
+            }
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('publishers')
+                    .delete()
+                    .eq('id', publisherId);
+                
+                if (error) throw error;
+                
+                loadPublishers();
+                showToast('Publisher deleted successfully');
+            } catch (error) {
+                console.error('Error deleting publisher:', error);
+                showToast('Error deleting publisher', 'error');
+            }
+        }
+
+        // Update order status
+        async function updateOrderStatus(orderId, status) {
+            try {
+                const { error } = await supabaseClient
+                    .from('orders')
+                    .update({ status })
+                    .eq('id', orderId);
+                
+                if (error) throw error;
+                
+                showToast('Order status updated successfully');
+            } catch (error) {
+                console.error('Error updating order status:', error);
+                showToast('Error updating order status', 'error');
+            }
+        }
+
+        // View order details
+        async function viewOrder(orderId) {
+            try {
+                const { data: order, error } = await supabaseClient
+                    .from('orders_with_book')
+                    .select('*')
+                    .eq('id', orderId)
+                    .single();
+                
+                if (error) throw error;
+                
+                // Update order details
+                const orderDetails = document.getElementById('orderDetails');
+                orderDetails.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Order Information</h5>
+                            <p><strong>Order ID:</strong> ${order.id}</p>
+                            <p><strong>Date:</strong> ${formatDate(order.created_at)}</p>
+                            <p><strong>Status:</strong> <span class="badge bg-${getStatusColor(order.status)}">${order.status}</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Customer Information</h5>
+                            <p><strong>Name:</strong> ${order.name}</p>
+                            <p><strong>Phone:</strong> ${order.phone}</p>
+                            <p><strong>Address:</strong> ${order.address}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>Book Information</h5>
+                            <div class="d-flex align-items-center mb-3">
+                                ${order.cover_image_url ? 
+                                    `<img src="${order.cover_image_url}" alt="${order.book_title}" style="width: 80px; height: 100px; object-fit: cover; margin-right: 15px; border-radius: 5px;">` : 
+                                    '<div style="width: 80px; height: 100px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; margin-right: 15px; border-radius: 5px;"><i class="fas fa-book"></i></div>'
+                                }
+                                <div>
+                                    <p><strong>Title:</strong> ${order.book_title}</p>
+                                    <p><strong>Author:</strong> ${order.book_author}</p>
+                                    <p><strong>Quantity:</strong> ${order.quantity}</p>
+                                    <p><strong>Total Price:</strong> ${formatCurrency(order.total_price, order.currency)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Show modal
+                document.getElementById('orderModal').classList.add('show');
+            } catch (error) {
+                console.error('Error loading order details:', error);
+                showToast('Error loading order details', 'error');
+            }
+        }
+
+        // Save settings
+        function saveSettings() {
+            // In a real implementation, you would save these settings to the database
+            showToast('Settings saved successfully');
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
 
         // Show toast notification
         function showToast(message, type = 'success') {
             const toastContainer = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-            toast.className = 'toast';
+            toast.className = `toast ${type === 'error' ? 'error' : ''} ${type === 'info' ? 'info' : ''}`;
             
-            if (type === 'error') {
-                toast.style.backgroundColor = 'var(--red)';
-            }
-            
-            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            const icon = type === 'error' ? 'fa-exclamation-circle' : 
+                       type === 'info' ? 'fa-info-circle' : 'fa-check-circle';
             
             toast.innerHTML = `
                 <i class="fas ${icon}"></i>
@@ -2052,47 +2387,47 @@
             }, 3000);
         }
 
-        // Move publishers carousel
-        function movePublishers(direction) {
-            const carousel = document.getElementById('publishersCarousel');
-            const cardWidth = 230; // Card width + margin
-            const visibleCards = Math.floor(carousel.parentElement.offsetWidth / cardWidth);
-            const maxPosition = Math.max(0, publishers.length - visibleCards);
+        // Format currency
+        function formatCurrency(amount, currency = 'idr') {
+            const symbols = {
+                idr: 'Rp',
+                usd: '$',
+                egp: 'E£'
+            };
             
-            currentPublisherPosition += direction;
+            const symbol = symbols[currency] || currency;
             
-            if (currentPublisherPosition < 0) currentPublisherPosition = 0;
-            if (currentPublisherPosition > maxPosition) currentPublisherPosition = maxPosition;
-            
-            carousel.style.transform = `translateX(-${currentPublisherPosition * cardWidth}px)`;
-        }
-
-        // Countdown timer
-        function updateCountdown() {
-            const countdownItems = document.querySelectorAll('.countdown-item');
-            
-            // For demo purposes, we'll just update with random values
-            // In a real implementation, you would calculate the actual time remaining
-            if (countdownItems.length >= 5) {
-                countdownItems[0].textContent = Math.floor(Math.random() * 24).toString().padStart(2, '0');
-                countdownItems[2].textContent = Math.floor(Math.random() * 60).toString().padStart(2, '0');
-                countdownItems[4].textContent = Math.floor(Math.random() * 60).toString().padStart(2, '0');
+            if (currency === 'idr') {
+                return `${symbol}${amount.toLocaleString('id-ID')}`;
+            } else {
+                return `${symbol}${amount.toFixed(2)}`;
             }
         }
 
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Initialize language and currency
-            initLanguageAndCurrency();
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Get status color
+        function getStatusColor(status) {
+            const colors = {
+                pending: 'warning',
+                processing: 'info',
+                shipped: 'primary',
+                delivered: 'success',
+                cancelled: 'danger'
+            };
             
-            // Load data from Supabase
-            await loadBooks();
-            await loadPublishers();
-            await loadCategories();
-            
-            // Update countdown every second
-            setInterval(updateCountdown, 1000);
-        });
+            return colors[status] || 'secondary';
+        }
     </script>
 </body>
 </html>
