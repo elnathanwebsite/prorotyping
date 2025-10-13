@@ -6,6 +6,8 @@
     <title>Islamic Heritage Library</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root {
             --primary-blue: #0a4d8c;
@@ -18,6 +20,7 @@
             --yellow: #fff9c4;
             --green: #4caf50;
             --paypal-blue: #003087;
+            --whatsapp-green: #25D366;
         }
 
         * {
@@ -152,12 +155,12 @@
         }
 
         .whatsapp-icon::after {
-            content: "Hubungi Kami!";
+            content: "Hubungi: +6283180667700";
             position: absolute;
             bottom: -25px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: var(--green);
+            background-color: var(--whatsapp-green);
             color: white;
             padding: 2px 8px;
             border-radius: 10px;
@@ -740,6 +743,66 @@
             text-align: center;
         }
 
+        /* Address and Location Section */
+        .address-section {
+            margin-bottom: 20px;
+        }
+
+        .location-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-location {
+            padding: 8px 15px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-location:hover {
+            background-color: var(--light-blue);
+        }
+
+        .map-container {
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            display: none;
+            border: 1px solid #ddd;
+        }
+
+        .map-container.show {
+            display: block;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        .address-display {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .address-display.show {
+            display: block;
+        }
+
         /* Payment Methods */
         .payment-methods-container {
             margin-bottom: 20px;
@@ -818,7 +881,7 @@
 
         .btn-order {
             padding: 12px 30px;
-            background-color: var(--green);
+            background-color: var(--whatsapp-green);
             color: var(--white);
             border: none;
             border-radius: 5px;
@@ -828,10 +891,14 @@
             transition: background-color 0.3s;
             margin-top: 15px;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .btn-order:hover {
-            background-color: #45a049;
+            background-color: #128C7E;
         }
 
         .btn-paypal {
@@ -854,6 +921,37 @@
 
         .btn-paypal:hover {
             background-color: #002f86;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px solid var(--primary-blue);
+        }
+
+        .order-summary-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--dark-blue);
+            font-size: 1.1rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .summary-item.total {
+            font-weight: bold;
+            font-size: 1rem;
+            border-top: 1px solid #ddd;
+            padding-top: 8px;
+            margin-top: 8px;
         }
 
         /* Related Books - Perbaikan Responsif */
@@ -1095,6 +1193,10 @@
                 width: auto;
                 margin-bottom: 5px;
             }
+            
+            .location-buttons {
+                flex-direction: column;
+            }
         }
 
         @media (max-width: 576px) {
@@ -1188,7 +1290,7 @@
             </div>
             <div class="nav-icons">
                 <!-- WhatsApp Icon with Special Highlight -->
-                <div class="nav-icon whatsapp-icon">
+                <div class="nav-icon whatsapp-icon" onclick="openWhatsApp()">
                     <i class="fab fa-whatsapp"></i>
                 </div>
                 <div class="lang-currency-switcher">
@@ -1346,10 +1448,25 @@
                                         <input type="tel" class="form-control" id="orderPhone" placeholder="08xxxxxxxxxx" required>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                
+                                <!-- Address and Location Section -->
+                                <div class="address-section">
                                     <label class="form-label" id="addressLabel">Alamat Pengiriman</label>
+                                    <div class="location-buttons">
+                                        <button type="button" class="btn-location" onclick="getCurrentLocation()">
+                                            <i class="fas fa-location-dot"></i> Gunakan Lokasi Saat Ini
+                                        </button>
+                                        <button type="button" class="btn-location" onclick="toggleMap()">
+                                            <i class="fas fa-map"></i> Pilih Lokasi di Map
+                                        </button>
+                                    </div>
+                                    <div class="map-container" id="mapContainer">
+                                        <div id="map"></div>
+                                    </div>
+                                    <div class="address-display" id="addressDisplay"></div>
                                     <input type="text" class="form-control" id="orderAddress" placeholder="Masukkan alamat lengkap" required>
                                 </div>
+                                
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label class="form-label" id="quantityLabel">Jumlah</label>
@@ -1388,7 +1505,6 @@
                                     </div>
                                     
                                     <div class="transfer-info show" id="transferInfo">
-                                        <p>Silakan transfer ke:</p>
                                         <p><strong>Bank:</strong> BCA</p>
                                         <p><strong>No. Rekening:</strong> 1234567890</p>
                                         <p><strong>Atas Nama:</strong> Dar Al-Imam Al-Qarafi</p>
@@ -1401,8 +1517,41 @@
                                     </div>
                                 </div>
                                 
+                                <!-- Order Summary -->
+                                <div class="order-summary" id="orderSummary" style="display: none;">
+                                    <div class="order-summary-title">Ringkasan Pesanan</div>
+                                    <div class="summary-item">
+                                        <span>Nama:</span>
+                                        <span id="summaryName"></span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>WhatsApp:</span>
+                                        <span id="summaryPhone"></span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Alamat:</span>
+                                        <span id="summaryAddress"></span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Buku:</span>
+                                        <span id="summaryBook"></span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Jumlah:</span>
+                                        <span id="summaryQuantity"></span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Metode Pembayaran:</span>
+                                        <span id="summaryPayment"></span>
+                                    </div>
+                                    <div class="summary-item total">
+                                        <span>Total:</span>
+                                        <span id="summaryTotal"></span>
+                                    </div>
+                                </div>
+                                
                                 <button type="submit" class="btn-order" id="orderButton">
-                                    <i class="fas fa-shopping-cart"></i> Pesan Sekarang
+                                    <i class="fab fa-whatsapp"></i> Pesan via WhatsApp
                                 </button>
                             </form>
                         </div>
@@ -1489,11 +1638,14 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Leaflet JS for Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- ============================================================= -->
     <!-- PAYPAL SDK INTEGRATION - PENTING: JANGAN HAPUS BARIS INI     -->
-    <!-- API Key: Ab0WTd-35HrV6x9wWixgO4DZxMShGBjKQSpwxO58M3wdV8GrQUvdLRrBiGq_gTMlGotjeiuf4NrLJeR7ENl1YqxDRInNpmFWBb-5o-Ai4k4qqjCl5STF7BlE4SQIix3lcDAecfguNJQVtRzOry8kIyO8Cj_TWu7o -->
+    <!-- NEW API KEY: AZ2cnKPiKDjRpbkGunx3cLwLkXzwESEpOf-SPXtW5HcsOQ1hTjOqLYq_8GR3X5CW7JC2swF6tbUMm3CeEAstvW_J1K02uIdex-PYcxx8BE_1yEx2HH_-qD5IJjUjzz9NPLJTFj_AYp4GIYR3zxychyjLL_c9xiNt -->
+    <!-- WHATSAPP NUMBER: +6283180667700 - JANGAN UBAH NOMOR INI!      -->
     <!-- ============================================================= -->
-    <script src="https://www.paypal.com/sdk/js?client-id=Ab0WTd-35HrV6x9wWixgO4DZxMShGBjKQSpwxO58M3wdV8GrQUvdLRrBiGq_gTMlGotjeiuf4NrLJeR7ENl1YqxDRInNpmFWBb-5o-Ai4k4qqjCl5STF7BlE4SQIix3lcDAecfguNJQVtRzOry8kIyO8Cj_TWu7o&currency=IDR"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AZ2cnKPiKDjRpbkGunx3cLwLkXzwESEpOf-SPXtW5HcsOQ1hTjOqLYq_8GR3X5CW7JC2swF6tbUMm3CeEAstvW_J1K02uIdex-PYcxx8BE_1yEx2HH_-qD5IJjUjzz9NPLJTFj_AYp4GIYR3zxychyjLL_c9xiNt&currency=IDR"></script>
     <script>
         // Initialize Supabase client
         const { createClient } = supabase;
@@ -1511,13 +1663,25 @@
         let categories = [];
         let touchStartX = 0;
         let touchEndX = 0;
+        let map = null;
+        let marker = null;
+        let selectedLocation = null;
         
         // ============================================================= -->
         <!-- PAYPAL INTEGRATION - PENTING: API KEY PAYPAL                -->
-        <!-- API Key: Ab0WTd-35HrV6x9wWixgO4DZxMShGBjKQSpwxO58M3wdV8GrQUvdLRrBiGq_gTMlGotjeiuf4NrLJeR7ENl1YqxDRInNpmFWBb-5o-Ai4k4qqjCl5STF7BlE4SQIix3lcDAecfguNJQVtRzOry8kIyO8Cj_TWu7o -->
+        <!-- NEW API KEY: AZ2cnKPiKDjRpbkGunx3cLwLkXzwESEpOf-SPXtW5HcsOQ1hTjOqLYq_8GR3X5CW7JC2swF6tbUMm3CeEAstvW_J1K02uIdex-PYcxx8BE_1yEx2HH_-qD5IJjUjzz9NPLJTFj_AYp4GIYR3zxychyjLL_c9xiNt -->
+        <!-- WHATSAPP NUMBER: +6283180667700 - NOMOR KRUSIAL!              -->
         <!-- JANGAN MENGUBAH ATAU MENGHAPUS BARIS INI                    -->
         // ============================================================= -->
         let paypalInitialized = false;
+        
+        // ============================================================= -->
+        <!-- WHATSAPP INTEGRATION - PENTING: NOMOR WHATSAPP              -->
+        <!-- NOMOR WHATSAPP: +6283180667700                             -->
+        <!-- NOMOR INI DIGUNAKAN UNTUK SEMUA KOMUNIKASI WHATSAPP         -->
+        <!-- JANGAN MENGUBAH NOMOR INI!                                 -->
+        // ============================================================= -->
+        const WHATSAPP_NUMBER = "+6283180667700";
         
         // Language translations
         const translations = {
@@ -1544,7 +1708,7 @@
                 addressLabel: 'Alamat Pengiriman',
                 quantityLabel: 'Jumlah',
                 totalLabel: 'Total Harga',
-                orderButton: 'Pesan Sekarang',
+                orderButton: 'Pesan via WhatsApp',
                 relatedBooksTitle: 'Related Books',
                 footerBrand: 'دار الإمام القرافي',
                 footerDesc: 'Toko Arab untuk menjual buku warisan Islam dan kami mengirimkan pembelian Anda ke seluruh dunia',
@@ -1574,7 +1738,10 @@
                 orderSuccess: 'Pesanan berhasil!',
                 orderError: 'Mohon lengkapi semua field!',
                 hardCover: 'Hard Cover',
-                paymentMethodLabel: 'Metode Pembayaran'
+                paymentMethodLabel: 'Metode Pembayaran',
+                locationPermissionDenied: 'Izin lokasi ditolak. Silakan pilih lokasi secara manual.',
+                locationError: 'Terjadi kesalahan saat mendapatkan lokasi.',
+                locationSuccess: 'Lokasi berhasil ditemukan!'
             },
             en: {
                 brandName: 'Dar Al-Imam Al-Qarafi',
@@ -1599,7 +1766,7 @@
                 addressLabel: 'Shipping Address',
                 quantityLabel: 'Quantity',
                 totalLabel: 'Total Price',
-                orderButton: 'Order Now',
+                orderButton: 'Order via WhatsApp',
                 relatedBooksTitle: 'Related Books',
                 footerBrand: 'Dar Al-Imam Al-Qarafi',
                 footerDesc: 'Arabic store to sell Islamic heritage books and we ship your purchases worldwide',
@@ -1629,7 +1796,10 @@
                 orderSuccess: 'Order successful!',
                 orderError: 'Please complete all fields!',
                 hardCover: 'Hard Cover',
-                paymentMethodLabel: 'Payment Method'
+                paymentMethodLabel: 'Payment Method',
+                locationPermissionDenied: 'Location permission denied. Please select location manually.',
+                locationError: 'Error getting location.',
+                locationSuccess: 'Location found successfully!'
             },
             ar: {
                 brandName: 'دار الإمام القرافي',
@@ -1654,7 +1824,7 @@
                 addressLabel: 'عنوان الشحن',
                 quantityLabel: 'الكمية',
                 totalLabel: 'السعر الإجمالي',
-                orderButton: 'اطلب الآن',
+                orderButton: 'اطلب عبر واتساب',
                 relatedBooksTitle: 'كتب ذات صلة',
                 footerBrand: 'دار الإمام القرافي',
                 footerDesc: 'متجر عربي لبيع كتب التراث الإسلامي ونحن نشترياتك في جميع أنحاء العالم',
@@ -1684,7 +1854,10 @@
                 orderSuccess: 'تم الطلب بنجاح!',
                 orderError: 'يرجى ملء جميع الحقول!',
                 hardCover: 'غلاف صلب',
-                paymentMethodLabel: 'طريقة الدفع'
+                paymentMethodLabel: 'طريقة الدفع',
+                locationPermissionDenied: 'تم رفض إذن الموقع. يرجى تحديد الموقع يدويا.',
+                locationError: 'حدث خطأ في الحصول على الموقع.',
+                locationSuccess: 'تم العثور على الموقع بنجاح!'
             }
         };
         
@@ -1844,7 +2017,7 @@
             document.getElementById('detailBookCover').textContent = lang.hardCover;
             
             // Update order button with icon
-            document.getElementById('orderButton').innerHTML = `<i class="fas fa-shopping-cart"></i> ${lang.orderButton}`;
+            document.getElementById('orderButton').innerHTML = `<i class="fab fa-whatsapp"></i> ${lang.orderButton}`;
             
             // Update categories
             generateCategories();
@@ -2019,8 +2192,119 @@
         });
 
         // ============================================================= -->
+        <!-- WHATSAPP FUNCTION - PENTING: NOMOR WHATSAPP KRUSIAL          -->
+        <!-- NOMOR WHATSAPP: +6283180667700                             -->
+        <!-- FUNGSI INI AKAN MEMBUKA WHATSAPP DENGAN NOMOR TERSEBUT      -->
+        // ============================================================= -->
+        function openWhatsApp() {
+            const message = encodeURIComponent("Halo, saya tertarik dengan buku di Dar Al-Imam Al-Qarafi. Mohon informasikan lebih lanjut.");
+            window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${message}`, '_blank');
+        }
+
+        // ============================================================= -->
+        <!-- MAP FUNCTIONS - PENTING: LOKASI DAN ALAMAT                  -->
+        <!-- FUNGSI UNTUK MENDAPATKAN LOKASI SAAT INI                    -->
+        // ============================================================= -->
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        // Reverse geocoding to get address
+                        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                const address = data.display_name || `${lat}, ${lng}`;
+                                document.getElementById('orderAddress').value = address;
+                                document.getElementById('addressDisplay').textContent = address;
+                                document.getElementById('addressDisplay').classList.add('show');
+                                
+                                selectedLocation = { lat, lng, address };
+                                showToast(translations[currentLanguage].locationSuccess, 'success');
+                            })
+                            .catch(error => {
+                                console.error('Error getting address:', error);
+                                document.getElementById('orderAddress').value = `${lat}, ${lng}`;
+                                showToast(translations[currentLanguage].locationError, 'error');
+                            });
+                    },
+                    function(error) {
+                        console.error('Error getting location:', error);
+                        showToast(translations[currentLanguage].locationPermissionDenied, 'error');
+                    }
+                );
+            } else {
+                showToast('Geolocation is not supported by this browser', 'error');
+            }
+        }
+
+        function toggleMap() {
+            const mapContainer = document.getElementById('mapContainer');
+            
+            if (mapContainer.classList.contains('show')) {
+                mapContainer.classList.remove('show');
+            } else {
+                mapContainer.classList.add('show');
+                
+                // Initialize map if not already initialized
+                if (!map) {
+                    initializeMap();
+                } else {
+                    // Refresh map
+                    setTimeout(() => {
+                        map.invalidateSize();
+                    }, 100);
+                }
+            }
+        }
+
+        function initializeMap() {
+            // Default location (Jakarta)
+            const defaultLat = -6.2088;
+            const defaultLng = 106.8456;
+            
+            map = L.map('map').setView([defaultLat, defaultLng], 13);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // Add click event to map
+            map.on('click', function(e) {
+                const lat = e.latlng.lat;
+                const lng = e.latlng.lng;
+                
+                // Remove existing marker
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                
+                // Add new marker
+                marker = L.marker([lat, lng]).addTo(map);
+                
+                // Reverse geocoding to get address
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const address = data.display_name || `${lat}, ${lng}`;
+                        document.getElementById('orderAddress').value = address;
+                        document.getElementById('addressDisplay').textContent = address;
+                        document.getElementById('addressDisplay').classList.add('show');
+                        
+                        selectedLocation = { lat, lng, address };
+                    })
+                    .catch(error => {
+                        console.error('Error getting address:', error);
+                        document.getElementById('orderAddress').value = `${lat}, ${lng}`;
+                    });
+            });
+        }
+
+        // ============================================================= -->
         <!-- PAYPAL INTEGRATION - PENTING: FUNGSI PAYPAL               -->
-        <!-- API Key: Ab0WTd-35HrV6x9wWixgO4DZxMShGBjKQSpwxO58M3wdV8GrQUvdLRrBiGq_gTMlGotjeiuf4NrLJeR7ENl1YqxDRInNpmFWBb-5o-Ai4k4qqjCl5STF7BlE4SQIix3lcDAecfguNJQVtRzOry8kIyO8Cj_TWu7o -->
+        <!-- NEW API KEY: AZ2cnKPiKDjRpbkGunx3cLwLkXzwESEpOf-SPXtW5HcsOQ1hTjOqLYq_8GR3X5CW7JC2swF6tbUMm3CeEAstvW_J1K02uIdex-PYcxx8BE_1yEx2HH_-qD5IJjUjzz9NPLJTFj_AYp4GIYR3zxychyjLL_c9xiNt -->
         <!-- JANGAN MENGUBAH ATAU MENGHAPUS BARIS INI                    -->
         // ============================================================= -->
         function initializePayPalButton() {
@@ -2054,11 +2338,15 @@
                         // Save order to Supabase
                         saveOrderToDatabase('paypal', details.id);
                         
+                        // Send order to WhatsApp
+                        sendOrderToWhatsApp();
+                        
                         // Reset form after 2 seconds
                         setTimeout(() => {
                             document.getElementById('orderForm').reset();
                             document.getElementById('orderQuantity').value = 1;
                             updateTotalPrice();
+                            document.getElementById('orderSummary').style.display = 'none';
                         }, 2000);
                     });
                 },
@@ -2263,6 +2551,14 @@
             document.getElementById('transferInfo').classList.add('show');
             document.getElementById('paypalButtonContainer').classList.remove('show');
             
+            // Reset location
+            document.getElementById('addressDisplay').classList.remove('show');
+            document.getElementById('mapContainer').classList.remove('show');
+            selectedLocation = null;
+            
+            // Hide order summary
+            document.getElementById('orderSummary').style.display = 'none';
+            
             // Generate related books
             generateRelatedBooks();
             
@@ -2352,6 +2648,95 @@
             document.getElementById('totalPrice').value = formattedTotal;
         }
 
+        // ============================================================= -->
+        <!-- ORDER SUMMARY - PENTING: TEMPLATE DATA PESANAN             -->
+        <!-- FUNGSI INI AKAN MENAMPILKAN RINGKASAN PESANAN LENGKAP      -->
+        // ============================================================= -->
+        function updateOrderSummary() {
+            const name = document.getElementById('orderName').value;
+            const phone = document.getElementById('orderPhone').value;
+            const address = document.getElementById('orderAddress').value;
+            const quantity = document.getElementById('orderQuantity').value;
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const totalPrice = document.getElementById('totalPrice').value;
+            
+            // Update summary
+            document.getElementById('summaryName').textContent = name;
+            document.getElementById('summaryPhone').textContent = phone;
+            document.getElementById('summaryAddress').textContent = address;
+            document.getElementById('summaryBook').textContent = currentBook.title;
+            document.getElementById('summaryQuantity').textContent = quantity;
+            document.getElementById('summaryPayment').textContent = paymentMethod === 'transfer' ? 'Transfer Bank' : 'PayPal';
+            document.getElementById('summaryTotal').textContent = totalPrice;
+            
+            // Show summary
+            document.getElementById('orderSummary').style.display = 'block';
+        }
+
+        // ============================================================= -->
+        <!-- GOOGLE MAPS LINK - PENTING: LINK GOOGLE MAPS UNTUK LOKASI  -->
+        <!-- FUNGSI INI AKAN MEMBUAT LINK GOOGLE MAPS DARI KOORDINAT     -->
+        // ============================================================= -->
+        function createGoogleMapsLink(lat, lng, address) {
+            // Create Google Maps link for navigation
+            return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+        }
+
+        // ============================================================= -->
+        <!-- WHATSAPP ORDER - PENTING: KIRIM PESAN KE WHATSAPP          -->
+        <!-- NOMOR WHATSAPP: +6283180667700                             -->
+        <!-- FUNGSI INI AKAN MENGIRIM TEMPLATE PESANAN KE WHATSAPP      -->
+        // ============================================================= -->
+        function sendOrderToWhatsApp() {
+            const name = document.getElementById('orderName').value;
+            const phone = document.getElementById('orderPhone').value;
+            const address = document.getElementById('orderAddress').value;
+            const quantity = document.getElementById('orderQuantity').value;
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const totalPrice = document.getElementById('totalPrice').value;
+            
+            // Create Google Maps link if location is available
+            let locationLink = '';
+            if (selectedLocation) {
+                locationLink = createGoogleMapsLink(selectedLocation.lat, selectedLocation.lng, selectedLocation.address);
+            }
+            
+            // Create order message template
+            let message = `
+*📚 PESANAN BARU - DAR AL-IMAM AL-QARAFI*
+
+🔹 *Data Pelanggan:*
+   • Nama: ${name}
+   • WhatsApp: ${phone}
+   • Alamat: ${address}
+            `;
+            
+            // Add location link if available
+            if (locationLink) {
+                message += `
+   • Lokasi: ${locationLink}
+                `;
+            }
+            
+            message += `
+🔹 *Detail Pesanan:*
+   • Buku: ${currentBook.title}
+   • Penulis: ${currentBook.author}
+   • Penerbit: ${currentBook.publisher_name}
+   • Jumlah: ${quantity} buku
+   • Total Harga: ${totalPrice}
+
+🔹 *Metode Pembayaran:* ${paymentMethod === 'transfer' ? 'Transfer Bank' : 'PayPal'}
+
+---
+*Terima kasih telah berbelanja di Dar Al-Imam Al-Qarafi!*
+            `.trim();
+            
+            // Open WhatsApp with message
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${WHATSAPP_NUMBER.replace('+', '')}?text=${encodedMessage}`, '_blank');
+        }
+
         // Save order to database
         async function saveOrderToDatabase(paymentMethod, paymentId = null) {
             const name = document.getElementById('orderName').value;
@@ -2376,7 +2761,9 @@
                         currency: currentCurrency,
                         payment_method: paymentMethod,
                         payment_id: paymentId,
-                        status: 'pending'
+                        status: 'pending',
+                        latitude: selectedLocation ? selectedLocation.lat : null,
+                        longitude: selectedLocation ? selectedLocation.lng : null
                     });
                 
                 if (error) throw error;
@@ -2405,7 +2792,10 @@
                 return;
             }
             
-            // If payment method is transfer, save order directly
+            // Update order summary
+            updateOrderSummary();
+            
+            // If payment method is transfer, save order directly and send to WhatsApp
             if (paymentMethod === 'transfer') {
                 const orderData = await saveOrderToDatabase('transfer');
                 
@@ -2418,11 +2808,15 @@
                     // Show success message
                     showToast(`${translations[currentLanguage].orderSuccess} ${quantity}x ${currentBook.title} - Total: ${formattedTotal}`, 'success');
                     
+                    // Send order to WhatsApp
+                    sendOrderToWhatsApp();
+                    
                     // Reset form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('orderForm').reset();
                         document.getElementById('orderQuantity').value = 1;
                         updateTotalPrice();
+                        document.getElementById('orderSummary').style.display = 'none';
                     }, 2000);
                 }
             }
