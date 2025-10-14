@@ -1,25 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="id" dir="ltr">
 <head>
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
-<title>Arabic store to sell Islamic heritage books and we ship your purchases worldwid</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Arabic store to sell Islamic heritage books and we ship your purchases worldwide</title>
 
-<!-- Open Graph Tag (Untuk Facebook, WhatsApp, dll.) -->
-<meta property="og:title" content="Arabic store to sell Islamic heritage books and we ship your purchases worldwid">
-<meta property="og:description" content="Toko buku warisan Islam Arab dengan pengiriman ke seluruh dunia. Dapatkan koleksi langka dan terpercaya.">
-<meta property="og:image" content="https://i.pinimg.com/736x/df/68/10/df68104c8d24b49ffc91815ef3edd017.jpg">
-<meta property="og:url" content="https://estyleshop.com/kaos-promo">
-<meta property="og:type" content="website">
+    <!-- Open Graph Tag (Untuk Facebook, WhatsApp, dll.) -->
+    <meta property="og:title" content="Arabic store to sell Islamic heritage books and we ship your purchases worldwide">
+    <meta property="og:description" content="Toko buku warisan Islam Arab dengan pengiriman ke seluruh dunia. Dapatkan koleksi langka dan terpercaya.">
+    <meta property="og:image" content="https://i.pinimg.com/736x/df/68/10/df68104c8d24b49ffc91815ef3edd017.jpg">
+    <meta property="og:url" content="https://estyleshop.com/kaos-promo">
+    <meta property="og:type" content="website">
 
-<!-- Twitter Card Tag (Untuk Twitter/X) -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Arabic store to sell Islamic heritage books and we ship your purchases worldwid">
-<meta name="twitter:description" content="Toko buku warisan Islam Arab dengan pengiriman ke seluruh dunia. Dapatkan koleksi langka dan terpercaya.">
-<meta name="twitter:image" content="https://i.pinimg.com/736x/df/68/10/df68104c8d24b49ffc91815ef3edd017.jpg">
+    <!-- Twitter Card Tag (Untuk Twitter/X) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Arabic store to sell Islamic heritage books and we ship your purchases worldwide">
+    <meta name="twitter:description" content="Toko buku warisan Islam Arab dengan pengiriman ke seluruh dunia. Dapatkan koleksi langka dan terpercaya.">
+    <meta name="twitter:image" content="https://i.pinimg.com/736x/df/68/10/df68104c8d24b49ffc91815ef3edd017.jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islamic Heritage Library</title>
@@ -54,9 +55,10 @@
             overflow-x: hidden;
         }
 
-        /* RTL Support */
+        /* RTL Support - PERBAIKAN UTAMA */
         body[dir="rtl"] {
             font-family: 'Tahoma', 'Arial', sans-serif;
+            text-align: right;
         }
 
         body[dir="rtl"] .carousel-control.prev {
@@ -80,10 +82,70 @@
         body[dir="rtl"] .info-label {
             width: auto;
             margin-left: 10px;
+            margin-right: 0;
         }
 
         body[dir="rtl"] .footer-content {
             direction: rtl;
+        }
+
+        body[dir="rtl"] .search-btn {
+            left: 5px;
+            right: auto;
+        }
+
+        body[dir="rtl"] .search-input {
+            padding: 8px 15px 8px 40px;
+        }
+
+        body[dir="rtl"] .dropdown-toggle {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .dropdown-toggle i {
+            margin-left: 0;
+            margin-right: 5px;
+        }
+
+        body[dir="rtl"] .form-row {
+            flex-direction: row;
+        }
+
+        body[dir="rtl"] .quantity-control {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .order-item {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .order-item-image {
+            margin-right: 0;
+            margin-left: 15px;
+        }
+
+        body[dir="rtl"] .payment-method-header {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .payment-method-icon {
+            margin-right: 0;
+            margin-left: 15px;
+        }
+
+        body[dir="rtl"] .whatsapp-option-icon {
+            margin-right: 0;
+            margin-left: 15px;
+        }
+
+        body[dir="rtl"] .location-info i {
+            margin-right: 0;
+            margin-left: 8px;
+        }
+
+        body[dir="rtl"] .location-link i {
+            margin-left: 0;
+            margin-right: 5px;
         }
 
         /* Page Management */
@@ -606,7 +668,7 @@
             padding: 30px 0;
         }
 
-        /* Book Detail Page */
+        /* Book Detail Page - PERBAIKAN UTAMA UNTUK RTL */
         .book-detail-container {
             background-color: var(--white);
             padding: 30px 0;
@@ -1050,7 +1112,7 @@
             }
         }
 
-        /* Order Confirmation Page Styles */
+        /* Order Confirmation Page Styles - PERBAIKAN UTAMA UNTUK RTL */
         .order-confirmation-container {
             background-color: var(--white);
             padding: 30px 0;
@@ -1255,14 +1317,14 @@
             cursor: not-allowed;
         }
 
-        /* WhatsApp Message Preview */
+        /* WhatsApp Message Preview - PERBAIKAN UTAMA UNTUK PROFESIONALISME */
         .whatsapp-message-preview {
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
             border-radius: 10px;
             padding: 15px;
             margin-top: 15px;
-            font-family: monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 0.9rem;
             white-space: pre-wrap;
             max-height: 300px;
@@ -1355,7 +1417,7 @@
             flex: 1;
         }
 
-        /* Responsive Design */
+        /* Responsive Design - PERBAIKAN UTAMA UNTUK RTL */
         @media (max-width: 992px) {
             .category-grid {
                 grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -1367,6 +1429,10 @@
             
             .related-books-grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            body[dir="rtl"] .book-detail-content {
+                flex-direction: column;
             }
         }
 
@@ -1415,6 +1481,14 @@
                 margin-right: 0;
                 margin-bottom: 10px;
             }
+            
+            body[dir="rtl"] .order-item-image {
+                margin-left: 0;
+            }
+            
+            body[dir="rtl"] .form-row {
+                flex-direction: column;
+            }
         }
 
         @media (max-width: 576px) {
@@ -1451,6 +1525,10 @@
                 left: 10px;
                 max-width: calc(100% - 20px);
             }
+            
+            body[dir="rtl"] .search-input {
+                padding: 8px 15px 8px 40px;
+            }
         }
 
         @media (max-width: 400px) {
@@ -1482,14 +1560,20 @@
                 font-size: 0.7rem;
             }
         }
+        .brand-logo {
+    height: 60px;
+    max-width: 100%;
+    object-fit: contain;
+}
     </style>
 </head>
 <body>
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="navbar-container">
@@ -1497,9 +1581,9 @@
                 <button class="back-btn hidden" id="backBtn" onclick="showHomePage()">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <div class="navbar-brand" onclick="showHomePage()">
-                    <span id="brandName">دار الإمام القرافي</span>
-                </div>
+            <div class="navbar-brand" onclick="showHomePage()">
+    <img id="brandLogo" src="https://i.pinimg.com/736x/ed/87/62/ed8762d621840ad5f62db3842825264e.jpg" alt="دار الإمام القرافي" class="brand-logo">
+</div>
             </div>
             <div class="search-container">
                 <input type="text" class="search-input" id="searchInput" placeholder="Cari buku, penulis, penerbit...">
@@ -1981,7 +2065,7 @@
             ar: '+201014006053'
         };
         
-        // Language translations
+        // Language translations - PERBAIKAN UTAMA UNTUK TEMPLATE WHATSAPP
         const translations = {
             id: {
                 brandName: 'دار الإمام القرافي',
@@ -2057,67 +2141,56 @@
                 locationError: 'Gagal mendeteksi lokasi. Silakan coba lagi.',
                 locationPermissionDenied: 'Izin lokasi ditolak. Silakan aktifkan lokasi di pengaturan browser.',
                 locationAddedToForm: 'Lokasi telah ditambahkan ke form alamat.',
-                whatsappMessage: `🌟 *ASSALAMU'ALAIKUM WARAHMATULLAHI WABARAKATUH* 🌟
+                // PERBAIKAN TEMPLATE WHATSAPP - DIHAPUS GARIS DAN SIMBOL YANG TIDAK PERLU
+                whatsappMessage: `Assalamu'alaikum Warahmatullahi Wabarakatuh
 
-📚 *PERMINTAAN PEMESANAN BUKU ISLAMIC HERITAGE LIBRARY*
+📚 PERMINTAAN PEMESANAN BUKU ISLAMIC HERITAGE LIBRARY
 
-==========================================
-*📖 INFORMASI BUKU YANG DIPESAN:*
-==========================================
+📖 INFORMASI BUKU YANG DIPESAN:
 
-*▪️ JUDUL BUKU:* {title}
-*▪️ PENULIS:* {author}
-*▪️ PENERBIT:* {publisher}
-*▪️ TAHUN TERBIT:* {year}
-*▪️ JUMLAH VOLUME:* {volumes}
-*▪️ JUMLAH HALAMAN:* {pages}
-*▪️ JENIS COVER:* {cover}
-*▪️ KUANTITAS:* {quantity}
-*▪️ HARGA SATUAN:* {unitPrice}
-*▪️ TOTAL HARGA:* {totalPrice}
+▪️ JUDUL BUKU: {title}
+▪️ PENULIS: {author}
+▪️ PENERBIT: {publisher}
+▪️ TAHUN TERBIT: {year}
+▪️ JUMLAH VOLUME: {volumes}
+▪️ JUMLAH HALAMAN: {pages}
+▪️ JENIS COVER: {cover}
+▪️ KUANTITAS: {quantity}
+▪️ HARGA SATUAN: {unitPrice}
+▪️ TOTAL HARGA: {totalPrice}
 
-==========================================
-*👤 INFORMASI PELANGGAN:*
-==========================================
+👤 INFORMASI PELANGGAN:
 
-*▪️ NAMA LENGKAP:* {name}
-*▪️ NOMOR WHATSAPP:* {phone}
-*▪️ ALAMAT PENGIRIMAN:* {address}
+▪️ NAMA LENGKAP: {name}
+▪️ NOMOR WHATSAPP: {phone}
+▪️ ALAMAT PENGIRIMAN: {address}
 
-==========================================
-*📍 INFORMASI LOKASI PENGIRIMAN:*
-==========================================
+📍 INFORMASI LOKASI PENGIRIMAN:
 
-*▪️ LOKASI TERDETEKSI:* {location}
-*▪️ LINK GOOGLE MAPS:* {mapLink}
+▪️ LOKASI TERDETEKSI: {location}
+▪️ LINK GOOGLE MAPS: {mapLink}
 
-==========================================
-*💳 INFORMASI PEMBAYARAN:*
-==========================================
+💳 INFORMASI PEMBAYARAN:
 
-*▪️ METODE PEMBAYARAN:* WhatsApp Order
-*▪️ STATUS:* Menunggu Konfirmasi
+▪️ METODE PEMBAYARAN: WhatsApp Order
+▪️ STATUS: Menunggu Konfirmasi
 
-==========================================
-*📦 INFORMASI PENGIRIMAN:*
-==========================================
+📦 INFORMASI PENGIRIMAN:
 
-*▪️ JASA PENGIRIMAN:* Akan Dikonfirmasi
-*▪️ ESTIMASI PENGIRIMAN:* 3-7 Hari Kerja
-*▪️ BIAYA PENGIRIMAN:* Akan Dikonfirmasi
+▪️ JASA PENGIRIMAN: Akan Dikonfirmasi
+▪️ ESTIMASI PENGIRIMAN: 3-7 Hari Kerja
+▪️ BIAYA PENGIRIMAN: Akan Dikonfirmasi
 
-==========================================
-*🤝 KONFIRMASI PESANAN:*
-==========================================
+🤝 KONFIRMASI PESANAN:
 
-*Mohon konfirmasi ketersediaan stok buku, total biaya termasuk ongkos kirim, dan metode pembayaran yang tersedia.*
+Mohon konfirmasi ketersediaan stok buku, total biaya termasuk ongkos kirim, dan metode pembayaran yang tersedia.
 
-*Terima kasih atas kepercayaan Anda berbelanja di Islamic Heritage Library!* 🤝
+Terima kasih atas kepercayaan Anda berbelanja di Islamic Heritage Library!
 
 ---
-*Dar Al-Imam Al-Qarafi - Islamic Heritage Library*
-*📞 Customer Service: +6285163682122*
-*🌐 Website: www.daralimam.com*`,
+Dar Al-Imam Al-Qarafi - Islamic Heritage Library
+📞 Customer Service: +6285163682122
+🌐 Website: www.daralimam.com`,
                 paypalProcessing: 'Memproses pembayaran PayPal...',
                 paypalSuccess: 'Pembayaran PayPal berhasil! Pesanan Anda telah dikonfirmasi.',
                 paypalError: 'Terjadi kesalahan saat memproses pembayaran PayPal. Silakan coba lagi.',
@@ -2210,67 +2283,56 @@
                 locationError: 'Failed to detect location. Please try again.',
                 locationPermissionDenied: 'Location permission denied. Please enable location in browser settings.',
                 locationAddedToForm: 'Location has been added to address form.',
-                whatsappMessage: `🌟 *ASSALAMU'ALAIKUM WARAHMATULLAHI WABARAKATUH* 🌟
+                // PERBAIKAN TEMPLATE WHATSAPP - DIHAPUS GARIS DAN SIMBOL YANG TIDAK PERLU
+                whatsappMessage: `Assalamu'alaikum Warahmatullahi Wabarakatuh
 
-📚 *ISLAMIC HERITAGE LIBRARY BOOK ORDER REQUEST*
+📚 ISLAMIC HERITAGE LIBRARY BOOK ORDER REQUEST
 
-==========================================
-*📖 ORDERED BOOK INFORMATION:*
-==========================================
+📖 ORDERED BOOK INFORMATION:
 
-*▪️ BOOK TITLE:* {title}
-*▪️ AUTHOR:* {author}
-*▪️ PUBLISHER:* {publisher}
-*▪️ PUBLICATION YEAR:* {year}
-*▪️ NUMBER OF VOLUMES:* {volumes}
-*▪️ NUMBER OF PAGES:* {pages}
-*▪️ COVER TYPE:* {cover}
-*▪️ QUANTITY:* {quantity}
-*▪️ UNIT PRICE:* {unitPrice}
-*▪️ TOTAL PRICE:* {totalPrice}
+▪️ BOOK TITLE: {title}
+▪️ AUTHOR: {author}
+▪️ PUBLISHER: {publisher}
+▪️ PUBLICATION YEAR: {year}
+▪️ NUMBER OF VOLUMES: {volumes}
+▪️ NUMBER OF PAGES: {pages}
+▪️ COVER TYPE: {cover}
+▪️ QUANTITY: {quantity}
+▪️ UNIT PRICE: {unitPrice}
+▪️ TOTAL PRICE: {totalPrice}
 
-==========================================
-*👤 CUSTOMER INFORMATION:*
-==========================================
+👤 CUSTOMER INFORMATION:
 
-*▪️ FULL NAME:* {name}
-*▪️ WHATSAPP NUMBER:* {phone}
-*▪️ SHIPPING ADDRESS:* {address}
+▪️ FULL NAME: {name}
+▪️ WHATSAPP NUMBER: {phone}
+▪️ SHIPPING ADDRESS: {address}
 
-==========================================
-*📍 SHIPPING LOCATION INFORMATION:*
-==========================================
+📍 SHIPPING LOCATION INFORMATION:
 
-*▪️ DETECTED LOCATION:* {location}
-*▪️ GOOGLE MAPS LINK:* {mapLink}
+▪️ DETECTED LOCATION: {location}
+▪️ GOOGLE MAPS LINK: {mapLink}
 
-==========================================
-*💳 PAYMENT INFORMATION:*
-==========================================
+💳 PAYMENT INFORMATION:
 
-*▪️ PAYMENT METHOD:* WhatsApp Order
-*▪️ STATUS:* Awaiting Confirmation
+▪️ PAYMENT METHOD: WhatsApp Order
+▪️ STATUS: Awaiting Confirmation
 
-==========================================
-*📦 SHIPPING INFORMATION:*
-==========================================
+📦 SHIPPING INFORMATION:
 
-*▪️ SHIPPING SERVICE:* To Be Confirmed
-*▪️ ESTIMATED DELIVERY:* 3-7 Business Days
-*▪️ SHIPPING COST:* To Be Confirmed
+▪️ SHIPPING SERVICE: To Be Confirmed
+▪️ ESTIMATED DELIVERY: 3-7 Business Days
+▪️ SHIPPING COST: To Be Confirmed
 
-==========================================
-*🤝 ORDER CONFIRMATION:*
-==========================================
+🤝 ORDER CONFIRMATION:
 
-*Please confirm book availability, total cost including shipping fees, and available payment methods.*
+Please confirm book availability, total cost including shipping fees, and available payment methods.
 
-*Thank you for your trust in shopping at Islamic Heritage Library!* 🤝
+Thank you for your trust in shopping at Islamic Heritage Library!
 
 ---
-*Dar Al-Imam Al-Qarafi - Islamic Heritage Library*
-*📞 Customer Service: +6285163682122*
-*🌐 Website: www.daralimam.com*`,
+Dar Al-Imam Al-Qarafi - Islamic Heritage Library
+📞 Customer Service: +6285163682122
+🌐 Website: www.daralimam.com`,
                 paypalProcessing: 'Processing PayPal payment...',
                 paypalSuccess: 'PayPal payment successful! Your order has been confirmed.',
                 paypalError: 'An error occurred while processing PayPal payment. Please try again.',
@@ -2363,67 +2425,56 @@
                 locationError: 'فشل في الكشف عن الموقع. يرجى المحاولة مرة أخرى.',
                 locationPermissionDenied: 'تم رفض إذن الموقع. يرجى تفعيل الموقع في إعدادات المتصفح.',
                 locationAddedToForm: 'تمت إضافة الموقع إلى نموذج العنوان.',
-                whatsappMessage: `🌟 *السلام عليكم ورحمة الله وبركاته* 🌟
+                // PERBAIKAN TEMPLATE WHATSAPP - DIHAPUS GARIS DAN SIMBOL YANG TIDAK PERLU
+                whatsappMessage: `السلام عليكم ورحمة الله وبركاته
 
-📚 *طلب شراء كتاب من مكتبة التراث الإسلامي*
+📚 طلب شراء كتاب من مكتبة التراث الإسلامي
 
-==========================================
-*📖 معلومات الكتاب المطلوب:*
-==========================================
+📖 معلومات الكتاب المطلوب:
 
-*▪️ عنوان الكتاب:* {title}
-*▪️ المؤلف:* {author}
-*▪️ الناشر:* {publisher}
-*▪️ سنة النشر:* {year}
-*▪️ عدد المجلدات:* {volumes}
-*▪️ عدد الصفحات:* {pages}
-*▪️ نوع الغلاف:* {cover}
-*▪️ الكمية:* {quantity}
-*▪️ سعر الوحدة:* {unitPrice}
-*▪️ السعر الإجمالي:* {totalPrice}
+▪️ عنوان الكتاب: {title}
+▪️ المؤلف: {author}
+▪️ الناشر: {publisher}
+▪️ سنة النشر: {year}
+▪️ عدد المجلدات: {volumes}
+▪️ عدد الصفحات: {pages}
+▪️ نوع الغلاف: {cover}
+▪️ الكمية: {quantity}
+▪️ سعر الوحدة: {unitPrice}
+▪️ السعر الإجمالي: {totalPrice}
 
-==========================================
-*👤 معلومات العميل:*
-==========================================
+👤 معلومات العميل:
 
-*▪️ الاسم الكامل:* {name}
-*▪️ رقم الواتساب:* {phone}
-*▪️ عنوان الشحن:* {address}
+▪️ الاسم الكامل: {name}
+▪️ رقم الواتساب: {phone}
+▪️ عنوان الشحن: {address}
 
-==========================================
-*📍 معلومات موقع الشحن:*
-==========================================
+📍 معلومات موقع الشحن:
 
-*▪️ الموقع المكتشف:* {location}
-*▪️ رابط خرائط جوجل:* {mapLink}
+▪️ الموقع المكتشف: {location}
+▪️ رابط خرائط جوجل: {mapLink}
 
-==========================================
-*💳 معلومات الدفع:*
-==========================================
+💳 معلومات الدفع:
 
-*▪️ طريقة الدفع:* طلب واتساب
-*▪️ الحالة:* في انتظار التأكيد
+▪️ طريقة الدفع: طلب واتساب
+▪️ الحالة: في انتظار التأكيد
 
-==========================================
-*📦 معلومات الشحن:*
-==========================================
+📦 معلومات الشحن:
 
-*▪️ خدمة الشحن:* سيتم التأكيد
-*▪️ وقت التوصيل المتوقع:* 3-7 أيام عمل
-*▪️ تكلفة الشحن:* سيتم التأكيد
+▪️ خدمة الشحن: سيتم التأكيد
+▪️ وقت التوصيل المتوقع: 3-7 أيام عمل
+▪️ تكلفة الشحن: سيتم التأكيد
 
-==========================================
-*🤝 تأكيد الطلب:*
-==========================================
+🤝 تأكيد الطلب:
 
-*يرجى تأكيد توفر الكتاب، التكلفة الإجمالية بما في ذلك رسوم الشحن، وطرق الدفع المتاحة.*
+يرجى تأكيد توفر الكتاب، التكلفة الإجمالية بما في ذلك رسوم الشحن، وطرق الدفع المتاحة.
 
-*شكرا لثقتكم في التسوق من مكتبة التراث الإسلامي!* 🤝
+شكرا لثقتكم في التسوق من مكتبة التراث الإسلامي!
 
 ---
-*دار الإمام القرافي - مكتبة التراث الإسلامي*
-*📞 خدمة العملاء: +201014006053*
-*🌐 الموقع: www.daralimam.com*`,
+دار الإمام القرافي - مكتبة التراث الإسلامي
+📞 خدمة العملاء: +201014006053
+🌐 الموقع: www.daralimam.com`,
                 paypalProcessing: 'معالجة دفع باي بال...',
                 paypalSuccess: 'تم دفع باي بال بنجاح! تم تأكيد طلبك.',
                 paypalError: 'حدث خطأ أثناء معالجة دفع باي بال. يرجى المحاولة مرة أخرى.',
