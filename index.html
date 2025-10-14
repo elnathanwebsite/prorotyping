@@ -1246,7 +1246,7 @@
             font-family: monospace;
             font-size: 0.9rem;
             white-space: pre-wrap;
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
             display: none;
         }
@@ -2033,7 +2033,67 @@
                 locationError: 'Gagal mendeteksi lokasi. Silakan coba lagi.',
                 locationPermissionDenied: 'Izin lokasi ditolak. Silakan aktifkan lokasi di pengaturan browser.',
                 locationAddedToForm: 'Lokasi telah ditambahkan ke form alamat.',
-                whatsappMessage: 'Assalamu\'alaikum Warahmatullahi Wabarakatuh 🌟\n\n📚 **Saya ingin memesan buku berikut:**\n\n**📖 Judul:** {title}\n**✍️ Penulis:** {author}\n**🏢 Penerbit:** {publisher}\n**📊 Jumlah:** {quantity}\n**💰 Harga Total:** {totalPrice}\n\n**👤 Informasi Pelanggan:**\n**🏷️ Nama:** {name}\n**📱 Nomor Telepon:** {phone}\n**📍 Alamat Pengiriman:** {address}\n\n**📍 Informasi Lokasi:**\n**🌍 Lokasi GPS:** {location}\n**🗺️ Tautan Google Maps:** {mapLink}\n\n**🤝 **Mohon konfirmasi ketersediaan dan total pembayaran. Terima kasih!** 🤝\n\n---\n*Dar Al-Imam Al-Qarafi - Perpustakaan Warisan Islam*',
+                whatsappMessage: `🌟 *ASSALAMU'ALAIKUM WARAHMATULLAHI WABARAKATUH* 🌟
+
+📚 *PERMINTAAN PEMESANAN BUKU ISLAMIC HERITAGE LIBRARY*
+
+==========================================
+*📖 INFORMASI BUKU YANG DIPESAN:*
+==========================================
+
+*▪️ JUDUL BUKU:* {title}
+*▪️ PENULIS:* {author}
+*▪️ PENERBIT:* {publisher}
+*▪️ TAHUN TERBIT:* {year}
+*▪️ JUMLAH VOLUME:* {volumes}
+*▪️ JUMLAH HALAMAN:* {pages}
+*▪️ JENIS COVER:* {cover}
+*▪️ KUANTITAS:* {quantity}
+*▪️ HARGA SATUAN:* {unitPrice}
+*▪️ TOTAL HARGA:* {totalPrice}
+
+==========================================
+*👤 INFORMASI PELANGGAN:*
+==========================================
+
+*▪️ NAMA LENGKAP:* {name}
+*▪️ NOMOR WHATSAPP:* {phone}
+*▪️ ALAMAT PENGIRIMAN:* {address}
+
+==========================================
+*📍 INFORMASI LOKASI PENGIRIMAN:*
+==========================================
+
+*▪️ LOKASI TERDETEKSI:* {location}
+*▪️ LINK GOOGLE MAPS:* {mapLink}
+
+==========================================
+*💳 INFORMASI PEMBAYARAN:*
+==========================================
+
+*▪️ METODE PEMBAYARAN:* WhatsApp Order
+*▪️ STATUS:* Menunggu Konfirmasi
+
+==========================================
+*📦 INFORMASI PENGIRIMAN:*
+==========================================
+
+*▪️ JASA PENGIRIMAN:* Akan Dikonfirmasi
+*▪️ ESTIMASI PENGIRIMAN:* 3-7 Hari Kerja
+*▪️ BIAYA PENGIRIMAN:* Akan Dikonfirmasi
+
+==========================================
+*🤝 KONFIRMASI PESANAN:*
+==========================================
+
+*Mohon konfirmasi ketersediaan stok buku, total biaya termasuk ongkos kirim, dan metode pembayaran yang tersedia.*
+
+*Terima kasih atas kepercayaan Anda berbelanja di Islamic Heritage Library!* 🤝
+
+---
+*Dar Al-Imam Al-Qarafi - Islamic Heritage Library*
+*📞 Customer Service: +6285163682122*
+*🌐 Website: www.daralimam.com*`,
                 paypalProcessing: 'Memproses pembayaran PayPal...',
                 paypalSuccess: 'Pembayaran PayPal berhasil! Pesanan Anda telah dikonfirmasi.',
                 paypalError: 'Terjadi kesalahan saat memproses pembayaran PayPal. Silakan coba lagi.',
@@ -2126,7 +2186,67 @@
                 locationError: 'Failed to detect location. Please try again.',
                 locationPermissionDenied: 'Location permission denied. Please enable location in browser settings.',
                 locationAddedToForm: 'Location has been added to address form.',
-                whatsappMessage: '🌟 **Assalamu\'alaikum Warahmatullahi Wabarakatuh** 🌟\n\n📚 **I would like to order the following book:**\n\n**📖 Title:** {title}\n**✍️ Author:** {author}\n**🏢 Publisher:** {publisher}\n**📊 Quantity:** {quantity}\n**💰 Total Price:** {totalPrice}\n\n**👤 Customer Information:**\n**🏷️ Name:** {name}\n**📱 Phone Number:** {phone}\n**📍 Shipping Address:** {address}\n\n**📍 Location Information:**\n**🌍 GPS Location:** {location}\n**🗺️ Google Maps Link:** {mapLink}\n\n**🤝 **Please confirm availability and total payment. Thank you!** 🤝\n\n---\n*Dar Al-Imam Al-Qarafi - Islamic Heritage Library*',
+                whatsappMessage: `🌟 *ASSALAMU'ALAIKUM WARAHMATULLAHI WABARAKATUH* 🌟
+
+📚 *ISLAMIC HERITAGE LIBRARY BOOK ORDER REQUEST*
+
+==========================================
+*📖 ORDERED BOOK INFORMATION:*
+==========================================
+
+*▪️ BOOK TITLE:* {title}
+*▪️ AUTHOR:* {author}
+*▪️ PUBLISHER:* {publisher}
+*▪️ PUBLICATION YEAR:* {year}
+*▪️ NUMBER OF VOLUMES:* {volumes}
+*▪️ NUMBER OF PAGES:* {pages}
+*▪️ COVER TYPE:* {cover}
+*▪️ QUANTITY:* {quantity}
+*▪️ UNIT PRICE:* {unitPrice}
+*▪️ TOTAL PRICE:* {totalPrice}
+
+==========================================
+*👤 CUSTOMER INFORMATION:*
+==========================================
+
+*▪️ FULL NAME:* {name}
+*▪️ WHATSAPP NUMBER:* {phone}
+*▪️ SHIPPING ADDRESS:* {address}
+
+==========================================
+*📍 SHIPPING LOCATION INFORMATION:*
+==========================================
+
+*▪️ DETECTED LOCATION:* {location}
+*▪️ GOOGLE MAPS LINK:* {mapLink}
+
+==========================================
+*💳 PAYMENT INFORMATION:*
+==========================================
+
+*▪️ PAYMENT METHOD:* WhatsApp Order
+*▪️ STATUS:* Awaiting Confirmation
+
+==========================================
+*📦 SHIPPING INFORMATION:*
+==========================================
+
+*▪️ SHIPPING SERVICE:* To Be Confirmed
+*▪️ ESTIMATED DELIVERY:* 3-7 Business Days
+*▪️ SHIPPING COST:* To Be Confirmed
+
+==========================================
+*🤝 ORDER CONFIRMATION:*
+==========================================
+
+*Please confirm book availability, total cost including shipping fees, and available payment methods.*
+
+*Thank you for your trust in shopping at Islamic Heritage Library!* 🤝
+
+---
+*Dar Al-Imam Al-Qarafi - Islamic Heritage Library*
+*📞 Customer Service: +6285163682122*
+*🌐 Website: www.daralimam.com*`,
                 paypalProcessing: 'Processing PayPal payment...',
                 paypalSuccess: 'PayPal payment successful! Your order has been confirmed.',
                 paypalError: 'An error occurred while processing PayPal payment. Please try again.',
@@ -2219,7 +2339,67 @@
                 locationError: 'فشل في الكشف عن الموقع. يرجى المحاولة مرة أخرى.',
                 locationPermissionDenied: 'تم رفض إذن الموقع. يرجى تفعيل الموقع في إعدادات المتصفح.',
                 locationAddedToForm: 'تمت إضافة الموقع إلى نموذج العنوان.',
-                whatsappMessage: '🌟 **السلام عليكم ورحمة الله وبركاته** 🌟\n\n📚 **أود طلب الكتاب التالي:**\n\n**📖 العنوان:** {title}\n**✍️ المؤلف:** {author}\n**🏢 الناشر:** {publisher}\n**📊 الكمية:** {quantity}\n**💰 السعر الإجمالي:** {totalPrice}\n\n**👤 معلومات العميل:**\n**🏷️ الاسم:** {name}\n**📱 رقم الهاتف:** {phone}\n**📍 عنوان الشحن:** {address}\n\n**📍 معلومات الموقع:**\n**🌍 موقع GPS:** {location}\n**🗺️ رابط خرائط جوجل:** {mapLink}\n\n**🤝 **يرجى تأكيد التوفر وإجمالي الدفع. شكرا جزيلا!** 🤝\n\n---\n*دار الإمام القرافي - مكتبة التراث الإسلامي*',
+                whatsappMessage: `🌟 *السلام عليكم ورحمة الله وبركاته* 🌟
+
+📚 *طلب شراء كتاب من مكتبة التراث الإسلامي*
+
+==========================================
+*📖 معلومات الكتاب المطلوب:*
+==========================================
+
+*▪️ عنوان الكتاب:* {title}
+*▪️ المؤلف:* {author}
+*▪️ الناشر:* {publisher}
+*▪️ سنة النشر:* {year}
+*▪️ عدد المجلدات:* {volumes}
+*▪️ عدد الصفحات:* {pages}
+*▪️ نوع الغلاف:* {cover}
+*▪️ الكمية:* {quantity}
+*▪️ سعر الوحدة:* {unitPrice}
+*▪️ السعر الإجمالي:* {totalPrice}
+
+==========================================
+*👤 معلومات العميل:*
+==========================================
+
+*▪️ الاسم الكامل:* {name}
+*▪️ رقم الواتساب:* {phone}
+*▪️ عنوان الشحن:* {address}
+
+==========================================
+*📍 معلومات موقع الشحن:*
+==========================================
+
+*▪️ الموقع المكتشف:* {location}
+*▪️ رابط خرائط جوجل:* {mapLink}
+
+==========================================
+*💳 معلومات الدفع:*
+==========================================
+
+*▪️ طريقة الدفع:* طلب واتساب
+*▪️ الحالة:* في انتظار التأكيد
+
+==========================================
+*📦 معلومات الشحن:*
+==========================================
+
+*▪️ خدمة الشحن:* سيتم التأكيد
+*▪️ وقت التوصيل المتوقع:* 3-7 أيام عمل
+*▪️ تكلفة الشحن:* سيتم التأكيد
+
+==========================================
+*🤝 تأكيد الطلب:*
+==========================================
+
+*يرجى تأكيد توفر الكتاب، التكلفة الإجمالية بما في ذلك رسوم الشحن، وطرق الدفع المتاحة.*
+
+*شكرا لثقتكم في التسوق من مكتبة التراث الإسلامي!* 🤝
+
+---
+*دار الإمام القرافي - مكتبة التراث الإسلامي*
+*📞 خدمة العملاء: +201014006053*
+*🌐 الموقع: www.daralimam.com*`,
                 paypalProcessing: 'معالجة دفع باي بال...',
                 paypalSuccess: 'تم دفع باي بال بنجاح! تم تأكيد طلبك.',
                 paypalError: 'حدث خطأ أثناء معالجة دفع باي بال. يرجى المحاولة مرة أخرى.',
@@ -2980,6 +3160,7 @@
             const totalPrice = currentBook.base_price * parseInt(quantity);
             const convertedPrice = totalPrice * currencyRates[currentCurrency];
             const formattedTotal = formatCurrency(convertedPrice);
+            const unitPrice = convertPrice(currentBook.base_price);
             
             const orderData = {
                 book: currentBook,
@@ -2989,6 +3170,7 @@
                 quantity: parseInt(quantity),
                 totalPrice: totalPrice,
                 formattedTotal: formattedTotal,
+                unitPrice: unitPrice,
                 location: locationAddress,
                 mapLink: locationMapLink,
                 coordinates: userLocation
@@ -3144,24 +3326,27 @@
             const messagePreview = document.getElementById('whatsappMessagePreview');
             const messageContent = document.getElementById('messagePreviewContent');
             
-            const messageTemplate = region === 'id' ? 
-                translations.id.whatsappMessage : 
-                translations.ar.whatsappMessage;
+            const messageTemplate = translations[region === 'id' ? 'id' : (region === 'ar' ? 'ar' : 'en')].whatsappMessage;
             
             const location = orderData.location || '';
             const mapLink = orderData.mapLink || '';
             
             const message = messageTemplate
-                .replace('{title}', orderData.book.title)
-                .replace('{author}', orderData.book.author)
-                .replace('{publisher}', orderData.book.publisher_name)
-                .replace('{quantity}', orderData.quantity)
-                .replace('{totalPrice}', orderData.formattedTotal)
-                .replace('{name}', orderData.name)
-                .replace('{phone}', orderData.phone)
-                .replace('{address}', orderData.address)
-                .replace('{location}', location)
-                .replace('{mapLink}', mapLink);
+                .replace(/{title}/g, orderData.book.title)
+                .replace(/{author}/g, orderData.book.author)
+                .replace(/{publisher}/g, orderData.book.publisher_name)
+                .replace(/{year}/g, orderData.book.year)
+                .replace(/{volumes}/g, orderData.book.volumes)
+                .replace(/{pages}/g, orderData.book.pages)
+                .replace(/{cover}/g, translations[currentLanguage].hardCover)
+                .replace(/{quantity}/g, orderData.quantity)
+                .replace(/{unitPrice}/g, orderData.unitPrice)
+                .replace(/{totalPrice}/g, orderData.formattedTotal)
+                .replace(/{name}/g, orderData.name)
+                .replace(/{phone}/g, orderData.phone)
+                .replace(/{address}/g, orderData.address)
+                .replace(/{location}/g, location)
+                .replace(/{mapLink}/g, mapLink);
             
             messageContent.textContent = message;
             messagePreview.classList.add('show');
@@ -3195,24 +3380,27 @@
         function sendWhatsAppMessage(orderData, region) {
             const whatsappNumber = whatsappNumbers[region];
             
-            const messageTemplate = region === 'id' ? 
-                translations.id.whatsappMessage : 
-                translations.ar.whatsappMessage;
+            const messageTemplate = translations[region === 'id' ? 'id' : (region === 'ar' ? 'ar' : 'en')].whatsappMessage;
             
             const location = orderData.location || '';
             const mapLink = orderData.mapLink || '';
             
             const message = messageTemplate
-                .replace('{title}', orderData.book.title)
-                .replace('{author}', orderData.book.author)
-                .replace('{publisher}', orderData.book.publisher_name)
-                .replace('{quantity}', orderData.quantity)
-                .replace('{totalPrice}', orderData.formattedTotal)
-                .replace('{name}', orderData.name)
-                .replace('{phone}', orderData.phone)
-                .replace('{address}', orderData.address)
-                .replace('{location}', location)
-                .replace('{mapLink}', mapLink);
+                .replace(/{title}/g, orderData.book.title)
+                .replace(/{author}/g, orderData.book.author)
+                .replace(/{publisher}/g, orderData.book.publisher_name)
+                .replace(/{year}/g, orderData.book.year)
+                .replace(/{volumes}/g, orderData.book.volumes)
+                .replace(/{pages}/g, orderData.book.pages)
+                .replace(/{cover}/g, translations[currentLanguage].hardCover)
+                .replace(/{quantity}/g, orderData.quantity)
+                .replace(/{unitPrice}/g, orderData.unitPrice)
+                .replace(/{totalPrice}/g, orderData.formattedTotal)
+                .replace(/{name}/g, orderData.name)
+                .replace(/{phone}/g, orderData.phone)
+                .replace(/{address}/g, orderData.address)
+                .replace(/{location}/g, location)
+                .replace(/{mapLink}/g, mapLink);
             
             const encodedMessage = encodeURIComponent(message);
             
@@ -3220,7 +3408,9 @@
             
             window.open(whatsappUrl, '_blank');
             
-            const successMessage = region === 'id' ? 'Membuka WhatsApp...' : 'فتح واتساب...';
+            const successMessage = region === 'id' ? 'Membuka WhatsApp...' : 
+                                 region === 'ar' ? 'فتح واتساب...' : 
+                                 'Opening WhatsApp...';
             showToast(successMessage, 'success');
             
             saveOrderToDatabase(orderData, 'whatsapp', region);
