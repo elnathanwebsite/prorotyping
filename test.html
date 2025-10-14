@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="id" dir="ltr">
 <head>
@@ -3706,6 +3707,439 @@ Dar Al-Imam Al-Qarafi - Islamic Heritage Library
     
     // Initialize when DOM is loaded
     document.addEventListener('DOMContentLoaded', initAutoScroll);
+    // =============================================
+// SISTEM API KONVERSI MATA UANG - DATABASE BASED
+// =============================================
+
+console.log('🔧 Mengintegrasikan sistem konversi mata uang dengan database...');
+
+class DarAlImamCurrencyConverter {
+    constructor() {
+        this.apiKey = 'ec5ab43eca6a93e272462157';
+        this.rates = {};
+        this.currentCurrency = localStorage.getItem('currency') || 'idr';
+        this.refreshInterval = null;
+        this.autoRefreshEnabled = true;
+        this.refreshTime = 30 * 60 * 1000; // 30 menit
+        
+        this.currencies = {
+            'idr': { symbol: 'Rp', name: 'Indonesian Rupiah' },
+            'usd': { symbol: '$', name: 'US Dollar' },
+            'egp': { symbol: 'E£', name: 'Egyptian Pound' }
+        };
+        
+        this.init();
+    }
+
+    async init() {
+        console.log('💰 Menginisialisasi sistem mata uang...');
+        
+        this.loadPreferences();
+        await this.fetchRates();
+        this.integrateWithExistingSystem();
+        this.startAutoRefresh();
+        
+        console.log('✅ Sistem mata uang berhasil diinisialisasi');
+    }
+
+    async fetchRates() {
+        try {
+            console.log('🌐 Mengambil data kurs terbaru dari API...');
+            const response = await fetch(`https://v6.exchangerate-api.com/v6/${this.apiKey}/latest/USD`);
+            
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            const data = await response.json();
+            
+            if (data.result === 'success') {
+                this.rates = data.conversion_rates;
+                this.lastUpdate = new Date();
+                localStorage.setItem('daralimam_rates', JSON.stringify(this.rates));
+                localStorage.setItem('daralimam_last_update', this.lastUpdate.getTime().toString());
+                
+                console.log('✅ Rates berhasil diupdate:', {
+                    'USD to IDR': this.rates.IDR,
+                    'USD to EGP': this.rates.EGP,
+                    'Update Time': this.lastUpdate.toLocaleTimeString()
+                });
+                
+            } else {
+                throw new Error(data['error-type']);
+            }
+        } catch (error) {
+            console.error('❌ Gagal mengambil rates:', error);
+            this.useFallbackRates();
+        }
+    }
+
+    useFallbackRates() {
+        this.rates = { 
+            USD: 1, 
+            IDR: 15600, 
+            EGP: 30.91 
+        };
+        this.lastUpdate = new Date();
+        console.log('🔄 Menggunakan rates fallback');
+    }
+
+    startAutoRefresh() {
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+        }
+        
+        this.refreshInterval = setInterval(() => {
+            if (this.autoRefreshEnabled) {
+                console.log('🔄 Auto-refresh: Memperbarui kurs mata uang...');
+                this.fetchRates();
+            }
+        }, this.refreshTime);
+        
+        console.log(`🔄 Auto-refresh diaktifkan (setiap ${this.refreshTime / 60000} menit)`);
+    }
+
+    // KONVERSI LANGSUNG DARI HARGA IDR DATABASE
+    convertPrice(priceIDR) {
+        // Validasi input
+        if (!priceIDR || isNaN(priceIDR) || priceIDR <= 0) {
+            console.warn('Harga IDR tidak valid:', priceIDR);
+            return this.formatCurrency(0);
+        }
+
+        // Pastikan rates tersedia
+        if (!this.rates.IDR || !this.rates.EGP) {
+            console.warn('Rates belum tersedia, menggunakan fallback');
+            this.useFallbackRates();
+        }
+
+        const idrPrice = parseFloat(priceIDR);
+        let convertedPrice;
+
+        switch(this.currentCurrency) {
+            case 'idr':
+                // Tetap dalam Rupiah
+                convertedPrice = idrPrice;
+                break;
+            case 'usd':
+                // Konversi IDR → USD
+                convertedPrice = idrPrice / this.rates.IDR;
+                break;
+            case 'egp':
+                // Konversi IDR → EGP melalui USD
+                convertedPrice = (idrPrice / this.rates.IDR) * this.rates.EGP;
+                break;
+            default:
+                convertedPrice = idrPrice;
+        }
+
+        console.log(`💰 Konversi: ${idrPrice} IDR → ${convertedPrice} ${this.currentCurrency.toUpperCase()}`);
+        return this.formatCurrency(convertedPrice);
+    }
+
+    formatCurrency(amount) {
+        const config = this.currencies[this.currentCurrency];
+        if (!config) return `0`;
+
+        const numAmount = parseFloat(amount);
+        if (isNaN(numAmount)) return `0`;
+
+        switch(this.currentCurrency) {
+            case 'idr':
+                // Format Rupiah: Rp 50.000
+                return `${config.symbol} ${Math.round(numAmount).toLocaleString('id-ID')}`;
+            case 'usd':
+                // Format USD: $3.21
+                return `${config.symbol}${numAmount.toFixed(2)}`;
+            case 'egp':
+                // Format EGP: E£8.72
+                return `${config.symbol}${numAmount.toFixed(2)}`;
+            default:
+                return `${config.symbol}${numAmount}`;
+        }
+    }
+
+    loadPreferences() {
+        const savedRates = localStorage.getItem('daralimam_rates');
+        const savedUpdate = localStorage.getItem('daralimam_last_update');
+
+        if (savedRates && savedUpdate) {
+            const timestamp = parseInt(savedUpdate);
+            if (Date.now() - timestamp < 2 * 60 * 60 * 1000) {
+                this.rates = JSON.parse(savedRates);
+                this.lastUpdate = new Date(timestamp);
+                console.log('📦 Menggunakan cache rates');
+            }
+        }
+    }
+
+    integrateWithExistingSystem() {
+        // Override fungsi global
+        window.currencyConverter = this;
+        window.convertPrice = (price) => this.convertPrice(price);
+        window.formatCurrency = (amount) => this.formatCurrency(amount);
+        window.applyCurrency = () => this.updateAllPrices();
+        
+        // Tambahkan fungsi refresh manual
+        window.refreshCurrencyRates = () => this.fetchRates();
+        
+        // Patch fungsi yang ada
+        this.patchExistingFunctions();
+    }
+
+    patchExistingFunctions() {
+        // PATCH: generateBookCards - GUNAKAN HARGA ASLI DARI DATABASE
+        const originalGenerateBookCards = window.generateBookCards;
+        if (originalGenerateBookCards) {
+            window.generateBookCards = (books, containerId) => {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                books.forEach(book => {
+                    const card = document.createElement('div');
+                    card.className = 'book-card';
+                    card.onclick = () => showBookDetail(book);
+                    
+                    let badgesHTML = '';
+                    if (book.badges && book.badges.length > 0) {
+                        badgesHTML = book.badges.map(badge => 
+                            `<div class="book-badge">${badge}</div>`
+                        ).join('');
+                    }
+                    
+                    // GUNAKAN LANGSUNG base_price DAN original_price DARI DATABASE
+                    const currentPrice = this.convertPrice(book.base_price);
+                    let originalPriceHTML = '';
+                    
+                    if (book.original_price && book.original_price > book.base_price) {
+                        const originalPrice = this.convertPrice(book.original_price);
+                        originalPriceHTML = `<span class="original-price">${originalPrice}</span>`;
+                    }
+                    
+                    card.innerHTML = `
+                        ${badgesHTML}
+                        <div class="book-image">
+                            ${book.cover_image_url ? 
+                                `<img src="${book.cover_image_url}" alt="${book.title}" style="width: 100%; height: 100%; border-radius: 5px; object-fit: cover;">` : 
+                                '<i class="fas fa-book fa-3x"></i>'
+                            }
+                        </div>
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-author">${book.author}</div>
+                        <div class="book-publisher">${book.publisher_name}</div>
+                        <div class="book-details">
+                            <span>${book.volumes} Volume</span>
+                            <span>${book.pages} Pages</span>
+                        </div>
+                        <div class="book-price">
+                            <span class="current-price" data-price-idr="${book.base_price}">${currentPrice}</span>
+                            ${originalPriceHTML}
+                            ${book.discount ? `<span class="discount-percent">-${book.discount}</span>` : ''}
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+            };
+        }
+
+        // PATCH: showBookDetail - GUNAKAN HARGA ASLI DARI DATABASE
+        const originalShowBookDetail = window.showBookDetail;
+        if (originalShowBookDetail) {
+            window.showBookDetail = (book) => {
+                window.currentBook = book;
+                
+                if (originalShowBookDetail) {
+                    originalShowBookDetail(book);
+                }
+                
+                // UPDATE HARGA DETAIL DENGAN KONVERSI
+                this.updateBookDetail();
+            };
+        }
+
+        // PATCH: updateTotalPrice - GUNAKAN HARGA ASLI DARI DATABASE
+        window.updateTotalPrice = () => {
+            if (!window.currentBook) return;
+            
+            const quantity = parseInt(document.getElementById('orderQuantity')?.value) || 1;
+            const totalIDR = window.currentBook.base_price * quantity;
+            const totalPriceElement = document.getElementById('totalPrice');
+            
+            if (totalPriceElement) {
+                totalPriceElement.value = this.convertPrice(totalIDR);
+            }
+        };
+
+        // PATCH: Currency selection
+        this.patchCurrencySelection();
+    }
+
+    patchCurrencySelection() {
+        const currencyMenu = document.getElementById('currencyMenu');
+        if (currencyMenu) {
+            const items = currencyMenu.querySelectorAll('.dropdown-item');
+            items.forEach(item => {
+                const currency = item.dataset.currency;
+                if (currency) {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.setCurrency(currency);
+                        
+                        // Update UI
+                        items.forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                        
+                        const currentCurrencyElem = document.getElementById('currentCurrency');
+                        if (currentCurrencyElem) {
+                            currentCurrencyElem.textContent = currency.toUpperCase();
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    setCurrency(currency) {
+        if (!this.currencies[currency]) {
+            console.error('Mata uang tidak valid:', currency);
+            return;
+        }
+        
+        console.log(`💰 Mengubah mata uang dari ${this.currentCurrency} ke ${currency}`);
+        
+        this.currentCurrency = currency;
+        localStorage.setItem('currency', currency);
+        localStorage.setItem('daralimam_currency', currency);
+        
+        // UPDATE SEMUA HARGA YANG TAMPAK
+        this.updateAllPrices();
+    }
+
+    updateAllPrices() {
+        console.log(`🔄 Memperbarui semua harga ke mata uang: ${this.currentCurrency}`);
+        
+        // Update book cards
+        this.updateBookCards();
+        
+        // Update book detail jika sedang dibuka
+        this.updateBookDetail();
+        
+        // Update order confirmation jika sedang dibuka
+        this.updateOrderConfirmation();
+        
+        console.log('✅ Semua harga telah diperbarui');
+    }
+
+    updateBookCards() {
+        const bookCards = document.querySelectorAll('.book-card, .related-book-card');
+        let updatedCount = 0;
+        
+        bookCards.forEach(card => {
+            const priceElem = card.querySelector('.current-price');
+            const originalPriceElem = card.querySelector('.original-price');
+            
+            if (priceElem) {
+                // AMBIL HARGA IDR ASLI DARI DATA ATTRIBUTE
+                const priceIDR = priceElem.getAttribute('data-price-idr');
+                
+                if (priceIDR) {
+                    const newPrice = this.convertPrice(priceIDR);
+                    priceElem.textContent = newPrice;
+                    updatedCount++;
+                } else {
+                    console.warn('Data harga IDR tidak ditemukan untuk card:', card);
+                }
+            }
+            
+            if (originalPriceElem) {
+                const priceIDR = originalPriceElem.getAttribute('data-price-idr');
+                
+                if (priceIDR) {
+                    originalPriceElem.textContent = this.convertPrice(priceIDR);
+                }
+            }
+        });
+        
+        console.log(`📚 ${updatedCount} harga buku diperbarui`);
+    }
+
+    updateBookDetail() {
+        if (!window.currentBook) return;
+        
+        const detailPrice = document.getElementById('detailBookPrice');
+        const totalPrice = document.getElementById('totalPrice');
+        
+        if (detailPrice) {
+            // GUNAKAN base_price LANGSUNG DARI DATABASE
+            detailPrice.textContent = this.convertPrice(window.currentBook.base_price);
+            detailPrice.setAttribute('data-price-idr', window.currentBook.base_price);
+        }
+        
+        if (totalPrice && document.getElementById('orderQuantity')) {
+            const quantity = parseInt(document.getElementById('orderQuantity')?.value) || 1;
+            const totalIDR = window.currentBook.base_price * quantity;
+            totalPrice.value = this.convertPrice(totalIDR);
+        }
+    }
+
+    updateOrderConfirmation() {
+        try {
+            const orderData = JSON.parse(localStorage.getItem('orderData'));
+            if (!orderData) return;
+
+            const orderItemPrice = document.getElementById('orderItemPrice');
+            const orderTotalPrice = document.getElementById('orderTotalPrice');
+
+            if (orderItemPrice) {
+                orderItemPrice.textContent = this.convertPrice(orderData.totalPrice);
+            }
+
+            if (orderTotalPrice) {
+                orderTotalPrice.textContent = this.convertPrice(orderData.totalPrice);
+            }
+        } catch (error) {
+            console.error('Error updating order confirmation:', error);
+        }
+    }
+
+    // FUNGSI TAMBAHAN: Dapatkan rates saat ini
+    getCurrentRates() {
+        return {
+            IDR: this.rates.IDR,
+            EGP: this.rates.EGP,
+            lastUpdate: this.lastUpdate
+        };
+    }
+}
+
+// =============================================
+// INTEGRASI DENGAN SISTEM LAMA
+// =============================================
+
+// Non-aktifkan fungsi konversi lama yang mengganggu
+window.calculate = function() {
+    console.warn('Fungsi calculate lama dinonaktifkan');
+    return null;
+};
+
+// =============================================
+// AUTO START SYSTEM
+// =============================================
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            window.daralimamCurrency = new DarAlImamCurrencyConverter();
+        }, 100);
+    });
+} else {
+    setTimeout(() => {
+        window.daralimamCurrency = new DarAlImamCurrencyConverter();
+    }, 100);
+}
+
+console.log('🚀 Sistem konversi mata uang (Database Based) siap...');
     </script>
 </body>
 </html>
