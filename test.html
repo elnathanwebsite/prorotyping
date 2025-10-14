@@ -1906,7 +1906,7 @@
                 locationError: 'Gagal mendeteksi lokasi. Silakan coba lagi.',
                 locationPermissionDenied: 'Izin lokasi ditolak. Silakan aktifkan lokasi di pengaturan browser.',
                 locationAddedToForm: 'Lokasi telah ditambahkan ke form alamat.',
-                whatsappMessage: '🌟 **السلام عليكم ورحمة الله وبركاته** 🌟\n\n📚 **أود طلب الكتاب التالي:**\n\n**📖 العنوان:** {title}\n**✍️ المؤلف:** {author}\n**🏢 الناشر:** {publisher}\n**📊 الكمية:** {quantity}\n**💰 السعر الإجمالي:** {totalPrice}\n\n**👤 معلومات العميل:**\n**🏷️ الاسم:** {name}\n**📱 رقم الهاتف:** {phone}\n**📍 عنوان الشحن:** {address}\n\n**📍 معلومات الموقع:**\n**🌍 موقع GPS:** {location}\n**🗺️ رابط خرائط جوجل:** {mapLink}\n\n**🤝 **يرجى تأكيد التوفر وإجمالي الدفع. شكرا جزيلا!** 🤝\n\n---\n*دار الإمام القرافي - مكتبة التراث الإسلامي*',
+                whatsappMessage: 'Assalamu\'alaikum Warahmatullahi Wabarakatuh 🌟\n\n📚 **Saya ingin memesan buku berikut:**\n\n**📖 Judul:** {title}\n**✍️ Penulis:** {author}\n**🏢 Penerbit:** {publisher}\n**📊 Jumlah:** {quantity}\n**💰 Harga Total:** {totalPrice}\n\n**👤 Informasi Pelanggan:**\n**🏷️ Nama:** {name}\n**📱 Nomor Telepon:** {phone}\n**📍 Alamat Pengiriman:** {address}\n\n**📍 Informasi Lokasi:**\n**🌍 Lokasi GPS:** {location}\n**🗺️ Tautan Google Maps:** {mapLink}\n\n**🤝 **Mohon konfirmasi ketersediaan dan total pembayaran. Terima kasih!** 🤝\n\n---\n*Dar Al-Imam Al-Qarafi - Perpustakaan Warisan Islam*',
                 paypalProcessing: 'Memproses pembayaran PayPal...',
                 paypalSuccess: 'Pembayaran PayPal berhasil! Pesanan Anda telah dikonfirmasi.',
                 paypalError: 'Terjadi kesalahan saat memproses pembayaran PayPal. Silakan coba lagi.',
@@ -1990,7 +1990,7 @@
                 locationError: 'Failed to detect location. Please try again.',
                 locationPermissionDenied: 'Location permission denied. Please enable location in browser settings.',
                 locationAddedToForm: 'Location has been added to address form.',
-                whatsappMessage: 'Hello, I would like to order the following book:\n\nTitle: {title}\nAuthor: {author}\nPublisher: {publisher}\nQuantity: {quantity}\nTotal Price: {totalPrice}\n\nName: {name}\nPhone: {phone}\nAddress: {address}\n\nGPS Location: {location}\n\nGoogle Maps Link: {mapLink}\n\nPlease confirm availability and total payment.',
+                whatsappMessage: '🌟 **Assalamu\'alaikum Warahmatullahi Wabarakatuh** 🌟\n\n📚 **I would like to order the following book:**\n\n**📖 Title:** {title}\n**✍️ Author:** {author}\n**🏢 Publisher:** {publisher}\n**📊 Quantity:** {quantity}\n**💰 Total Price:** {totalPrice}\n\n**👤 Customer Information:**\n**🏷️ Name:** {name}\n**📱 Phone Number:** {phone}\n**📍 Shipping Address:** {address}\n\n**📍 Location Information:**\n**🌍 GPS Location:** {location}\n**🗺️ Google Maps Link:** {mapLink}\n\n**🤝 **Please confirm availability and total payment. Thank you!** 🤝\n\n---\n*Dar Al-Imam Al-Qarafi - Islamic Heritage Library*',
                 paypalProcessing: 'Processing PayPal payment...',
                 paypalSuccess: 'PayPal payment successful! Your order has been confirmed.',
                 paypalError: 'An error occurred while processing PayPal payment. Please try again.',
@@ -3105,10 +3105,10 @@
             const messagePreview = document.getElementById('whatsappMessagePreview');
             const messageContent = document.getElementById('messagePreviewContent');
             
-            // Get message template based on region
-            const messageTemplate = region === 'ar' ? 
-                translations.ar.whatsappMessage : 
-                translations[currentLanguage].whatsappMessage;
+            // Get message template based on WhatsApp region selection
+            const messageTemplate = region === 'id' ? 
+                translations.id.whatsappMessage : 
+                translations.ar.whatsappMessage;
             
             // Get location data
             const location = orderData.location || '';
@@ -3165,10 +3165,10 @@
             // Get appropriate WhatsApp number based on region
             const whatsappNumber = whatsappNumbers[region];
             
-            // Create message template using currentLanguage (UI language)
-            const messageTemplate = region === 'ar' ? 
-                translations.ar.whatsappMessage : 
-                translations[currentLanguage].whatsappMessage;
+            // Get message template based on WhatsApp region selection
+            const messageTemplate = region === 'id' ? 
+                translations.id.whatsappMessage : 
+                translations.ar.whatsappMessage;
             
             // Get location data
             const location = orderData.location || '';
@@ -3197,9 +3197,7 @@
             window.open(whatsappUrl, '_blank');
             
             // Show success message with appropriate language
-            const successMessage = currentLanguage === 'id' ? 'Membuka WhatsApp...' :
-                                  currentLanguage === 'en' ? 'Opening WhatsApp...' :
-                                  'فتح واتساب...';
+            const successMessage = region === 'id' ? 'Membuka WhatsApp...' : 'فتح واتساب...';
             showToast(successMessage, 'success');
             
             // Save order to database
