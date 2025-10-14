@@ -3636,6 +3636,76 @@ Dar Al-Imam Al-Qarafi - Islamic Heritage Library
             await loadCategories();
             setInterval(updateCountdown, 1000);
         });
+            // Publishers carousel functionality
+    let currentPosition = 0;
+    let autoScrollInterval;
+    let isPaused = false;
+    let pauseTimeout;
+    const scrollDuration = 3000; // 5 seconds for each scroll
+    const pauseDuration = 1000; // 3 seconds pause after interaction
+    
+    // Initialize auto-scroll
+    function initAutoScroll() {
+        startAutoScroll();
+        
+        // Pause on hover
+        const container = document.getElementById('publishersContainer');
+        container.addEventListener('mouseenter', pauseAutoScroll);
+        container.addEventListener('mouseleave', resumeAutoScroll);
+        
+        // Pause on manual control
+        const controls = document.querySelectorAll('.carousel-control');
+        controls.forEach(control => {
+            control.addEventListener('click', () => {
+                pauseAutoScroll();
+                // Resume after pause duration
+                clearTimeout(pauseTimeout);
+                pauseTimeout = setTimeout(resumeAutoScroll, pauseDuration);
+            });
+        });
+    }
+    
+    function startAutoScroll() {
+        if (autoScrollInterval) clearInterval(autoScrollInterval);
+        autoScrollInterval = setInterval(() => {
+            movePublishers(1);
+        }, scrollDuration);
+    }
+    
+    function pauseAutoScroll() {
+        isPaused = true;
+        if (autoScrollInterval) clearInterval(autoScrollInterval);
+    }
+    
+    function resumeAutoScroll() {
+        if (!isPaused) return;
+        isPaused = false;
+        startAutoScroll();
+    }
+    
+    function movePublishers(direction) {
+        const carousel = document.getElementById('publishersCarousel');
+        const cards = carousel.querySelectorAll('.publisher-card');
+        if (cards.length === 0) return;
+        
+        const cardWidth = cards[0].offsetWidth + 20; // card width + margin
+        const visibleCards = Math.floor(carousel.parentElement.offsetWidth / cardWidth);
+        const maxPosition = Math.max(0, cards.length - visibleCards);
+        
+        currentPosition += direction;
+        
+        // Loop back to beginning if we've reached the end
+        if (currentPosition > maxPosition) {
+            currentPosition = 0;
+        } else if (currentPosition < 0) {
+            currentPosition = maxPosition;
+        }
+        
+        carousel.style.transform = `translateX(-${currentPosition * cardWidth}px)`;
+    }
+    
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initAutoScroll);
     </script>
 </body>
 </html>
