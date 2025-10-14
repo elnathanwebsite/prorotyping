@@ -1675,11 +1675,15 @@
         
         // ============================================================= -->
         <!-- WHATSAPP INTEGRATION - PENTING: NOMOR WHATSAPP              -->
-        <!-- NOMOR WHATSAPP: +6283180667700                             -->
+        <!-- NOMOR WHATSAPP INDONESIA: +6285163682122                   -->
+        <!-- NOMOR WHATSAPP ARAB: +201014006053                         -->
         <!-- NOMOR INI DIGUNAKAN UNTUK SEMUA KOMUNIKASI WHATSAPP         -->
         <!-- JANGAN MENGUBAH NOMOR INI!                                 -->
         // ============================================================= -->
-        const WHATSAPP_NUMBER = "+6283180667700";
+        const WHATSAPP_NUMBERS = {
+            id: "+6285163682122",
+            ar: "+201014006053"
+        };
         
         // Language translations
         const translations = {
@@ -2194,13 +2198,15 @@
 
         // ============================================================= -->
         <!-- WHATSAPP FUNCTION - PENTING: NOMOR WHATSAPP KRUSIAL          -->
-        <!-- NOMOR WHATSAPP: +6283180667700                             -->
+        <!-- NOMOR WHATSAPP INDONESIA: +6285163682122                   -->
+        <!-- NOMOR WHATSAPP ARAB: +201014006053                         -->
         <!-- LANGSUNG KE APLIKASI WHATSAPP (api.whatsapp.com)            -->
         // ============================================================= -->
         function openWhatsApp() {
             const message = encodeURIComponent("Halo, saya tertarik dengan buku di Dar Al-Imam Al-Qarafi. Mohon informasikan lebih lanjut.");
             // Use api.whatsapp.com for direct app opening
-            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER.replace('+', '')}&text=${message}`, '_blank');
+            const whatsappNumber = WHATSAPP_NUMBERS[currentLanguage] || WHATSAPP_NUMBERS.id;
+            window.open(`https://api.whatsapp.com/send?phone=${whatsappNumber.replace('+', '')}&text=${message}`, '_blank');
         }
 
         // ============================================================= -->
@@ -2737,7 +2743,8 @@
 
         // ============================================================= -->
         <!-- WHATSAPP ORDER - PENTING: KIRIM PESAN KE WHATSAPP          -->
-        <!-- NOMOR WHATSAPP: +6283180667700                             -->
+        <!-- NOMOR WHATSAPP INDONESIA: +6285163682122                   -->
+        <!-- NOMOR WHATSAPP ARAB: +201014006053                         -->
         <!-- LANGSUNG KE APLIKASI WHATSAPP (api.whatsapp.com)            -->
         <!-- TEMPLATE PESANAN LENGKAP DENGAN DATA DARI FORM               -->
         // ============================================================= -->
@@ -2755,24 +2762,30 @@
                 locationLink = createGoogleMapsLink(selectedLocation.lat, selectedLocation.lng, selectedLocation.address);
             }
             
-            // Create order message template
-            let message = `
+            // Get WhatsApp number based on language
+            const whatsappNumber = WHATSAPP_NUMBERS[currentLanguage] || WHATSAPP_NUMBERS.id;
+            
+            // Create order message template based on language
+            let message = '';
+            
+            if (currentLanguage === 'id') {
+                message = `
 *📚 PESANAN BARU - DAR AL-IMAM AL-QARAFI*
 
 🔹 *Data Pelanggan:*
    • Nama: ${name}
    • WhatsApp: ${phone}
    • Alamat: ${address}
-            `;
-            
-            // Add location link if available
-            if (locationLink) {
-                message += `
-   • Lokasi: ${locationLink}
                 `;
-            }
-            
-            message += `
+                
+                // Add location link if available
+                if (locationLink) {
+                    message += `
+   • Lokasi: ${locationLink}
+                    `;
+                }
+                
+                message += `
 🔹 *Detail Pesanan:*
    • Buku: ${currentBook.title}
    • Penulis: ${currentBook.author}
@@ -2787,11 +2800,79 @@
 
 ---
 *Terima kasih telah berbelanja di Dar Al-Imam Al-Qarafi!*
-            `.trim();
+                `.trim();
+            } else if (currentLanguage === 'ar') {
+                message = `
+*📚 طلب جديد - دار الإمام القرافي*
+
+🔹 *بيانات العميل:*
+   • الاسم: ${name}
+   • واتساب: ${phone}
+   • العنوان: ${address}
+                `;
+                
+                // Add location link if available
+                if (locationLink) {
+                    message += `
+   • الموقع: ${locationLink}
+                    `;
+                }
+                
+                message += `
+🔹 *تفاصيل الطلب:*
+   • الكتاب: ${currentBook.title}
+   • المؤلف: ${currentBook.author}
+   • الناشر: ${currentBook.publisher_name}
+   • السنة: ${currentBook.year}
+   • المجلدات: ${currentBook.volumes}
+   • الصفحات: ${currentBook.pages}
+   • الكمية: ${quantity} كتاب
+   • السعر الإجمالي: ${totalPrice}
+
+🔹 *طريقة الدفع:* ${paymentMethod === 'transfer' ? 'تحويل بنكي' : 'باي بال'}
+
+---
+*شكراً لتسوقك في دار الإمام القرافي!*
+                `.trim();
+            } else {
+                // English template
+                message = `
+*📚 NEW ORDER - DAR AL-IMAM AL-QARAFI*
+
+🔹 *Customer Data:*
+   • Name: ${name}
+   • WhatsApp: ${phone}
+   • Address: ${address}
+                `;
+                
+                // Add location link if available
+                if (locationLink) {
+                    message += `
+   • Location: ${locationLink}
+                    `;
+                }
+                
+                message += `
+🔹 *Order Details:*
+   • Book: ${currentBook.title}
+   • Author: ${currentBook.author}
+   • Publisher: ${currentBook.publisher_name}
+   • Year: ${currentBook.year}
+   • Volumes: ${currentBook.volumes}
+   • Pages: ${currentBook.pages}
+   • Quantity: ${quantity} books
+   • Total Price: ${totalPrice}
+
+🔹 *Payment Method:* ${paymentMethod === 'transfer' ? 'Bank Transfer' : 'PayPal'}
+
+---
+*Thank you for shopping at Dar Al-Imam Al-Qarafi!*
+                `.trim();
+            }
             
             // Open WhatsApp with message - use api.whatsapp.com for direct app opening
             const encodedMessage = encodeURIComponent(message);
-            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER.replace('+', '')}&text=${encodedMessage}`, '_blank');
+            window.open(`https://api.whatsapp.com/send?phone=${whatsappNumber.replace('+', '')}&text=${encodedMessage}`, '_blank');
         }
 
         // Save order to database
