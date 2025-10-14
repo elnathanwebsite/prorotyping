@@ -730,6 +730,102 @@
             background-color: #45a049;
         }
 
+        /* Location Detection Section */
+        .location-detection {
+            background-color: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .location-detection-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .location-detection-title i {
+            font-size: 1.2rem;
+        }
+
+        .location-detection-btn {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .location-detection-btn:hover {
+            background-color: var(--light-blue);
+        }
+
+        .location-detection-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .location-status {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .location-status.success {
+            color: var(--green);
+        }
+
+        .location-status.error {
+            color: var(--red);
+        }
+
+        #orderMap {
+            height: 200px;
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .location-info {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .location-info i {
+            margin-right: 8px;
+            color: var(--primary-blue);
+        }
+
+        .location-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        .location-link:hover {
+            text-decoration: underline;
+        }
+
+        .location-link i {
+            margin-left: 5px;
+        }
+
         /* Related Books - Perbaikan Responsif */
         .related-books {
             margin-top: 30px;
@@ -1038,91 +1134,6 @@
             font-size: 0.9rem;
         }
 
-        .location-section {
-            background-color: var(--light-gray);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-
-        .location-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: var(--dark-blue);
-        }
-
-        #map {
-            height: 300px;
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .location-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .location-info i {
-            margin-right: 10px;
-            color: var(--primary-blue);
-        }
-
-        .btn-confirm {
-            padding: 12px 30px;
-            background-color: var(--green);
-            color: var(--white);
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 15px;
-            width: 100%;
-        }
-
-        .btn-confirm:hover {
-            background-color: #45a049;
-        }
-
-        .btn-whatsapp {
-            background-color: #25D366;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #128C7E;
-        }
-
-        .btn-paypal {
-            background-color: #00457C;
-        }
-
-        .btn-paypal:hover {
-            background-color: #003061;
-        }
-
-        .location-permission {
-            background-color: #fff3cd;
-            border: 1px solid #ffeeba;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 15px;
-            color: #856404;
-        }
-
-        .location-permission button {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            border: none;
-            border-radius: 5px;
-            padding: 8px 15px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
         .whatsapp-options {
             display: flex;
             flex-direction: column;
@@ -1180,21 +1191,27 @@
             color: #25D366;
         }
 
-        .location-link {
-            color: var(--primary-blue);
-            text-decoration: none;
+        .btn-confirm {
+            padding: 12px 30px;
+            background-color: var(--green);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
             font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            margin-top: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+            width: 100%;
         }
 
-        .location-link:hover {
-            text-decoration: underline;
+        .btn-confirm:hover {
+            background-color: #45a049;
         }
 
-        .location-link i {
-            margin-left: 5px;
+        .btn-confirm:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
 
         /* Responsive Design - Perbaikan Tambahan */
@@ -1512,6 +1529,28 @@
                                         <input type="tel" class="form-control" id="orderPhone" placeholder="08xxxxxxxxxx" required>
                                     </div>
                                 </div>
+                                
+                                <!-- Location Detection Section -->
+                                <div class="location-detection">
+                                    <div class="location-detection-title">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span id="locationDetectionTitle">Deteksi Lokasi Otomatis</span>
+                                    </div>
+                                    <button type="button" class="location-detection-btn" id="detectLocationBtn" onclick="detectUserLocation()">
+                                        <i class="fas fa-location-crosshairs"></i>
+                                        <span id="detectLocationText">Deteksi Lokasi Saya</span>
+                                    </button>
+                                    <div class="location-status" id="locationStatus"></div>
+                                    <div id="orderMap"></div>
+                                    <div class="location-info" id="locationInfo" style="display: none;">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span id="detectedAddress"></span>
+                                        <a href="#" id="mapLink" class="location-link" target="_blank">
+                                            Lihat di Google Maps <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                
                                 <div class="form-group">
                                     <label class="form-label" id="addressLabel">Alamat Pengiriman</label>
                                     <input type="text" class="form-control" id="orderAddress" placeholder="Masukkan alamat lengkap" required>
@@ -1579,31 +1618,6 @@
                     <div class="order-total">
                         <span id="totalLabel2">Total:</span>
                         <span id="orderTotalPrice">Rp 0</span>
-                    </div>
-                </div>
-                
-                <!-- Location Section -->
-                <div class="location-section">
-                    <h2 class="location-title" id="locationTitle">Lokasi Pengiriman</h2>
-                    <div class="location-permission" id="locationPermission">
-                        <p id="locationPermissionText">Kami memerlukan izin lokasi Anda untuk menentukan area pengiriman.</p>
-                        <button id="enableLocationBtn" onclick="requestLocationPermission()">
-                            <i class="fas fa-map-marker-alt"></i> <span id="enableLocationText">Aktifkan Lokasi</span>
-                        </button>
-                    </div>
-                    <div id="mapContainer" style="display: none;">
-                        <div id="map"></div>
-                        <div class="location-info">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span id="currentLocation">Mendeteksi lokasi...</span>
-                        </div>
-                        <div class="location-info">
-                            <i class="fas fa-home"></i>
-                            <span id="deliveryAddress">Alamat Pengiriman: -</span>
-                            <a href="#" id="mapLink" class="location-link" target="_blank" style="display: none;">
-                                Lihat di Google Maps <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
                     </div>
                 </div>
                 
@@ -1755,10 +1769,11 @@
         let touchEndX = 0;
         let selectedPaymentMethod = null;
         let selectedWhatsAppNumber = null;
-        let map = null;
+        let orderMap = null;
         let currentLocationMarker = null;
         let userLocation = null;
         let locationAddress = '';
+        let locationMapLink = '';
         
         // WhatsApp numbers
         const whatsappNumbers = {
@@ -1823,9 +1838,6 @@
                 hardCover: 'Hard Cover',
                 orderConfirmationTitle: 'Konfirmasi Pesanan',
                 orderSummaryTitle: 'Ringkasan Pesanan',
-                locationTitle: 'Lokasi Pengiriman',
-                locationPermissionText: 'Kami memerlukan izin lokasi Anda untuk menentukan area pengiriman.',
-                enableLocationText: 'Aktifkan Lokasi',
                 paymentOptionsTitle: 'Pilih Metode Pembayaran',
                 whatsappTitle: 'WhatsApp',
                 whatsappDesc: 'Hubungi kami melalui WhatsApp untuk konfirmasi pesanan',
@@ -1838,12 +1850,17 @@
                 whatsappIndoDesc: 'Layanan pelanggan dalam bahasa Indonesia',
                 whatsappArabTitle: 'WhatsApp Arab',
                 whatsappArabDesc: 'خدمة العملاء باللغة العربية',
-                whatsappMessage: 'Halo, saya ingin memesan buku berikut:\n\nJudul: {title}\nPenulis: {author}\nPenerbit: {publisher}\nJumlah: {quantity}\nTotal Harga: {totalPrice}\n\nNama: {name}\nNo. HP: {phone}\nAlamat: {address}\n\nLokasi Pengiriman: {location}\n\nLink Google Maps: {mapLink}\n\nMohon konfirmasi ketersediaan dan total pembayaran.',
+                locationDetectionTitle: 'Deteksi Lokasi Otomatis',
+                detectLocationText: 'Deteksi Lokasi Saya',
+                detectingLocation: 'Mendeteksi lokasi...',
+                locationDetected: 'Lokasi berhasil dideteksi!',
+                locationError: 'Gagal mendeteksi lokasi. Silakan coba lagi.',
+                locationPermissionDenied: 'Izin lokasi ditolak. Silakan aktifkan lokasi di pengaturan browser.',
+                locationAddedToForm: 'Lokasi telah ditambahkan ke form alamat.',
+                whatsappMessage: 'Halo, saya ingin memesan buku berikut:\n\nJudul: {title}\nPenulis: {author}\nPenerbit: {publisher}\nJumlah: {quantity}\nTotal Harga: {totalPrice}\n\nNama: {name}\nNo. HP: {phone}\nAlamat: {address}\n\nLokasi GPS: {location}\n\nLink Google Maps: {mapLink}\n\nMohon konfirmasi ketersediaan dan total pembayaran.',
                 paypalProcessing: 'Memproses pembayaran PayPal...',
                 paypalSuccess: 'Pembayaran PayPal berhasil! Pesanan Anda telah dikonfirmasi.',
                 paypalError: 'Terjadi kesalahan saat memproses pembayaran PayPal. Silakan coba lagi.',
-                locationDetected: 'Lokasi terdeteksi: {address}',
-                locationError: 'Tidak dapat mendeteksi lokasi Anda. Silakan aktifkan lokasi atau masukkan alamat secara manual.',
                 pleaseSelectWhatsApp: 'Silakan pilih nomor WhatsApp terlebih dahulu.',
                 pleaseSelectPayment: 'Silakan pilih metode pembayaran terlebih dahulu.'
             },
@@ -1902,9 +1919,6 @@
                 hardCover: 'Hard Cover',
                 orderConfirmationTitle: 'Order Confirmation',
                 orderSummaryTitle: 'Order Summary',
-                locationTitle: 'Delivery Location',
-                locationPermissionText: 'We need your location permission to determine the delivery area.',
-                enableLocationText: 'Enable Location',
                 paymentOptionsTitle: 'Select Payment Method',
                 whatsappTitle: 'WhatsApp',
                 whatsappDesc: 'Contact us via WhatsApp for order confirmation',
@@ -1917,12 +1931,17 @@
                 whatsappIndoDesc: 'Customer service in Indonesian',
                 whatsappArabTitle: 'WhatsApp Arab',
                 whatsappArabDesc: 'خدمة العملاء باللغة العربية',
-                whatsappMessage: 'Hello, I would like to order the following book:\n\nTitle: {title}\nAuthor: {author}\nPublisher: {publisher}\nQuantity: {quantity}\nTotal Price: {totalPrice}\n\nName: {name}\nPhone: {phone}\nAddress: {address}\n\nDelivery Location: {location}\n\nGoogle Maps Link: {mapLink}\n\nPlease confirm availability and total payment.',
+                locationDetectionTitle: 'Automatic Location Detection',
+                detectLocationText: 'Detect My Location',
+                detectingLocation: 'Detecting location...',
+                locationDetected: 'Location successfully detected!',
+                locationError: 'Failed to detect location. Please try again.',
+                locationPermissionDenied: 'Location permission denied. Please enable location in browser settings.',
+                locationAddedToForm: 'Location has been added to address form.',
+                whatsappMessage: 'Hello, I would like to order the following book:\n\nTitle: {title}\nAuthor: {author}\nPublisher: {publisher}\nQuantity: {quantity}\nTotal Price: {totalPrice}\n\nName: {name}\nPhone: {phone}\nAddress: {address}\n\nGPS Location: {location}\n\nGoogle Maps Link: {mapLink}\n\nPlease confirm availability and total payment.',
                 paypalProcessing: 'Processing PayPal payment...',
                 paypalSuccess: 'PayPal payment successful! Your order has been confirmed.',
                 paypalError: 'An error occurred while processing PayPal payment. Please try again.',
-                locationDetected: 'Location detected: {address}',
-                locationError: 'Unable to detect your location. Please enable location or enter address manually.',
                 pleaseSelectWhatsApp: 'Please select a WhatsApp number first.',
                 pleaseSelectPayment: 'Please select a payment method first.'
             },
@@ -1981,9 +2000,6 @@
                 hardCover: 'غلاف صلب',
                 orderConfirmationTitle: 'تأكيد الطلب',
                 orderSummaryTitle: 'ملخص الطلب',
-                locationTitle: 'موقع التسليم',
-                locationPermissionText: 'نحتاج إلى إذن الموقع الخاص بك لتحديد منطقة التسليم.',
-                enableLocationText: 'تفعيل الموقع',
                 paymentOptionsTitle: 'اختر طريقة الدفع',
                 whatsappTitle: 'واتساب',
                 whatsappDesc: 'تواصل معنا عبر واتساب لتأكيد الطلب',
@@ -1996,12 +2012,17 @@
                 whatsappIndoDesc: 'خدمة العملاء باللغة الإندونيسية',
                 whatsappArabTitle: 'واتساب عربي',
                 whatsappArabDesc: 'خدمة العملاء باللغة العربية',
-                whatsappMessage: 'مرحبا، أود طلب الكتاب التالي:\n\nالعنوان: {title}\nالمؤلف: {author}\nالناشر: {publisher}\nالكمية: {quantity}\nالسعر الإجمالي: {totalPrice}\n\nالاسم: {name}\nالهاتف: {phone}\nالعنوان: {address}\n\nموقع التسليم: {location}\n\nرابط خرائط جوجل: {mapLink}\n\nيرجى تأكيد التوفر وإجمالي الدفع.',
+                locationDetectionTitle: 'الكشف التلقائي عن الموقع',
+                detectLocationText: 'اكتشف موقعي',
+                detectingLocation: 'جاري الكشف عن الموقع...',
+                locationDetected: 'تم الكشف عن الموقع بنجاح!',
+                locationError: 'فشل في الكشف عن الموقع. يرجى المحاولة مرة أخرى.',
+                locationPermissionDenied: 'تم رفض إذن الموقع. يرجى تفعيل الموقع في إعدادات المتصفح.',
+                locationAddedToForm: 'تمت إضافة الموقع إلى نموذج العنوان.',
+                whatsappMessage: 'مرحبا، أود طلب الكتاب التالي:\n\nالعنوان: {title}\nالمؤلف: {author}\nالناشر: {publisher}\nالكمية: {quantity}\nالسعر الإجمالي: {totalPrice}\n\nالاسم: {name}\nالهاتف: {phone}\nالعنوان: {address}\n\nموقع GPS: {location}\n\nرابط خرائط جوجل: {mapLink}\n\nيرجى تأكيد التوفر وإجمالي الدفع.',
                 paypalProcessing: 'معالجة دفع باي بال...',
                 paypalSuccess: 'تم دفع باي بال بنجاح! تم تأكيد طلبك.',
                 paypalError: 'حدث خطأ أثناء معالجة دفع باي بال. يرجى المحاولة مرة أخرى.',
-                locationDetected: 'تم تحديد الموقع: {address}',
-                locationError: 'غير قادر على تحديد موقعك. يرجى تفعيل الموقع أو إدخال العنوان يدوياً.',
                 pleaseSelectWhatsApp: 'يرجى اختيار رقم واتساب أولاً.',
                 pleaseSelectPayment: 'يرجى اختيار طريقة الدفع أولاً.'
             }
@@ -2504,6 +2525,9 @@
             document.getElementById('orderQuantity').value = 1;
             updateTotalPrice();
             
+            // Reset location detection
+            resetLocationDetection();
+            
             // Generate related books
             generateRelatedBooks();
             
@@ -2594,6 +2618,152 @@
             document.getElementById('totalPrice').value = formattedTotal;
         }
 
+        // Reset location detection
+        function resetLocationDetection() {
+            userLocation = null;
+            locationAddress = '';
+            locationMapLink = '';
+            
+            // Reset UI
+            document.getElementById('detectLocationBtn').disabled = false;
+            document.getElementById('detectLocationBtn').innerHTML = `<i class="fas fa-location-crosshairs"></i> <span>${translations[currentLanguage].detectLocationText}</span>`;
+            document.getElementById('locationStatus').textContent = '';
+            document.getElementById('locationStatus').className = 'location-status';
+            document.getElementById('orderMap').style.display = 'none';
+            document.getElementById('locationInfo').style.display = 'none';
+            
+            // Clear map if exists
+            if (orderMap) {
+                orderMap.remove();
+                orderMap = null;
+            }
+        }
+
+        // Detect user location
+        function detectUserLocation() {
+            const detectBtn = document.getElementById('detectLocationBtn');
+            const locationStatus = document.getElementById('locationStatus');
+            
+            // Disable button and show loading
+            detectBtn.disabled = true;
+            detectBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>${translations[currentLanguage].detectingLocation}</span>`;
+            locationStatus.textContent = '';
+            locationStatus.className = 'location-status';
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        userLocation = { lat, lng };
+                        
+                        // Initialize map
+                        initializeOrderMap(lat, lng);
+                        
+                        // Get address from coordinates
+                        getAddressFromCoordinates(lat, lng);
+                    },
+                    error => {
+                        console.error('Error getting location:', error);
+                        
+                        let errorMessage = translations[currentLanguage].locationError;
+                        if (error.code === error.PERMISSION_DENIED) {
+                            errorMessage = translations[currentLanguage].locationPermissionDenied;
+                        }
+                        
+                        locationStatus.textContent = errorMessage;
+                        locationStatus.className = 'location-status error';
+                        
+                        // Reset button
+                        detectBtn.disabled = false;
+                        detectBtn.innerHTML = `<i class="fas fa-location-crosshairs"></i> <span>${translations[currentLanguage].detectLocationText}</span>`;
+                    }
+                );
+            } else {
+                locationStatus.textContent = translations[currentLanguage].locationError;
+                locationStatus.className = 'location-status error';
+                
+                // Reset button
+                detectBtn.disabled = false;
+                detectBtn.innerHTML = `<i class="fas fa-location-crosshairs"></i> <span>${translations[currentLanguage].detectLocationText}</span>`;
+            }
+        }
+
+        // Initialize order map
+        function initializeOrderMap(lat, lng) {
+            // Create map container if it doesn't exist
+            const mapContainer = document.getElementById('orderMap');
+            mapContainer.style.display = 'block';
+            
+            // Initialize map
+            orderMap = L.map('orderMap').setView([lat, lng], 15);
+            
+            // Add tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(orderMap);
+            
+            // Add marker for user location
+            currentLocationMarker = L.marker([lat, lng]).addTo(orderMap);
+        }
+
+        // Get address from coordinates using reverse geocoding
+        function getAddressFromCoordinates(lat, lng) {
+            const locationStatus = document.getElementById('locationStatus');
+            
+            // Using Nominatim API for reverse geocoding
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.display_name) {
+                        locationAddress = data.display_name;
+                        
+                        // Create Google Maps link
+                        locationMapLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+                        
+                        // Update UI
+                        locationStatus.textContent = translations[currentLanguage].locationDetected;
+                        locationStatus.className = 'location-status success';
+                        
+                        // Show location info
+                        document.getElementById('detectedAddress').textContent = locationAddress;
+                        document.getElementById('mapLink').href = locationMapLink;
+                        document.getElementById('locationInfo').style.display = 'flex';
+                        
+                        // Add location to address form
+                        const addressInput = document.getElementById('orderAddress');
+                        if (!addressInput.value) {
+                            addressInput.value = locationAddress;
+                            showToast(translations[currentLanguage].locationAddedToForm, 'success');
+                        }
+                        
+                        // Reset button
+                        const detectBtn = document.getElementById('detectLocationBtn');
+                        detectBtn.disabled = false;
+                        detectBtn.innerHTML = `<i class="fas fa-check"></i> <span>${translations[currentLanguage].locationDetected}</span>`;
+                    } else {
+                        locationStatus.textContent = `${lat}, ${lng}`;
+                        locationStatus.className = 'location-status success';
+                        
+                        // Reset button
+                        const detectBtn = document.getElementById('detectLocationBtn');
+                        detectBtn.disabled = false;
+                        detectBtn.innerHTML = `<i class="fas fa-check"></i> <span>${translations[currentLanguage].locationDetected}</span>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error getting address:', error);
+                    locationStatus.textContent = `${lat}, ${lng}`;
+                    locationStatus.className = 'location-status success';
+                    
+                    // Reset button
+                    const detectBtn = document.getElementById('detectLocationBtn');
+                    detectBtn.disabled = false;
+                    detectBtn.innerHTML = `<i class="fas fa-check"></i> <span>${translations[currentLanguage].locationDetected}</span>`;
+                });
+        }
+
         // Handle order form submission
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -2622,7 +2792,10 @@
                 address: address,
                 quantity: parseInt(quantity),
                 totalPrice: totalPrice,
-                formattedTotal: formattedTotal
+                formattedTotal: formattedTotal,
+                location: locationAddress,
+                mapLink: locationMapLink,
+                coordinates: userLocation
             };
             
             // Save to localStorage for use in confirmation page
@@ -2658,9 +2831,6 @@
                 orderItemImage.innerHTML = '<i class="fas fa-book fa-3x"></i>';
             }
             
-            // Update delivery address
-            document.getElementById('deliveryAddress').textContent = `Alamat Pengiriman: ${orderData.address}`;
-            
             // Reset payment method selection
             selectedPaymentMethod = null;
             selectedWhatsAppNumber = null;
@@ -2679,131 +2849,8 @@
             document.getElementById('orderConfirmationPage').classList.remove('hidden');
             document.getElementById('backBtn').classList.remove('hidden');
             
-            // Initialize map
-            initializeMap();
-            
             // Scroll to top
             window.scrollTo(0, 0);
-        }
-
-        // Initialize map
-        function initializeMap() {
-            // Check if map is already initialized
-            if (map) {
-                return;
-            }
-            
-            // Initialize map with default location (Jakarta)
-            map = L.map('map').setView([-6.2088, 106.8456], 13);
-            
-            // Add tile layer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-            
-            // Try to get user location
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    position => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        
-                        userLocation = { lat, lng };
-                        
-                        // Update map view to user location
-                        map.setView([lat, lng], 15);
-                        
-                        // Add marker for user location
-                        if (currentLocationMarker) {
-                            map.removeLayer(currentLocationMarker);
-                        }
-                        
-                        currentLocationMarker = L.marker([lat, lng]).addTo(map);
-                        
-                        // Get address from coordinates
-                        getAddressFromCoordinates(lat, lng);
-                    },
-                    error => {
-                        console.error('Error getting location:', error);
-                        // Show location permission message
-                        document.getElementById('locationPermission').style.display = 'block';
-                        document.getElementById('mapContainer').style.display = 'none';
-                    }
-                );
-            } else {
-                // Browser doesn't support geolocation
-                document.getElementById('locationPermission').style.display = 'block';
-                document.getElementById('mapContainer').style.display = 'none';
-            }
-        }
-
-        // Request location permission
-        function requestLocationPermission() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    position => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        
-                        userLocation = { lat, lng };
-                        
-                        // Update map view to user location
-                        map.setView([lat, lng], 15);
-                        
-                        // Add marker for user location
-                        if (currentLocationMarker) {
-                            map.removeLayer(currentLocationMarker);
-                        }
-                        
-                        currentLocationMarker = L.marker([lat, lng]).addTo(map);
-                        
-                        // Get address from coordinates
-                        getAddressFromCoordinates(lat, lng);
-                        
-                        // Show map container, hide permission message
-                        document.getElementById('locationPermission').style.display = 'none';
-                        document.getElementById('mapContainer').style.display = 'block';
-                    },
-                    error => {
-                        console.error('Error getting location:', error);
-                        showToast(translations[currentLanguage].locationError, 'error');
-                    }
-                );
-            } else {
-                showToast(translations[currentLanguage].locationError, 'error');
-            }
-        }
-
-        // Get address from coordinates using reverse geocoding
-        function getAddressFromCoordinates(lat, lng) {
-            // Using Nominatim API for reverse geocoding
-            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.display_name) {
-                        locationAddress = data.display_name;
-                        document.getElementById('currentLocation').textContent = translations[currentLanguage].locationDetected.replace('{address}', locationAddress);
-                        
-                        // Create Google Maps link
-                        const mapLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-                        document.getElementById('mapLink').href = mapLink;
-                        document.getElementById('mapLink').style.display = 'inline-flex';
-                        
-                        // Update order address with location
-                        const orderData = JSON.parse(localStorage.getItem('orderData'));
-                        if (orderData) {
-                            orderData.location = locationAddress;
-                            orderData.mapLink = mapLink;
-                            localStorage.setItem('orderData', JSON.stringify(orderData));
-                        }
-                    } else {
-                        document.getElementById('currentLocation').textContent = `${lat}, ${lng}`;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error getting address:', error);
-                    document.getElementById('currentLocation').textContent = `${lat}, ${lng}`;
-                });
         }
 
         // Select payment method
@@ -2960,8 +3007,8 @@
                         payment_method: paymentMethod,
                         region: region,
                         status: 'pending',
-                        location: userLocation,
-                        location_address: locationAddress,
+                        location: orderData.coordinates,
+                        location_address: orderData.location,
                         map_link: orderData.mapLink
                     });
                 
