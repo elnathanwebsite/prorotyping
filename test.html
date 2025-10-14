@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id" dir="ltr">
 <head>
@@ -1559,6 +1560,11 @@
                 font-size: 0.7rem;
             }
         }
+        .brand-logo {
+    height: 60px;
+    max-width: 100%;
+    object-fit: contain;
+}
     </style>
 </head>
 <body>
@@ -1575,9 +1581,9 @@
                 <button class="back-btn hidden" id="backBtn" onclick="showHomePage()">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <div class="navbar-brand" onclick="showHomePage()">
-                    <span id="brandName">دار الإمام القرافي</span>
-                </div>
+            <div class="navbar-brand" onclick="showHomePage()">
+    <img id="brandLogo" src="https://i.pinimg.com/736x/ed/87/62/ed8762d621840ad5f62db3842825264e.jpg" alt="دار الإمام القرافي" class="brand-logo">
+</div>
             </div>
             <div class="search-container">
                 <input type="text" class="search-input" id="searchInput" placeholder="Cari buku, penulis, penerbit...">
