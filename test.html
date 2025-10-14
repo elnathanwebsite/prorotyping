@@ -1235,6 +1235,32 @@
             cursor: not-allowed;
         }
 
+        /* WhatsApp Message Preview */
+        .whatsapp-message-preview {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .whatsapp-message-preview.show {
+            display: block;
+        }
+
+        .message-preview-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--dark-blue);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         /* Responsive Design - Perbaikan Tambahan */
         @media (max-width: 992px) {
             .category-grid {
@@ -1689,6 +1715,12 @@
                     </div>
                 </div>
                 
+                <!-- WhatsApp Message Preview -->
+                <div class="whatsapp-message-preview" id="whatsappMessagePreview">
+                    <div class="message-preview-title" id="messagePreviewTitle">Pratinjau Pesan WhatsApp:</div>
+                    <div id="messagePreviewContent"></div>
+                </div>
+                
                 <!-- Action Buttons -->
                 <button class="btn-confirm" id="confirmOrderBtn" onclick="confirmOrder()" disabled>
                     <i class="fas fa-check-circle"></i> <span id="confirmOrderText">Konfirmasi Pesanan</span>
@@ -1874,14 +1906,15 @@
                 locationError: 'Gagal mendeteksi lokasi. Silakan coba lagi.',
                 locationPermissionDenied: 'Izin lokasi ditolak. Silakan aktifkan lokasi di pengaturan browser.',
                 locationAddedToForm: 'Lokasi telah ditambahkan ke form alamat.',
-                whatsappMessage: 'Halo, saya ingin memesan buku berikut:\n\nJudul: {title}\nPenulis: {author}\nPenerbit: {publisher}\nJumlah: {quantity}\nTotal Harga: {totalPrice}\n\nNama: {name}\nNo. HP: {phone}\nAlamat: {address}\n\nLokasi GPS: {location}\n\nLink Google Maps: {mapLink}\n\nMohon konfirmasi ketersediaan dan total pembayaran.',
+                whatsappMessage: '🌟 **السلام عليكم ورحمة الله وبركاته** 🌟\n\n📚 **أود طلب الكتاب التالي:**\n\n**📖 العنوان:** {title}\n**✍️ المؤلف:** {author}\n**🏢 الناشر:** {publisher}\n**📊 الكمية:** {quantity}\n**💰 السعر الإجمالي:** {totalPrice}\n\n**👤 معلومات العميل:**\n**🏷️ الاسم:** {name}\n**📱 رقم الهاتف:** {phone}\n**📍 عنوان الشحن:** {address}\n\n**📍 معلومات الموقع:**\n**🌍 موقع GPS:** {location}\n**🗺️ رابط خرائط جوجل:** {mapLink}\n\n**🤝 **يرجى تأكيد التوفر وإجمالي الدفع. شكرا جزيلا!** 🤝\n\n---\n*دار الإمام القرافي - مكتبة التراث الإسلامي*',
                 paypalProcessing: 'Memproses pembayaran PayPal...',
                 paypalSuccess: 'Pembayaran PayPal berhasil! Pesanan Anda telah dikonfirmasi.',
                 paypalError: 'Terjadi kesalahan saat memproses pembayaran PayPal. Silakan coba lagi.',
                 pleaseSelectWhatsApp: 'Silakan pilih nomor WhatsApp terlebih dahulu.',
                 pleaseSelectPayment: 'Silakan pilih metode pembayaran terlebih dahulu.',
                 noResultsFound: 'Tidak ada hasil yang ditemukan',
-                searchForBooks: 'Cari buku...'
+                searchForBooks: 'Cari buku...',
+                messagePreviewTitle: 'Pratinjau Pesan WhatsApp:'
             },
             en: {
                 brandName: 'Dar Al-Imam Al-Qarafi',
@@ -1964,7 +1997,8 @@
                 pleaseSelectWhatsApp: 'Please select a WhatsApp number first.',
                 pleaseSelectPayment: 'Please select a payment method first.',
                 noResultsFound: 'No results found',
-                searchForBooks: 'Search for books...'
+                searchForBooks: 'Search for books...',
+                messagePreviewTitle: 'WhatsApp Message Preview:'
             },
             ar: {
                 brandName: 'دار الإمام القرافي',
@@ -2040,14 +2074,15 @@
                 locationError: 'فشل في الكشف عن الموقع. يرجى المحاولة مرة أخرى.',
                 locationPermissionDenied: 'تم رفض إذن الموقع. يرجى تفعيل الموقع في إعدادات المتصفح.',
                 locationAddedToForm: 'تمت إضافة الموقع إلى نموذج العنوان.',
-                whatsappMessage: 'مرحبا، أود طلب الكتاب التالي:\n\nالعنوان: {title}\nالمؤلف: {author}\nالناشر: {publisher}\nالكمية: {quantity}\nالسعر الإجمالي: {totalPrice}\n\nالاسم: {name}\nالهاتف: {phone}\nالعنوان: {address}\n\nموقع GPS: {location}\n\nرابط خرائط جوجل: {mapLink}\n\nيرجى تأكيد التوفر وإجمالي الدفع.',
+                whatsappMessage: '🌟 **السلام عليكم ورحمة الله وبركاته** 🌟\n\n📚 **أود طلب الكتاب التالي:**\n\n**📖 العنوان:** {title}\n**✍️ المؤلف:** {author}\n**🏢 الناشر:** {publisher}\n**📊 الكمية:** {quantity}\n**💰 السعر الإجمالي:** {totalPrice}\n\n**👤 معلومات العميل:**\n**🏷️ الاسم:** {name}\n**📱 رقم الهاتف:** {phone}\n**📍 عنوان الشحن:** {address}\n\n**📍 معلومات الموقع:**\n**🌍 موقع GPS:** {location}\n**🗺️ رابط خرائط جوجل:** {mapLink}\n\n**🤝 **يرجى تأكيد التوفر وإجمالي الدفع. شكرا جزيلا!** 🤝\n\n---\n*دار الإمام القرافي - مكتبة التراث الإسلامي*',
                 paypalProcessing: 'معالجة دفع باي بال...',
                 paypalSuccess: 'تم دفع باي بال بنجاح! تم تأكيد طلبك.',
                 paypalError: 'حدث خطأ أثناء معالجة دفع باي بال. يرجى المحاولة مرة أخرى.',
                 pleaseSelectWhatsApp: 'يرجى اختيار رقم واتساب أولاً.',
                 pleaseSelectPayment: 'يرجى اختيار طريقة الدفع أولاً.',
                 noResultsFound: 'لم يتم العثور على نتائج',
-                searchForBooks: 'ابحث عن كتب...'
+                searchForBooks: 'ابحث عن كتب...',
+                messagePreviewTitle: 'معاينة رسالة واتساب:'
             }
         };
         
@@ -3002,6 +3037,9 @@
             document.getElementById('whatsappOptions').style.display = 'none';
             document.getElementById('confirmOrderBtn').disabled = true;
             
+            // Hide message preview
+            document.getElementById('whatsappMessagePreview').classList.remove('show');
+            
             // Show confirmation page, hide other pages
             document.getElementById('homePage').classList.add('hidden');
             document.getElementById('bookDetailPage').classList.add('hidden');
@@ -3054,6 +3092,43 @@
             
             // Enable confirm button
             document.getElementById('confirmOrderBtn').disabled = false;
+            
+            // Show message preview
+            showWhatsAppMessagePreview(region);
+        }
+
+        // Show WhatsApp message preview
+        function showWhatsAppMessagePreview(region) {
+            const orderData = JSON.parse(localStorage.getItem('orderData'));
+            if (!orderData) return;
+            
+            const messagePreview = document.getElementById('whatsappMessagePreview');
+            const messageContent = document.getElementById('messagePreviewContent');
+            
+            // Get message template based on region
+            const messageTemplate = region === 'ar' ? 
+                translations.ar.whatsappMessage : 
+                translations[currentLanguage].whatsappMessage;
+            
+            // Get location data
+            const location = orderData.location || '';
+            const mapLink = orderData.mapLink || '';
+            
+            // Replace placeholders with actual data
+            const message = messageTemplate
+                .replace('{title}', orderData.book.title)
+                .replace('{author}', orderData.book.author)
+                .replace('{publisher}', orderData.book.publisher_name)
+                .replace('{quantity}', orderData.quantity)
+                .replace('{totalPrice}', orderData.formattedTotal)
+                .replace('{name}', orderData.name)
+                .replace('{phone}', orderData.phone)
+                .replace('{address}', orderData.address)
+                .replace('{location}', location)
+                .replace('{mapLink}', mapLink);
+            
+            messageContent.textContent = message;
+            messagePreview.classList.add('show');
         }
 
         // Confirm order
@@ -3091,7 +3166,9 @@
             const whatsappNumber = whatsappNumbers[region];
             
             // Create message template using currentLanguage (UI language)
-            const messageTemplate = translations[currentLanguage].whatsappMessage;
+            const messageTemplate = region === 'ar' ? 
+                translations.ar.whatsappMessage : 
+                translations[currentLanguage].whatsappMessage;
             
             // Get location data
             const location = orderData.location || '';
