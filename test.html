@@ -1123,6 +1123,80 @@
             cursor: pointer;
         }
 
+        .whatsapp-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .whatsapp-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-option:hover {
+            background-color: rgba(37, 211, 102, 0.1);
+        }
+
+        .whatsapp-option.selected {
+            border-color: #25D366;
+            background-color: rgba(37, 211, 102, 0.1);
+        }
+
+        .whatsapp-option-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .whatsapp-option-details {
+            flex: 1;
+        }
+
+        .whatsapp-option-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .whatsapp-option-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .whatsapp-option-number {
+            font-weight: bold;
+            color: #25D366;
+        }
+
+        .location-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .location-link:hover {
+            text-decoration: underline;
+        }
+
+        .location-link i {
+            margin-left: 5px;
+        }
+
         /* Responsive Design - Perbaikan Tambahan */
         @media (max-width: 992px) {
             .category-grid {
@@ -1526,6 +1600,9 @@
                         <div class="location-info">
                             <i class="fas fa-home"></i>
                             <span id="deliveryAddress">Alamat Pengiriman: -</span>
+                            <a href="#" id="mapLink" class="location-link" target="_blank" style="display: none;">
+                                Lihat di Google Maps <i class="fas fa-external-link-alt"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -1552,6 +1629,33 @@
                             <div class="payment-method-title" id="paypalTitle">PayPal</div>
                         </div>
                         <div class="payment-method-desc" id="paypalDesc">Bayar menggunakan PayPal dengan aman dan cepat</div>
+                    </div>
+                </div>
+                
+                <!-- WhatsApp Options (shown when WhatsApp is selected) -->
+                <div class="whatsapp-options" id="whatsappOptions" style="display: none;">
+                    <h3 class="payment-options-title" id="selectWhatsAppTitle">Pilih Nomor WhatsApp</h3>
+                    
+                    <div class="whatsapp-option" id="whatsappIndo" onclick="selectWhatsAppNumber('id')">
+                        <div class="whatsapp-option-icon">
+                            <i class="fas fa-globe-asia"></i>
+                        </div>
+                        <div class="whatsapp-option-details">
+                            <div class="whatsapp-option-title" id="whatsappIndoTitle">WhatsApp Indonesia</div>
+                            <div class="whatsapp-option-desc" id="whatsappIndoDesc">Layanan pelanggan dalam bahasa Indonesia</div>
+                            <div class="whatsapp-option-number">+6285163682122</div>
+                        </div>
+                    </div>
+                    
+                    <div class="whatsapp-option" id="whatsappArab" onclick="selectWhatsAppNumber('ar')">
+                        <div class="whatsapp-option-icon">
+                            <i class="fas fa-globe-africa"></i>
+                        </div>
+                        <div class="whatsapp-option-details">
+                            <div class="whatsapp-option-title" id="whatsappArabTitle">WhatsApp Arab</div>
+                            <div class="whatsapp-option-desc" id="whatsappArabDesc">خدمة العملاء باللغة العربية</div>
+                            <div class="whatsapp-option-number">+201014006053</div>
+                        </div>
                     </div>
                 </div>
                 
@@ -1650,9 +1754,11 @@
         let touchStartX = 0;
         let touchEndX = 0;
         let selectedPaymentMethod = null;
+        let selectedWhatsAppNumber = null;
         let map = null;
         let currentLocationMarker = null;
         let userLocation = null;
+        let locationAddress = '';
         
         // WhatsApp numbers
         const whatsappNumbers = {
@@ -1727,12 +1833,19 @@
                 paypalDesc: 'Bayar menggunakan PayPal dengan aman dan cepat',
                 confirmOrderText: 'Konfirmasi Pesanan',
                 totalLabel2: 'Total:',
-                whatsappMessage: 'Halo, saya ingin memesan buku berikut:\n\nJudul: {title}\nPenulis: {author}\nPenerbit: {publisher}\nJumlah: {quantity}\nTotal Harga: {totalPrice}\n\nNama: {name}\nNo. HP: {phone}\nAlamat: {address}\n\nMohon konfirmasi ketersediaan dan total pembayaran.',
+                selectWhatsAppTitle: 'Pilih Nomor WhatsApp',
+                whatsappIndoTitle: 'WhatsApp Indonesia',
+                whatsappIndoDesc: 'Layanan pelanggan dalam bahasa Indonesia',
+                whatsappArabTitle: 'WhatsApp Arab',
+                whatsappArabDesc: 'خدمة العملاء باللغة العربية',
+                whatsappMessage: 'Halo, saya ingin memesan buku berikut:\n\nJudul: {title}\nPenulis: {author}\nPenerbit: {publisher}\nJumlah: {quantity}\nTotal Harga: {totalPrice}\n\nNama: {name}\nNo. HP: {phone}\nAlamat: {address}\n\nLokasi Pengiriman: {location}\n\nLink Google Maps: {mapLink}\n\nMohon konfirmasi ketersediaan dan total pembayaran.',
                 paypalProcessing: 'Memproses pembayaran PayPal...',
                 paypalSuccess: 'Pembayaran PayPal berhasil! Pesanan Anda telah dikonfirmasi.',
                 paypalError: 'Terjadi kesalahan saat memproses pembayaran PayPal. Silakan coba lagi.',
                 locationDetected: 'Lokasi terdeteksi: {address}',
-                locationError: 'Tidak dapat mendeteksi lokasi Anda. Silakan aktifkan lokasi atau masukkan alamat secara manual.'
+                locationError: 'Tidak dapat mendeteksi lokasi Anda. Silakan aktifkan lokasi atau masukkan alamat secara manual.',
+                pleaseSelectWhatsApp: 'Silakan pilih nomor WhatsApp terlebih dahulu.',
+                pleaseSelectPayment: 'Silakan pilih metode pembayaran terlebih dahulu.'
             },
             en: {
                 brandName: 'Dar Al-Imam Al-Qarafi',
@@ -1799,12 +1912,19 @@
                 paypalDesc: 'Pay securely and quickly using PayPal',
                 confirmOrderText: 'Confirm Order',
                 totalLabel2: 'Total:',
-                whatsappMessage: 'Hello, I would like to order the following book:\n\nTitle: {title}\nAuthor: {author}\nPublisher: {publisher}\nQuantity: {quantity}\nTotal Price: {totalPrice}\n\nName: {name}\nPhone: {phone}\nAddress: {address}\n\nPlease confirm availability and total payment.',
+                selectWhatsAppTitle: 'Select WhatsApp Number',
+                whatsappIndoTitle: 'WhatsApp Indonesia',
+                whatsappIndoDesc: 'Customer service in Indonesian',
+                whatsappArabTitle: 'WhatsApp Arab',
+                whatsappArabDesc: 'خدمة العملاء باللغة العربية',
+                whatsappMessage: 'Hello, I would like to order the following book:\n\nTitle: {title}\nAuthor: {author}\nPublisher: {publisher}\nQuantity: {quantity}\nTotal Price: {totalPrice}\n\nName: {name}\nPhone: {phone}\nAddress: {address}\n\nDelivery Location: {location}\n\nGoogle Maps Link: {mapLink}\n\nPlease confirm availability and total payment.',
                 paypalProcessing: 'Processing PayPal payment...',
                 paypalSuccess: 'PayPal payment successful! Your order has been confirmed.',
                 paypalError: 'An error occurred while processing PayPal payment. Please try again.',
                 locationDetected: 'Location detected: {address}',
-                locationError: 'Unable to detect your location. Please enable location or enter address manually.'
+                locationError: 'Unable to detect your location. Please enable location or enter address manually.',
+                pleaseSelectWhatsApp: 'Please select a WhatsApp number first.',
+                pleaseSelectPayment: 'Please select a payment method first.'
             },
             ar: {
                 brandName: 'دار الإمام القرافي',
@@ -1871,12 +1991,19 @@
                 paypalDesc: 'ادفع بأمان وسرعة باستخدام باي بال',
                 confirmOrderText: 'تأكيد الطلب',
                 totalLabel2: 'الإجمالي:',
-                whatsappMessage: 'مرحبا، أود طلب الكتاب التالي:\n\nالعنوان: {title}\nالمؤلف: {author}\nالناشر: {publisher}\nالكمية: {quantity}\nالسعر الإجمالي: {totalPrice}\n\nالاسم: {name}\nالهاتف: {phone}\nالعنوان: {address}\n\nيرجى تأكيد التوفر وإجمالي الدفع.',
+                selectWhatsAppTitle: 'اختر رقم واتساب',
+                whatsappIndoTitle: 'واتساب إندونيسيا',
+                whatsappIndoDesc: 'خدمة العملاء باللغة الإندونيسية',
+                whatsappArabTitle: 'واتساب عربي',
+                whatsappArabDesc: 'خدمة العملاء باللغة العربية',
+                whatsappMessage: 'مرحبا، أود طلب الكتاب التالي:\n\nالعنوان: {title}\nالمؤلف: {author}\nالناشر: {publisher}\nالكمية: {quantity}\nالسعر الإجمالي: {totalPrice}\n\nالاسم: {name}\nالهاتف: {phone}\nالعنوان: {address}\n\nموقع التسليم: {location}\n\nرابط خرائط جوجل: {mapLink}\n\nيرجى تأكيد التوفر وإجمالي الدفع.',
                 paypalProcessing: 'معالجة دفع باي بال...',
                 paypalSuccess: 'تم دفع باي بال بنجاح! تم تأكيد طلبك.',
                 paypalError: 'حدث خطأ أثناء معالجة دفع باي بال. يرجى المحاولة مرة أخرى.',
                 locationDetected: 'تم تحديد الموقع: {address}',
-                locationError: 'غير قادر على تحديد موقعك. يرجى تفعيل الموقع أو إدخال العنوان يدوياً.'
+                locationError: 'غير قادر على تحديد موقعك. يرجى تفعيل الموقع أو إدخال العنوان يدوياً.',
+                pleaseSelectWhatsApp: 'يرجى اختيار رقم واتساب أولاً.',
+                pleaseSelectPayment: 'يرجى اختيار طريقة الدفع أولاً.'
             }
         };
         
@@ -2536,9 +2663,14 @@
             
             // Reset payment method selection
             selectedPaymentMethod = null;
+            selectedWhatsAppNumber = null;
             document.querySelectorAll('.payment-method').forEach(method => {
                 method.classList.remove('selected');
             });
+            document.querySelectorAll('.whatsapp-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.getElementById('whatsappOptions').style.display = 'none';
             document.getElementById('confirmOrderBtn').disabled = true;
             
             // Show confirmation page, hide other pages
@@ -2649,8 +2781,21 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.display_name) {
-                        const address = data.display_name;
-                        document.getElementById('currentLocation').textContent = translations[currentLanguage].locationDetected.replace('{address}', address);
+                        locationAddress = data.display_name;
+                        document.getElementById('currentLocation').textContent = translations[currentLanguage].locationDetected.replace('{address}', locationAddress);
+                        
+                        // Create Google Maps link
+                        const mapLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+                        document.getElementById('mapLink').href = mapLink;
+                        document.getElementById('mapLink').style.display = 'inline-flex';
+                        
+                        // Update order address with location
+                        const orderData = JSON.parse(localStorage.getItem('orderData'));
+                        if (orderData) {
+                            orderData.location = locationAddress;
+                            orderData.mapLink = mapLink;
+                            localStorage.setItem('orderData', JSON.stringify(orderData));
+                        }
                     } else {
                         document.getElementById('currentLocation').textContent = `${lat}, ${lng}`;
                     }
@@ -2672,8 +2817,33 @@
             
             if (method === 'whatsapp') {
                 document.getElementById('whatsappPayment').classList.add('selected');
+                document.getElementById('whatsappOptions').style.display = 'block';
+                // Reset WhatsApp selection
+                selectedWhatsAppNumber = null;
+                document.querySelectorAll('.whatsapp-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                document.getElementById('confirmOrderBtn').disabled = true;
             } else if (method === 'paypal') {
                 document.getElementById('paypalPayment').classList.add('selected');
+                document.getElementById('whatsappOptions').style.display = 'none';
+                document.getElementById('confirmOrderBtn').disabled = false;
+            }
+        }
+
+        // Select WhatsApp number
+        function selectWhatsAppNumber(region) {
+            selectedWhatsAppNumber = region;
+            
+            // Update UI
+            document.querySelectorAll('.whatsapp-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            if (region === 'id') {
+                document.getElementById('whatsappIndo').classList.add('selected');
+            } else if (region === 'ar') {
+                document.getElementById('whatsappArab').classList.add('selected');
             }
             
             // Enable confirm button
@@ -2683,7 +2853,12 @@
         // Confirm order
         function confirmOrder() {
             if (!selectedPaymentMethod) {
-                showToast('Please select a payment method', 'error');
+                showToast(translations[currentLanguage].pleaseSelectPayment, 'error');
+                return;
+            }
+            
+            if (selectedPaymentMethod === 'whatsapp' && !selectedWhatsAppNumber) {
+                showToast(translations[currentLanguage].pleaseSelectWhatsApp, 'error');
                 return;
             }
             
@@ -2697,7 +2872,7 @@
             
             if (selectedPaymentMethod === 'whatsapp') {
                 // Send WhatsApp message
-                sendWhatsAppMessage(orderData);
+                sendWhatsAppMessage(orderData, selectedWhatsAppNumber);
             } else if (selectedPaymentMethod === 'paypal') {
                 // Process PayPal payment
                 processPayPalPayment(orderData);
@@ -2705,12 +2880,16 @@
         }
 
         // Send WhatsApp message
-        function sendWhatsAppMessage(orderData) {
-            // Get appropriate WhatsApp number based on language
-            const whatsappNumber = whatsappNumbers[currentLanguage];
+        function sendWhatsAppMessage(orderData, region) {
+            // Get appropriate WhatsApp number based on region
+            const whatsappNumber = whatsappNumbers[region];
             
             // Create message template
-            const messageTemplate = translations[currentLanguage].whatsappMessage;
+            const messageTemplate = translations[region].whatsappMessage;
+            
+            // Get location data
+            const location = orderData.location || '';
+            const mapLink = orderData.mapLink || '';
             
             // Replace placeholders with actual data
             const message = messageTemplate
@@ -2721,7 +2900,9 @@
                 .replace('{totalPrice}', orderData.formattedTotal)
                 .replace('{name}', orderData.name)
                 .replace('{phone}', orderData.phone)
-                .replace('{address}', orderData.address);
+                .replace('{address}', orderData.address)
+                .replace('{location}', location)
+                .replace('{mapLink}', mapLink);
             
             // Encode message for URL
             const encodedMessage = encodeURIComponent(message);
@@ -2736,7 +2917,7 @@
             showToast('Opening WhatsApp...', 'success');
             
             // Save order to database
-            saveOrderToDatabase(orderData, 'whatsapp');
+            saveOrderToDatabase(orderData, 'whatsapp', region);
         }
 
         // Process PayPal payment
@@ -2763,7 +2944,7 @@
         }
 
         // Save order to database
-        async function saveOrderToDatabase(orderData, paymentMethod) {
+        async function saveOrderToDatabase(orderData, paymentMethod, region = null) {
             try {
                 // Save order to Supabase
                 const { data, error } = await supabaseClient
@@ -2777,8 +2958,11 @@
                         total_price: orderData.totalPrice,
                         currency: currentCurrency,
                         payment_method: paymentMethod,
+                        region: region,
                         status: 'pending',
-                        location: userLocation
+                        location: userLocation,
+                        location_address: locationAddress,
+                        map_link: orderData.mapLink
                     });
                 
                 if (error) throw error;
