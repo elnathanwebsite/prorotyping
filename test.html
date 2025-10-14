@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://www.paypal.com/sdk/js?client-id=Ab0WTd-35HrV6x9wWixgO4DZxMShGBjKQSpwxO58M3wdV8GrQUvdLRrBiGq_gTMlGotjeiuf4NrLJeR7&currency=USD"></script>
     <style>
         :root {
             --primary-blue: #0a4d8c;
@@ -31,7 +32,7 @@
             background-color: var(--light-gray);
             color: var(--black);
             transition: all 0.3s ease;
-            overflow-x: hidden; /* Mencegah scroll horizontal */
+            overflow-x: hidden;
         }
 
         /* RTL Support */
@@ -75,7 +76,7 @@
             display: none;
         }
 
-        /* Navigation Bar - Perbaikan Responsif */
+        /* Navigation Bar */
         .navbar {
             background-color: var(--primary-blue);
             padding: 10px 0;
@@ -198,7 +199,7 @@
             color: var(--yellow);
         }
 
-        /* Language and Currency Switcher - Perbaikan Responsif */
+        /* Language and Currency Switcher */
         .lang-currency-switcher {
             display: flex;
             align-items: center;
@@ -259,7 +260,7 @@
             color: var(--white);
         }
 
-        /* Hero Section - Perbaikan Responsif */
+        /* Hero Section */
         .hero-section {
             background-color: var(--primary-blue);
             padding: 30px 0;
@@ -278,7 +279,7 @@
             opacity: 0.9;
         }
 
-        /* Publishers Section - Perbaikan Responsif */
+        /* Publishers Section */
         .publishers-section {
             background-color: var(--white);
             padding: 30px 0;
@@ -378,7 +379,7 @@
             right: 5px;
         }
 
-        /* Library Sections - Perbaikan Responsif */
+        /* Library Sections */
         .library-sections {
             padding: 30px 0;
         }
@@ -424,7 +425,7 @@
             color: #666;
         }
 
-        /* Flash Sale Section - Perbaikan Responsif */
+        /* Flash Sale Section */
         .flash-sale-section {
             background-color: var(--white);
             padding: 30px 0;
@@ -466,7 +467,7 @@
             gap: 15px;
             overflow-x: auto;
             padding-bottom: 20px;
-            -webkit-overflow-scrolling: touch; /* Untuk iOS */
+            -webkit-overflow-scrolling: touch;
         }
 
         .books-container::-webkit-scrollbar {
@@ -581,12 +582,12 @@
             font-size: 0.8rem;
         }
 
-        /* Bestsellers Section - Perbaikan Responsif */
+        /* Bestsellers Section */
         .bestsellers-section {
             padding: 30px 0;
         }
 
-        /* Book Detail Page - Perbaikan Responsif */
+        /* Book Detail Page */
         .book-detail-container {
             background-color: var(--white);
             padding: 30px 0;
@@ -857,7 +858,7 @@
             margin-left: 5px;
         }
 
-        /* Related Books - Perbaikan Responsif */
+        /* Related Books */
         .related-books {
             margin-top: 30px;
         }
@@ -915,7 +916,7 @@
             font-size: 0.9rem;
         }
 
-        /* Footer - Perbaikan Responsif */
+        /* Footer */
         footer {
             background-color: var(--dark-blue);
             color: var(--white);
@@ -997,7 +998,7 @@
             opacity: 0.9;
         }
 
-        /* Toast Notification - Perbaikan Responsif */
+        /* Toast Notification */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -1261,7 +1262,81 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Responsive Design - Perbaikan Tambahan */
+        /* PayPal Container */
+        .paypal-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+
+        .paypal-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--dark-blue);
+        }
+
+        #paypal-button-container {
+            margin-top: 15px;
+        }
+
+        /* Payment Success Page */
+        .payment-success-container {
+            background-color: var(--white);
+            padding: 30px 0;
+            min-height: calc(100vh - 200px);
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--green);
+            margin-bottom: 20px;
+        }
+
+        .success-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--dark-blue);
+        }
+
+        .success-message {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .success-details {
+            background-color: var(--light-gray);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .success-details-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--dark-blue);
+        }
+
+        .success-detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .success-detail-label {
+            font-weight: bold;
+            width: 150px;
+        }
+
+        .success-detail-value {
+            flex: 1;
+        }
+
+        /* Responsive Design */
         @media (max-width: 992px) {
             .category-grid {
                 grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -1359,7 +1434,6 @@
             }
         }
 
-        /* Perbaikan untuk layar sangat kecil */
         @media (max-width: 400px) {
             .book-card {
                 flex: 0 0 140px;
@@ -1715,6 +1789,13 @@
                     </div>
                 </div>
                 
+                <!-- PayPal Container (shown when PayPal is selected) -->
+                <div class="paypal-container" id="paypalContainer" style="display: none;">
+                    <h3 class="paypal-title" id="paypalContainerTitle">Pembayaran PayPal</h3>
+                    <p id="paypalDescription">Klik tombol di bawah untuk melanjutkan pembayaran dengan PayPal</p>
+                    <div id="paypal-button-container"></div>
+                </div>
+                
                 <!-- WhatsApp Message Preview -->
                 <div class="whatsapp-message-preview" id="whatsappMessagePreview">
                     <div class="message-preview-title" id="messagePreviewTitle">Pratinjau Pesan WhatsApp:</div>
@@ -1724,6 +1805,47 @@
                 <!-- Action Buttons -->
                 <button class="btn-confirm" id="confirmOrderBtn" onclick="confirmOrder()" disabled>
                     <i class="fas fa-check-circle"></i> <span id="confirmOrderText">Konfirmasi Pesanan</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Success Page -->
+    <div id="paymentSuccessPage" class="page hidden">
+        <div class="payment-success-container">
+            <div class="container">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h1 class="success-title" id="successTitle">Pembayaran Berhasil!</h1>
+                <p class="success-message" id="successMessage">Terima kasih telah berbelanja di Islamic Heritage Library. Pesanan Anda sedang diproses.</p>
+                
+                <div class="success-details">
+                    <h3 class="success-details-title" id="successDetailsTitle">Detail Pesanan</h3>
+                    <div class="success-detail-row">
+                        <div class="success-detail-label" id="successOrderIdLabel">ID Pesanan:</div>
+                        <div class="success-detail-value" id="successOrderId">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="success-detail-label" id="successBookTitleLabel">Judul Buku:</div>
+                        <div class="success-detail-value" id="successBookTitle">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="success-detail-label" id="successQuantityLabel">Jumlah:</div>
+                        <div class="success-detail-value" id="successQuantity">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="success-detail-label" id="successTotalLabel">Total Pembayaran:</div>
+                        <div class="success-detail-value" id="successTotal">-</div>
+                    </div>
+                    <div class="success-detail-row">
+                        <div class="success-detail-label" id="successPaymentMethodLabel">Metode Pembayaran:</div>
+                        <div class="success-detail-value" id="successPaymentMethod">-</div>
+                    </div>
+                </div>
+                
+                <button class="btn-order" onclick="showHomePage()">
+                    <i class="fas fa-home"></i> Kembali ke Beranda
                 </button>
             </div>
         </div>
@@ -1805,11 +1927,15 @@
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5d2trd3p1enp4dmp3c3drZGVxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MDMwNTYzMSwiZXhwIjoyMDc1ODgxNjMxfQ.FPekAvhdzw4suEBMezIxtj57_Gh2_VNBbkINg7tiTpY';
         const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
+        // PayPal Configuration
+        const PAYPAL_CLIENT_ID = 'Ab0WTd-35HrV6x9wWixgO4DZxMShGBjKQSpwxO58M3wdV8GrQUvdLRrBiGq_gTMlGotjeiuf4NrLJeR7';
+        const PAYPAL_SECRET_KEY = 'ENl1YqxDRInNpmFWBb-5o-Ai4k4qqjCl5STF7BlE4SQIix3lcDAecfguNJQVtRzOry8kIyO8Cj_TWu7o';
+
         // Global variables
         let currentBook = null;
         let currentPublisherPosition = 0;
-        let currentLanguage = 'id'; // Default language: Indonesian
-        let currentCurrency = 'idr'; // Default currency: IDR
+        let currentLanguage = 'id';
+        let currentCurrency = 'idr';
         let allBooks = [];
         let publishers = [];
         let categories = [];
@@ -1823,11 +1949,12 @@
         let locationAddress = '';
         let locationMapLink = '';
         let searchTimeout = null;
+        let paypalButtons = null;
         
         // WhatsApp numbers
         const whatsappNumbers = {
-            id: '+6285163682122', // Indonesian WhatsApp
-            ar: '+201014006053'  // Arabic WhatsApp
+            id: '+6285163682122',
+            ar: '+201014006053'
         };
         
         // Language translations
@@ -1906,7 +2033,7 @@
                 locationError: 'Gagal mendeteksi lokasi. Silakan coba lagi.',
                 locationPermissionDenied: 'Izin lokasi ditolak. Silakan aktifkan lokasi di pengaturan browser.',
                 locationAddedToForm: 'Lokasi telah ditambahkan ke form alamat.',
-                whatsappMessage: 'Assalamu\'alaikum Warahmatullahi Wabarakatuh 🌟\n\n📚 *Saya ingin memesan buku berikut:*\n\n*📖 Judul:* {title}\n*✍️ Penulis:* {author}\n*🏢 Penerbit:* {publisher}\n*📊 Jumlah:* {quantity}\n*💰 Harga Total:* {totalPrice}\n\n*👤 Informasi Pelanggan:*\n*🏷️ Nama:* {name}\n*📱 Nomor Telepon:* {phone}\n*📍 Alamat Pengiriman:* {address}\n\n*📍 Informasi Lokasi:*\n*🌍 Lokasi GPS:* {location}\n*🗺️ Tautan Google Maps:* {mapLink}\n\n*🤝 *Mohon konfirmasi ketersediaan dan total pembayaran. Terima kasih!* 🤝\n\n---\n*Dar Al-Imam Al-Qarafi - Perpustakaan Warisan Islam*',
+                whatsappMessage: 'Assalamu\'alaikum Warahmatullahi Wabarakatuh 🌟\n\n📚 **Saya ingin memesan buku berikut:**\n\n**📖 Judul:** {title}\n**✍️ Penulis:** {author}\n**🏢 Penerbit:** {publisher}\n**📊 Jumlah:** {quantity}\n**💰 Harga Total:** {totalPrice}\n\n**👤 Informasi Pelanggan:**\n**🏷️ Nama:** {name}\n**📱 Nomor Telepon:** {phone}\n**📍 Alamat Pengiriman:** {address}\n\n**📍 Informasi Lokasi:**\n**🌍 Lokasi GPS:** {location}\n**🗺️ Tautan Google Maps:** {mapLink}\n\n**🤝 **Mohon konfirmasi ketersediaan dan total pembayaran. Terima kasih!** 🤝\n\n---\n*Dar Al-Imam Al-Qarafi - Perpustakaan Warisan Islam*',
                 paypalProcessing: 'Memproses pembayaran PayPal...',
                 paypalSuccess: 'Pembayaran PayPal berhasil! Pesanan Anda telah dikonfirmasi.',
                 paypalError: 'Terjadi kesalahan saat memproses pembayaran PayPal. Silakan coba lagi.',
@@ -1914,7 +2041,16 @@
                 pleaseSelectPayment: 'Silakan pilih metode pembayaran terlebih dahulu.',
                 noResultsFound: 'Tidak ada hasil yang ditemukan',
                 searchForBooks: 'Cari buku...',
-                messagePreviewTitle: 'Pratinjau Pesan WhatsApp:'
+                messagePreviewTitle: 'Pratinjau Pesan WhatsApp:',
+                paypalContainerTitle: 'Pembayaran PayPal',
+                successTitle: 'Pembayaran Berhasil!',
+                successMessage: 'Terima kasih telah berbelanja di Islamic Heritage Library. Pesanan Anda sedang diproses.',
+                successDetailsTitle: 'Detail Pesanan',
+                successOrderIdLabel: 'ID Pesanan:',
+                successBookTitleLabel: 'Judul Buku:',
+                successQuantityLabel: 'Jumlah:',
+                successTotalLabel: 'Total Pembayaran:',
+                successPaymentMethodLabel: 'Metode Pembayaran:'
             },
             en: {
                 brandName: 'Dar Al-Imam Al-Qarafi',
@@ -1990,7 +2126,7 @@
                 locationError: 'Failed to detect location. Please try again.',
                 locationPermissionDenied: 'Location permission denied. Please enable location in browser settings.',
                 locationAddedToForm: 'Location has been added to address form.',
-                whatsappMessage: '🌟 *Assalamu\'alaikum Warahmatullahi Wabarakatuh* 🌟\n\n*📚 I would like to order the following book:*\n\n*📖 Title:* {title}\n*✍️ Author:* {author}\n*🏢 Publisher:* {publisher}\n*📊 Quantity:* {quantity}\n*💰 Total Price:* {totalPrice}\n\n*👤 Customer Information:*\n*🏷️ Name:* {name}\n*📱 Phone Number:* {phone}\n*📍 Shipping Address:*\n*📍 Location Information:*\n*🌍 GPS Location:* {location}\n*🗺️ Google Maps Link:* {mapLink}\n\n*🤝 *Please confirm availability and total payment. Thank you!* 🤝\n\n---\n*Dar Al-Imam Al-Qarafi - Islamic Heritage Library*',
+                whatsappMessage: '🌟 **Assalamu\'alaikum Warahmatullahi Wabarakatuh** 🌟\n\n📚 **I would like to order the following book:**\n\n**📖 Title:** {title}\n**✍️ Author:** {author}\n**🏢 Publisher:** {publisher}\n**📊 Quantity:** {quantity}\n**💰 Total Price:** {totalPrice}\n\n**👤 Customer Information:**\n**🏷️ Name:** {name}\n**📱 Phone Number:** {phone}\n**📍 Shipping Address:** {address}\n\n**📍 Location Information:**\n**🌍 GPS Location:** {location}\n**🗺️ Google Maps Link:** {mapLink}\n\n**🤝 **Please confirm availability and total payment. Thank you!** 🤝\n\n---\n*Dar Al-Imam Al-Qarafi - Islamic Heritage Library*',
                 paypalProcessing: 'Processing PayPal payment...',
                 paypalSuccess: 'PayPal payment successful! Your order has been confirmed.',
                 paypalError: 'An error occurred while processing PayPal payment. Please try again.',
@@ -1998,7 +2134,16 @@
                 pleaseSelectPayment: 'Please select a payment method first.',
                 noResultsFound: 'No results found',
                 searchForBooks: 'Search for books...',
-                messagePreviewTitle: 'WhatsApp Message Preview:'
+                messagePreviewTitle: 'WhatsApp Message Preview:',
+                paypalContainerTitle: 'PayPal Payment',
+                successTitle: 'Payment Successful!',
+                successMessage: 'Thank you for shopping at Islamic Heritage Library. Your order is being processed.',
+                successDetailsTitle: 'Order Details',
+                successOrderIdLabel: 'Order ID:',
+                successBookTitleLabel: 'Book Title:',
+                successQuantityLabel: 'Quantity:',
+                successTotalLabel: 'Total Payment:',
+                successPaymentMethodLabel: 'Payment Method:'
             },
             ar: {
                 brandName: 'دار الإمام القرافي',
@@ -2074,21 +2219,32 @@
                 locationError: 'فشل في الكشف عن الموقع. يرجى المحاولة مرة أخرى.',
                 locationPermissionDenied: 'تم رفض إذن الموقع. يرجى تفعيل الموقع في إعدادات المتصفح.',
                 locationAddedToForm: 'تمت إضافة الموقع إلى نموذج العنوان.',
-              whatsappMessage: '🌟 *السلام عليكم ورحمة الله وبركاته* 🌟\n\n*📚 أود طلب الكتاب التالي:*\n\n*📖 العنوان:* {title}\n*✍️ المؤلف:* {author}\n*🏢 الناشر:* {publisher}\n*📊 الكمية:* {quantity}\n*💰 السعر الإجمالي:* {totalPrice}\n\n*👤 معلومات العميل:*\n*🏷️ الاسم:* {name}\n*📱 رقم الهاتف:* {phone}\n*📍 عنوان الشحن:* {address}\n\n*📍 معلومات الموقع:*\n*🌍 موقع GPS:* {location}\n*🗺️ رابط خرائط جوجل:* {mapLink}\n\n*🤝 *يرجى تأكيد التوفر وإجمالي الدفع. شكرا جزيلا!* 🤝\n\n---\n*دار الإمام القرافي - مكتبة التراث الإسلامي*',
+                whatsappMessage: '🌟 **السلام عليكم ورحمة الله وبركاته** 🌟\n\n📚 **أود طلب الكتاب التالي:**\n\n**📖 العنوان:** {title}\n**✍️ المؤلف:** {author}\n**🏢 الناشر:** {publisher}\n**📊 الكمية:** {quantity}\n**💰 السعر الإجمالي:** {totalPrice}\n\n**👤 معلومات العميل:**\n**🏷️ الاسم:** {name}\n**📱 رقم الهاتف:** {phone}\n**📍 عنوان الشحن:** {address}\n\n**📍 معلومات الموقع:**\n**🌍 موقع GPS:** {location}\n**🗺️ رابط خرائط جوجل:** {mapLink}\n\n**🤝 **يرجى تأكيد التوفر وإجمالي الدفع. شكرا جزيلا!** 🤝\n\n---\n*دار الإمام القرافي - مكتبة التراث الإسلامي*',
+                paypalProcessing: 'معالجة دفع باي بال...',
+                paypalSuccess: 'تم دفع باي بال بنجاح! تم تأكيد طلبك.',
                 paypalError: 'حدث خطأ أثناء معالجة دفع باي بال. يرجى المحاولة مرة أخرى.',
                 pleaseSelectWhatsApp: 'يرجى اختيار رقم واتساب أولاً.',
                 pleaseSelectPayment: 'يرجى اختيار طريقة الدفع أولاً.',
                 noResultsFound: 'لم يتم العثور على نتائج',
                 searchForBooks: 'ابحث عن كتب...',
-                messagePreviewTitle: 'معاينة رسالة واتساب:'
+                messagePreviewTitle: 'معاينة رسالة واتساب:',
+                paypalContainerTitle: 'دفع باي بال',
+                successTitle: 'تم الدفع بنجاح!',
+                successMessage: 'شكرا لتسوقك في مكتبة التراث الإسلامي. طلبك قيد المعالجة.',
+                successDetailsTitle: 'تفاصيل الطلب',
+                successOrderIdLabel: 'معرف الطلب:',
+                successBookTitleLabel: 'عنوان الكتاب:',
+                successQuantityLabel: 'الكمية:',
+                successTotalLabel: 'إجمالي الدفع:',
+                successPaymentMethodLabel: 'طريقة الدفع:'
             }
         };
         
         // Currency conversion rates (relative to IDR)
         const currencyRates = {
             idr: 1,
-            usd: 0.000064, // 1 IDR = 0.000064 USD
-            egp: 0.002 // 1 IDR = 0.002 EGP
+            usd: 0.000064,
+            egp: 0.002
         };
         
         // Currency symbols
@@ -2098,85 +2254,8 @@
             egp: 'E£'
         };
 
-        // Categories data with translations
-        const categoryData = [
-            { 
-                id: 'hadith',
-                name: { id: 'Hadith', en: 'Hadith', ar: 'الحديث' },
-                desc: { id: 'Hadith and Sciences', en: 'Hadith and Sciences', ar: 'الحديث وعلومه' },
-                color: "#4285F4" 
-            },
-            { 
-                id: 'quran',
-                name: { id: 'Quran', en: 'Quran', ar: 'القرآن' },
-                desc: { id: 'Quran and Sciences', en: 'Quran and Sciences', ar: 'القرآن وعلومه' },
-                color: "#EA4335" 
-            },
-            { 
-                id: 'sufism',
-                name: { id: 'Sufism', en: 'Sufism', ar: 'التصوف' },
-                desc: { id: 'Sufism and Mysticism', en: 'Sufism and Mysticism', ar: 'التصوف والتصوف' },
-                color: "#FBBC05" 
-            },
-            { 
-                id: 'islamic',
-                name: { id: 'Islamic', en: 'Islamic', ar: 'إسلامي' },
-                desc: { id: 'Islamic Studies', en: 'Islamic Studies', ar: 'الدراسات الإسلامية' },
-                color: "#34A853" 
-            },
-            { 
-                id: 'fiqh',
-                name: { id: 'Fiqh', en: 'Fiqh', ar: 'الفقه' },
-                desc: { id: 'Islamic Jurisprudence', en: 'Islamic Jurisprudence', ar: 'الفقه الإسلامي' },
-                color: "#9C27B0" 
-            },
-            { 
-                id: 'arabic',
-                name: { id: 'Arabic', en: 'Arabic', ar: 'العربية' },
-                desc: { id: 'Arabic Language', en: 'Arabic Language', ar: 'اللغة العربية' },
-                color: "#FF5722" 
-            },
-            { 
-                id: 'logic',
-                name: { id: 'Logic', en: 'Logic', ar: 'المنطق' },
-                desc: { id: 'Logic and Philosophy', en: 'Logic and Philosophy', ar: 'المنطق والفلسفة' },
-                color: "#795548" 
-            },
-            { 
-                id: 'history',
-                name: { id: 'History', en: 'History', ar: 'التاريخ' },
-                desc: { id: 'Islamic History', en: 'Islamic History', ar: 'التاريخ الإسلامي' },
-                color: "#607D8B" 
-            },
-            { 
-                id: 'islamic_studies',
-                name: { id: 'Islamic Studies', en: 'Islamic Studies', ar: 'الدراسات الإسلامية' },
-                desc: { id: 'Comprehensive Studies', en: 'Comprehensive Studies', ar: 'دراسات شاملة' },
-                color: "#3F51B5" 
-            },
-            { 
-                id: 'seerah',
-                name: { id: 'Seerah', en: 'Seerah', ar: 'السيرة' },
-                desc: { id: 'Prophet\'s Biography', en: 'Prophet\'s Biography', ar: 'سيرة النبي' },
-                color: "#009688" 
-            },
-            { 
-                id: 'complete_works',
-                name: { id: 'Complete Works', en: 'Complete Works', ar: 'الأعمال الكاملة' },
-                desc: { id: 'Complete Collections', en: 'Complete Collections', ar: 'مجموعات كاملة' },
-                color: "#E91E63" 
-            },
-            { 
-                id: 'other',
-                name: { id: 'Other', en: 'Other', ar: 'أخرى' },
-                desc: { id: 'Other Categories', en: 'Other Categories', ar: 'فئات أخرى' },
-                color: "#00BCD4" 
-            }
-        ];
-
         // Initialize language and currency
         function initLanguageAndCurrency() {
-            // Check if language and currency are stored in localStorage
             const savedLanguage = localStorage.getItem('language');
             const savedCurrency = localStorage.getItem('currency');
             
@@ -2184,7 +2263,6 @@
                 currentLanguage = savedLanguage;
                 document.getElementById('currentLang').textContent = currentLanguage.toUpperCase();
                 
-                // Mark the active language in the dropdown
                 document.querySelectorAll('#langMenu .dropdown-item').forEach(item => {
                     item.classList.remove('active');
                     if (item.dataset.lang === currentLanguage) {
@@ -2197,7 +2275,6 @@
                 currentCurrency = savedCurrency;
                 document.getElementById('currentCurrency').textContent = currentCurrency.toUpperCase();
                 
-                // Mark the active currency in the dropdown
                 document.querySelectorAll('#currencyMenu .dropdown-item').forEach(item => {
                     item.classList.remove('active');
                     if (item.dataset.currency === currentCurrency) {
@@ -2206,18 +2283,15 @@
                 });
             }
             
-            // Apply language and currency
             applyLanguage();
             applyCurrency();
             
-            // Set text direction for Arabic
             if (currentLanguage === 'ar') {
                 document.body.setAttribute('dir', 'rtl');
             } else {
                 document.body.setAttribute('dir', 'ltr');
             }
             
-            // Update WhatsApp options descriptions based on current language
             updateWhatsAppOptions();
         }
 
@@ -2250,7 +2324,6 @@
         function applyLanguage() {
             const lang = translations[currentLanguage];
             
-            // Update all text elements with data-lang attributes
             document.querySelectorAll('[id]').forEach(element => {
                 const id = element.id;
                 if (lang[id]) {
@@ -2258,26 +2331,19 @@
                 }
             });
             
-            // Update placeholders
             document.getElementById('searchInput').placeholder = lang.searchPlaceholder;
             document.getElementById('orderName').placeholder = lang.namePlaceholder;
             document.getElementById('orderPhone').placeholder = lang.phonePlaceholder;
             document.getElementById('orderAddress').placeholder = lang.addressPlaceholder;
             
-            // Update book detail cover type
             document.getElementById('detailBookCover').textContent = lang.hardCover;
             
-            // Update order button with icon
             document.getElementById('orderButton').innerHTML = `<i class="fas fa-shopping-cart"></i> ${lang.orderButton}`;
             
-            // Update categories
             generateCategories();
-            
-            // Update books
             generateBookCards(allBooks, 'flashSaleBooks');
             generateBookCards(allBooks, 'bestsellerBooks');
             
-            // If on book detail page, update related books
             if (!document.getElementById('bookDetailPage').classList.contains('hidden')) {
                 generateRelatedBooks();
             }
@@ -2285,7 +2351,6 @@
 
         // Apply currency conversion
         function applyCurrency() {
-            // Update all price elements
             document.querySelectorAll('.current-price, .book-detail-price, .related-book-price, #totalPrice').forEach(element => {
                 const text = element.textContent;
                 const priceMatch = text.match(/[\d,.]+/);
@@ -2294,7 +2359,6 @@
                     const priceString = priceMatch[0].replace(/[^\d]/g, '');
                     const idrPrice = parseInt(priceString);
                     
-                    // Convert to current currency
                     const convertedPrice = idrPrice * currencyRates[currentCurrency];
                     const formattedPrice = formatCurrency(convertedPrice);
                     
@@ -2302,7 +2366,6 @@
                 }
             });
             
-            // Update original prices
             document.querySelectorAll('.original-price').forEach(element => {
                 const text = element.textContent;
                 const priceMatch = text.match(/[\d,.]+/);
@@ -2311,7 +2374,6 @@
                     const priceString = priceMatch[0].replace(/[^\d]/g, '');
                     const idrPrice = parseInt(priceString);
                     
-                    // Convert to current currency
                     const convertedPrice = idrPrice * currencyRates[currentCurrency];
                     const formattedPrice = formatCurrency(convertedPrice);
                     
@@ -2319,7 +2381,6 @@
                 }
             });
             
-            // Update total price if on book detail page
             if (!document.getElementById('bookDetailPage').classList.contains('hidden') && currentBook) {
                 updateTotalPrice();
             }
@@ -2373,25 +2434,18 @@
                 const lang = this.dataset.lang;
                 currentLanguage = lang;
                 
-                // Save to localStorage
                 localStorage.setItem('language', lang);
                 
-                // Update UI
                 document.getElementById('currentLang').textContent = lang.toUpperCase();
                 
-                // Mark as active
                 document.querySelectorAll('#langMenu .dropdown-item').forEach(i => {
                     i.classList.remove('active');
                 });
                 this.classList.add('active');
                 
-                // Apply language
                 applyLanguage();
-                
-                // Update WhatsApp options
                 updateWhatsAppOptions();
                 
-                // Set text direction for Arabic
                 if (lang === 'ar') {
                     document.body.setAttribute('dir', 'rtl');
                 } else {
@@ -2406,19 +2460,15 @@
                 const currency = this.dataset.currency;
                 currentCurrency = currency;
                 
-                // Save to localStorage
                 localStorage.setItem('currency', currency);
                 
-                // Update UI
                 document.getElementById('currentCurrency').textContent = currency.toUpperCase();
                 
-                // Mark as active
                 document.querySelectorAll('#currencyMenu .dropdown-item').forEach(i => {
                     i.classList.remove('active');
                 });
                 this.classList.add('active');
                 
-                // Apply currency
                 applyCurrency();
             });
         });
@@ -2429,11 +2479,9 @@
             const searchBtn = document.getElementById('searchBtn');
             const searchSuggestions = document.getElementById('searchSuggestions');
             
-            // Handle search input
             searchInput.addEventListener('input', function() {
                 const query = this.value.trim().toLowerCase();
                 
-                // Clear previous timeout
                 if (searchTimeout) {
                     clearTimeout(searchTimeout);
                 }
@@ -2443,13 +2491,11 @@
                     return;
                 }
                 
-                // Set new timeout for search suggestions
                 searchTimeout = setTimeout(() => {
                     showSearchSuggestions(query);
                 }, 300);
             });
             
-            // Handle search button click
             searchBtn.addEventListener('click', function() {
                 const query = searchInput.value.trim().toLowerCase();
                 if (query) {
@@ -2457,7 +2503,6 @@
                 }
             });
             
-            // Handle search input enter key
             searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     const query = this.value.trim().toLowerCase();
@@ -2467,7 +2512,6 @@
                 }
             });
             
-            // Hide suggestions when clicking outside
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('.search-container')) {
                     searchSuggestions.style.display = 'none';
@@ -2479,14 +2523,12 @@
         function showSearchSuggestions(query) {
             const searchSuggestions = document.getElementById('searchSuggestions');
             
-            // Filter books based on query
             const filteredBooks = allBooks.filter(book => {
                 return book.title.toLowerCase().includes(query) || 
                        book.author.toLowerCase().includes(query) || 
                        book.publisher_name.toLowerCase().includes(query);
-            }).slice(0, 5); // Limit to 5 suggestions
+            }).slice(0, 5);
             
-            // Clear previous suggestions
             searchSuggestions.innerHTML = '';
             
             if (filteredBooks.length === 0) {
@@ -2513,7 +2555,6 @@
 
         // Search for books
         function searchBooks(query) {
-            // Filter books based on query
             const filteredBooks = allBooks.filter(book => {
                 return book.title.toLowerCase().includes(query) || 
                        book.author.toLowerCase().includes(query) || 
@@ -2521,7 +2562,6 @@
             });
             
             if (filteredBooks.length > 0) {
-                // Show the first matching book
                 showBookDetail(filteredBooks[0]);
                 document.getElementById('searchInput').value = '';
             } else {
@@ -2541,7 +2581,6 @@
 
                 allBooks = books;
                 
-                // Generate book cards
                 generateBookCards(allBooks, 'flashSaleBooks');
                 generateBookCards(allBooks, 'bestsellerBooks');
             } catch (error) {
@@ -2562,7 +2601,6 @@
 
                 publishers = publishersData;
                 
-                // Generate publisher cards
                 generatePublishers();
             } catch (error) {
                 console.error('Error loading publishers:', error);
@@ -2582,7 +2620,6 @@
 
                 categories = categoriesData;
                 
-                // Generate category cards
                 generateCategories();
             } catch (error) {
                 console.error('Error loading categories:', error);
@@ -2656,7 +2693,6 @@
                     badgesHTML = book.badges.map(badge => `<div class="book-badge">${badge}</div>`).join('');
                 }
                 
-                // Convert prices
                 const currentPrice = convertPrice(book.base_price);
                 let originalPriceHTML = '';
                 
@@ -2695,7 +2731,6 @@
         function showBookDetail(book) {
             currentBook = book;
             
-            // Update book detail information
             document.getElementById('detailBookTitle').textContent = book.title;
             document.getElementById('detailBookAuthor').textContent = book.author;
             document.getElementById('detailBookPublisher').textContent = book.publisher_name;
@@ -2704,7 +2739,6 @@
             document.getElementById('detailBookVolumes').textContent = book.volumes;
             document.getElementById('detailBookPages').textContent = book.pages;
             
-            // Update book image
             const bookImage = document.getElementById('detailBookImage');
             if (book.cover_image_url) {
                 bookImage.innerHTML = `<img src="${book.cover_image_url}" alt="${book.title}" style="width: 100%; height: 100%; border-radius: 10px; object-fit: cover;">`;
@@ -2712,23 +2746,18 @@
                 bookImage.innerHTML = '<i class="fas fa-book fa-5x"></i>';
             }
             
-            // Reset form
             document.getElementById('orderForm').reset();
             document.getElementById('orderQuantity').value = 1;
             updateTotalPrice();
             
-            // Reset location detection
             resetLocationDetection();
             
-            // Generate related books
             generateRelatedBooks();
             
-            // Show detail page, hide home page
             document.getElementById('homePage').classList.add('hidden');
             document.getElementById('bookDetailPage').classList.remove('hidden');
             document.getElementById('backBtn').classList.remove('hidden');
             
-            // Scroll to top
             window.scrollTo(0, 0);
         }
 
@@ -2736,6 +2765,7 @@
         function showHomePage() {
             document.getElementById('bookDetailPage').classList.add('hidden');
             document.getElementById('orderConfirmationPage').classList.add('hidden');
+            document.getElementById('paymentSuccessPage').classList.add('hidden');
             document.getElementById('homePage').classList.remove('hidden');
             document.getElementById('backBtn').classList.add('hidden');
         }
@@ -2747,13 +2777,11 @@
             
             if (!currentBook) return;
             
-            // Get books from same publisher or category
             const relatedBooks = allBooks.filter(book => 
                 book.id !== currentBook.id && 
                 (book.publisher_name === currentBook.publisher_name || book.author === currentBook.author)
             ).slice(0, 4);
             
-            // If not enough related books, add random books
             if (relatedBooks.length < 4) {
                 const otherBooks = allBooks.filter(book => 
                     book.id !== currentBook.id && !relatedBooks.includes(book)
@@ -2803,7 +2831,6 @@
             const quantity = parseInt(document.getElementById('orderQuantity').value);
             const totalPrice = currentBook.base_price * quantity;
             
-            // Convert to current currency
             const convertedPrice = totalPrice * currencyRates[currentCurrency];
             const formattedTotal = formatCurrency(convertedPrice);
             
@@ -2816,7 +2843,6 @@
             locationAddress = '';
             locationMapLink = '';
             
-            // Reset UI
             document.getElementById('detectLocationBtn').disabled = false;
             document.getElementById('detectLocationBtn').innerHTML = `<i class="fas fa-location-crosshairs"></i> <span>${translations[currentLanguage].detectLocationText}</span>`;
             document.getElementById('locationStatus').textContent = '';
@@ -2824,7 +2850,6 @@
             document.getElementById('orderMap').style.display = 'none';
             document.getElementById('locationInfo').style.display = 'none';
             
-            // Clear map if exists
             if (orderMap) {
                 orderMap.remove();
                 orderMap = null;
@@ -2836,7 +2861,6 @@
             const detectBtn = document.getElementById('detectLocationBtn');
             const locationStatus = document.getElementById('locationStatus');
             
-            // Disable button and show loading
             detectBtn.disabled = true;
             detectBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>${translations[currentLanguage].detectingLocation}</span>`;
             locationStatus.textContent = '';
@@ -2850,10 +2874,7 @@
                         
                         userLocation = { lat, lng };
                         
-                        // Initialize map
                         initializeOrderMap(lat, lng);
-                        
-                        // Get address from coordinates
                         getAddressFromCoordinates(lat, lng);
                     },
                     error => {
@@ -2867,7 +2888,6 @@
                         locationStatus.textContent = errorMessage;
                         locationStatus.className = 'location-status error';
                         
-                        // Reset button
                         detectBtn.disabled = false;
                         detectBtn.innerHTML = `<i class="fas fa-location-crosshairs"></i> <span>${translations[currentLanguage].detectLocationText}</span>`;
                     }
@@ -2876,7 +2896,6 @@
                 locationStatus.textContent = translations[currentLanguage].locationError;
                 locationStatus.className = 'location-status error';
                 
-                // Reset button
                 detectBtn.disabled = false;
                 detectBtn.innerHTML = `<i class="fas fa-location-crosshairs"></i> <span>${translations[currentLanguage].detectLocationText}</span>`;
             }
@@ -2884,19 +2903,15 @@
 
         // Initialize order map
         function initializeOrderMap(lat, lng) {
-            // Create map container if it doesn't exist
             const mapContainer = document.getElementById('orderMap');
             mapContainer.style.display = 'block';
             
-            // Initialize map
             orderMap = L.map('orderMap').setView([lat, lng], 15);
             
-            // Add tile layer
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(orderMap);
             
-            // Add marker for user location
             currentLocationMarker = L.marker([lat, lng]).addTo(orderMap);
         }
 
@@ -2904,33 +2919,27 @@
         function getAddressFromCoordinates(lat, lng) {
             const locationStatus = document.getElementById('locationStatus');
             
-            // Using Nominatim API for reverse geocoding
             fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.display_name) {
                         locationAddress = data.display_name;
                         
-                        // Create Google Maps link
                         locationMapLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
                         
-                        // Update UI
                         locationStatus.textContent = translations[currentLanguage].locationDetected;
                         locationStatus.className = 'location-status success';
                         
-                        // Show location info
                         document.getElementById('detectedAddress').textContent = locationAddress;
                         document.getElementById('mapLink').href = locationMapLink;
                         document.getElementById('locationInfo').style.display = 'flex';
                         
-                        // Add location to address form
                         const addressInput = document.getElementById('orderAddress');
                         if (!addressInput.value) {
                             addressInput.value = locationAddress;
                             showToast(translations[currentLanguage].locationAddedToForm, 'success');
                         }
                         
-                        // Reset button
                         const detectBtn = document.getElementById('detectLocationBtn');
                         detectBtn.disabled = false;
                         detectBtn.innerHTML = `<i class="fas fa-check"></i> <span>${translations[currentLanguage].locationDetected}</span>`;
@@ -2938,7 +2947,6 @@
                         locationStatus.textContent = `${lat}, ${lng}`;
                         locationStatus.className = 'location-status success';
                         
-                        // Reset button
                         const detectBtn = document.getElementById('detectLocationBtn');
                         detectBtn.disabled = false;
                         detectBtn.innerHTML = `<i class="fas fa-check"></i> <span>${translations[currentLanguage].locationDetected}</span>`;
@@ -2949,7 +2957,6 @@
                     locationStatus.textContent = `${lat}, ${lng}`;
                     locationStatus.className = 'location-status success';
                     
-                    // Reset button
                     const detectBtn = document.getElementById('detectLocationBtn');
                     detectBtn.disabled = false;
                     detectBtn.innerHTML = `<i class="fas fa-check"></i> <span>${translations[currentLanguage].locationDetected}</span>`;
@@ -2965,18 +2972,15 @@
             const address = document.getElementById('orderAddress').value;
             const quantity = document.getElementById('orderQuantity').value;
             
-            // Validation
             if (!name || !phone || !address) {
                 showToast(translations[currentLanguage].orderError, 'error');
                 return;
             }
             
-            // Calculate total price
             const totalPrice = currentBook.base_price * parseInt(quantity);
             const convertedPrice = totalPrice * currencyRates[currentCurrency];
             const formattedTotal = formatCurrency(convertedPrice);
             
-            // Store order data
             const orderData = {
                 book: currentBook,
                 name: name,
@@ -2990,16 +2994,13 @@
                 coordinates: userLocation
             };
             
-            // Save to localStorage for use in confirmation page
             localStorage.setItem('orderData', JSON.stringify(orderData));
             
-            // Navigate to order confirmation page
             showOrderConfirmationPage();
         });
 
         // Show order confirmation page
         function showOrderConfirmationPage() {
-            // Get order data from localStorage
             const orderData = JSON.parse(localStorage.getItem('orderData'));
             
             if (!orderData) {
@@ -3007,7 +3008,6 @@
                 return;
             }
             
-            // Update order summary
             document.getElementById('orderItemTitle').textContent = orderData.book.title;
             document.getElementById('orderItemAuthor').textContent = orderData.book.author;
             document.getElementById('orderItemPublisher').textContent = orderData.book.publisher_name;
@@ -3015,7 +3015,6 @@
             document.getElementById('orderItemPrice').textContent = orderData.formattedTotal;
             document.getElementById('orderTotalPrice').textContent = orderData.formattedTotal;
             
-            // Update book image
             const orderItemImage = document.getElementById('orderItemImage');
             if (orderData.book.cover_image_url) {
                 orderItemImage.innerHTML = `<img src="${orderData.book.cover_image_url}" alt="${orderData.book.title}" style="width: 100%; height: 100%; border-radius: 5px; object-fit: cover;">`;
@@ -3023,7 +3022,6 @@
                 orderItemImage.innerHTML = '<i class="fas fa-book fa-3x"></i>';
             }
             
-            // Reset payment method selection
             selectedPaymentMethod = null;
             selectedWhatsAppNumber = null;
             document.querySelectorAll('.payment-method').forEach(method => {
@@ -3033,18 +3031,16 @@
                 option.classList.remove('selected');
             });
             document.getElementById('whatsappOptions').style.display = 'none';
+            document.getElementById('paypalContainer').style.display = 'none';
             document.getElementById('confirmOrderBtn').disabled = true;
             
-            // Hide message preview
             document.getElementById('whatsappMessagePreview').classList.remove('show');
             
-            // Show confirmation page, hide other pages
             document.getElementById('homePage').classList.add('hidden');
             document.getElementById('bookDetailPage').classList.add('hidden');
             document.getElementById('orderConfirmationPage').classList.remove('hidden');
             document.getElementById('backBtn').classList.remove('hidden');
             
-            // Scroll to top
             window.scrollTo(0, 0);
         }
 
@@ -3052,7 +3048,6 @@
         function selectPaymentMethod(method) {
             selectedPaymentMethod = method;
             
-            // Update UI
             document.querySelectorAll('.payment-method').forEach(paymentMethod => {
                 paymentMethod.classList.remove('selected');
             });
@@ -3060,7 +3055,7 @@
             if (method === 'whatsapp') {
                 document.getElementById('whatsappPayment').classList.add('selected');
                 document.getElementById('whatsappOptions').style.display = 'block';
-                // Reset WhatsApp selection
+                document.getElementById('paypalContainer').style.display = 'none';
                 selectedWhatsAppNumber = null;
                 document.querySelectorAll('.whatsapp-option').forEach(option => {
                     option.classList.remove('selected');
@@ -3069,15 +3064,63 @@
             } else if (method === 'paypal') {
                 document.getElementById('paypalPayment').classList.add('selected');
                 document.getElementById('whatsappOptions').style.display = 'none';
+                document.getElementById('paypalContainer').style.display = 'block';
                 document.getElementById('confirmOrderBtn').disabled = false;
+                
+                // Initialize PayPal buttons
+                initializePayPalButtons();
             }
+        }
+
+        // Initialize PayPal buttons
+        function initializePayPalButtons() {
+            const orderData = JSON.parse(localStorage.getItem('orderData'));
+            if (!orderData) return;
+            
+            // Convert total price to USD for PayPal
+            const totalPriceUSD = orderData.totalPrice * currencyRates.usd;
+            
+            // Clear previous buttons
+            document.getElementById('paypal-button-container').innerHTML = '';
+            
+            // Render PayPal buttons
+            paypalButtons = paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            description: orderData.book.title,
+                            amount: {
+                                value: totalPriceUSD.toFixed(2),
+                                currency_code: 'USD'
+                            }
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        // Show success message
+                        showToast(translations[currentLanguage].paypalSuccess, 'success');
+                        
+                        // Save order to database
+                        saveOrderToDatabase(orderData, 'paypal', null, details.id);
+                        
+                        // Show payment success page
+                        showPaymentSuccessPage(orderData, details.id);
+                    });
+                },
+                onError: function(err) {
+                    console.error('PayPal error:', err);
+                    showToast(translations[currentLanguage].paypalError, 'error');
+                }
+            });
+            
+            paypalButtons.render('#paypal-button-container');
         }
 
         // Select WhatsApp number
         function selectWhatsAppNumber(region) {
             selectedWhatsAppNumber = region;
             
-            // Update UI
             document.querySelectorAll('.whatsapp-option').forEach(option => {
                 option.classList.remove('selected');
             });
@@ -3088,10 +3131,8 @@
                 document.getElementById('whatsappArab').classList.add('selected');
             }
             
-            // Enable confirm button
             document.getElementById('confirmOrderBtn').disabled = false;
             
-            // Show message preview
             showWhatsAppMessagePreview(region);
         }
 
@@ -3103,16 +3144,13 @@
             const messagePreview = document.getElementById('whatsappMessagePreview');
             const messageContent = document.getElementById('messagePreviewContent');
             
-            // Get message template based on WhatsApp region selection
             const messageTemplate = region === 'id' ? 
                 translations.id.whatsappMessage : 
                 translations.ar.whatsappMessage;
             
-            // Get location data
             const location = orderData.location || '';
             const mapLink = orderData.mapLink || '';
             
-            // Replace placeholders with actual data
             const message = messageTemplate
                 .replace('{title}', orderData.book.title)
                 .replace('{author}', orderData.book.author)
@@ -3141,7 +3179,6 @@
                 return;
             }
             
-            // Get order data from localStorage
             const orderData = JSON.parse(localStorage.getItem('orderData'));
             
             if (!orderData) {
@@ -3150,29 +3187,21 @@
             }
             
             if (selectedPaymentMethod === 'whatsapp') {
-                // Send WhatsApp message
                 sendWhatsAppMessage(orderData, selectedWhatsAppNumber);
-            } else if (selectedPaymentMethod === 'paypal') {
-                // Process PayPal payment
-                processPayPalPayment(orderData);
             }
         }
 
         // Send WhatsApp message
         function sendWhatsAppMessage(orderData, region) {
-            // Get appropriate WhatsApp number based on region
             const whatsappNumber = whatsappNumbers[region];
             
-            // Get message template based on WhatsApp region selection
             const messageTemplate = region === 'id' ? 
                 translations.id.whatsappMessage : 
                 translations.ar.whatsappMessage;
             
-            // Get location data
             const location = orderData.location || '';
             const mapLink = orderData.mapLink || '';
             
-            // Replace placeholders with actual data
             const message = messageTemplate
                 .replace('{title}', orderData.book.title)
                 .replace('{author}', orderData.book.author)
@@ -3185,50 +3214,37 @@
                 .replace('{location}', location)
                 .replace('{mapLink}', mapLink);
             
-            // Encode message for URL
             const encodedMessage = encodeURIComponent(message);
             
-            // Create WhatsApp URL
             const whatsappUrl = `https://wa.me/${whatsappNumber.replace('+', '')}?text=${encodedMessage}`;
             
-            // Open WhatsApp in a new tab
             window.open(whatsappUrl, '_blank');
             
-            // Show success message with appropriate language
             const successMessage = region === 'id' ? 'Membuka WhatsApp...' : 'فتح واتساب...';
             showToast(successMessage, 'success');
             
-            // Save order to database
             saveOrderToDatabase(orderData, 'whatsapp', region);
         }
 
-        // Process PayPal payment
-        function processPayPalPayment(orderData) {
-            // Show processing message
-            showToast(translations[currentLanguage].paypalProcessing, 'info');
+        // Show payment success page
+        function showPaymentSuccessPage(orderData, paymentId) {
+            document.getElementById('successOrderId').textContent = paymentId || 'N/A';
+            document.getElementById('successBookTitle').textContent = orderData.book.title;
+            document.getElementById('successQuantity').textContent = orderData.quantity;
+            document.getElementById('successTotal').textContent = orderData.formattedTotal;
+            document.getElementById('successPaymentMethod').textContent = 'PayPal';
             
-            // Simulate PayPal payment processing
-            setTimeout(() => {
-                // For demo purposes, we'll just show success
-                // In a real implementation, you would integrate with PayPal API
-                
-                // Show success message
-                showToast(translations[currentLanguage].paypalSuccess, 'success');
-                
-                // Save order to database
-                saveOrderToDatabase(orderData, 'paypal');
-                
-                // Redirect to home page after 2 seconds
-                setTimeout(() => {
-                    showHomePage();
-                }, 2000);
-            }, 2000);
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('orderConfirmationPage').classList.add('hidden');
+            document.getElementById('paymentSuccessPage').classList.remove('hidden');
+            document.getElementById('backBtn').classList.remove('hidden');
+            
+            window.scrollTo(0, 0);
         }
 
         // Save order to database
-        async function saveOrderToDatabase(orderData, paymentMethod, region = null) {
+        async function saveOrderToDatabase(orderData, paymentMethod, region = null, paymentId = null) {
             try {
-                // Save order to Supabase
                 const { data, error } = await supabaseClient
                     .from('orders')
                     .insert({
@@ -3241,7 +3257,8 @@
                         currency: currentCurrency,
                         payment_method: paymentMethod,
                         region: region,
-                        status: 'pending',
+                        payment_id: paymentId,
+                        status: 'completed',
                         location: orderData.coordinates,
                         location_address: orderData.location,
                         map_link: orderData.mapLink
@@ -3278,7 +3295,6 @@
             
             toastContainer.appendChild(toast);
             
-            // Remove toast after 3 seconds
             setTimeout(() => {
                 toast.style.animation = 'slideIn 0.3s ease reverse';
                 setTimeout(() => {
@@ -3290,7 +3306,7 @@
         // Move publishers carousel
         function movePublishers(direction) {
             const carousel = document.getElementById('publishersCarousel');
-            const cardWidth = 200; // Card width + margin
+            const cardWidth = 200;
             const visibleCards = Math.floor(carousel.parentElement.offsetWidth / cardWidth);
             const maxPosition = Math.max(0, publishers.length - visibleCards);
             
@@ -3313,15 +3329,13 @@
         }
 
         function handleSwipeGesture() {
-            const swipeThreshold = 50; // Minimum distance for swipe
+            const swipeThreshold = 50;
             const diff = touchStartX - touchEndX;
             
             if (Math.abs(diff) > swipeThreshold) {
                 if (diff > 0) {
-                    // Swiped left
                     movePublishers(1);
                 } else {
-                    // Swiped right
                     movePublishers(-1);
                 }
             }
@@ -3341,8 +3355,6 @@
         function updateCountdown() {
             const countdownItems = document.querySelectorAll('.countdown-item');
             
-            // For demo purposes, we'll just update with random values
-            // In a real implementation, you would calculate the actual time remaining
             if (countdownItems.length >= 5) {
                 countdownItems[0].textContent = Math.floor(Math.random() * 24).toString().padStart(2, '0');
                 countdownItems[2].textContent = Math.floor(Math.random() * 60).toString().padStart(2, '0');
@@ -3352,18 +3364,11 @@
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', async function() {
-            // Initialize language and currency
             initLanguageAndCurrency();
-            
-            // Setup search functionality
             setupSearch();
-            
-            // Load data from Supabase
             await loadBooks();
             await loadPublishers();
             await loadCategories();
-            
-            // Update countdown every second
             setInterval(updateCountdown, 1000);
         });
     </script>
