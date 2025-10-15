@@ -608,6 +608,20 @@
             margin-top: 10px;
         }
 
+        /* Excel Import */
+        .excel-import {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .excel-import-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .sidebar {
@@ -725,9 +739,14 @@
         <div id="booksPage" class="page-content" style="display: none;">
             <div class="content-header">
                 <h2>Books</h2>
-                <button class="btn btn-primary" id="addBookBtn">
-                    <i class="fas fa-plus"></i> Add Book
-                </button>
+                <div>
+                    <button class="btn btn-primary" id="addBookBtn">
+                        <i class="fas fa-plus"></i> Add Book
+                    </button>
+                    <button class="btn btn-success" id="importBooksBtn">
+                        <i class="fas fa-file-excel"></i> Import Excel
+                    </button>
+                </div>
             </div>
             <div class="content-body">
                 <div class="bulk-actions">
@@ -803,9 +822,14 @@
         <div id="publishersPage" class="page-content" style="display: none;">
             <div class="content-header">
                 <h2>Publishers</h2>
-                <button class="btn btn-primary" id="addPublisherBtn">
-                    <i class="fas fa-plus"></i> Add Publisher
-                </button>
+                <div>
+                    <button class="btn btn-primary" id="addPublisherBtn">
+                        <i class="fas fa-plus"></i> Add Publisher
+                    </button>
+                    <button class="btn btn-success" id="importPublishersBtn">
+                        <i class="fas fa-file-excel"></i> Import Excel
+                    </button>
+                </div>
             </div>
             <div class="content-body">
                 <div class="bulk-actions">
@@ -1118,16 +1142,22 @@
                         <div class="currency-inputs">
                             <div class="currency-input">
                                 <span class="currency-symbol">Rp</span>
-                                <input type="number" class="form-control" id="bookBasePrice" placeholder="Final Price (IDR)" readonly>
+                                <input type="number" class="form-control" id="bookBasePrice" placeholder="Final Price (IDR)" required>
                             </div>
                             <div class="currency-input">
                                 <span class="currency-symbol">$</span>
-                                <input type="number" class="form-control" id="bookUsdPrice" placeholder="USD Price" readonly>
+                                <input type="number" class="form-control" id="bookUsdPrice" placeholder="USD Price" required>
                             </div>
                             <div class="currency-input">
                                 <span class="currency-symbol">E£</span>
-                                <input type="number" class="form-control" id="bookEgpPrice" placeholder="EGP Price" readonly>
+                                <input type="number" class="form-control" id="bookEgpPrice" placeholder="EGP Price" required>
                             </div>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" id="autoCalculatePrices" checked>
+                            <label class="form-check-label" for="autoCalculatePrices">
+                                Auto-calculate prices based on exchange rates
+                            </label>
                         </div>
                     </div>
 
@@ -1302,10 +1332,55 @@
         </div>
     </div>
 
+    <!-- Excel Import Modal -->
+    <div class="modal" id="excelImportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="excelImportModalTitle">Import Data from Excel</h3>
+                <button class="close" onclick="closeModal('excelImportModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="excel-import">
+                    <div class="form-group">
+                        <label class="form-label">Select Excel File</label>
+                        <input type="file" class="form-control" id="excelFile" accept=".xlsx, .xls">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Data Type</label>
+                        <select class="form-control" id="excelDataType">
+                            <option value="books">Books</option>
+                            <option value="publishers">Publishers</option>
+                        </select>
+                    </div>
+                    <div class="excel-import-actions">
+                        <button class="btn btn-success" id="downloadTemplateBtn">
+                            <i class="fas fa-download"></i> Download Template
+                        </button>
+                        <button class="btn btn-primary" id="importExcelBtn">
+                            <i class="fas fa-file-import"></i> Import Data
+                        </button>
+                    </div>
+                </div>
+                <div id="importPreview" style="display: none; margin-top: 20px;">
+                    <h5>Preview Data</h5>
+                    <div class="table-container">
+                        <table class="table" id="importPreviewTable">
+                            <!-- Preview data will be shown here -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('excelImportModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         // Initialize Supabase client
         const { createClient } = supabase;
@@ -1371,6 +1446,15 @@
 
             document.getElementById('addPublisherBtn').addEventListener('click', function() {
                 openPublisherModal();
+            });
+
+            // Import buttons
+            document.getElementById('importBooksBtn').addEventListener('click', function() {
+                openExcelImportModal('books');
+            });
+
+            document.getElementById('importPublishersBtn').addEventListener('click', function() {
+                openExcelImportModal('publishers');
             });
 
             // Filter orders
@@ -1485,6 +1569,12 @@
 
             // Discount system event listeners
             setupDiscountSystem();
+
+            // Price calculation listeners
+            setupPriceCalculation();
+
+            // Excel import listeners
+            setupExcelImport();
         }
 
         // Setup discount system
@@ -1512,6 +1602,116 @@
                 updatePublisherDiscountInfo();
                 calculateFinalPrice();
             });
+        }
+
+        // Setup price calculation
+        function setupPriceCalculation() {
+            // Auto-calculate checkbox
+            document.getElementById('autoCalculatePrices').addEventListener('change', function() {
+                const autoCalculate = this.checked;
+                const basePriceInput = document.getElementById('bookBasePrice');
+                const usdPriceInput = document.getElementById('bookUsdPrice');
+                const egpPriceInput = document.getElementById('bookEgpPrice');
+                
+                if (autoCalculate) {
+                    basePriceInput.readOnly = true;
+                    usdPriceInput.readOnly = true;
+                    egpPriceInput.readOnly = true;
+                    calculateFinalPrice();
+                } else {
+                    basePriceInput.readOnly = false;
+                    usdPriceInput.readOnly = false;
+                    egpPriceInput.readOnly = false;
+                }
+            });
+
+            // Manual price input listeners
+            document.getElementById('bookBasePrice').addEventListener('input', function() {
+                if (!document.getElementById('autoCalculatePrices').checked) {
+                    updateCurrencyPricesFromBase();
+                }
+            });
+
+            document.getElementById('bookUsdPrice').addEventListener('input', function() {
+                if (!document.getElementById('autoCalculatePrices').checked) {
+                    updateCurrencyPricesFromUSD();
+                }
+            });
+
+            document.getElementById('bookEgpPrice').addEventListener('input', function() {
+                if (!document.getElementById('autoCalculatePrices').checked) {
+                    updateCurrencyPricesFromEGP();
+                }
+            });
+        }
+
+        // Update currency prices from base price
+        function updateCurrencyPricesFromBase() {
+            const basePrice = parseFloat(document.getElementById('bookBasePrice').value) || 0;
+            
+            if (rates.USD && rates.EGP) {
+                const usdPrice = basePrice / rates.USD;
+                const egpPrice = basePrice / rates.EGP;
+                
+                document.getElementById('bookUsdPrice').value = usdPrice.toFixed(2);
+                document.getElementById('bookEgpPrice').value = egpPrice.toFixed(2);
+            } else {
+                // Fallback to settings rates if API not available
+                const usdRate = parseFloat(document.getElementById('usdRate').value) || 15000;
+                const egpRate = parseFloat(document.getElementById('egpRate').value) || 500;
+                
+                const usdPrice = basePrice / usdRate;
+                const egpPrice = basePrice / egpRate;
+                
+                document.getElementById('bookUsdPrice').value = usdPrice.toFixed(2);
+                document.getElementById('bookEgpPrice').value = egpPrice.toFixed(2);
+            }
+        }
+
+        // Update currency prices from USD
+        function updateCurrencyPricesFromUSD() {
+            const usdPrice = parseFloat(document.getElementById('bookUsdPrice').value) || 0;
+            
+            if (rates.USD && rates.EGP) {
+                const basePrice = usdPrice * rates.USD;
+                const egpPrice = usdPrice * rates.EGP;
+                
+                document.getElementById('bookBasePrice').value = basePrice.toFixed(0);
+                document.getElementById('bookEgpPrice').value = egpPrice.toFixed(2);
+            } else {
+                // Fallback to settings rates if API not available
+                const usdRate = parseFloat(document.getElementById('usdRate').value) || 15000;
+                const egpRate = parseFloat(document.getElementById('egpRate').value) || 500;
+                
+                const basePrice = usdPrice * usdRate;
+                const egpPrice = usdPrice * egpRate;
+                
+                document.getElementById('bookBasePrice').value = basePrice.toFixed(0);
+                document.getElementById('bookEgpPrice').value = egpPrice.toFixed(2);
+            }
+        }
+
+        // Update currency prices from EGP
+        function updateCurrencyPricesFromEGP() {
+            const egpPrice = parseFloat(document.getElementById('bookEgpPrice').value) || 0;
+            
+            if (rates.USD && rates.EGP) {
+                const basePrice = egpPrice * rates.USD;
+                const usdPrice = egpPrice / rates.EGP;
+                
+                document.getElementById('bookBasePrice').value = basePrice.toFixed(0);
+                document.getElementById('bookUsdPrice').value = usdPrice.toFixed(2);
+            } else {
+                // Fallback to settings rates if API not available
+                const usdRate = parseFloat(document.getElementById('usdRate').value) || 15000;
+                const egpRate = parseFloat(document.getElementById('egpRate').value) || 500;
+                
+                const basePrice = egpPrice * usdRate;
+                const usdPrice = egpPrice / egpRate;
+                
+                document.getElementById('bookBasePrice').value = basePrice.toFixed(0);
+                document.getElementById('bookUsdPrice').value = usdPrice.toFixed(2);
+            }
         }
 
         // Update discount display based on selection
@@ -1701,6 +1901,262 @@
                     reader.readAsDataURL(file);
                 }
             });
+        }
+
+        // Setup Excel import functionality
+        function setupExcelImport() {
+            // Download template button
+            document.getElementById('downloadTemplateBtn').addEventListener('click', function() {
+                downloadExcelTemplate();
+            });
+
+            // Import Excel button
+            document.getElementById('importExcelBtn').addEventListener('click', function() {
+                importExcelData();
+            });
+
+            // Excel file input change
+            document.getElementById('excelFile').addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    previewExcelData(e.target.files[0]);
+                }
+            });
+        }
+
+        // Download Excel template
+        function downloadExcelTemplate() {
+            const dataType = document.getElementById('excelDataType').value;
+            let templateData = [];
+            let fileName = '';
+            let sheetName = '';
+
+            if (dataType === 'books') {
+                templateData = [
+                    ['Title', 'Author', 'Publisher', 'Original Price (IDR)', 'Discount', 'Volumes', 'Pages', 'Year', 'Cover Image URL']
+                ];
+                fileName = 'book_template.xlsx';
+                sheetName = 'Books';
+            } else if (dataType === 'publishers') {
+                templateData = [
+                    ['Name', 'Letter', 'Discount', 'Logo URL']
+                ];
+                fileName = 'publisher_template.xlsx';
+                sheetName = 'Publishers';
+            }
+
+            const ws = XLSX.utils.aoa_to_sheet(templateData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, sheetName);
+            XLSX.writeFile(wb, fileName);
+        }
+
+        // Preview Excel data
+        function previewExcelData(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                
+                displayExcelPreview(jsonData);
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Display Excel preview
+        function displayExcelPreview(data) {
+            const previewContainer = document.getElementById('importPreview');
+            const previewTable = document.getElementById('importPreviewTable');
+            
+            previewContainer.style.display = 'block';
+            previewTable.innerHTML = '';
+            
+            if (data.length === 0) {
+                previewTable.innerHTML = '<tr><td colspan="10" class="text-center">No data found</td></tr>';
+                return;
+            }
+            
+            // Create header
+            const headerRow = document.createElement('tr');
+            data[0].forEach(cell => {
+                const th = document.createElement('th');
+                th.textContent = cell;
+                headerRow.appendChild(th);
+            });
+            previewTable.appendChild(headerRow);
+            
+            // Create data rows (limit to 10 for preview)
+            const maxRows = Math.min(data.length, 11);
+            for (let i = 1; i < maxRows; i++) {
+                const row = document.createElement('tr');
+                data[i].forEach(cell => {
+                    const td = document.createElement('td');
+                    td.textContent = cell;
+                    row.appendChild(td);
+                });
+                previewTable.appendChild(row);
+            }
+            
+            if (data.length > 11) {
+                const moreRow = document.createElement('tr');
+                const moreCell = document.createElement('td');
+                moreCell.colSpan = data[0].length;
+                moreCell.textContent = `... and ${data.length - 11} more rows`;
+                moreCell.className = 'text-center text-muted';
+                moreRow.appendChild(moreCell);
+                previewTable.appendChild(moreRow);
+            }
+        }
+
+        // Import Excel data
+        async function importExcelData() {
+            const fileInput = document.getElementById('excelFile');
+            const dataType = document.getElementById('excelDataType').value;
+            
+            if (!fileInput.files.length) {
+                showToast('Please select an Excel file', 'error');
+                return;
+            }
+            
+            try {
+                showToast('Importing data...', 'info');
+                
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = async function(e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    let successCount = 0;
+                    let errorCount = 0;
+                    
+                    if (dataType === 'books') {
+                        // Import books
+                        for (const row of jsonData) {
+                            try {
+                                const bookData = {
+                                    title: row['Title'],
+                                    author: row['Author'],
+                                    publisher_id: await getPublisherIdByName(row['Publisher']),
+                                    original_price: parseInt(row['Original Price (IDR)']) || 0,
+                                    base_price: parseInt(row['Original Price (IDR)']) || 0,
+                                    discount: row['Discount'] || '',
+                                    volumes: row['Volumes'] || '',
+                                    pages: row['Pages'] || '',
+                                    year: row['Year'] || '',
+                                    cover_image_url: row['Cover Image URL'] || ''
+                                };
+                                
+                                const { error } = await supabaseClient
+                                    .from('books')
+                                    .insert(bookData);
+                                
+                                if (error) throw error;
+                                successCount++;
+                            } catch (error) {
+                                console.error('Error importing book:', error);
+                                errorCount++;
+                            }
+                        }
+                    } else if (dataType === 'publishers') {
+                        // Import publishers
+                        for (const row of jsonData) {
+                            try {
+                                const publisherData = {
+                                    name: row['Name'],
+                                    letter: row['Letter'],
+                                    discount: row['Discount'] || '',
+                                    logo_url: row['Logo URL'] || ''
+                                };
+                                
+                                const { error } = await supabaseClient
+                                    .from('publishers')
+                                    .insert(publisherData);
+                                
+                                if (error) throw error;
+                                successCount++;
+                            } catch (error) {
+                                console.error('Error importing publisher:', error);
+                                errorCount++;
+                            }
+                        }
+                    }
+                    
+                    closeModal('excelImportModal');
+                    showToast(`Successfully imported ${successCount} items. ${errorCount} errors.`);
+                    
+                    // Refresh the current page
+                    if (dataType === 'books') {
+                        loadBooks();
+                    } else if (dataType === 'publishers') {
+                        loadPublishers();
+                    }
+                };
+                
+                reader.readAsArrayBuffer(file);
+            } catch (error) {
+                console.error('Error importing Excel data:', error);
+                showToast('Error importing Excel data', 'error');
+            }
+        }
+
+        // Get publisher ID by name
+        async function getPublisherIdByName(publisherName) {
+            if (!publisherName) return null;
+            
+            const { data, error } = await supabaseClient
+                .from('publishers')
+                .select('id')
+                .eq('name', publisherName)
+                .single();
+            
+            if (error || !data) {
+                // Create new publisher if not found
+                const { data: newPublisher, error: createError } = await supabaseClient
+                    .from('publishers')
+                    .insert({
+                        name: publisherName,
+                        letter: publisherName.charAt(0).toUpperCase()
+                    })
+                    .select()
+                    .single();
+                
+                if (createError) {
+                    console.error('Error creating publisher:', createError);
+                    return null;
+                }
+                
+                return newPublisher.id;
+            }
+            
+            return data.id;
+        }
+
+        // Open Excel import modal
+        function openExcelImportModal(dataType) {
+            const modal = document.getElementById('excelImportModal');
+            const title = document.getElementById('excelImportModalTitle');
+            
+            // Set modal title
+            title.textContent = `Import ${dataType.charAt(0).toUpperCase() + dataType.slice(1)} from Excel`;
+            
+            // Set data type
+            document.getElementById('excelDataType').value = dataType;
+            
+            // Reset form
+            document.getElementById('excelFile').value = '';
+            document.getElementById('importPreview').style.display = 'none';
+            
+            // Show modal
+            modal.classList.add('show');
         }
 
         // Show page
@@ -2140,6 +2596,10 @@
                             <label class="form-label">Discount</label>
                             <input type="text" class="form-control" id="bulkBookDiscount" placeholder="e.g. 20%">
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">Base Price (IDR)</label>
+                            <input type="number" class="form-control" id="bulkBookBasePrice" placeholder="Leave empty for no change">
+                        </div>
                     `;
                     break;
                 case 'categories':
@@ -2155,6 +2615,10 @@
                         <div class="form-group">
                             <label class="form-label">Discount</label>
                             <input type="text" class="form-control" id="bulkPublisherDiscount" placeholder="e.g. 20%">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Letter</label>
+                            <input type="text" class="form-control" id="bulkPublisherLetter" placeholder="Leave empty for no change">
                         </div>
                     `;
                     break;
@@ -2179,9 +2643,11 @@
                     case 'books':
                         const publisher = document.getElementById('bulkBookPublisher').value;
                         const discount = document.getElementById('bulkBookDiscount').value;
+                        const basePrice = document.getElementById('bulkBookBasePrice').value;
                         
                         if (publisher) updates.publisher_id = publisher;
                         if (discount) updates.discount = discount;
+                        if (basePrice) updates.base_price = parseInt(basePrice);
                         
                         if (Object.keys(updates).length === 0) {
                             showToast('No changes specified', 'error');
@@ -2220,13 +2686,15 @@
                         
                     case 'publishers':
                         const publisherDiscount = document.getElementById('bulkPublisherDiscount').value;
+                        const letter = document.getElementById('bulkPublisherLetter').value;
                         
-                        if (!publisherDiscount) {
-                            showToast('No discount specified', 'error');
+                        if (publisherDiscount) updates.discount = publisherDiscount;
+                        if (letter) updates.letter = letter;
+                        
+                        if (Object.keys(updates).length === 0) {
+                            showToast('No changes specified', 'error');
                             return;
                         }
-                        
-                        updates.discount = publisherDiscount;
                         
                         for (const id of ids) {
                             const { error } = await supabaseClient
@@ -2402,6 +2870,7 @@
                 document.getElementById('bookAuthor').value = book.author;
                 document.getElementById('bookPublisher').value = book.publisher_id;
                 document.getElementById('bookOriginalPrice').value = book.original_price || book.base_price;
+                document.getElementById('bookBasePrice').value = book.base_price;
                 document.getElementById('bookVolumes').value = book.volumes;
                 document.getElementById('bookPages').value = book.pages;
                 document.getElementById('bookYear').value = book.year;
@@ -2468,7 +2937,7 @@
                 }
                 
                 // Validate form
-                if (!title || !author || !publisherId || !originalPrice || !volumes || !pages || !year) {
+                if (!title || !author || !publisherId || !originalPrice || !finalPrice || !volumes || !pages || !year) {
                     showToast('Please fill all required fields', 'error');
                     return;
                 }
@@ -3149,6 +3618,487 @@
             
             return colors[status] || 'secondary';
         }
+        // =============================================
+// FIXED CURRENCY CONVERSION SYSTEM ONLY
+// Hanya memperbaiki konversi mata uang tanpa mengganggu sistem diskon
+// =============================================
+
+// API Key untuk Exchange Rate API
+const EXCHANGE_API_KEY = 'ec5ab43eca6a93e272462157';
+const EXCHANGE_API_URL = `https://v6.exchangerate-api.com/v6/${EXCHANGE_API_KEY}/latest/USD`;
+
+// Variabel global untuk rates
+let exchangeRates = {
+    USD: 1,
+    IDR: 15000, // Default fallback
+    EGP: 500    // Default fallback
+};
+
+// Flag untuk mencegah infinite loop
+let isConverting = false;
+
+// =============================================
+// FUNGSI UTAMA KONVERSI MATA UANG
+// =============================================
+
+/**
+ * Memuat rates dari API Exchange Rate
+ */
+async function loadExchangeRates() {
+    try {
+        console.log('Memuat data kurs dari API...');
+        
+        const response = await fetch(EXCHANGE_API_URL);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.result === 'success') {
+            exchangeRates = data.conversion_rates;
+            console.log('Data kurs berhasil dimuat:', exchangeRates);
+            
+            // Update timestamp
+            const lastUpdatedElement = document.getElementById('last-updated');
+            if (lastUpdatedElement) {
+                const updateTime = new Date(data.time_last_update_utc).toLocaleString('id-ID');
+                lastUpdatedElement.textContent = updateTime;
+            }
+            
+            return true;
+        } else {
+            throw new Error(data['error-type'] || 'Terjadi kesalahan pada API');
+        }
+    } catch (error) {
+        console.error('Error loading exchange rates:', error);
+        
+        // Fallback ke rates dari settings
+        const usdRateInput = document.getElementById('usdRate');
+        const egpRateInput = document.getElementById('egpRate');
+        
+        if (usdRateInput) {
+            exchangeRates.IDR = parseFloat(usdRateInput.value) || 15000;
+        }
+        if (egpRateInput) {
+            exchangeRates.EGP = parseFloat(egpRateInput.value) || 500;
+        }
+        
+        const lastUpdatedElement = document.getElementById('last-updated');
+        if (lastUpdatedElement) {
+            lastUpdatedElement.textContent = `Error: ${error.message}. Using fallback rates.`;
+        }
+        
+        return false;
+    }
+}
+
+/**
+ * Konversi nilai dari satu mata uang ke mata uang lainnya
+ */
+function convertCurrency(amount, fromCurrency, toCurrency) {
+    if (!amount || isNaN(amount)) return 0;
+    
+    // Konversi ke USD terlebih dahulu
+    const amountInUSD = amount / exchangeRates[fromCurrency];
+    
+    // Konversi dari USD ke mata uang tujuan
+    const convertedAmount = amountInUSD * exchangeRates[toCurrency];
+    
+    return convertedAmount;
+}
+
+// =============================================
+// FUNGSI UNTUK CURRENCY CONVERTER PAGE
+// =============================================
+
+/**
+ * Menghitung konversi untuk currency converter
+ */
+function calculateCurrencyConversion(amount, fromCurrency) {
+    if (isConverting || !amount || isNaN(amount)) return;
+    
+    isConverting = true;
+    
+    try {
+        const idrInput = document.getElementById('idr');
+        const usdInput = document.getElementById('usd');
+        const egpInput = document.getElementById('egp');
+        
+        if (!idrInput || !usdInput || !egpInput) {
+            console.error('Input elements not found');
+            return;
+        }
+        
+        const amountNum = parseFloat(amount);
+        
+        switch (fromCurrency) {
+            case 'IDR':
+                // IDR ke USD dan EGP
+                const usdFromIDR = convertCurrency(amountNum, 'IDR', 'USD');
+                const egpFromIDR = convertCurrency(amountNum, 'IDR', 'EGP');
+                
+                usdInput.value = usdFromIDR.toFixed(2);
+                egpInput.value = egpFromIDR.toFixed(2);
+                break;
+                
+            case 'USD':
+                // USD ke IDR dan EGP
+                const idrFromUSD = convertCurrency(amountNum, 'USD', 'IDR');
+                const egpFromUSD = convertCurrency(amountNum, 'USD', 'EGP');
+                
+                idrInput.value = idrFromUSD.toFixed(0);
+                egpInput.value = egpFromUSD.toFixed(2);
+                break;
+                
+            case 'EGP':
+                // EGP ke IDR dan USD
+                const idrFromEGP = convertCurrency(amountNum, 'EGP', 'IDR');
+                const usdFromEGP = convertCurrency(amountNum, 'EGP', 'USD');
+                
+                idrInput.value = idrFromEGP.toFixed(0);
+                usdInput.value = usdFromEGP.toFixed(2);
+                break;
+        }
+    } catch (error) {
+        console.error('Error in calculateCurrencyConversion:', error);
+    } finally {
+        // Delay sedikit untuk memastikan tidak terjadi infinite loop
+        setTimeout(() => {
+            isConverting = false;
+        }, 100);
+    }
+}
+
+// =============================================
+// FUNGSI UNTUK BOOK PRICE CALCULATION
+// =============================================
+
+/**
+ * Memperbarui harga dalam berbagai mata uang berdasarkan harga dasar
+ */
+function updateCurrencyPrices() {
+    const basePriceInput = document.getElementById('bookBasePrice');
+    const usdPriceInput = document.getElementById('bookUsdPrice');
+    const egpPriceInput = document.getElementById('bookEgpPrice');
+    const autoCalculateCheckbox = document.getElementById('autoCalculatePrices');
+    
+    if (!basePriceInput || !usdPriceInput || !egpPriceInput) {
+        console.error('Price input elements not found');
+        return;
+    }
+    
+    const basePrice = parseFloat(basePriceInput.value) || 0;
+    const autoCalculate = autoCalculateCheckbox ? autoCalculateCheckbox.checked : true;
+    
+    if (autoCalculate && basePrice > 0) {
+        // Auto calculate dari harga dasar (IDR)
+        const usdPrice = convertCurrency(basePrice, 'IDR', 'USD');
+        const egpPrice = convertCurrency(basePrice, 'IDR', 'EGP');
+        
+        usdPriceInput.value = usdPrice.toFixed(2);
+        egpPriceInput.value = egpPrice.toFixed(2);
+        
+        console.log(`Konversi: Rp ${basePrice} = $${usdPrice.toFixed(2)} = E£${egpPrice.toFixed(2)}`);
+    }
+}
+
+/**
+ * Memperbarui harga dasar berdasarkan input mata uang lain (manual mode)
+ */
+function updateBasePriceFromCurrency(amount, fromCurrency) {
+    const basePriceInput = document.getElementById('bookBasePrice');
+    const usdPriceInput = document.getElementById('bookUsdPrice');
+    const egpPriceInput = document.getElementById('bookEgpPrice');
+    const autoCalculateCheckbox = document.getElementById('autoCalculatePrices');
+    
+    if (!basePriceInput || !usdPriceInput || !egpPriceInput) return;
+    
+    const autoCalculate = autoCalculateCheckbox ? autoCalculateCheckbox.checked : false;
+    
+    if (!autoCalculate) {
+        const amountNum = parseFloat(amount) || 0;
+        
+        switch (fromCurrency) {
+            case 'USD':
+                // USD ke IDR (base) dan EGP
+                const baseFromUSD = convertCurrency(amountNum, 'USD', 'IDR');
+                const egpFromUSD = convertCurrency(amountNum, 'USD', 'EGP');
+                
+                basePriceInput.value = baseFromUSD.toFixed(0);
+                egpPriceInput.value = egpFromUSD.toFixed(2);
+                break;
+                
+            case 'EGP':
+                // EGP ke IDR (base) dan USD
+                const baseFromEGP = convertCurrency(amountNum, 'EGP', 'IDR');
+                const usdFromEGP = convertCurrency(amountNum, 'EGP', 'USD');
+                
+                basePriceInput.value = baseFromEGP.toFixed(0);
+                usdPriceInput.value = usdFromEGP.toFixed(2);
+                break;
+        }
+        
+        console.log(`Manual update from ${fromCurrency}: ${amount} = Rp ${basePriceInput.value}`);
+    }
+}
+
+// =============================================
+// FUNGSI UNTUK MENG-HANDLE PERUBAHAN HARGA DASAR
+// =============================================
+
+/**
+ * Handler untuk perubahan harga dasar (dipanggil oleh sistem diskon)
+ */
+function handleBasePriceChange() {
+    const basePriceInput = document.getElementById('bookBasePrice');
+    const autoCalculateCheckbox = document.getElementById('autoCalculatePrices');
+    
+    if (!basePriceInput) return;
+    
+    const autoCalculate = autoCalculateCheckbox ? autoCalculateCheckbox.checked : true;
+    
+    if (autoCalculate) {
+        updateCurrencyPrices();
+    }
+}
+
+// =============================================
+// SETUP EVENT LISTENERS (HANYA UNTUK KONVERSI)
+// =============================================
+
+/**
+ * Setup event listeners hanya untuk sistem konversi mata uang
+ */
+function setupCurrencyEventListeners() {
+    console.log('Setting up currency event listeners only...');
+    
+    // 1. Currency Converter Page
+    const idrInput = document.getElementById('idr');
+    const usdInput = document.getElementById('usd');
+    const egpInput = document.getElementById('egp');
+    
+    if (idrInput) {
+        idrInput.addEventListener('input', (e) => {
+            if (!isConverting && e.target.value) {
+                calculateCurrencyConversion(e.target.value, 'IDR');
+            }
+        });
+    }
+    
+    if (usdInput) {
+        usdInput.addEventListener('input', (e) => {
+            if (!isConverting && e.target.value) {
+                calculateCurrencyConversion(e.target.value, 'USD');
+            }
+        });
+    }
+    
+    if (egpInput) {
+        egpInput.addEventListener('input', (e) => {
+            if (!isConverting && e.target.value) {
+                calculateCurrencyConversion(e.target.value, 'EGP');
+            }
+        });
+    }
+    
+    // 2. Book Price Inputs (HANYA untuk konversi mata uang)
+    const bookBasePriceInput = document.getElementById('bookBasePrice');
+    const bookUsdPriceInput = document.getElementById('bookUsdPrice');
+    const bookEgpPriceInput = document.getElementById('bookEgpPrice');
+    const autoCalculateCheckbox = document.getElementById('autoCalculatePrices');
+    
+    // Hanya listen untuk perubahan manual pada input harga mata uang
+    if (bookUsdPriceInput) {
+        bookUsdPriceInput.addEventListener('input', (e) => {
+            if (!isConverting && e.target.value) {
+                updateBasePriceFromCurrency(e.target.value, 'USD');
+            }
+        });
+    }
+    
+    if (bookEgpPriceInput) {
+        bookEgpPriceInput.addEventListener('input', (e) => {
+            if (!isConverting && e.target.value) {
+                updateBasePriceFromCurrency(e.target.value, 'EGP');
+            }
+        });
+    }
+    
+    // Auto calculate checkbox
+    if (autoCalculateCheckbox) {
+        autoCalculateCheckbox.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                // Jika auto calculate diaktifkan, update semua harga
+                updateCurrencyPrices();
+            }
+        });
+    }
+    
+    // Observer untuk mendeteksi perubahan harga dasar dari sistem diskon
+    if (bookBasePriceInput) {
+        // Gunakan MutationObserver untuk mendeteksi perubahan nilai
+        const basePriceObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+                    handleBasePriceChange();
+                }
+            });
+        });
+        
+        // Mulai observe perubahan atribut value
+        basePriceObserver.observe(bookBasePriceInput, {
+            attributes: true,
+            attributeFilter: ['value']
+        });
+        
+        // Juga listen untuk input events (jika diubah manual)
+        bookBasePriceInput.addEventListener('input', (e) => {
+            if (!isConverting) {
+                handleBasePriceChange();
+            }
+        });
+    }
+    
+    console.log('Currency event listeners setup completed');
+}
+
+// =============================================
+// FUNGSI UNTUK MENONAKTIFKAN FUNGSI KONVERSI LAMA
+// =============================================
+
+/**
+ * Menonaktifkan hanya fungsi konversi mata uang yang lama
+ */
+function disableOldCurrencyFunctions() {
+    console.log('Menonaktifkan fungsi konversi mata uang lama saja...');
+    
+    // Backup fungsi diskon yang sudah berjalan
+    const originalCalculateFinalPrice = window.calculateFinalPrice;
+    const originalUpdateDiscountDisplay = window.updateDiscountDisplay;
+    const originalUpdatePublisherDiscountInfo = window.updatePublisherDiscountInfo;
+    
+    // Override hanya fungsi konversi yang bermasalah
+    if (window.calculate) {
+        window.calculate = function() {
+            console.warn('Fungsi calculate lama telah dinonaktifkan. Gunakan calculateCurrencyConversion() sebagai gantinya.');
+        };
+    }
+    
+    if (window.updateCurrencyConversion) {
+        window.updateCurrencyConversion = function() {
+            console.warn('Fungsi updateCurrencyConversion lama telah dinonaktifkan. Gunakan updateCurrencyPrices() sebagai gantinya.');
+        };
+    }
+    
+    // Restore fungsi diskon yang sudah berjalan
+    if (originalCalculateFinalPrice) {
+        window.calculateFinalPrice = originalCalculateFinalPrice;
+    }
+    if (originalUpdateDiscountDisplay) {
+        window.updateDiscountDisplay = originalUpdateDiscountDisplay;
+    }
+    if (originalUpdatePublisherDiscountInfo) {
+        window.updatePublisherDiscountInfo = originalUpdatePublisherDiscountInfo;
+    }
+    
+    console.log('Hanya fungsi konversi mata uang lama yang dinonaktifkan');
+}
+
+// =============================================
+// INISIALISASI SISTEM KONVERSI SAJA
+// =============================================
+
+/**
+ * Inisialisasi sistem konversi mata uang saja
+ */
+async function initializeCurrencySystemOnly() {
+    console.log('Menginisialisasi sistem konversi mata uang saja...');
+    
+    // Nonaktifkan hanya fungsi konversi lama
+    disableOldCurrencyFunctions();
+    
+    // Load exchange rates
+    await loadExchangeRates();
+    
+    // Setup event listeners hanya untuk konversi
+    setupCurrencyEventListeners();
+    
+    // Initial calculation jika ada nilai di input
+    const idrInput = document.getElementById('idr');
+    if (idrInput && idrInput.value) {
+        calculateCurrencyConversion(idrInput.value, 'IDR');
+    }
+    
+    const bookBasePriceInput = document.getElementById('bookBasePrice');
+    if (bookBasePriceInput && bookBasePriceInput.value) {
+        updateCurrencyPrices();
+    }
+    
+    console.log('Sistem konversi mata uang siap digunakan (tanpa mengganggu diskon)');
+}
+
+// =============================================
+// EXPORT FUNGSI UNTUK PENGGUNAAN GLOBAL
+// =============================================
+
+// Export fungsi utama ke global scope
+window.CurrencyConverter = {
+    initialize: initializeCurrencySystemOnly,
+    convert: convertCurrency,
+    calculateConversion: calculateCurrencyConversion,
+    updatePrices: updateCurrencyPrices,
+    reloadRates: loadExchangeRates,
+    getRates: () => exchangeRates
+};
+
+// =============================================
+// INTEGRASI DENGAN SISTEM DISKON YANG SUDAH ADA
+// =============================================
+
+/**
+ * Integrasi dengan sistem diskon yang sudah berjalan
+ * Fungsi ini dipanggil setelah sistem diskon selesai menghitung
+ */
+function syncWithDiscountSystem() {
+    const basePriceInput = document.getElementById('bookBasePrice');
+    const autoCalculateCheckbox = document.getElementById('autoCalculatePrices');
+    
+    if (!basePriceInput) return;
+    
+    const autoCalculate = autoCalculateCheckbox ? autoCalculateCheckbox.checked : true;
+    
+    if (autoCalculate) {
+        // Tunggu sebentar untuk memastikan sistem diskon sudah selesai
+        setTimeout(() => {
+            updateCurrencyPrices();
+        }, 50);
+    }
+}
+
+// Hook into existing discount system
+if (window.calculateFinalPrice) {
+    const originalCalculateFinalPrice = window.calculateFinalPrice;
+    window.calculateFinalPrice = function() {
+        // Panggil fungsi diskon asli
+        const result = originalCalculateFinalPrice.apply(this, arguments);
+        
+        // Setelah diskon selesai, sync dengan sistem konversi
+        syncWithDiscountSystem();
+        
+        return result;
+    };
+}
+
+// Auto-initialize ketika DOM siap
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeCurrencySystemOnly);
+} else {
+    initializeCurrencySystemOnly();
+}
+
+console.log('Fixed Currency Conversion System loaded (no discount interference)');
+   
     </script>
 </body>
 </html>
