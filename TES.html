@@ -206,6 +206,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- ========================= JAVASCRIPT START ========================= -->
+      <!-- ========================= JAVASCRIPT START ========================= -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         // --- INISIALISASI SUPABASE ---
@@ -221,39 +222,20 @@
         function showSection(sectionId) {
             sections.forEach(section => section.classList.remove('active'));
             navButtons.forEach(btn => btn.classList.remove('active'));
-            
             document.getElementById(`${sectionId}-section`).classList.add('active');
             document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
-            
-            // Fetch data untuk section yang aktif
             window[`fetch${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)}`]();
         }
-
-        navButtons.forEach(button => {
-            button.addEventListener('click', () => showSection(button.dataset.section));
-        });
+        navButtons.forEach(button => button.addEventListener('click', () => showSection(button.dataset.section)));
 
         // --- FUNGSI UNGGAH GAMBAR ---
         async function uploadImage(file, folder) {
             if (!file) return null;
-            
             const fileExt = file.name.split('.').pop();
             const fileName = `${folder}/${Date.now()}.${fileExt}`;
-            
-            const { data, error } = await supabase.storage
-                .from(STORAGE_BUCKET)
-                .upload(fileName, file, { cacheControl: '3600', upsert: false });
-
-            if (error) {
-                console.error('Error uploading image:', error);
-                alert('Gagal mengunggah gambar.');
-                return null;
-            }
-
-            const { data: { publicUrl } } = supabase.storage
-                .from(STORAGE_BUCKET)
-                .getPublicUrl(fileName);
-                
+            const { data, error } = await supabase.storage.from(STORAGE_BUCKET).upload(fileName, file);
+            if (error) { console.error('Error uploading image:', error); alert('Gagal mengunggah gambar.'); return null; }
+            const { data: { publicUrl } } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(fileName);
             return publicUrl;
         }
 
@@ -261,201 +243,104 @@
         async function fetchData(tableName, tbodyId, loadingId, renderFunction) {
             document.getElementById(loadingId).style.display = 'block';
             const { data, error } = await supabase.from(tableName).select('*');
-            if (error) {
-                console.error(`Error fetching ${tableName}:`, error);
-                document.getElementById(loadingId).textContent = 'Gagal memuat data.';
-            } else {
-                renderFunction(data);
-                document.getElementById(loadingId).style.display = 'none';
-            }
+            if (error) { console.error(`Error fetching ${tableName}:`, error); document.getElementById(loadingId).textContent = 'Gagal memuat data.'; }
+            else { renderFunction(data); document.getElementById(loadingId).style.display = 'none'; }
         }
-
         async function deleteItem(tableName, itemId, fetchFunction) {
             if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) return;
             const { error } = await supabase.from(tableName).delete().eq('id', itemId);
-            if (error) {
-                console.error(`Error deleting from ${tableName}:`, error);
-                alert('Gagal menghapus data.');
-            } else {
-                fetchFunction();
-            }
+            if (error) { console.error(`Error deleting from ${tableName}:`, error); alert('Gagal menghapus data.'); }
+            else { fetchFunction(); }
         }
         
         // --- MANAJEMEN BUKU ---
-        const bookForm = document.getElementById('bookForm');
-        const booksTableBody = document.getElementById('booksTableBody');
-        const bookFileInput = document.getElementById('bookCoverImageFile');
-        const bookImagePreview = document.getElementById('bookImagePreview');
-
-        const renderBooks = (books) => {
-            booksTableBody.innerHTML = books.map(book => `
-                <tr>
-                    <td>${book.title}</td>
-                    <td>${book.author}</td>
-                    <td>Rp ${book.base_price.toLocaleString('id-ID')}</td>
-                    <td class="action-buttons">
-                        <button class="edit-btn" data-id="${book.id}">Edit</button>
-                        <button class="delete-btn" data-id="${book.id}">Hapus</button>
-                    </td>
-                </tr>`).join('');
-        };
+        const bookForm = document.getElementById('bookForm'); const booksTableBody = document.getElementById('booksTableBody');
+        const bookFileInput = document.getElementById('bookCoverImageFile'); const bookImagePreview = document.getElementById('bookImagePreview');
+        const renderBooks = (books) => { booksTableBody.innerHTML = books.map(book => `<tr><td>${book.title}</td><td>${book.author}</td><td>Rp ${book.base_price.toLocaleString('id-ID')}</td><td class="action-buttons"><button class="edit-btn" data-id="${book.id}">Edit</button><button class="delete-btn" data-id="${book.id}">Hapus</button></td></tr>`).join(''); };
         window.fetchBooks = () => fetchData('books', 'booksTableBody', 'loadingBooks', renderBooks);
-
-        bookFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                bookImagePreview.src = URL.createObjectURL(file);
-                bookImagePreview.style.display = 'block';
-            }
-        });
-
+        bookFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { bookImagePreview.src = URL.createObjectURL(file); bookImagePreview.style.display = 'block'; } });
         bookForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitBtn = document.querySelector('#bookForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
             const bookId = document.getElementById('bookId').value;
-            const bookData = {
-                title: document.getElementById('bookTitle').value,
-                author: document.getElementById('bookAuthor').value,
-                original_price: parseInt(document.getElementById('bookOriginalPrice').value),
-                base_price: parseInt(document.getElementById('bookBasePrice').value),
-                volumes: document.getElementById('bookVolumes').value,
-                pages: document.getElementById('bookPages').value,
-                year: document.getElementById('bookYear').value,
-            };
-            
+            const bookData = { title: document.getElementById('bookTitle').value, author: document.getElementById('bookAuthor').value, original_price: parseInt(document.getElementById('bookOriginalPrice').value), base_price: parseInt(document.getElementById('bookBasePrice').value), volumes: document.getElementById('bookVolumes').value, pages: document.getElementById('bookPages').value, year: document.getElementById('bookYear').value };
             const file = bookFileInput.files[0];
-            let imageUrl = null;
-
-            if (file) {
-                imageUrl = await uploadImage(file, 'books');
-                if (imageUrl === null) return; // Stop if upload fails
-            } else {
-                imageUrl = document.getElementById('bookOldCoverUrl').value;
-            }
-            
-            bookData.cover_image_url = imageUrl;
-
-            if (bookId) {
-                const { error } = await supabase.from('books').update(bookData).eq('id', bookId);
-                if (error) alert('Gagal memperbarui buku.');
-                else resetBookForm();
-            } else {
-                const { error } = await supabase.from('books').insert([bookData]);
-                if (error) alert('Gagal menambah buku.');
-                else bookForm.reset();
-            }
+            if (file) { bookData.cover_image_url = await uploadImage(file, 'books'); if (!bookData.cover_image_url) { submitBtn.disabled = false; submitBtn.textContent = 'Tambah Buku'; return; } }
+            else { bookData.cover_image_url = document.getElementById('bookOldCoverUrl').value; }
+            const { error } = bookId ? await supabase.from('books').update(bookData).eq('id', bookId) : await supabase.from('books').insert([bookData]);
+            if (error) alert('Gagal menyimpan buku.'); else { if (!bookId) bookForm.reset(); resetBookForm(); }
+            submitBtn.disabled = false; submitBtn.textContent = bookId ? 'Perbarui Buku' : 'Tambah Buku';
             window.fetchBooks();
         });
-
-        booksTableBody.addEventListener('click', async (e) => {
-            const id = e.target.dataset.id;
-            if (e.target.classList.contains('delete-btn')) await deleteItem('books', id, window.fetchBooks);
-            if (e.target.classList.contains('edit-btn')) {
-                const { data } = await supabase.from('books').select('*').eq('id', id).single();
-                if(data) {
-                    document.getElementById('bookId').value = data.id;
-                    document.getElementById('bookTitle').value = data.title;
-                    document.getElementById('bookAuthor').value = data.author;
-                    document.getElementById('bookOriginalPrice').value = data.original_price;
-                    document.getElementById('bookBasePrice').value = data.base_price;
-                    document.getElementById('bookVolumes').value = data.volumes;
-                    document.getElementById('bookPages').value = data.pages;
-                    document.getElementById('bookYear').value = data.year;
-                    document.getElementById('bookOldCoverUrl').value = data.cover_image_url || '';
-                    
-                    if(data.cover_image_url) {
-                        bookImagePreview.src = data.cover_image_url;
-                        bookImagePreview.style.display = 'block';
-                    } else {
-                        bookImagePreview.style.display = 'none';
-                    }
-
-                    document.getElementById('booksFormTitle').textContent = 'Edit Buku';
-                    document.querySelector('#bookForm .submit-btn').textContent = 'Perbarui Buku';
-                    document.getElementById('cancelEditBook').style.display = 'inline-block';
-                    bookForm.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
-
-        function resetBookForm() {
-            bookForm.reset();
-            document.getElementById('bookId').value = '';
-            document.getElementById('bookOldCoverUrl').value = '';
-            bookImagePreview.style.display = 'none';
-            document.getElementById('booksFormTitle').textContent = 'Tambah Buku Baru';
-            document.querySelector('#bookForm .submit-btn').textContent = 'Tambah Buku';
-            document.getElementById('cancelEditBook').style.display = 'none';
-        }
+        booksTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('books', id, window.fetchBooks); if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('books').select('*').eq('id', id).single(); if(data) { document.getElementById('bookId').value = data.id; document.getElementById('bookTitle').value = data.title; document.getElementById('bookAuthor').value = data.author; document.getElementById('bookOriginalPrice').value = data.original_price; document.getElementById('bookBasePrice').value = data.base_price; document.getElementById('bookVolumes').value = data.volumes; document.getElementById('bookPages').value = data.pages; document.getElementById('bookYear').value = data.year; document.getElementById('bookOldCoverUrl').value = data.cover_image_url || ''; if(data.cover_image_url) { bookImagePreview.src = data.cover_image_url; bookImagePreview.style.display = 'block'; } else { bookImagePreview.style.display = 'none'; } document.getElementById('booksFormTitle').textContent = 'Edit Buku'; document.querySelector('#bookForm .submit-btn').textContent = 'Perbarui Buku'; document.getElementById('cancelEditBook').style.display = 'inline-block'; bookForm.scrollIntoView({ behavior: 'smooth' }); } } });
+        function resetBookForm() { bookForm.reset(); document.getElementById('bookId').value = ''; document.getElementById('bookOldCoverUrl').value = ''; bookImagePreview.style.display = 'none'; document.getElementById('booksFormTitle').textContent = 'Tambah Buku Baru'; document.querySelector('#bookForm .submit-btn').textContent = 'Tambah Buku'; document.getElementById('cancelEditBook').style.display = 'none'; }
         document.getElementById('cancelEditBook').addEventListener('click', resetBookForm);
-        
-        // --- MANAJEMEN PENERBIT (LOGIKA SERUPA DENGAN BUKU) ---
-        const publisherForm = document.getElementById('publisherForm');
-        const publishersTableBody = document.getElementById('publishersTableBody');
-        const publisherFileInput = document.getElementById('publisherLogoFile');
-        const publisherImagePreview = document.getElementById('publisherImagePreview');
 
-        const renderPublishers = (publishers) => {
-            publishersTableBody.innerHTML = publishers.map(p => `
-                <tr><td>${p.name}</td><td>${p.letter}</td><td>${p.discount || '-'}</td>
-                <td class="action-buttons"><button class="edit-btn" data-id="${p.id}">Edit</button><button class="delete-btn" data-id="${p.id}">Hapus</button></td></tr>`).join('');
-        };
+        // --- MANAJEMEN PENERBIT ---
+        const publisherForm = document.getElementById('publisherForm'); const publishersTableBody = document.getElementById('publishersTableBody');
+        const publisherFileInput = document.getElementById('publisherLogoFile'); const publisherImagePreview = document.getElementById('publisherImagePreview');
+        const renderPublishers = (publishers) => { publishersTableBody.innerHTML = publishers.map(p => `<tr><td>${p.name}</td><td>${p.letter}</td><td>${p.discount || '-'}</td><td class="action-buttons"><button class="edit-btn" data-id="${p.id}">Edit</button><button class="delete-btn" data-id="${p.id}">Hapus</button></td></tr>`).join(''); };
         window.fetchPublishers = () => fetchData('publishers', 'publishersTableBody', 'loadingPublishers', renderPublishers);
-        
-        publisherFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) { publisherImagePreview.src = URL.createObjectURL(file); publisherImagePreview.style.display = 'block'; }
-        });
-
+        publisherFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { publisherImagePreview.src = URL.createObjectURL(file); publisherImagePreview.style.display = 'block'; } });
         publisherForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitBtn = document.querySelector('#publisherForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
             const publisherId = document.getElementById('publisherId').value;
             const publisherData = { name: document.getElementById('publisherName').value, letter: document.getElementById('publisherLetter').value, discount: document.getElementById('publisherDiscount').value };
             const file = publisherFileInput.files[0];
-            let imageUrl = await uploadImage(file, 'publishers') || document.getElementById('publisherOldLogoUrl').value;
-            publisherData.logo_url = imageUrl;
-            if (publisherId) { await supabase.from('publishers').update(publisherData).eq('id', publisherId); resetPublisherForm(); }
-            else { await supabase.from('publishers').insert([publisherData]); publisherForm.reset(); }
+            if (file) { publisherData.logo_url = await uploadImage(file, 'publishers'); if (!publisherData.logo_url) { submitBtn.disabled = false; submitBtn.textContent = 'Tambah Penerbit'; return; } }
+            else { publisherData.logo_url = document.getElementById('publisherOldLogoUrl').value; }
+            const { error } = publisherId ? await supabase.from('publishers').update(publisherData).eq('id', publisherId) : await supabase.from('publishers').insert([publisherData]);
+            if (error) alert('Gagal menyimpan penerbit.'); else { if (!publisherId) publisherForm.reset(); resetPublisherForm(); }
+            submitBtn.disabled = false; submitBtn.textContent = publisherId ? 'Perbarui Penerbit' : 'Tambah Penerbit';
             window.fetchPublishers();
         });
-
-        publishersTableBody.addEventListener('click', async (e) => {
-            const id = e.target.dataset.id;
-            if (e.target.classList.contains('delete-btn')) await deleteItem('publishers', id, window.fetchPublishers);
-            if (e.target.classList.contains('edit-btn')) {
-                const { data } = await supabase.from('publishers').select('*').eq('id', id).single();
-                if(data) {
-                    document.getElementById('publisherId').value = data.id; document.getElementById('publisherName').value = data.name; document.getElementById('publisherLetter').value = data.letter; document.getElementById('publisherDiscount').value = data.discount; document.getElementById('publisherOldLogoUrl').value = data.logo_url || '';
-                    if(data.logo_url) { publisherImagePreview.src = data.logo_url; publisherImagePreview.style.display = 'block'; } else { publisherImagePreview.style.display = 'none'; }
-                    document.getElementById('publishersFormTitle').textContent = 'Edit Penerbit'; document.querySelector('#publisherForm .submit-btn').textContent = 'Perbarui Penerbit'; document.getElementById('cancelEditPublisher').style.display = 'inline-block';
-                    publisherForm.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
+        publishersTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('publishers', id, window.fetchPublishers); if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('publishers').select('*').eq('id', id).single(); if(data) { document.getElementById('publisherId').value = data.id; document.getElementById('publisherName').value = data.name; document.getElementById('publisherLetter').value = data.letter; document.getElementById('publisherDiscount').value = data.discount; document.getElementById('publisherOldLogoUrl').value = data.logo_url || ''; if(data.logo_url) { publisherImagePreview.src = data.logo_url; publisherImagePreview.style.display = 'block'; } else { publisherImagePreview.style.display = 'none'; } document.getElementById('publishersFormTitle').textContent = 'Edit Penerbit'; document.querySelector('#publisherForm .submit-btn').textContent = 'Perbarui Penerbit'; document.getElementById('cancelEditPublisher').style.display = 'inline-block'; publisherForm.scrollIntoView({ behavior: 'smooth' }); } } });
         function resetPublisherForm() { publisherForm.reset(); document.getElementById('publisherId').value = ''; document.getElementById('publisherOldLogoUrl').value = ''; publisherImagePreview.style.display = 'none'; document.getElementById('publishersFormTitle').textContent = 'Tambah Penerbit Baru'; document.querySelector('#publisherForm .submit-btn').textContent = 'Tambah Penerbit'; document.getElementById('cancelEditPublisher').style.display = 'none'; }
         document.getElementById('cancelEditPublisher').addEventListener('click', resetPublisherForm);
 
-        // --- MANAJEMEN KATEGORI (LOGIKA SERUPA) ---
-        const categoryForm = document.getElementById('categoryForm');
-        const categoriesTableBody = document.getElementById('categoriesTableBody');
-        const categoryFileInput = document.getElementById('categoryImageFile');
-        const categoryImagePreview = document.getElementById('categoryImagePreview');
+        // --- MANAJEMEN KATEGORI ---
+        const categoryForm = document.getElementById('categoryForm'); const categoriesTableBody = document.getElementById('categoriesTableBody');
+        const categoryFileInput = document.getElementById('categoryImageFile'); const categoryImagePreview = document.getElementById('categoryImagePreview');
         const renderCategories = (categories) => { categoriesTableBody.innerHTML = categories.map(c => `<tr><td>${c.name_id}</td><td>${c.name_en}</td><td><span style="display:inline-block; width:20px; height:20px; background-color:${c.color}; border-radius:4px; vertical-align:middle;"></span> ${c.color}</td><td class="action-buttons"><button class="edit-btn" data-id="${c.id}">Edit</button><button class="delete-btn" data-id="${c.id}">Hapus</button></td></tr>`).join(''); };
         window.fetchCategories = () => fetchData('categories', 'categoriesTableBody', 'loadingCategories', renderCategories);
         categoryFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { categoryImagePreview.src = URL.createObjectURL(file); categoryImagePreview.style.display = 'block'; } });
-        categoryForm.addEventListener('submit', async (e) => { e.preventDefault(); const categoryId = document.getElementById('categoryId').value; const categoryData = { name_id: document.getElementById('categoryNameId').value, name_en: document.getElementById('categoryNameEn').value, name_ar: document.getElementById('categoryNameAr').value, color: document.getElementById('categoryColor').value }; const file = categoryFileInput.files[0]; let imageUrl = await uploadImage(file, 'categories') || document.getElementById('categoryOldImageUrl').value; categoryData.image_url = imageUrl; if (categoryId) { await supabase.from('categories').update(categoryData).eq('id', categoryId); resetCategoryForm(); } else { await supabase.from('categories').insert([categoryData]); categoryForm.reset(); } window.fetchCategories(); });
+        categoryForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.querySelector('#categoryForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
+            const categoryId = document.getElementById('categoryId').value;
+            const categoryData = { name_id: document.getElementById('categoryNameId').value, name_en: document.getElementById('categoryNameEn').value, name_ar: document.getElementById('categoryNameAr').value, color: document.getElementById('categoryColor').value };
+            const file = categoryFileInput.files[0];
+            if (file) { categoryData.image_url = await uploadImage(file, 'categories'); if (!categoryData.image_url) { submitBtn.disabled = false; submitBtn.textContent = 'Tambah Kategori'; return; } }
+            else { categoryData.image_url = document.getElementById('categoryOldImageUrl').value; }
+            const { error } = categoryId ? await supabase.from('categories').update(categoryData).eq('id', categoryId) : await supabase.from('categories').insert([categoryData]);
+            if (error) alert('Gagal menyimpan kategori.'); else { if (!categoryId) categoryForm.reset(); resetCategoryForm(); }
+            submitBtn.disabled = false; submitBtn.textContent = categoryId ? 'Perbarui Kategori' : 'Tambah Kategori';
+            window.fetchCategories();
+        });
         categoriesTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('categories', id, window.fetchCategories); if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('categories').select('*').eq('id', id).single(); if(data) { document.getElementById('categoryId').value = data.id; document.getElementById('categoryNameId').value = data.name_id; document.getElementById('categoryNameEn').value = data.name_en; document.getElementById('categoryNameAr').value = data.name_ar; document.getElementById('categoryColor').value = data.color; document.getElementById('categoryOldImageUrl').value = data.image_url || ''; if(data.image_url) { categoryImagePreview.src = data.image_url; categoryImagePreview.style.display = 'block'; } else { categoryImagePreview.style.display = 'none'; } document.getElementById('categoriesFormTitle').textContent = 'Edit Kategori'; document.querySelector('#categoryForm .submit-btn').textContent = 'Perbarui Kategori'; document.getElementById('cancelEditCategory').style.display = 'inline-block'; categoryForm.scrollIntoView({ behavior: 'smooth' }); } } });
         function resetCategoryForm() { categoryForm.reset(); document.getElementById('categoryId').value = ''; document.getElementById('categoryOldImageUrl').value = ''; categoryImagePreview.style.display = 'none'; document.getElementById('categoriesFormTitle').textContent = 'Tambah Kategori Baru'; document.querySelector('#categoryForm .submit-btn').textContent = 'Tambah Kategori'; document.getElementById('cancelEditCategory').style.display = 'none'; }
         document.getElementById('cancelEditCategory').addEventListener('click', resetCategoryForm);
 
-        // --- MANAJEMEN BANNER (LOGIKA SERUPA) ---
-        const bannerForm = document.getElementById('bannerForm');
-        const bannersTableBody = document.getElementById('bannersTableBody');
-        const bannerFileInput = document.getElementById('bannerImageFile');
-        const bannerImagePreview = document.getElementById('bannerImagePreview');
+        // --- MANAJEMEN BANNER ---
+        const bannerForm = document.getElementById('bannerForm'); const bannersTableBody = document.getElementById('bannersTableBody');
+        const bannerFileInput = document.getElementById('bannerImageFile'); const bannerImagePreview = document.getElementById('bannerImagePreview');
         const renderBanners = (banners) => { bannersTableBody.innerHTML = banners.map(b => `<tr><td>${b.title}</td><td>${b.type}</td><td>${b.display_order}</td><td class="action-buttons"><button class="edit-btn" data-id="${b.id}">Edit</button><button class="delete-btn" data-id="${b.id}">Hapus</button></td></tr>`).join(''); };
         window.fetchBanners = () => fetchData('banners', 'bannersTableBody', 'loadingBanners', renderBanners);
         bannerFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { bannerImagePreview.src = URL.createObjectURL(file); bannerImagePreview.style.display = 'block'; } });
-        bannerForm.addEventListener('submit', async (e) => { e.preventDefault(); const bannerId = document.getElementById('bannerId').value; const bannerData = { title: document.getElementById('bannerTitle').value, type: document.getElementById('bannerType').value, display_order: parseInt(document.getElementById('bannerDisplayOrder').value) || 0 }; const file = bannerFileInput.files[0]; let imageUrl = await uploadImage(file, 'banners') || document.getElementById('bannerOldImageUrl').value; bannerData.image_url = imageUrl; if (bannerId) { await supabase.from('banners').update(bannerData).eq('id', bannerId); resetBannerForm(); } else { await supabase.from('banners').insert([bannerData]); bannerForm.reset(); } window.fetchBanners(); });
+        bannerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.querySelector('#bannerForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
+            const bannerId = document.getElementById('bannerId').value;
+            const bannerData = { title: document.getElementById('bannerTitle').value, type: document.getElementById('bannerType').value, display_order: parseInt(document.getElementById('bannerDisplayOrder').value) || 0 };
+            const file = bannerFileInput.files[0];
+            if (file) { bannerData.image_url = await uploadImage(file, 'banners'); if (!bannerData.image_url) { submitBtn.disabled = false; submitBtn.textContent = 'Tambah Banner'; return; } }
+            else { bannerData.image_url = document.getElementById('bannerOldImageUrl').value; }
+            const { error } = bannerId ? await supabase.from('banners').update(bannerData).eq('id', bannerId) : await supabase.from('banners').insert([bannerData]);
+            if (error) alert('Gagal menyimpan banner.'); else { if (!bannerId) bannerForm.reset(); resetBannerForm(); }
+            submitBtn.disabled = false; submitBtn.textContent = bannerId ? 'Perbarui Banner' : 'Tambah Banner';
+            window.fetchBanners();
+        });
         bannersTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('banners', id, window.fetchBanners); if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('banners').select('*').eq('id', id).single(); if(data) { document.getElementById('bannerId').value = data.id; document.getElementById('bannerTitle').value = data.title; document.getElementById('bannerType').value = data.type; document.getElementById('bannerDisplayOrder').value = data.display_order; document.getElementById('bannerOldImageUrl').value = data.image_url || ''; if(data.image_url) { bannerImagePreview.src = data.image_url; bannerImagePreview.style.display = 'block'; } else { bannerImagePreview.style.display = 'none'; } document.getElementById('bannersFormTitle').textContent = 'Edit Banner'; document.querySelector('#bannerForm .submit-btn').textContent = 'Perbarui Banner'; document.getElementById('cancelEditBanner').style.display = 'inline-block'; bannerForm.scrollIntoView({ behavior: 'smooth' }); } } });
         function resetBannerForm() { bannerForm.reset(); document.getElementById('bannerId').value = ''; document.getElementById('bannerOldImageUrl').value = ''; bannerImagePreview.style.display = 'none'; document.getElementById('bannersFormTitle').textContent = 'Tambah Banner Baru'; document.querySelector('#bannerForm .submit-btn').textContent = 'Tambah Banner'; document.getElementById('cancelEditBanner').style.display = 'none'; }
         document.getElementById('cancelEditBanner').addEventListener('click', resetBannerForm);
@@ -470,6 +355,5 @@
     });
     </script>
     <!-- ========================= JAVASCRIPT END ========================= -->
-
 </body>
 </html>
