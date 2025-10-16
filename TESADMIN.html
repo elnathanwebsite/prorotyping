@@ -24,8 +24,8 @@
         /* Form Styles */
         .form-section { margin-bottom: 40px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #fafafa; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .form-grid input, .form-grid select { padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
-        .form-grid input:focus, .form-grid select:focus { outline: none; border-color: #3498db; box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); }
+        .form-grid input, .form-grid select, .form-grid textarea { padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+        .form-grid input:focus, .form-grid select:focus, .form-grid textarea:focus { outline: none; border-color: #3498db; box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); }
         .form-grid input[readonly] { background-color: #e9ecef; }
         .form-buttons button { padding: 12px 20px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; margin-right: 10px; }
         .submit-btn { background-color: #2ecc71; color: white; }
@@ -71,6 +71,11 @@
         .price-calculator h4 { margin: 0 0 10px 0; color: #2c3e50; }
         .price-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
         .price-label { font-weight: bold; }
+
+        /* NEW: Bulk actions */
+        .bulk-actions { margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px; }
+        .bulk-actions select, .bulk-actions button { margin-right: 10px; padding: 8px 12px; }
+        .bulk-checkbox { margin-right: 10px; }
     </style>
     <!-- ========================= CSS END ========================= -->
 
@@ -100,14 +105,18 @@
                             <input type="text" id="bookAuthor" placeholder="Penulis" required>
                             <input type="number" step="0.01" id="bookOriginalPrice" placeholder="Harga Asli (USD)" required>
                             <input type="number" step="0.01" id="bookBasePrice" placeholder="Harga Dasar (USD)" required>
-                            <!-- NEW: Publisher and Discount Fields -->
+                            <!-- NEW: Publisher and Category Fields -->
                             <select id="bookPublisherSelect" placeholder="Pilih Penerbit">
                                 <option value="">-- Pilih Penerbit --</option>
+                            </select>
+                            <select id="bookCategorySelect" placeholder="Pilih Kategori">
+                                <option value="">-- Pilih Kategori --</option>
                             </select>
                             <input type="text" id="bookDiscount" placeholder="Diskon (contoh: 10%)">
                             <input type="text" id="bookVolumes" placeholder="Jilid">
                             <input type="text" id="bookPages" placeholder="Halaman">
                             <input type="text" id="bookYear" placeholder="Tahun Terbit">
+                            <textarea id="bookDescription" placeholder="Deskripsi Buku" rows="3"></textarea>
                         </div>
                         
                         <!-- NEW: Price Calculator -->
@@ -152,11 +161,25 @@
                         </div>
                     </form>
                 </div>
+
+                <!-- NEW: Bulk Actions -->
+                <div class="bulk-actions">
+                    <strong>Aksi Massal:</strong>
+                    <select id="bulkAction">
+                        <option value="">Pilih Aksi</option>
+                        <option value="delete">Hapus</option>
+                        <option value="edit">Edit</option>
+                    </select>
+                    <button id="applyBulkAction" class="submit-btn">Terapkan</button>
+                    <span id="selectedCount">0 item terpilih</span>
+                </div>
+
                 <h2>Daftar Buku</h2>
                 <div class="table-wrapper">
                     <table class="admin-table">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" id="selectAll"></th>
                                 <th>Gambar</th>
                                 <th>Informasi</th>
                                 <th>Harga USD</th>
@@ -174,7 +197,43 @@
 
             <!-- ========================= SECTION PENERBIT ========================= -->
             <section id="publishers-section" class="content-section">
-                <div class="form-section"><h2 id="publishersFormTitle">Tambah Penerbit Baru</h2><form id="publisherForm"><input type="hidden" id="publisherId"><input type="hidden" id="publisherOldLogoUrl"><div class="form-grid"><input type="text" id="publisherName" placeholder="Nama Penerbit" required><input type="text" id="publisherLetter" placeholder="Huruf" required><input type="text" id="publisherDiscount" placeholder="Diskon (contoh: 10%)"></div><div class="image-upload-container"><label for="publisherLogoFile">Logo Penerbit</label><input type="file" id="publisherLogoFile" accept="image/*"><img id="publisherImagePreview" class="image-preview" src="" alt="Preview Logo" style="display:none;"></div><div class="form-buttons"><button type="submit" class="submit-btn">Tambah Penerbit</button><button type="button" class="cancel-btn" id="cancelEditPublisher" style="display:none;">Batal</button></div></form></div><h2>Daftar Penerbit</h2><div class="table-wrapper"><table class="admin-table"><thead><tr><th>Logo</th><th>Nama</th><th>Huruf</th><th>Diskon</th><th>Aksi</th></tr></thead><tbody id="publishersTableBody"></tbody></table><p id="loadingPublishers">Memuat data...</p></div>
+                <div class="form-section">
+                    <h2 id="publishersFormTitle">Tambah Penerbit Baru</h2>
+                    <form id="publisherForm">
+                        <input type="hidden" id="publisherId">
+                        <input type="hidden" id="publisherOldLogoUrl">
+                        <div class="form-grid">
+                            <input type="text" id="publisherName" placeholder="Nama Penerbit" required>
+                            <input type="text" id="publisherLetter" placeholder="Huruf" required>
+                            <input type="text" id="publisherDiscount" placeholder="Diskon (contoh: 10%)">
+                        </div>
+                        <div class="image-upload-container">
+                            <label for="publisherLogoFile">Logo Penerbit</label>
+                            <input type="file" id="publisherLogoFile" accept="image/*">
+                            <img id="publisherImagePreview" class="image-preview" src="" alt="Preview Logo" style="display:none;">
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="submit-btn">Tambah Penerbit</button>
+                            <button type="button" class="cancel-btn" id="cancelEditPublisher" style="display:none;">Batal</button>
+                        </div>
+                    </form>
+                </div>
+                <h2>Daftar Penerbit</h2>
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Logo</th>
+                                <th>Nama</th>
+                                <th>Huruf</th>
+                                <th>Diskon</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="publishersTableBody"></tbody>
+                    </table>
+                    <p id="loadingPublishers">Memuat data...</p>
+                </div>
             </section>
 
             <!-- ========================= SECTION KATEGORI (DIPERBARUI) ========================= -->
@@ -224,12 +283,63 @@
 
             <!-- ========================= SECTION BANNER ========================= -->
             <section id="banners-section" class="content-section">
-                <div class="form-section"><h2 id="bannersFormTitle">Tambah Banner Baru</h2><form id="bannerForm"><input type="hidden" id="bannerId"><input type="hidden" id="bannerOldImageUrl"><div class="form-grid"><input type="text" id="bannerTitle" placeholder="Judul Banner" required><input type="text" id="bannerType" placeholder="Tipe (contoh: promo)" required><input type="number" id="bannerDisplayOrder" placeholder="Urutan Tampil"></div><div class="image-upload-container"><label for="bannerImageFile">Gambar Banner</label><input type="file" id="bannerImageFile" accept="image/*"><img id="bannerImagePreview" class="image-preview" src="" alt="Preview Gambar" style="display:none;"></div><div class="form-buttons"><button type="submit" class="submit-btn">Tambah Banner</button><button type="button" class="cancel-btn" id="cancelEditBanner" style="display:none;">Batal</button></div></form></div><h2>Daftar Banner</h2><div class="table-wrapper"><table class="admin-table"><thead><tr><th>Gambar</th><th>Judul</th><th>Tipe</th><th>Urutan</th><th>Aksi</th></tr></thead><tbody id="bannersTableBody"></tbody></table><p id="loadingBanners">Memuat data...</p></div>
+                <div class="form-section">
+                    <h2 id="bannersFormTitle">Tambah Banner Baru</h2>
+                    <form id="bannerForm">
+                        <input type="hidden" id="bannerId">
+                        <input type="hidden" id="bannerOldImageUrl">
+                        <div class="form-grid">
+                            <input type="text" id="bannerTitle" placeholder="Judul Banner" required>
+                            <input type="text" id="bannerType" placeholder="Tipe (contoh: promo)" required>
+                            <input type="number" id="bannerDisplayOrder" placeholder="Urutan Tampil">
+                        </div>
+                        <div class="image-upload-container">
+                            <label for="bannerImageFile">Gambar Banner</label>
+                            <input type="file" id="bannerImageFile" accept="image/*">
+                            <img id="bannerImagePreview" class="image-preview" src="" alt="Preview Gambar" style="display:none;">
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="submit-btn">Tambah Banner</button>
+                            <button type="button" class="cancel-btn" id="cancelEditBanner" style="display:none;">Batal</button>
+                        </div>
+                    </form>
+                </div>
+                <h2>Daftar Banner</h2>
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Gambar</th>
+                                <th>Judul</th>
+                                <th>Tipe</th>
+                                <th>Urutan</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bannersTableBody"></tbody>
+                    </table>
+                    <p id="loadingBanners">Memuat data...</p>
+                </div>
             </section>
 
             <!-- ========================= SECTION PESANAN ========================= -->
             <section id="orders-section" class="content-section">
-                <h2>Daftar Pesanan</h2><div class="table-wrapper"><table class="admin-table"><thead><tr><th>Nama Pelanggan</th><th>Buku</th><th>Total (IDR)</th><th>Status</th><th>Tanggal</th></tr></thead><tbody id="ordersTableBody"></tbody></table><p id="loadingOrders">Memuat data...</p></div>
+                <h2>Daftar Pesanan</h2>
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Nama Pelanggan</th>
+                                <th>Buku</th>
+                                <th>Total (IDR)</th>
+                                <th>Status</th>
+                                <th>Tanggal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody"></tbody>
+                    </table>
+                    <p id="loadingOrders">Memuat data...</p>
+                </div>
             </section>
 
             <!-- ========================= SECTION CURRENCY SETTINGS ========================= -->
@@ -270,6 +380,8 @@
 
         let currencySettings = { usd_rate: 15000, egp_rate: 500 };
         let allPublishers = []; // Store all publishers globally
+        let allCategories = []; // Store all categories globally
+        let selectedBooks = new Set(); // Store selected book IDs for bulk actions
 
         // --- KONFIGURASI MANAJEMEN SECTION ---
         const sections = document.querySelectorAll('.content-section');
@@ -326,6 +438,7 @@
         const bookForm = document.getElementById('bookForm'); const booksTableBody = document.getElementById('booksTableBody');
         const bookFileInput = document.getElementById('bookCoverImageFile'); const bookUrlInput = document.getElementById('bookCoverImageUrl');
         const bookImagePreview = document.getElementById('bookImagePreview'); const bookPublisherSelect = document.getElementById('bookPublisherSelect');
+        const bookCategorySelect = document.getElementById('bookCategorySelect');
         const bookDiscountInput = document.getElementById('bookDiscount');
         const bookBasePriceInput = document.getElementById('bookBasePrice');
         
@@ -335,6 +448,12 @@
         const displayFinalPriceUSD = document.getElementById('displayFinalPriceUSD');
         const displayFinalPriceIDR = document.getElementById('displayFinalPriceIDR');
         const displayFinalPriceEGP = document.getElementById('displayFinalPriceEGP');
+
+        // NEW: Bulk action elements
+        const selectAllCheckbox = document.getElementById('selectAll');
+        const bulkActionSelect = document.getElementById('bulkAction');
+        const applyBulkActionBtn = document.getElementById('applyBulkAction');
+        const selectedCountSpan = document.getElementById('selectedCount');
 
         // NEW: Function to update price calculator
         function updatePriceCalculator() {
@@ -356,6 +475,14 @@
             if (error) { console.error('Error fetching publishers:', error); return; }
             allPublishers = data;
             bookPublisherSelect.innerHTML = '<option value="">-- Pilih Penerbit --</option>' + data.map(p => `<option value="${p.id}" data-discount="${p.discount || ''}">${p.name}</option>`).join('');
+        }
+
+        // NEW: Populate category dropdown
+        async function populateCategoryDropdown() {
+            const { data, error } = await supabase.from('categories').select('id, name_id');
+            if (error) { console.error('Error fetching categories:', error); return; }
+            allCategories = data;
+            bookCategorySelect.innerHTML = '<option value="">-- Pilih Kategori --</option>' + data.map(c => `<option value="${c.id}">${c.name_id}</option>`).join('');
         }
 
         // NEW: Handle publisher selection to auto-fill discount
@@ -392,20 +519,115 @@
             else { bookImagePreview.style.display = 'none'; }
         });
 
-        // NEW: Updated renderBooks function to show discounted prices
+        // NEW: Bulk action functions
+        function updateSelectedCount() {
+            selectedCountSpan.textContent = `${selectedBooks.size} item terpilih`;
+        }
+
+        function handleBookSelection(bookId, isChecked) {
+            if (isChecked) {
+                selectedBooks.add(bookId);
+            } else {
+                selectedBooks.delete(bookId);
+            }
+            updateSelectedCount();
+        }
+
+        selectAllCheckbox.addEventListener('change', (e) => {
+            const checkboxes = document.querySelectorAll('.book-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = e.target.checked;
+                handleBookSelection(checkbox.dataset.id, e.target.checked);
+            });
+        });
+
+        // NEW: Apply bulk action
+        applyBulkActionBtn.addEventListener('click', async () => {
+            const action = bulkActionSelect.value;
+            if (!action) {
+                alert('Pilih aksi terlebih dahulu');
+                return;
+            }
+
+            if (selectedBooks.size === 0) {
+                alert('Pilih setidaknya satu buku');
+                return;
+            }
+
+            if (action === 'delete') {
+                if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedBooks.size} buku?`)) return;
+                
+                for (const bookId of selectedBooks) {
+                    await deleteItem('books', bookId, () => {});
+                }
+                selectedBooks.clear();
+                updateSelectedCount();
+                selectAllCheckbox.checked = false;
+                window.fetchBooks();
+                alert(`${selectedBooks.size} buku berhasil dihapus`);
+            } else if (action === 'edit') {
+                if (selectedBooks.size > 1) {
+                    alert('Fitur edit massal sedang dalam pengembangan. Silakan edit satu per satu.');
+                    return;
+                }
+                
+                // For single edit, trigger the edit mode
+                const bookId = Array.from(selectedBooks)[0];
+                const { data } = await supabase.from('books').select('*').eq('id', bookId).single();
+                if (data) {
+                    // Fill form with book data
+                    document.getElementById('bookId').value = data.id; 
+                    document.getElementById('bookTitle').value = data.title; 
+                    document.getElementById('bookAuthor').value = data.author; 
+                    document.getElementById('bookOriginalPrice').value = data.original_price; 
+                    document.getElementById('bookBasePrice').value = data.base_price; 
+                    document.getElementById('bookVolumes').value = data.volumes; 
+                    document.getElementById('bookPages').value = data.pages; 
+                    document.getElementById('bookYear').value = data.year; 
+                    document.getElementById('bookDescription').value = data.description || '';
+                    document.getElementById('bookOldCoverUrl').value = data.cover_image_url || '';
+                    bookPublisherSelect.value = data.publisher_id || '';
+                    bookCategorySelect.value = data.category_id || '';
+                    bookDiscountInput.value = data.discount || '';
+                    
+                    // Update price calculator
+                    updatePriceCalculator();
+                    
+                    if(data.cover_image_url) { 
+                        bookImagePreview.src = data.cover_image_url; 
+                        bookImagePreview.style.display = 'block'; 
+                    }
+                    
+                    document.getElementById('booksFormTitle').textContent = 'Edit Buku'; 
+                    document.querySelector('#bookForm .submit-btn').textContent = 'Perbarui Buku'; 
+                    document.getElementById('cancelEditBook').style.display = 'inline-block';
+                    bookForm.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+
+        // NEW: Updated renderBooks function to show discounted prices and checkboxes
         const renderBooks = (books) => {
             booksTableBody.innerHTML = books.map(book => {
                 const basePrice = book.base_price || 0;
                 const discount = book.discount || '0';
                 const discountPercent = parseFloat(discount.replace('%', '')) || 0;
                 const finalPriceUSD = calculateDiscountedPrice(basePrice, discount);
+                const isChecked = selectedBooks.has(book.id);
+                
+                // Find publisher and category names
+                const publisher = allPublishers.find(p => p.id === book.publisher_id);
+                const category = allCategories.find(c => c.id === book.category_id);
                 
                 return `
                 <tr>
+                    <td><input type="checkbox" class="book-checkbox" data-id="${book.id}" ${isChecked ? 'checked' : ''}></td>
                     <td><img src="${book.cover_image_url || 'https://via.placeholder.com/60x60.png?text=No+Image'}" class="table-image" alt="Cover"></td>
                     <td>
                         <strong>${book.title}</strong><br>
-                        <small>Penulis: ${book.author}</small>
+                        <small>Penulis: ${book.author}</small><br>
+                        <small>Penerbit: ${publisher ? publisher.name : '-'}</small><br>
+                        <small>Kategori: ${category ? category.name_id : '-'}</small>
                     </td>
                     <td class="price-display">
                         <span class="original-price">${formatPrice(basePrice, 'USD')}</span>
@@ -427,6 +649,13 @@
                     </td>
                 </tr>`;
             }).join('');
+
+            // Add event listeners to checkboxes
+            document.querySelectorAll('.book-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    handleBookSelection(e.target.dataset.id, e.target.checked);
+                });
+            });
         };
         
         window.fetchBooks = () => fetchData('books', 'booksTableBody', 'loadingBooks', renderBooks);
@@ -442,7 +671,9 @@
                 volumes: document.getElementById('bookVolumes').value, 
                 pages: document.getElementById('bookPages').value, 
                 year: document.getElementById('bookYear').value, 
+                description: document.getElementById('bookDescription').value,
                 publisher_id: bookPublisherSelect.value || null, 
+                category_id: bookCategorySelect.value || null,
                 discount: bookDiscountInput.value 
             };
             
@@ -464,7 +695,8 @@
         });
         
         booksTableBody.addEventListener('click', async (e) => {
-            const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('books', id, window.fetchBooks);
+            const id = e.target.dataset.id; 
+            if (e.target.classList.contains('delete-btn')) await deleteItem('books', id, window.fetchBooks);
             if (e.target.classList.contains('edit-btn')) {
                 const { data } = await supabase.from('books').select('*').eq('id', id).single();
                 if(data) {
@@ -476,8 +708,10 @@
                     document.getElementById('bookVolumes').value = data.volumes; 
                     document.getElementById('bookPages').value = data.pages; 
                     document.getElementById('bookYear').value = data.year; 
+                    document.getElementById('bookDescription').value = data.description || '';
                     document.getElementById('bookOldCoverUrl').value = data.cover_image_url || '';
                     bookPublisherSelect.value = data.publisher_id || '';
+                    bookCategorySelect.value = data.category_id || '';
                     bookDiscountInput.value = data.discount || '';
                     
                     // Update price calculator
@@ -550,7 +784,7 @@
         
         categoriesTableBody.addEventListener('click', async (e) => { 
             const id = e.target.dataset.id; 
-            if (e.target.classList.contains('delete-btn')) await deleteItem('categories', id, window.fetchCategories);
+            if (e.target.classList.cona('delete-btn')) await deleteItem('categories', id, window.fetchCategories);
             if (e.target.classList.contains('edit-btn')) { 
                 const { data } = await supabase.from('categories').select('*').eq('id', id).single(); 
                 if(data) { 
@@ -620,7 +854,9 @@
         // --- INISIALISASI PERTAMA KALI ---
         window.fetchCurrency().then(() => {
             populatePublisherDropdown().then(() => {
-                window.fetchBooks();
+                populateCategoryDropdown().then(() => {
+                    window.fetchBooks();
+                });
             });
         });
     });
