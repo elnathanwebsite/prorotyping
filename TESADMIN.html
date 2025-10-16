@@ -59,6 +59,18 @@
         /* Style for currency selector */
         .currency-selector { margin-bottom: 1rem; }
         .currency-selector select { padding: 8px 12px; border-radius: 4px; border: 1px solid #ccc; }
+        
+        /* NEW: Price display styles */
+        .price-display { display: flex; flex-direction: column; }
+        .original-price { text-decoration: line-through; color: #888; font-size: 0.9em; }
+        .discounted-price { color: #e74c3c; font-weight: bold; }
+        .discount-badge { background-color: #e74c3c; color: white; padding: 2px 6px; border-radius: 3px; font-size: 0.8em; margin-left: 5px; }
+        
+        /* NEW: Form price display */
+        .price-calculator { background-color: #f8f9fa; padding: 10px; border-radius: 4px; margin-top: 10px; }
+        .price-calculator h4 { margin: 0 0 10px 0; color: #2c3e50; }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .price-label { font-weight: bold; }
     </style>
     <!-- ========================= CSS END ========================= -->
 
@@ -97,6 +109,32 @@
                             <input type="text" id="bookPages" placeholder="Halaman">
                             <input type="text" id="bookYear" placeholder="Tahun Terbit">
                         </div>
+                        
+                        <!-- NEW: Price Calculator -->
+                        <div class="price-calculator">
+                            <h4>Kalkulator Harga Setelah Diskon</h4>
+                            <div class="price-row">
+                                <span class="price-label">Harga Dasar (USD):</span>
+                                <span id="displayBasePriceUSD">$0.00</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Diskon:</span>
+                                <span id="displayDiscountPercent">0%</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Harga Setelah Diskon (USD):</span>
+                                <span id="displayFinalPriceUSD" class="discounted-price">$0.00</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Harga Setelah Diskon (IDR):</span>
+                                <span id="displayFinalPriceIDR" class="discounted-price">Rp 0</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Harga Setelah Diskon (EGP):</span>
+                                <span id="displayFinalPriceEGP" class="discounted-price">E£ 0</span>
+                            </div>
+                        </div>
+                        
                         <!-- NEW: Image Source Selection -->
                         <div class="image-upload-container">
                             <label>Sampul Buku</label>
@@ -253,6 +291,14 @@
             const price = priceInUsd * rate;
             return `${symbol}${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         }
+        
+        // NEW: Function to calculate discounted price
+        function calculateDiscountedPrice(basePrice, discount) {
+            if (!discount) return basePrice;
+            const discountPercent = parseFloat(discount.replace('%', '')) || 0;
+            return basePrice * (1 - discountPercent / 100);
+        }
+        
         function slugify(text) { return text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, ''); }
         async function uploadImage(file, folder) {
             if (!file) return null;
@@ -281,6 +327,28 @@
         const bookFileInput = document.getElementById('bookCoverImageFile'); const bookUrlInput = document.getElementById('bookCoverImageUrl');
         const bookImagePreview = document.getElementById('bookImagePreview'); const bookPublisherSelect = document.getElementById('bookPublisherSelect');
         const bookDiscountInput = document.getElementById('bookDiscount');
+        const bookBasePriceInput = document.getElementById('bookBasePrice');
+        
+        // NEW: Price display elements
+        const displayBasePriceUSD = document.getElementById('displayBasePriceUSD');
+        const displayDiscountPercent = document.getElementById('displayDiscountPercent');
+        const displayFinalPriceUSD = document.getElementById('displayFinalPriceUSD');
+        const displayFinalPriceIDR = document.getElementById('displayFinalPriceIDR');
+        const displayFinalPriceEGP = document.getElementById('displayFinalPriceEGP');
+
+        // NEW: Function to update price calculator
+        function updatePriceCalculator() {
+            const basePrice = parseFloat(bookBasePriceInput.value) || 0;
+            const discount = bookDiscountInput.value || '0';
+            const discountPercent = parseFloat(discount.replace('%', '')) || 0;
+            const finalPriceUSD = calculateDiscountedPrice(basePrice, discount);
+            
+            displayBasePriceUSD.textContent = `$${basePrice.toFixed(2)}`;
+            displayDiscountPercent.textContent = `${discountPercent}%`;
+            displayFinalPriceUSD.textContent = `$${finalPriceUSD.toFixed(2)}`;
+            displayFinalPriceIDR.textContent = formatPrice(finalPriceUSD, 'IDR');
+            displayFinalPriceEGP.textContent = formatPrice(finalPriceUSD, 'EGP');
+        }
 
         // NEW: Populate publisher dropdown
         async function populatePublisherDropdown() {
@@ -294,7 +362,12 @@
         bookPublisherSelect.addEventListener('change', (e) => {
             const selectedOption = e.target.options[e.target.selectedIndex];
             bookDiscountInput.value = selectedOption.dataset.discount || '';
+            updatePriceCalculator();
         });
+
+        // NEW: Handle price and discount changes
+        bookBasePriceInput.addEventListener('input', updatePriceCalculator);
+        bookDiscountInput.addEventListener('input', updatePriceCalculator);
 
         // NEW: Handle image source selection (file vs URL)
         document.querySelectorAll('input[name="bookImageSource"]').forEach(radio => {
@@ -319,24 +392,59 @@
             else { bookImagePreview.style.display = 'none'; }
         });
 
+        // NEW: Updated renderBooks function to show discounted prices
         const renderBooks = (books) => {
-            booksTableBody.innerHTML = books.map(book => `
+            booksTableBody.innerHTML = books.map(book => {
+                const basePrice = book.base_price || 0;
+                const discount = book.discount || '0';
+                const discountPercent = parseFloat(discount.replace('%', '')) || 0;
+                const finalPriceUSD = calculateDiscountedPrice(basePrice, discount);
+                
+                return `
                 <tr>
                     <td><img src="${book.cover_image_url || 'https://via.placeholder.com/60x60.png?text=No+Image'}" class="table-image" alt="Cover"></td>
-                    <td><strong>${book.title}</strong><br><small>Penulis: ${book.author}</small></td>
-                    <td>${formatPrice(book.base_price, 'USD')}</td>
-                    <td>${formatPrice(book.base_price, 'IDR')}</td>
-                    <td>${formatPrice(book.base_price, 'EGP')}</td>
-                    <td>${book.discount || '-'}</td>
-                    <td class="action-buttons"><button class="edit-btn" data-id="${book.id}">Edit</button><button class="delete-btn" data-id="${book.id}">Hapus</button></td>
-                </tr>`).join('');
+                    <td>
+                        <strong>${book.title}</strong><br>
+                        <small>Penulis: ${book.author}</small>
+                    </td>
+                    <td class="price-display">
+                        <span class="original-price">${formatPrice(basePrice, 'USD')}</span>
+                        <span class="discounted-price">${formatPrice(finalPriceUSD, 'USD')}</span>
+                        ${discountPercent > 0 ? `<span class="discount-badge">-${discountPercent}%</span>` : ''}
+                    </td>
+                    <td class="price-display">
+                        <span class="original-price">${formatPrice(basePrice, 'IDR')}</span>
+                        <span class="discounted-price">${formatPrice(finalPriceUSD, 'IDR')}</span>
+                    </td>
+                    <td class="price-display">
+                        <span class="original-price">${formatPrice(basePrice, 'EGP')}</span>
+                        <span class="discounted-price">${formatPrice(finalPriceUSD, 'EGP')}</span>
+                    </td>
+                    <td>${discount || '-'}</td>
+                    <td class="action-buttons">
+                        <button class="edit-btn" data-id="${book.id}">Edit</button>
+                        <button class="delete-btn" data-id="${book.id}">Hapus</button>
+                    </td>
+                </tr>`;
+            }).join('');
         };
+        
         window.fetchBooks = () => fetchData('books', 'booksTableBody', 'loadingBooks', renderBooks);
 
         bookForm.addEventListener('submit', async (e) => {
             e.preventDefault(); const submitBtn = document.querySelector('#bookForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
             const bookId = document.getElementById('bookId').value;
-            const bookData = { title: document.getElementById('bookTitle').value, author: document.getElementById('bookAuthor').value, original_price: parseFloat(document.getElementById('bookOriginalPrice').value), base_price: parseFloat(document.getElementById('bookBasePrice').value), volumes: document.getElementById('bookVolumes').value, pages: document.getElementById('bookPages').value, year: document.getElementById('bookYear').value, publisher_id: bookPublisherSelect.value || null, discount: bookDiscountInput.value };
+            const bookData = { 
+                title: document.getElementById('bookTitle').value, 
+                author: document.getElementById('bookAuthor').value, 
+                original_price: parseFloat(document.getElementById('bookOriginalPrice').value), 
+                base_price: parseFloat(document.getElementById('bookBasePrice').value), 
+                volumes: document.getElementById('bookVolumes').value, 
+                pages: document.getElementById('bookPages').value, 
+                year: document.getElementById('bookYear').value, 
+                publisher_id: bookPublisherSelect.value || null, 
+                discount: bookDiscountInput.value 
+            };
             
             // Handle image source
             let imageUrl = null;
@@ -354,21 +462,53 @@
             submitBtn.disabled = false; submitBtn.textContent = bookId ? 'Perbarui Buku' : 'Tambah Buku';
             window.fetchBooks();
         });
+        
         booksTableBody.addEventListener('click', async (e) => {
             const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('books', id, window.fetchBooks);
             if (e.target.classList.contains('edit-btn')) {
                 const { data } = await supabase.from('books').select('*').eq('id', id).single();
                 if(data) {
-                    document.getElementById('bookId').value = data.id; document.getElementById('bookTitle').value = data.title; document.getElementById('bookAuthor').value = data.author; document.getElementById('bookOriginalPrice').value = data.original_price; document.getElementById('bookBasePrice').value = data.base_price; document.getElementById('bookVolumes').value = data.volumes; document.getElementById('bookPages').value = data.pages; document.getElementById('bookYear').value = data.year; document.getElementById('bookOldCoverUrl').value = data.cover_image_url || '';
+                    document.getElementById('bookId').value = data.id; 
+                    document.getElementById('bookTitle').value = data.title; 
+                    document.getElementById('bookAuthor').value = data.author; 
+                    document.getElementById('bookOriginalPrice').value = data.original_price; 
+                    document.getElementById('bookBasePrice').value = data.base_price; 
+                    document.getElementById('bookVolumes').value = data.volumes; 
+                    document.getElementById('bookPages').value = data.pages; 
+                    document.getElementById('bookYear').value = data.year; 
+                    document.getElementById('bookOldCoverUrl').value = data.cover_image_url || '';
                     bookPublisherSelect.value = data.publisher_id || '';
                     bookDiscountInput.value = data.discount || '';
-                    if(data.cover_image_url) { bookImagePreview.src = data.cover_image_url; bookImagePreview.style.display = 'block'; }
-                    document.getElementById('booksFormTitle').textContent = 'Edit Buku'; document.querySelector('#bookForm .submit-btn').textContent = 'Perbarui Buku'; document.getElementById('cancelEditBook').style.display = 'inline-block';
+                    
+                    // Update price calculator
+                    updatePriceCalculator();
+                    
+                    if(data.cover_image_url) { 
+                        bookImagePreview.src = data.cover_image_url; 
+                        bookImagePreview.style.display = 'block'; 
+                    }
+                    
+                    document.getElementById('booksFormTitle').textContent = 'Edit Buku'; 
+                    document.querySelector('#bookForm .submit-btn').textContent = 'Perbarui Buku'; 
+                    document.getElementById('cancelEditBook').style.display = 'inline-block';
                     bookForm.scrollIntoView({ behavior: 'smooth' });
                 }
             }
         });
-        function resetBookForm() { bookForm.reset(); document.getElementById('bookId').value = ''; document.getElementById('bookOldCoverUrl').value = ''; bookImagePreview.style.display = 'none'; document.getElementById('booksFormTitle').textContent = 'Tambah Buku Baru'; document.querySelector('#bookForm .submit-btn').textContent = 'Tambah Buku'; document.getElementById('cancelEditBook').style.display = 'none'; bookFileInput.style.display='block'; bookUrlInput.style.display='none'; }
+        
+        function resetBookForm() { 
+            bookForm.reset(); 
+            document.getElementById('bookId').value = ''; 
+            document.getElementById('bookOldCoverUrl').value = ''; 
+            bookImagePreview.style.display = 'none'; 
+            document.getElementById('booksFormTitle').textContent = 'Tambah Buku Baru'; 
+            document.querySelector('#bookForm .submit-btn').textContent = 'Tambah Buku'; 
+            document.getElementById('cancelEditBook').style.display = 'none'; 
+            bookFileInput.style.display='block'; 
+            bookUrlInput.style.display='none';
+            updatePriceCalculator(); // Reset price calculator
+        }
+        
         document.getElementById('cancelEditBook').addEventListener('click', resetBookForm);
 
         // --- MANAJEMEN KATEGORI (DIPERBARUI) ---
@@ -392,6 +532,7 @@
                     <td class="action-buttons"><button class="edit-btn" data-id="${c.id}">Edit</button><button class="delete-btn" data-id="${c.id}">Hapus</button></td>
                 </tr>`).join('');
         };
+        
         window.fetchCategories = () => fetchData('categories', 'categoriesTableBody', 'loadingCategories', renderCategories);
         categoryFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { categoryImagePreview.src = URL.createObjectURL(file); categoryImagePreview.style.display = 'block'; } });
         categoryForm.addEventListener('submit', async (e) => {
@@ -406,9 +547,44 @@
             submitBtn.disabled = false; submitBtn.textContent = categoryId ? 'Perbarui Kategori' : 'Tambah Kategori';
             window.fetchCategories();
         });
-        categoriesTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('categories', id, window.fetchCategories);
-            if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('categories').select('*').eq('id', id).single(); if(data) { document.getElementById('categoryId').value = data.id; document.getElementById('categoryNameId').value = data.name_id; document.getElementById('categoryNameEn').value = data.name_en; document.getElementById('categoryNameAr').value = data.name_ar; document.getElementById('categoryColor').value = data.color; categoryLinkInput.value = data.link || ''; document.getElementById('categoryOldImageUrl').value = data.image_url || ''; if(data.image_url) { categoryImagePreview.src = data.image_url; categoryImagePreview.style.display = 'block'; } else { categoryImagePreview.style.display = 'none'; } document.getElementById('categoriesFormTitle').textContent = 'Edit Kategori'; document.querySelector('#categoryForm .submit-btn').textContent = 'Perbarui Kategori'; document.getElementById('cancelEditCategory').style.display = 'inline-block'; categoryForm.scrollIntoView({ behavior: 'smooth' }); } } });
-        function resetCategoryForm() { categoryForm.reset(); document.getElementById('categoryId').value = ''; document.getElementById('categoryOldImageUrl').value = ''; categoryImagePreview.style.display = 'none'; document.getElementById('categoriesFormTitle').textContent = 'Tambah Kategori Baru'; document.querySelector('#categoryForm .submit-btn').textContent = 'Tambah Kategori'; document.getElementById('cancelEditCategory').style.display = 'none'; }
+        
+        categoriesTableBody.addEventListener('click', async (e) => { 
+            const id = e.target.dataset.id; 
+            if (e.target.classList.contains('delete-btn')) await deleteItem('categories', id, window.fetchCategories);
+            if (e.target.classList.contains('edit-btn')) { 
+                const { data } = await supabase.from('categories').select('*').eq('id', id).single(); 
+                if(data) { 
+                    document.getElementById('categoryId').value = data.id; 
+                    document.getElementById('categoryNameId').value = data.name_id; 
+                    document.getElementById('categoryNameEn').value = data.name_en; 
+                    document.getElementById('categoryNameAr').value = data.name_ar; 
+                    document.getElementById('categoryColor').value = data.color; 
+                    categoryLinkInput.value = data.link || ''; 
+                    document.getElementById('categoryOldImageUrl').value = data.image_url || ''; 
+                    if(data.image_url) { 
+                        categoryImagePreview.src = data.image_url; 
+                        categoryImagePreview.style.display = 'block'; 
+                    } else { 
+                        categoryImagePreview.style.display = 'none'; 
+                    } 
+                    document.getElementById('categoriesFormTitle').textContent = 'Edit Kategori'; 
+                    document.querySelector('#categoryForm .submit-btn').textContent = 'Perbarui Kategori'; 
+                    document.getElementById('cancelEditCategory').style.display = 'inline-block'; 
+                    categoryForm.scrollIntoView({ behavior: 'smooth' }); 
+                } 
+            } 
+        });
+        
+        function resetCategoryForm() { 
+            categoryForm.reset(); 
+            document.getElementById('categoryId').value = ''; 
+            document.getElementById('categoryOldImageUrl').value = ''; 
+            categoryImagePreview.style.display = 'none'; 
+            document.getElementById('categoriesFormTitle').textContent = 'Tambah Kategori Baru'; 
+            document.querySelector('#categoryForm .submit-btn').textContent = 'Tambah Kategori'; 
+            document.getElementById('cancelEditCategory').style.display = 'none'; 
+        }
+        
         document.getElementById('cancelEditCategory').addEventListener('click', resetCategoryForm);
         
         // --- MANAJEMEN LAINNYA (TIDAK BERUBAH) ---
@@ -429,7 +605,16 @@
             const newEgpRate = parseFloat(document.getElementById('usdToEgp').value);
             const { error } = await supabase.from('site_settings').update({ usd_rate: newUsdRate, egp_rate: newEgpRate }).eq('id', (await supabase.from('site_settings').select('id').single()).data.id);
             if (error) { alert('Gagal memperbarui pengaturan kurs.'); }
-            else { alert('Pengaturan kurs berhasil disimpan!'); currencySettings.usd_rate = newUsdRate; currencySettings.egp_rate = newEgpRate; if (document.getElementById('books-section').classList.contains('active')) { window.fetchBooks(); } }
+            else { 
+                alert('Pengaturan kurs berhasil disimpan!'); 
+                currencySettings.usd_rate = newUsdRate; 
+                currencySettings.egp_rate = newEgpRate; 
+                if (document.getElementById('books-section').classList.contains('active')) { 
+                    window.fetchBooks(); 
+                }
+                // Update price calculator if on books form
+                updatePriceCalculator();
+            }
         });
 
         // --- INISIALISASI PERTAMA KALI ---
