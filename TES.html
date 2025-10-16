@@ -49,6 +49,13 @@
         .delete-btn { background-color: #e74c3c; color: white; }
         .delete-btn:hover { background-color: #c0392b; }
         #loadingMessage { text-align: center; padding: 20px; font-style: italic; color: #777; }
+
+        /* Style for images inside tables */
+        .table-image { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; border: 1px solid #eee; }
+        
+        /* Style for currency selector */
+        .currency-selector { margin-bottom: 1rem; }
+        .currency-selector select { padding: 8px 12px; border-radius: 4px; border: 1px solid #ccc; }
     </style>
     <!-- ========================= CSS END ========================= -->
 
@@ -63,6 +70,7 @@
             <button class="nav-btn" data-section="categories">📁 Kategori</button>
             <button class="nav-btn" data-section="banners">🖼️ Banner</button>
             <button class="nav-btn" data-section="orders">🛒 Pesanan</button>
+            <button class="nav-btn" data-section="currency">💱 Pengaturan Harga</button>
         </nav>
         <main>
             <!-- ========================= SECTION BUKU ========================= -->
@@ -75,8 +83,8 @@
                         <div class="form-grid">
                             <input type="text" id="bookTitle" placeholder="Judul Buku" required>
                             <input type="text" id="bookAuthor" placeholder="Penulis" required>
-                            <input type="number" id="bookOriginalPrice" placeholder="Harga Asli" required>
-                            <input type="number" id="bookBasePrice" placeholder="Harga Dasar" required>
+                            <input type="number" step="0.01" id="bookOriginalPrice" placeholder="Harga Asli (USD)" required>
+                            <input type="number" step="0.01" id="bookBasePrice" placeholder="Harga Dasar (USD)" required>
                             <input type="text" id="bookVolumes" placeholder="Jilid">
                             <input type="text" id="bookPages" placeholder="Halaman">
                             <input type="text" id="bookYear" placeholder="Tahun Terbit">
@@ -93,43 +101,31 @@
                     </form>
                 </div>
                 <h2>Daftar Buku</h2>
+                <!-- NEW: Currency Selector -->
+                <div class="currency-selector">
+                    <label for="currencySelect">Tampilkan Harga dalam:</label>
+                    <select id="currencySelect">
+                        <option value="USD">USD</option>
+                        <option value="IDR">IDR</option>
+                        <option value="EGP">EGP</option>
+                    </select>
+                </div>
                 <div class="table-wrapper">
-                    <table class="admin-table"><thead><tr><th>Judul</th><th>Penulis</th><th>Harga Dasar</th><th>Aksi</th></tr></thead><tbody id="booksTableBody"></tbody></table>
+                    <table class="admin-table">
+                        <thead><tr><th>Gambar</th><th>Judul</th><th>Penulis</th><th>Harga Dasar</th><th>Aksi</th></tr></thead>
+                        <tbody id="booksTableBody"></tbody>
+                    </table>
                     <p id="loadingBooks">Memuat data...</p>
                 </div>
             </section>
 
             <!-- ========================= SECTION PENERBIT ========================= -->
             <section id="publishers-section" class="content-section">
-                <div class="form-section">
-                    <h2 id="publishersFormTitle">Tambah Penerbit Baru</h2>
-                    <form id="publisherForm">
-                        <input type="hidden" id="publisherId">
-                        <input type="hidden" id="publisherOldLogoUrl">
-                        <div class="form-grid">
-                            <input type="text" id="publisherName" placeholder="Nama Penerbit" required>
-                            <input type="text" id="publisherLetter" placeholder="Huruf" required>
-                            <input type="text" id="publisherDiscount" placeholder="Diskon (contoh: 10%)">
-                        </div>
-                        <div class="image-upload-container">
-                            <label for="publisherLogoFile">Logo Penerbit</label>
-                            <input type="file" id="publisherLogoFile" accept="image/*">
-                            <img id="publisherImagePreview" class="image-preview" src="" alt="Preview Logo" style="display:none;">
-                        </div>
-                        <div class="form-buttons">
-                            <button type="submit" class="submit-btn">Tambah Penerbit</button>
-                            <button type="button" class="cancel-btn" id="cancelEditPublisher" style="display:none;">Batal</button>
-                        </div>
-                    </form>
-                </div>
-                <h2>Daftar Penerbit</h2>
-                <div class="table-wrapper">
-                    <table class="admin-table"><thead><tr><th>Nama</th><th>Huruf</th><th>Diskon</th><th>Aksi</th></tr></thead><tbody id="publishersTableBody"></tbody></table>
-                    <p id="loadingPublishers">Memuat data...</p>
-                </div>
+                <!-- ... (Publisher section remains the same) ... -->
+                <div class="form-section"><h2 id="publishersFormTitle">Tambah Penerbit Baru</h2><form id="publisherForm"><input type="hidden" id="publisherId"><input type="hidden" id="publisherOldLogoUrl"><div class="form-grid"><input type="text" id="publisherName" placeholder="Nama Penerbit" required><input type="text" id="publisherLetter" placeholder="Huruf" required><input type="text" id="publisherDiscount" placeholder="Diskon (contoh: 10%)"></div><div class="image-upload-container"><label for="publisherLogoFile">Logo Penerbit</label><input type="file" id="publisherLogoFile" accept="image/*"><img id="publisherImagePreview" class="image-preview" src="" alt="Preview Logo" style="display:none;"></div><div class="form-buttons"><button type="submit" class="submit-btn">Tambah Penerbit</button><button type="button" class="cancel-btn" id="cancelEditPublisher" style="display:none;">Batal</button></div></form></div><h2>Daftar Penerbit</h2><div class="table-wrapper"><table class="admin-table"><thead><tr><th>Logo</th><th>Nama</th><th>Huruf</th><th>Diskon</th><th>Aksi</th></tr></thead><tbody id="publishersTableBody"></tbody></table><p id="loadingPublishers">Memuat data...</p></div>
             </section>
 
-            <!-- ========================= SECTION KATEGORI ========================= -->
+            <!-- ========================= SECTION KATEGORI (DIPERBARUI) ========================= -->
             <section id="categories-section" class="content-section">
                 <div class="form-section">
                     <h2 id="categoriesFormTitle">Tambah Kategori Baru</h2>
@@ -141,6 +137,8 @@
                             <input type="text" id="categoryNameEn" placeholder="Nama (EN)" required>
                             <input type="text" id="categoryNameAr" placeholder="Nama (AR)" required>
                             <input type="color" id="categoryColor" placeholder="Warna">
+                            <!-- NEW: Link Input -->
+                            <input type="url" id="categoryLink" placeholder="Link Kategori (opsional)">
                         </div>
                         <div class="image-upload-container">
                             <label for="categoryImageFile">Gambar Kategori</label>
@@ -155,47 +153,56 @@
                 </div>
                 <h2>Daftar Kategori</h2>
                 <div class="table-wrapper">
-                    <table class="admin-table"><thead><tr><th>Nama (ID)</th><th>Nama (EN)</th><th>Warna</th><th>Aksi</th></tr></thead><tbody id="categoriesTableBody"></tbody></table>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Gambar</th>
+                                <th>Nama (ID)</th>
+                                <th>Nama (EN)</th>
+                                <th>Warna</th>
+                                <!-- NEW: Link Column -->
+                                <th>Link</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesTableBody"></tbody>
+                    </table>
                     <p id="loadingCategories">Memuat data...</p>
                 </div>
             </section>
 
             <!-- ========================= SECTION BANNER ========================= -->
             <section id="banners-section" class="content-section">
-                <div class="form-section">
-                    <h2 id="bannersFormTitle">Tambah Banner Baru</h2>
-                    <form id="bannerForm">
-                        <input type="hidden" id="bannerId">
-                        <input type="hidden" id="bannerOldImageUrl">
-                        <div class="form-grid">
-                            <input type="text" id="bannerTitle" placeholder="Judul Banner" required>
-                            <input type="text" id="bannerType" placeholder="Tipe (contoh: promo)" required>
-                            <input type="number" id="bannerDisplayOrder" placeholder="Urutan Tampil">
-                        </div>
-                        <div class="image-upload-container">
-                            <label for="bannerImageFile">Gambar Banner</label>
-                            <input type="file" id="bannerImageFile" accept="image/*">
-                            <img id="bannerImagePreview" class="image-preview" src="" alt="Preview Gambar" style="display:none;">
-                        </div>
-                        <div class="form-buttons">
-                            <button type="submit" class="submit-btn">Tambah Banner</button>
-                            <button type="button" class="cancel-btn" id="cancelEditBanner" style="display:none;">Batal</button>
-                        </div>
-                    </form>
-                </div>
-                <h2>Daftar Banner</h2>
-                <div class="table-wrapper">
-                    <table class="admin-table"><thead><tr><th>Judul</th><th>Tipe</th><th>Urutan</th><th>Aksi</th></tr></thead><tbody id="bannersTableBody"></tbody></table>
-                    <p id="loadingBanners">Memuat data...</p>
-                </div>
+                <!-- ... (Banner section remains the same) ... -->
+                <div class="form-section"><h2 id="bannersFormTitle">Tambah Banner Baru</h2><form id="bannerForm"><input type="hidden" id="bannerId"><input type="hidden" id="bannerOldImageUrl"><div class="form-grid"><input type="text" id="bannerTitle" placeholder="Judul Banner" required><input type="text" id="bannerType" placeholder="Tipe (contoh: promo)" required><input type="number" id="bannerDisplayOrder" placeholder="Urutan Tampil"></div><div class="image-upload-container"><label for="bannerImageFile">Gambar Banner</label><input type="file" id="bannerImageFile" accept="image/*"><img id="bannerImagePreview" class="image-preview" src="" alt="Preview Gambar" style="display:none;"></div><div class="form-buttons"><button type="submit" class="submit-btn">Tambah Banner</button><button type="button" class="cancel-btn" id="cancelEditBanner" style="display:none;">Batal</button></div></form></div><h2>Daftar Banner</h2><div class="table-wrapper"><table class="admin-table"><thead><tr><th>Gambar</th><th>Judul</th><th>Tipe</th><th>Urutan</th><th>Aksi</th></tr></thead><tbody id="bannersTableBody"></tbody></table><p id="loadingBanners">Memuat data...</p></div>
             </section>
 
             <!-- ========================= SECTION PESANAN ========================= -->
             <section id="orders-section" class="content-section">
-                <h2>Daftar Pesanan</h2>
-                <div class="table-wrapper">
-                    <table class="admin-table"><thead><tr><th>Nama Pelanggan</th><th>Buku</th><th>Total (IDR)</th><th>Status</th><th>Tanggal</th></tr></thead><tbody id="ordersTableBody"></tbody></table>
-                    <p id="loadingOrders">Memuat data...</p>
+                <!-- ... (Orders section remains the same) ... -->
+                <h2>Daftar Pesanan</h2><div class="table-wrapper"><table class="admin-table"><thead><tr><th>Nama Pelanggan</th><th>Buku</th><th>Total (IDR)</th><th>Status</th><th>Tanggal</th></tr></thead><tbody id="ordersTableBody"></tbody></table><p id="loadingOrders">Memuat data...</p></div>
+            </section>
+
+            <!-- ========================= NEW SECTION: CURRENCY SETTINGS ========================= -->
+            <section id="currency-section" class="content-section">
+                <div class="form-section">
+                    <h2>Pengaturan Kurs Mata Uang</h2>
+                    <p>Harga dasar produk disimpan dalam USD. Atur kurs di sini untuk mengonversi harga saat ditampilkan.</p>
+                    <form id="currencyForm">
+                        <div class="form-grid">
+                            <div>
+                                <label for="usdToIdr">USD ke IDR</label>
+                                <input type="number" id="usdToIdr" required>
+                            </div>
+                            <div>
+                                <label for="usdToEgp">USD ke EGP</label>
+                                <input type="number" id="usdToEgp" required>
+                            </div>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="submit-btn">Simpan Pengaturan</button>
+                        </div>
+                    </form>
                 </div>
             </section>
 
@@ -206,7 +213,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- ========================= JAVASCRIPT START ========================= -->
-      <!-- ========================= JAVASCRIPT START ========================= -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         // --- INISIALISASI SUPABASE ---
@@ -215,10 +221,13 @@
         const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
         const STORAGE_BUCKET = 'images';
 
+        // --- GLOBAL STATE FOR CURRENCY ---
+        let currencySettings = { usd_rate: 15000, egp_rate: 500 };
+        let currentCurrency = 'USD';
+
         // --- KONFIGURASI MANAJEMEN SECTION ---
         const sections = document.querySelectorAll('.content-section');
         const navButtons = document.querySelectorAll('.nav-btn');
-
         function showSection(sectionId) {
             sections.forEach(section => section.classList.remove('active'));
             navButtons.forEach(btn => btn.classList.remove('active'));
@@ -253,17 +262,45 @@
             else { fetchFunction(); }
         }
         
-        // --- MANAJEMEN BUKU ---
+        // --- MANAJEMEN BUKU (DIPERBARUI) ---
         const bookForm = document.getElementById('bookForm'); const booksTableBody = document.getElementById('booksTableBody');
         const bookFileInput = document.getElementById('bookCoverImageFile'); const bookImagePreview = document.getElementById('bookImagePreview');
-        const renderBooks = (books) => { booksTableBody.innerHTML = books.map(book => `<tr><td>${book.title}</td><td>${book.author}</td><td>Rp ${book.base_price.toLocaleString('id-ID')}</td><td class="action-buttons"><button class="edit-btn" data-id="${book.id}">Edit</button><button class="delete-btn" data-id="${book.id}">Hapus</button></td></tr>`).join(''); };
+        const currencySelect = document.getElementById('currencySelect');
+
+        // NEW: Function to format price based on currency
+        function formatPrice(priceInUsd) {
+            let rate = 1, symbol = '$';
+            if (currentCurrency === 'IDR') { rate = currencySettings.usd_rate; symbol = 'Rp '; }
+            if (currentCurrency === 'EGP') { rate = currencySettings.egp_rate; symbol = 'E£ '; }
+            const price = priceInUsd * rate;
+            return `${symbol}${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        const renderBooks = (books) => {
+            booksTableBody.innerHTML = books.map(book => `
+                <tr>
+                    <td><img src="${book.cover_image_url || 'https://via.placeholder.com/80x80.png?text=No+Image'}" class="table-image" alt="Cover"></td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${formatPrice(book.base_price)}</td>
+                    <td class="action-buttons"><button class="edit-btn" data-id="${book.id}">Edit</button><button class="delete-btn" data-id="${book.id}">Hapus</button></td>
+                </tr>`).join('');
+        };
         window.fetchBooks = () => fetchData('books', 'booksTableBody', 'loadingBooks', renderBooks);
+
+        // NEW: Event listener for currency change
+        currencySelect.addEventListener('change', (e) => {
+            currentCurrency = e.target.value;
+            // Re-render books table with new currency
+            const { data: books } = supabase.from('books').select('*');
+            books.then(res => renderBooks(res.data || []));
+        });
+
         bookFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { bookImagePreview.src = URL.createObjectURL(file); bookImagePreview.style.display = 'block'; } });
         bookForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const submitBtn = document.querySelector('#bookForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
+            e.preventDefault(); const submitBtn = document.querySelector('#bookForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
             const bookId = document.getElementById('bookId').value;
-            const bookData = { title: document.getElementById('bookTitle').value, author: document.getElementById('bookAuthor').value, original_price: parseInt(document.getElementById('bookOriginalPrice').value), base_price: parseInt(document.getElementById('bookBasePrice').value), volumes: document.getElementById('bookVolumes').value, pages: document.getElementById('bookPages').value, year: document.getElementById('bookYear').value };
+            const bookData = { title: document.getElementById('bookTitle').value, author: document.getElementById('bookAuthor').value, original_price: parseFloat(document.getElementById('bookOriginalPrice').value), base_price: parseFloat(document.getElementById('bookBasePrice').value), volumes: document.getElementById('bookVolumes').value, pages: document.getElementById('bookPages').value, year: document.getElementById('bookYear').value };
             const file = bookFileInput.files[0];
             if (file) { bookData.cover_image_url = await uploadImage(file, 'books'); if (!bookData.cover_image_url) { submitBtn.disabled = false; submitBtn.textContent = 'Tambah Buku'; return; } }
             else { bookData.cover_image_url = document.getElementById('bookOldCoverUrl').value; }
@@ -276,40 +313,27 @@
         function resetBookForm() { bookForm.reset(); document.getElementById('bookId').value = ''; document.getElementById('bookOldCoverUrl').value = ''; bookImagePreview.style.display = 'none'; document.getElementById('booksFormTitle').textContent = 'Tambah Buku Baru'; document.querySelector('#bookForm .submit-btn').textContent = 'Tambah Buku'; document.getElementById('cancelEditBook').style.display = 'none'; }
         document.getElementById('cancelEditBook').addEventListener('click', resetBookForm);
 
-        // --- MANAJEMEN PENERBIT ---
-        const publisherForm = document.getElementById('publisherForm'); const publishersTableBody = document.getElementById('publishersTableBody');
-        const publisherFileInput = document.getElementById('publisherLogoFile'); const publisherImagePreview = document.getElementById('publisherImagePreview');
-        const renderPublishers = (publishers) => { publishersTableBody.innerHTML = publishers.map(p => `<tr><td>${p.name}</td><td>${p.letter}</td><td>${p.discount || '-'}</td><td class="action-buttons"><button class="edit-btn" data-id="${p.id}">Edit</button><button class="delete-btn" data-id="${p.id}">Hapus</button></td></tr>`).join(''); };
-        window.fetchPublishers = () => fetchData('publishers', 'publishersTableBody', 'loadingPublishers', renderPublishers);
-        publisherFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { publisherImagePreview.src = URL.createObjectURL(file); publisherImagePreview.style.display = 'block'; } });
-        publisherForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const submitBtn = document.querySelector('#publisherForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
-            const publisherId = document.getElementById('publisherId').value;
-            const publisherData = { name: document.getElementById('publisherName').value, letter: document.getElementById('publisherLetter').value, discount: document.getElementById('publisherDiscount').value };
-            const file = publisherFileInput.files[0];
-            if (file) { publisherData.logo_url = await uploadImage(file, 'publishers'); if (!publisherData.logo_url) { submitBtn.disabled = false; submitBtn.textContent = 'Tambah Penerbit'; return; } }
-            else { publisherData.logo_url = document.getElementById('publisherOldLogoUrl').value; }
-            const { error } = publisherId ? await supabase.from('publishers').update(publisherData).eq('id', publisherId) : await supabase.from('publishers').insert([publisherData]);
-            if (error) alert('Gagal menyimpan penerbit.'); else { if (!publisherId) publisherForm.reset(); resetPublisherForm(); }
-            submitBtn.disabled = false; submitBtn.textContent = publisherId ? 'Perbarui Penerbit' : 'Tambah Penerbit';
-            window.fetchPublishers();
-        });
-        publishersTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('publishers', id, window.fetchPublishers); if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('publishers').select('*').eq('id', id).single(); if(data) { document.getElementById('publisherId').value = data.id; document.getElementById('publisherName').value = data.name; document.getElementById('publisherLetter').value = data.letter; document.getElementById('publisherDiscount').value = data.discount; document.getElementById('publisherOldLogoUrl').value = data.logo_url || ''; if(data.logo_url) { publisherImagePreview.src = data.logo_url; publisherImagePreview.style.display = 'block'; } else { publisherImagePreview.style.display = 'none'; } document.getElementById('publishersFormTitle').textContent = 'Edit Penerbit'; document.querySelector('#publisherForm .submit-btn').textContent = 'Perbarui Penerbit'; document.getElementById('cancelEditPublisher').style.display = 'inline-block'; publisherForm.scrollIntoView({ behavior: 'smooth' }); } } });
-        function resetPublisherForm() { publisherForm.reset(); document.getElementById('publisherId').value = ''; document.getElementById('publisherOldLogoUrl').value = ''; publisherImagePreview.style.display = 'none'; document.getElementById('publishersFormTitle').textContent = 'Tambah Penerbit Baru'; document.querySelector('#publisherForm .submit-btn').textContent = 'Tambah Penerbit'; document.getElementById('cancelEditPublisher').style.display = 'none'; }
-        document.getElementById('cancelEditPublisher').addEventListener('click', resetPublisherForm);
-
-        // --- MANAJEMEN KATEGORI ---
+        // --- MANAJEMEN KATEGORI (DIPERBARUI) ---
         const categoryForm = document.getElementById('categoryForm'); const categoriesTableBody = document.getElementById('categoriesTableBody');
         const categoryFileInput = document.getElementById('categoryImageFile'); const categoryImagePreview = document.getElementById('categoryImagePreview');
-        const renderCategories = (categories) => { categoriesTableBody.innerHTML = categories.map(c => `<tr><td>${c.name_id}</td><td>${c.name_en}</td><td><span style="display:inline-block; width:20px; height:20px; background-color:${c.color}; border-radius:4px; vertical-align:middle;"></span> ${c.color}</td><td class="action-buttons"><button class="edit-btn" data-id="${c.id}">Edit</button><button class="delete-btn" data-id="${c.id}">Hapus</button></td></tr>`).join(''); };
+        const renderCategories = (categories) => {
+            categoriesTableBody.innerHTML = categories.map(c => `
+                <tr>
+                    <td><img src="${c.image_url || 'https://via.placeholder.com/80x80.png?text=No+Image'}" class="table-image" alt="Category"></td>
+                    <td>${c.name_id}</td>
+                    <td>${c.name_en}</td>
+                    <td><span style="display:inline-block; width:20px; height:20px; background-color:${c.color}; border-radius:4px; vertical-align:middle;"></span> ${c.color}</td>
+                    <td>${c.link ? `<a href="${c.link}" target="_blank">${c.link}</a>` : '-'}</td>
+                    <td class="action-buttons"><button class="edit-btn" data-id="${c.id}">Edit</button><button class="delete-btn" data-id="${c.id}">Hapus</button></td>
+                </tr>`).join('');
+        };
         window.fetchCategories = () => fetchData('categories', 'categoriesTableBody', 'loadingCategories', renderCategories);
         categoryFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { categoryImagePreview.src = URL.createObjectURL(file); categoryImagePreview.style.display = 'block'; } });
         categoryForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const submitBtn = document.querySelector('#categoryForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
+            e.preventDefault(); const submitBtn = document.querySelector('#categoryForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
             const categoryId = document.getElementById('categoryId').value;
-            const categoryData = { name_id: document.getElementById('categoryNameId').value, name_en: document.getElementById('categoryNameEn').value, name_ar: document.getElementById('categoryNameAr').value, color: document.getElementById('categoryColor').value };
+            // NEW: Include link in data
+            const categoryData = { name_id: document.getElementById('categoryNameId').value, name_en: document.getElementById('categoryNameEn').value, name_ar: document.getElementById('categoryNameAr').value, color: document.getElementById('categoryColor').value, link: document.getElementById('categoryLink').value };
             const file = categoryFileInput.files[0];
             if (file) { categoryData.image_url = await uploadImage(file, 'categories'); if (!categoryData.image_url) { submitBtn.disabled = false; submitBtn.textContent = 'Tambah Kategori'; return; } }
             else { categoryData.image_url = document.getElementById('categoryOldImageUrl').value; }
@@ -318,42 +342,53 @@
             submitBtn.disabled = false; submitBtn.textContent = categoryId ? 'Perbarui Kategori' : 'Tambah Kategori';
             window.fetchCategories();
         });
-        categoriesTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('categories', id, window.fetchCategories); if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('categories').select('*').eq('id', id).single(); if(data) { document.getElementById('categoryId').value = data.id; document.getElementById('categoryNameId').value = data.name_id; document.getElementById('categoryNameEn').value = data.name_en; document.getElementById('categoryNameAr').value = data.name_ar; document.getElementById('categoryColor').value = data.color; document.getElementById('categoryOldImageUrl').value = data.image_url || ''; if(data.image_url) { categoryImagePreview.src = data.image_url; categoryImagePreview.style.display = 'block'; } else { categoryImagePreview.style.display = 'none'; } document.getElementById('categoriesFormTitle').textContent = 'Edit Kategori'; document.querySelector('#categoryForm .submit-btn').textContent = 'Perbarui Kategori'; document.getElementById('cancelEditCategory').style.display = 'inline-block'; categoryForm.scrollIntoView({ behavior: 'smooth' }); } } });
+        categoriesTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('categories', id, window.fetchCategories); if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('categories').select('*').eq('id', id).single(); if(data) { document.getElementById('categoryId').value = data.id; document.getElementById('categoryNameId').value = data.name_id; document.getElementById('categoryNameEn').value = data.name_en; document.getElementById('categoryNameAr').value = data.name_ar; document.getElementById('categoryColor').value = data.color; document.getElementById('categoryLink').value = data.link || ''; document.getElementById('categoryOldImageUrl').value = data.image_url || ''; if(data.image_url) { categoryImagePreview.src = data.image_url; categoryImagePreview.style.display = 'block'; } else { categoryImagePreview.style.display = 'none'; } document.getElementById('categoriesFormTitle').textContent = 'Edit Kategori'; document.querySelector('#categoryForm .submit-btn').textContent = 'Perbarui Kategori'; document.getElementById('cancelEditCategory').style.display = 'inline-block'; categoryForm.scrollIntoView({ behavior: 'smooth' }); } } });
         function resetCategoryForm() { categoryForm.reset(); document.getElementById('categoryId').value = ''; document.getElementById('categoryOldImageUrl').value = ''; categoryImagePreview.style.display = 'none'; document.getElementById('categoriesFormTitle').textContent = 'Tambah Kategori Baru'; document.querySelector('#categoryForm .submit-btn').textContent = 'Tambah Kategori'; document.getElementById('cancelEditCategory').style.display = 'none'; }
         document.getElementById('cancelEditCategory').addEventListener('click', resetCategoryForm);
 
-        // --- MANAJEMEN BANNER ---
-        const bannerForm = document.getElementById('bannerForm'); const bannersTableBody = document.getElementById('bannersTableBody');
-        const bannerFileInput = document.getElementById('bannerImageFile'); const bannerImagePreview = document.getElementById('bannerImagePreview');
-        const renderBanners = (banners) => { bannersTableBody.innerHTML = banners.map(b => `<tr><td>${b.title}</td><td>${b.type}</td><td>${b.display_order}</td><td class="action-buttons"><button class="edit-btn" data-id="${b.id}">Edit</button><button class="delete-btn" data-id="${b.id}">Hapus</button></td></tr>`).join(''); };
-        window.fetchBanners = () => fetchData('banners', 'bannersTableBody', 'loadingBanners', renderBanners);
-        bannerFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { bannerImagePreview.src = URL.createObjectURL(file); bannerImagePreview.style.display = 'block'; } });
-        bannerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const submitBtn = document.querySelector('#bannerForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...';
-            const bannerId = document.getElementById('bannerId').value;
-            const bannerData = { title: document.getElementById('bannerTitle').value, type: document.getElementById('bannerType').value, display_order: parseInt(document.getElementById('bannerDisplayOrder').value) || 0 };
-            const file = bannerFileInput.files[0];
-            if (file) { bannerData.image_url = await uploadImage(file, 'banners'); if (!bannerData.image_url) { submitBtn.disabled = false; submitBtn.textContent = 'Tambah Banner'; return; } }
-            else { bannerData.image_url = document.getElementById('bannerOldImageUrl').value; }
-            const { error } = bannerId ? await supabase.from('banners').update(bannerData).eq('id', bannerId) : await supabase.from('banners').insert([bannerData]);
-            if (error) alert('Gagal menyimpan banner.'); else { if (!bannerId) bannerForm.reset(); resetBannerForm(); }
-            submitBtn.disabled = false; submitBtn.textContent = bannerId ? 'Perbarui Banner' : 'Tambah Banner';
-            window.fetchBanners();
-        });
-        bannersTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('banners', id, window.fetchBanners); if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('banners').select('*').eq('id', id).single(); if(data) { document.getElementById('bannerId').value = data.id; document.getElementById('bannerTitle').value = data.title; document.getElementById('bannerType').value = data.type; document.getElementById('bannerDisplayOrder').value = data.display_order; document.getElementById('bannerOldImageUrl').value = data.image_url || ''; if(data.image_url) { bannerImagePreview.src = data.image_url; bannerImagePreview.style.display = 'block'; } else { bannerImagePreview.style.display = 'none'; } document.getElementById('bannersFormTitle').textContent = 'Edit Banner'; document.querySelector('#bannerForm .submit-btn').textContent = 'Perbarui Banner'; document.getElementById('cancelEditBanner').style.display = 'inline-block'; bannerForm.scrollIntoView({ behavior: 'smooth' }); } } });
-        function resetBannerForm() { bannerForm.reset(); document.getElementById('bannerId').value = ''; document.getElementById('bannerOldImageUrl').value = ''; bannerImagePreview.style.display = 'none'; document.getElementById('bannersFormTitle').textContent = 'Tambah Banner Baru'; document.querySelector('#bannerForm .submit-btn').textContent = 'Tambah Banner'; document.getElementById('cancelEditBanner').style.display = 'none'; }
-        document.getElementById('cancelEditBanner').addEventListener('click', resetBannerForm);
+        // --- MANAJEMEN PENERBIT, BANNER, PESANAN (TIDAK BERUBAH) ---
+        const publisherForm = document.getElementById('publisherForm'); const publishersTableBody = document.getElementById('publishersTableBody'); const publisherFileInput = document.getElementById('publisherLogoFile'); const publisherImagePreview = document.getElementById('publisherImagePreview'); const renderPublishers = (publishers) => { publishersTableBody.innerHTML = publishers.map(p => `<tr><td><img src="${p.logo_url || 'https://via.placeholder.com/80x80.png?text=No+Logo'}" class="table-image" alt="Logo"></td><td>${p.name}</td><td>${p.letter}</td><td>${p.discount || '-'}</td><td class="action-buttons"><button class="edit-btn" data-id="${p.id}">Edit</button><button class="delete-btn" data-id="${p.id}">Hapus</button></td></tr>`).join(''); }; window.fetchPublishers = () => fetchData('publishers', 'publishersTableBody', 'loadingPublishers', renderPublishers); publisherFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { publisherImagePreview.src = URL.createObjectURL(file); publisherImagePreview.style.display = 'block'; } }); publisherForm.addEventListener('submit', async (e) => { e.preventDefault(); const submitBtn = document.querySelector('#publisherForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...'; const publisherId = document.getElementById('publisherId').value; const publisherData = { name: document.getElementById('publisherName').value, letter: document.getElementById('publisherLetter').value, discount: document.getElementById('publisherDiscount').value }; const file = publisherFileInput.files[0]; if (file) { publisherData.logo_url = await uploadImage(file, 'publishers'); if (!publisherData.logo_url) { submitBtn.disabled = false; submitBtn.textContent = 'Tambah Penerbit'; return; } } else { publisherData.logo_url = document.getElementById('publisherOldLogoUrl').value; } const { error } = publisherId ? await supabase.from('publishers').update(publisherData).eq('id', publisherId) : await supabase.from('publishers').insert([publisherData]); if (error) alert('Gagal menyimpan penerbit.'); else { if (!publisherId) publisherForm.reset(); resetPublisherForm(); } submitBtn.disabled = false; submitBtn.textContent = publisherId ? 'Perbarui Penerbit' : 'Tambah Penerbit'; window.fetchPublishers(); }); publishersTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('publishers', id, window.fetchPublishers); if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('publishers').select('*').eq('id', id).single(); if(data) { document.getElementById('publisherId').value = data.id; document.getElementById('publisherName').value = data.name; document.getElementById('publisherLetter').value = data.letter; document.getElementById('publisherDiscount').value = data.discount; document.getElementById('publisherOldLogoUrl').value = data.logo_url || ''; if(data.logo_url) { publisherImagePreview.src = data.logo_url; publisherImagePreview.style.display = 'block'; } else { publisherImagePreview.style.display = 'none'; } document.getElementById('publishersFormTitle').textContent = 'Edit Penerbit'; document.querySelector('#publisherForm .submit-btn').textContent = 'Perbarui Penerbit'; document.getElementById('cancelEditPublisher').style.display = 'inline-block'; publisherForm.scrollIntoView({ behavior: 'smooth' }); } } }); function resetPublisherForm() { publisherForm.reset(); document.getElementById('publisherId').value = ''; document.getElementById('publisherOldLogoUrl').value = ''; publisherImagePreview.style.display = 'none'; document.getElementById('publishersFormTitle').textContent = 'Tambah Penerbit Baru'; document.querySelector('#publisherForm .submit-btn').textContent = 'Tambah Penerbit'; document.getElementById('cancelEditPublisher').style.display = 'none'; } document.getElementById('cancelEditPublisher').addEventListener('click', resetPublisherForm);
+        const bannerForm = document.getElementById('bannerForm'); const bannersTableBody = document.getElementById('bannersTableBody'); const bannerFileInput = document.getElementById('bannerImageFile'); const bannerImagePreview = document.getElementById('bannerImagePreview'); const renderBanners = (banners) => { bannersTableBody.innerHTML = banners.map(b => `<tr><td><img src="${b.image_url || 'https://via.placeholder.com/80x80.png?text=No+Image'}" class="table-image" alt="Banner"></td><td>${b.title}</td><td>${b.type}</td><td>${b.display_order}</td><td class="action-buttons"><button class="edit-btn" data-id="${b.id}">Edit</button><button class="delete-btn" data-id="${b.id}">Hapus</button></td></tr>`).join(''); }; window.fetchBanners = () => fetchData('banners', 'bannersTableBody', 'loadingBanners', renderBanners); bannerFileInput.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { bannerImagePreview.src = URL.createObjectURL(file); bannerImagePreview.style.display = 'block'; } }); bannerForm.addEventListener('submit', async (e) => { e.preventDefault(); const submitBtn = document.querySelector('#bannerForm .submit-btn'); submitBtn.disabled = true; submitBtn.textContent = 'Menyimpan...'; const bannerId = document.getElementById('bannerId').value; const bannerData = { title: document.getElementById('bannerTitle').value, type: document.getElementById('bannerType').value, display_order: parseInt(document.getElementById('bannerDisplayOrder').value) || 0 }; const file = bannerFileInput.files[0]; if (file) { bannerData.image_url = await uploadImage(file, 'banners'); if (!bannerData.image_url) { submitBtn.disabled = false; submitBtn.textContent = 'Tambah Banner'; return; } } else { bannerData.image_url = document.getElementById('bannerOldImageUrl').value; } const { error } = bannerId ? await supabase.from('banners').update(bannerData).eq('id', bannerId) : await supabase.from('banners').insert([bannerData]); if (error) alert('Gagal menyimpan banner.'); else { if (!bannerId) bannerForm.reset(); resetBannerForm(); } submitBtn.disabled = false; submitBtn.textContent = bannerId ? 'Perbarui Banner' : 'Tambah Banner'; window.fetchBanners(); }); bannersTableBody.addEventListener('click', async (e) => { const id = e.target.dataset.id; if (e.target.classList.contains('delete-btn')) await deleteItem('banners', id, window.fetchBanners); if (e.target.classList.contains('edit-btn')) { const { data } = await supabase.from('banners').select('*').eq('id', id).single(); if(data) { document.getElementById('bannerId').value = data.id; document.getElementById('bannerTitle').value = data.title; document.getElementById('bannerType').value = data.type; document.getElementById('bannerDisplayOrder').value = data.display_order; document.getElementById('bannerOldImageUrl').value = data.image_url || ''; if(data.image_url) { bannerImagePreview.src = data.image_url; bannerImagePreview.style.display = 'block'; } else { bannerImagePreview.style.display = 'none'; } document.getElementById('bannersFormTitle').textContent = 'Edit Banner'; document.querySelector('#bannerForm .submit-btn').textContent = 'Perbarui Banner'; document.getElementById('cancelEditBanner').style.display = 'inline-block'; bannerForm.scrollIntoView({ behavior: 'smooth' }); } } }); function resetBannerForm() { bannerForm.reset(); document.getElementById('bannerId').value = ''; document.getElementById('bannerOldImageUrl').value = ''; bannerImagePreview.style.display = 'none'; document.getElementById('bannersFormTitle').textContent = 'Tambah Banner Baru'; document.querySelector('#bannerForm .submit-btn').textContent = 'Tambah Banner'; document.getElementById('cancelEditBanner').style.display = 'none'; } document.getElementById('cancelEditBanner').addEventListener('click', resetBannerForm);
+        const ordersTableBody = document.getElementById('ordersTableBody'); const renderOrders = (orders) => { ordersTableBody.innerHTML = orders.map(o => `<tr><td>${o.name}</td><td>${o.book_title}</td><td>Rp ${o.total_price.toLocaleString('id-ID')}</td><td>${o.status}</td><td>${new Date(o.created_at).toLocaleString('id-ID')}</td></tr>`).join(''); }; window.fetchOrders = () => fetchData('orders', 'ordersTableBody', 'loadingOrders', renderOrders);
 
-        // --- MANAJEMEN PESANAN (READ-ONLY) ---
-        const ordersTableBody = document.getElementById('ordersTableBody');
-        const renderOrders = (orders) => { ordersTableBody.innerHTML = orders.map(o => `<tr><td>${o.name}</td><td>${o.book_title}</td><td>Rp ${o.total_price.toLocaleString('id-ID')}</td><td>${o.status}</td><td>${new Date(o.created_at).toLocaleString('id-ID')}</td></tr>`).join(''); };
-        window.fetchOrders = () => fetchData('orders', 'ordersTableBody', 'loadingOrders', renderOrders);
+        // --- NEW: CURRENCY SETTINGS MANAGEMENT ---
+        const currencyForm = document.getElementById('currencyForm');
+        window.fetchCurrency = async () => {
+            const { data, error } = await supabase.from('site_settings').select('usd_rate, egp_rate').single();
+            if (error) { console.error('Error fetching currency settings:', error); }
+            else if (data) {
+                currencySettings = { usd_rate: data.usd_rate, egp_rate: data.egp_rate };
+                document.getElementById('usdToIdr').value = currencySettings.usd_rate;
+                document.getElementById('usdToEgp').value = currencySettings.egp_rate;
+            }
+        };
+        
+        currencyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newUsdRate = parseFloat(document.getElementById('usdToIdr').value);
+            const newEgpRate = parseFloat(document.getElementById('usdToEgp').value);
+            
+            const { error } = await supabase.from('site_settings').update({ usd_rate: newUsdRate, egp_rate: newEgpRate }).eq('id', (await supabase.from('site_settings').select('id').single()).data.id);
+            if (error) {
+                alert('Gagal memperbarui pengaturan kurs.');
+            } else {
+                alert('Pengaturan kurs berhasil disimpan!');
+                currencySettings.usd_rate = newUsdRate;
+                currencySettings.egp_rate = newEgpRate;
+                // Re-render books if on the books page to show new prices
+                if (document.getElementById('books-section').classList.contains('active')) {
+                    window.fetchBooks();
+                }
+            }
+        });
 
         // --- INISIALISASI PERTAMA KALI ---
-        window.fetchBooks();
+        window.fetchCurrency().then(() => {
+            window.fetchBooks();
+        });
     });
     </script>
     <!-- ========================= JAVASCRIPT END ========================= -->
+
 </body>
 </html>
