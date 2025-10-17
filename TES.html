@@ -3354,138 +3354,894 @@ h2 {
         });
     });
     // ==============================================
-// FIXED DOWNLOAD TEMPLATE FUNCTION WITH FALLBACK
-// ==============================================
+        // KODE LENGKAP EXCEL FUNCTIONALITY
+        // ==============================================
 
-downloadTemplateBtn.addEventListener('click', async function() {
-    const button = this;
-    const originalText = button.innerHTML;
-    
-    try {
-        // Show loading state
-        button.classList.add('loading');
-        button.innerHTML = '⏳ Membuat Template...';
-        button.disabled = true;
+        // Inisialisasi variabel
+        const uploadExcelModal = document.getElementById('uploadExcelModal');
+        const openUploadExcelBtn = document.getElementById('openUploadExcelBtn');
+        const closeUploadExcelModal = uploadExcelModal.querySelector('.close-modal');
+        const cancelUploadExcelBtn = document.getElementById('cancelUploadExcel');
+        const excelFileInput = document.getElementById('excelFile');
+        const processExcelBtn = document.getElementById('processExcelBtn');
+        const downloadTemplateBtn = document.getElementById('downloadTemplateBtn');
+        const previewTableBody = document.getElementById('previewTableBody');
+        const excelPreview = document.getElementById('excelPreview');
+        const previewStats = document.getElementById('previewStats');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
 
-        console.log('Memulai proses download template...');
-        
-        // Check if XLSX is available, if not use CSV fallback
-        if (typeof XLSX === 'undefined') {
-            console.log('XLSX tidak tersedia, menggunakan fallback CSV');
-            downloadTemplateCSV();
-            return;
+        let allPublishers = [];
+        let allCategories = [];
+
+        // ==============================================
+        // DOWNLOAD TEMPLATE FUNCTION
+        // ==============================================
+
+        downloadTemplateBtn.addEventListener('click', async function() {
+            const button = this;
+            const originalText = button.innerHTML;
+            
+            try {
+                // Show loading state
+                button.classList.add('loading');
+                button.innerHTML = '⏳ Membuat Template...';
+                button.disabled = true;
+
+                console.log('Memulai proses download template...');
+                
+                // Check if XLSX is available, if not use CSV fallback
+                if (typeof XLSX === 'undefined') {
+                    console.log('XLSX tidak tersedia, menggunakan fallback CSV');
+                    downloadTemplateCSV();
+                    return;
+                }
+
+                // Create clean template data - KOSONG dan RAPI
+                const templateData = [
+                    // Header row saja - DATA KOSONG
+                    [
+                        'JUDUL_BUKU*', 
+                        'PENULIS*', 
+                        'HARGA_ASLI_USD*', 
+                        'HARGA_DASAR_USD*', 
+                        'PENERBIT', 
+                        'KATEGORI', 
+                        'DISKON', 
+                        'JILID', 
+                        'HALAMAN', 
+                        'TAHUN_TERBIT', 
+                        'BERAT_NILAI', 
+                        'BERAT_UNIT', 
+                        'WARNA_TULISAN', 
+                        'JENIS_COVER', 
+                        'JENIS_KERTAS', 
+                        'CETAKAN_KE', 
+                        'EDITOR', 
+                        'DESKRIPSI', 
+                        'URL_GAMBAR'
+                    ],
+                    // Baris kosong untuk diisi user
+                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+                ];
+
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.aoa_to_sheet(templateData);
+                
+                // Set column widths yang RAPI
+                ws['!cols'] = [
+                    {wch: 35},  // JUDUL_BUKU
+                    {wch: 25},  // PENULIS
+                    {wch: 15},  // HARGA_ASLI_USD
+                    {wch: 15},  // HARGA_DASAR_USD
+                    {wch: 20},  // PENERBIT
+                    {wch: 15},  // KATEGORI
+                    {wch: 10},  // DISKON
+                    {wch: 8},   // JILID
+                    {wch: 10},  // HALAMAN
+                    {wch: 12},  // TAHUN_TERBIT
+                    {wch: 12},  // BERAT_NILAI
+                    {wch: 10},  // BERAT_UNIT
+                    {wch: 15},  // WARNA_TULISAN
+                    {wch: 15},  // JENIS_COVER
+                    {wch: 15},  // JENIS_KERTAS
+                    {wch: 12},  // CETAKAN_KE
+                    {wch: 15},  // EDITOR
+                    {wch: 50},  // DESKRIPSI
+                    {wch: 30}   // URL_GAMBAR
+                ];
+
+                // Style untuk header - biar terlihat profesional
+                const headerRange = XLSX.utils.decode_range(ws['!ref']);
+                for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
+                    const cellAddress = XLSX.utils.encode_cell({r: 0, c: col});
+                    if (ws[cellAddress]) {
+                        ws[cellAddress].s = {
+                            font: { 
+                                bold: true, 
+                                color: { rgb: "FFFFFF" },
+                                sz: 11
+                            },
+                            fill: {
+                                fgColor: { rgb: "2C3E50" }
+                            },
+                            alignment: {
+                                horizontal: "center",
+                                vertical: "center"
+                            },
+                            border: {
+                                top: { style: "thin", color: { rgb: "1A252F" } },
+                                left: { style: "thin", color: { rgb: "1A252F" } },
+                                bottom: { style: "thin", color: { rgb: "1A252F" } },
+                                right: { style: "thin", color: { rgb: "1A252F" } }
+                            }
+                        };
+                    }
+                }
+
+                // Add worksheet to workbook
+                XLSX.utils.book_append_sheet(wb, ws, 'Data Buku');
+
+                // Create instruction sheet yang JELAS
+                const instructionData = [
+                    ['PANDUAN PENGGUNAAN TEMPLATE'],
+                    [''],
+                    ['📋 INSTRUKSI PENGGUNAAN:'],
+                    ['1. Isi data pada sheet "Data Buku"'],
+                    ['2. Kolom dengan tanda * (bintang) wajib diisi'],
+                    ['3. Jangan mengubah nama kolom/header'],
+                    ['4. Hapus baris yang tidak digunakan'],
+                    [''],
+                    ['🎯 KOLOM WAJIB (*):'],
+                    ['• JUDUL_BUKU - Judul lengkap buku'],
+                    ['• PENULIS - Nama penulis/pengarang'],
+                    ['• HARGA_ASLI_USD - Harga asli dalam USD (contoh: 25.00)'],
+                    ['• HARGA_DASAR_USD - Harga dasar dalam USD (contoh: 20.00)'],
+                    [''],
+                    ['📝 KOLOM OPSIONAL:'],
+                    ['• PENERBIT - Nama penerbit (harus sesuai data di sistem)'],
+                    ['• KATEGORI - Nama kategori (harus sesuai data di sistem)'],
+                    ['• DISKON - Diskon dalam persen (contoh: 10%)'],
+                    ['• JILID - Jumlah jilid (angka)'],
+                    ['• HALAMAN - Jumlah halaman (angka)'],
+                    ['• TAHUN_TERBIT - Tahun terbit (angka)'],
+                    ['• BERAT_NILAI - Nilai berat (angka)'],
+                    ['• BERAT_UNIT - Satuan berat (kg, g, ons, lb)'],
+                    ['• WARNA_TULISAN - Warna teks/tulisan'],
+                    ['• JENIS_COVER - Hard Cover, Soft Cover, Flexi Cover, Spiral'],
+                    ['• JENIS_KERTAS - HVS, Art Paper, Book Paper, Matt Paper, Glossy Paper'],
+                    ['• CETAKAN_KE - Angka cetakan (angka)'],
+                    ['• EDITOR - Nama editor'],
+                    ['• DESKRIPSI - Deskripsi lengkap buku'],
+                    ['• URL_GAMBAR - URL gambar sampul buku'],
+                    [''],
+                    ['⚠️ CATATAN PENTING:'],
+                    ['• Data akan divalidasi sebelum disimpan'],
+                    ['• Pastikan format angka menggunakan titik (.) untuk desimal'],
+                    ['• Untuk diskon, gunakan format: 10% (dengan simbol %)'],
+                    ['• URL gambar harus accessible dari internet'],
+                    ['• Simpan file dalam format .xlsx']
+                ];
+
+                const ws2 = XLSX.utils.aoa_to_sheet(instructionData);
+                const instructionColWidths = [
+                    {wch: 35},
+                    {wch: 65}
+                ];
+                ws2['!cols'] = instructionColWidths;
+                XLSX.utils.book_append_sheet(wb, ws2, 'Panduan');
+
+                // Generate filename
+                const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+                const filename = `template_buku_kosong_${timestamp}.xlsx`;
+
+                // Download the file
+                console.log('Men-download template kosong...');
+                XLSX.writeFile(wb, filename);
+
+                // Success feedback
+                button.innerHTML = '✅ Template Kosong Berhasil Didownload!';
+                console.log('Template Excel kosong berhasil didownload:', filename);
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    button.classList.remove('loading');
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error dalam download template Excel:', error);
+                
+                // Fallback to CSV if Excel fails
+                console.log('Fallback ke CSV...');
+                downloadTemplateCSV();
+            }
+        });
+
+        // CSV Fallback Function - JUGA KOSONG
+        function downloadTemplateCSV() {
+            try {
+                const button = downloadTemplateBtn;
+                
+                // Create CSV content - KOSONG
+                const csvContent = [
+                    'JUDUL_BUKU*,PENULIS*,HARGA_ASLI_USD*,HARGA_DASAR_USD*,PENERBIT,KATEGORI,DISKON,JILID,HALAMAN,TAHUN_TERBIT,BERAT_NILAI,BERAT_UNIT,WARNA_TULISAN,JENIS_COVER,JENIS_KERTAS,CETAKAN_KE,EDITOR,DESKRIPSI,URL_GAMBAR',
+                    ',,,,,,,,,,,,,,,,,,',
+                    ',,,,,,,,,,,,,,,,,,',
+                    ',,,,,,,,,,,,,,,,,,',
+                    ',,,,,,,,,,,,,,,,,,',
+                    ',,,,,,,,,,,,,,,,,,',
+                    ',,,,,,,,,,,,,,,,,,',
+                    ',,,,,,,,,,,,,,,,,,',
+                    ',,,,,,,,,,,,,,,,,,',
+                    ',,,,,,,,,,,,,,,,,,'
+                ].join('\n');
+
+                // Create blob and download
+                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                
+                const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+                const filename = `template_buku_kosong_${timestamp}.csv`;
+                
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Success feedback for CSV
+                button.innerHTML = '✅ Template CSV Kosong Berhasil Didownload!';
+                console.log('Template CSV kosong berhasil didownload:', filename);
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    button.classList.remove('loading');
+                    button.innerHTML = '📥 Download Template Excel Kosong';
+                    button.disabled = false;
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error dalam download template CSV:', error);
+                
+                // Final error feedback
+                const button = downloadTemplateBtn;
+                button.classList.remove('loading');
+                button.innerHTML = '❌ Gagal Download';
+                button.style.background = 'var(--danger)';
+                
+                alert('Gagal mendownload template. Silakan coba refresh halaman atau hubungi administrator.');
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    button.innerHTML = '📥 Download Template Excel Kosong';
+                    button.style.background = '';
+                    button.disabled = false;
+                }, 3000);
+            }
         }
 
-        // Create comprehensive template data
-        const templateData = [
-            // Header row
-            ['JUDUL_BUKU*', 'PENULIS*', 'HARGA_ASLI_USD*', 'HARGA_DASAR_USD*', 'PENERBIT', 'KATEGORI', 'DISKON', 'JILID', 'HALAMAN', 'TAHUN_TERBIT', 'BERAT_NILAI', 'BERAT_UNIT', 'WARNA_TULISAN', 'JENIS_COVER', 'JENIS_KERTAS', 'CETAKAN_KE', 'EDITOR', 'DESKRIPSI', 'URL_GAMBAR'],
-            // Example rows
-            ['Kitab Tauhid', 'Syaikh Muhammad bin Abdul Wahhab', '25.00', '20.00', 'Darul Haq', 'Aqidah', '10%', '1', '200', '2023', '0.5', 'kg', 'Hitam', 'Hard Cover', 'HVS', '1', 'Tim Editor', 'Buku tentang tauhid yang membahas konsep ketuhanan dalam Islam', 'https://example.com/kitab-tauhid.jpg'],
-            ['Riyadhus Shalihin', 'Imam Nawawi', '30.00', '25.00', 'Pustaka Arafah', 'Hadits', '15%', '1', '350', '2023', '0.7', 'kg', 'Hitam', 'Soft Cover', 'Book Paper', '2', 'Tim Editor', 'Kumpulan hadits pilihan yang disusun oleh Imam Nawawi', 'https://example.com/riyadhus-shalihin.jpg']
-        ];
+        // ==============================================
+        // UPLOAD EXCEL FUNCTIONALITY
+        // ==============================================
 
-        // Create workbook
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet(templateData);
-        
-        // Set column widths
-        ws['!cols'] = [
-            {wch: 25}, {wch: 20}, {wch: 15}, {wch: 15}, {wch: 15}, 
-            {wch: 15}, {wch: 10}, {wch: 8}, {wch: 10}, {wch: 12},
-            {wch: 12}, {wch: 10}, {wch: 15}, {wch: 15}, {wch: 15},
-            {wch: 12}, {wch: 15}, {wch: 30}, {wch: 25}
-        ];
+        // Open upload modal
+        openUploadExcelBtn.addEventListener('click', () => {
+            uploadExcelModal.style.display = 'block';
+        });
 
-        // Add worksheet to workbook
-        XLSX.utils.book_append_sheet(wb, ws, 'Template Buku');
+        // Close upload modal
+        closeUploadExcelModal.addEventListener('click', closeUploadExcelModalFunc);
+        cancelUploadExcelBtn.addEventListener('click', closeUploadExcelModalFunc);
 
-        // Generate filename
-        const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-        const filename = `template_import_buku_${timestamp}.xlsx`;
+        function closeUploadExcelModalFunc() {
+            uploadExcelModal.style.display = 'none';
+            excelFileInput.value = '';
+            excelPreview.style.display = 'none';
+            uploadProgress.style.display = 'none';
+            processExcelBtn.disabled = true;
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+        }
 
-        // Download the file
-        console.log('Men-download file Excel...');
-        XLSX.writeFile(wb, filename);
+        // Handle Excel file selection
+        excelFileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
 
-        // Success feedback
-        button.innerHTML = '✅ Template Berhasil Didownload!';
-        console.log('Template Excel berhasil didownload:', filename);
-        
-        // Reset button after 2 seconds
-        setTimeout(() => {
-            button.classList.remove('loading');
-            button.innerHTML = originalText;
-            button.disabled = false;
-        }, 2000);
+            try {
+                processExcelBtn.disabled = true;
+                processExcelBtn.textContent = '📂 Memuat file...';
+                
+                console.log('File dipilih:', file.name, file.size, 'bytes');
+                
+                const data = await readExcelFile(file);
+                await displayPreview(data);
+                
+                excelPreview.style.display = 'block';
+                processExcelBtn.disabled = false;
+                processExcelBtn.textContent = '🚀 Proses dan Simpan Data';
+            } catch (error) {
+                console.error('Error reading Excel file:', error);
+                alert('❌ Gagal membaca file Excel: ' + error.message + '\n\nPastikan file tidak rusak dan formatnya .xlsx atau .xls');
+                processExcelBtn.disabled = true;
+                processExcelBtn.textContent = 'Proses dan Simpan Data';
+            }
+        });
 
-    } catch (error) {
-        console.error('Error dalam download template Excel:', error);
-        
-        // Fallback to CSV if Excel fails
-        console.log('Fallback ke CSV...');
-        downloadTemplateCSV();
-    }
-});
+        // Fixed Read Excel File function
+        function readExcelFile(file) {
+            return new Promise((resolve, reject) => {
+                // Validasi file
+                if (!file) {
+                    reject(new Error('Tidak ada file yang dipilih'));
+                    return;
+                }
 
-// CSV Fallback Function
-function downloadTemplateCSV() {
-    try {
-        const button = downloadTemplateBtn;
-        
-        // Create CSV content
-        const csvContent = [
-            'JUDUL_BUKU*,PENULIS*,HARGA_ASLI_USD*,HARGA_DASAR_USD*,PENERBIT,KATEGORI,DISKON,JILID,HALAMAN,TAHUN_TERBIT,BERAT_NILAI,BERAT_UNIT,WARNA_TULISAN,JENIS_COVER,JENIS_KERTAS,CETAKAN_KE,EDITOR,DESKRIPSI,URL_GAMBAR',
-            'Kitab Tauhid,Syaikh Muhammad bin Abdul Wahhab,25.00,20.00,Darul Haq,Aqidah,10%,1,200,2023,0.5,kg,Hitam,Hard Cover,HVS,1,Tim Editor,"Buku tentang tauhid yang membahas konsep ketuhanan dalam Islam",https://example.com/kitab-tauhid.jpg',
-            'Riyadhus Shalihin,Imam Nawawi,30.00,25.00,Pustaka Arafah,Hadits,15%,1,350,2023,0.7,kg,Hitam,Soft Cover,Book Paper,2,Tim Editor,"Kumpulan hadits pilihan yang disusun oleh Imam Nawawi",https://example.com/riyadhus-shalihin.jpg'
-        ].join('\n');
+                // Validasi tipe file
+                const validTypes = [
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'application/vnd.ms-excel',
+                    'application/vnd.ms-excel.sheet.macroEnabled.12'
+                ];
+                
+                if (!validTypes.includes(file.type) && !file.name.match(/\.(xlsx|xls)$/i)) {
+                    reject(new Error('File harus dalam format Excel (.xlsx atau .xls)'));
+                    return;
+                }
 
-        // Create blob and download
-        const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        
-        const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-        const filename = `template_import_buku_${timestamp}.csv`;
-        
-        link.setAttribute('href', url);
-        link.setAttribute('download', filename);
-        link.style.visibility = 'hidden';
-        
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        // Success feedback for CSV
-        button.innerHTML = '✅ Template CSV Berhasil Didownload!';
-        console.log('Template CSV berhasil didownload:', filename);
-        
-        // Reset button after 2 seconds
-        setTimeout(() => {
-            button.classList.remove('loading');
-            button.innerHTML = '📥 Download Template Excel';
-            button.disabled = false;
-        }, 2000);
-        
-    } catch (error) {
-        console.error('Error dalam download template CSV:', error);
-        
-        // Final error feedback
-        const button = downloadTemplateBtn;
-        button.classList.remove('loading');
-        button.innerHTML = '❌ Gagal Download';
-        button.style.background = 'var(--danger)';
-        
-        alert('Gagal mendownload template. Silakan coba refresh halaman atau hubungi administrator.');
-        
-        // Reset button after 3 seconds
-        setTimeout(() => {
-            button.innerHTML = '📥 Download Template Excel';
-            button.style.background = '';
-            button.disabled = false;
-        }, 3000);
-    }
-}
+                // Validasi ukuran file (max 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    reject(new Error('Ukuran file terlalu besar. Maksimal 10MB'));
+                    return;
+                }
+
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        console.log('Memproses file Excel...');
+                        
+                        if (!e.target.result) {
+                            reject(new Error('File kosong atau tidak dapat dibaca'));
+                            return;
+                        }
+
+                        const data = new Uint8Array(e.target.result);
+                        
+                        // Parse Excel file
+                        const workbook = XLSX.read(data, { 
+                            type: 'array',
+                            cellText: false,
+                            cellDates: true
+                        });
+                        
+                        if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
+                            reject(new Error('File Excel tidak memiliki sheet'));
+                            return;
+                        }
+
+                        const firstSheetName = workbook.SheetNames[0];
+                        console.log('Menggunakan sheet:', firstSheetName);
+                        
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        
+                        if (!worksheet) {
+                            reject(new Error('Sheet pertama tidak ditemukan'));
+                            return;
+                        }
+
+                        // Convert to JSON dengan handling yang lebih baik
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
+                            header: 1,
+                            defval: '',
+                            blankrows: false
+                        });
+
+                        console.log('Data mentah dari Excel:', jsonData);
+
+                        // Remove completely empty rows
+                        const filteredData = jsonData.filter(row => 
+                            Array.isArray(row) && 
+                            row.some(cell => 
+                                cell !== null && 
+                                cell !== '' && 
+                                cell !== undefined &&
+                                String(cell).trim() !== ''
+                            )
+                        );
+
+                        console.log('Data setelah filter:', filteredData);
+
+                        if (filteredData.length < 2) {
+                            reject(new Error('File Excel tidak berisi data. Pastikan ada header dan minimal 1 baris data'));
+                            return;
+                        }
+
+                        // Get headers and rows
+                        const headers = filteredData[0].map(header => 
+                            String(header).trim().toUpperCase()
+                        );
+                        const rows = filteredData.slice(1);
+
+                        console.log('Headers:', headers);
+                        console.log('Jumlah baris data:', rows.length);
+
+                        resolve({ headers, rows });
+                        
+                    } catch (error) {
+                        console.error('Error parsing Excel:', error);
+                        reject(new Error('Format file Excel tidak valid: ' + error.message));
+                    }
+                };
+                
+                reader.onerror = function(error) {
+                    console.error('FileReader error:', error);
+                    reject(new Error('Gagal membaca file: ' + error));
+                };
+                
+                reader.onabort = function() {
+                    reject(new Error('Pembacaan file dibatalkan'));
+                };
+                
+                // Read the file
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        // Fixed validation function
+        async function validateBookRow(row, rowNumber) {
+            const errors = [];
+            const warnings = [];
+            
+            // Helper function untuk get value dari row
+            const getValue = (index) => {
+                if (index >= row.length) return '';
+                const value = row[index];
+                return value !== null && value !== undefined ? String(value).trim() : '';
+            };
+
+            const title = getValue(0);
+            const author = getValue(1);
+            const originalPrice = getValue(2);
+            const basePrice = getValue(3);
+            const publisher = getValue(4);
+            const category = getValue(5);
+            const weightUnit = getValue(11);
+
+            console.log(`Validasi baris ${rowNumber}:`, { title, author, originalPrice, basePrice });
+
+            // Check required fields
+            if (!title) {
+                errors.push(`Judul buku wajib diisi`);
+            } else if (title.length < 2) {
+                errors.push(`Judul buku terlalu pendek`);
+            }
+
+            if (!author) {
+                errors.push(`Penulis wajib diisi`);
+            } else if (author.length < 2) {
+                errors.push(`Nama penulis terlalu pendek`);
+            }
+
+            // Check harga
+            if (!originalPrice) {
+                errors.push(`Harga asli wajib diisi`);
+            } else if (isNaN(parseFloat(originalPrice)) || parseFloat(originalPrice) <= 0) {
+                errors.push(`Harga asli harus angka positif`);
+            }
+
+            if (!basePrice) {
+                errors.push(`Harga dasar wajib diisi`);
+            } else if (isNaN(parseFloat(basePrice)) || parseFloat(basePrice) <= 0) {
+                errors.push(`Harga dasar harus angka positif`);
+            }
+
+            // Check publisher exists
+            if (publisher) {
+                const publisherExists = allPublishers.some(p => 
+                    p.name.toLowerCase() === publisher.toLowerCase()
+                );
+                if (!publisherExists) {
+                    warnings.push(`Penerbit "${publisher}" tidak ditemukan di sistem`);
+                }
+            }
+            
+            // Check category exists
+            const categoryName = getValue(5);
+            if (categoryName) {
+                const categoryExists = allCategories.some(c => 
+                    c.name_id.toLowerCase() === categoryName.toLowerCase()
+                );
+                if (!categoryExists) {
+                    warnings.push(`Kategori "${categoryName}" tidak ditemukan di sistem`);
+                }
+            }
+            
+            // Validate weight unit
+            if (weightUnit) {
+                const validUnits = ['kg', 'g', 'ons', 'lb'];
+                const unit = weightUnit.toLowerCase();
+                if (!validUnits.includes(unit)) {
+                    warnings.push(`Satuan berat "${weightUnit}" tidak valid. Gunakan: kg, g, ons, lb`);
+                }
+            }
+            
+            // Validate numeric fields
+            const volumes = getValue(7);
+            if (volumes && isNaN(parseInt(volumes))) {
+                warnings.push(`Jilid harus angka`);
+            }
+            
+            const pages = getValue(8);
+            if (pages && isNaN(parseInt(pages))) {
+                warnings.push(`Halaman harus angka`);
+            }
+            
+            const year = getValue(9);
+            if (year && (isNaN(parseInt(year)) || parseInt(year) < 1000 || parseInt(year) > 2100)) {
+                warnings.push(`Tahun terbit harus angka antara 1000-2100`);
+            }
+            
+            const weightValue = getValue(10);
+            if (weightValue && isNaN(parseFloat(weightValue))) {
+                warnings.push(`Berat nilai harus angka`);
+            }
+            
+            const printCount = getValue(15);
+            if (printCount && isNaN(parseInt(printCount))) {
+                warnings.push(`Cetakan ke harus angka`);
+            }
+
+            return {
+                isValid: errors.length === 0,
+                hasWarnings: warnings.length > 0,
+                errors: errors,
+                warnings: warnings,
+                rowData: row
+            };
+        }
+
+        // Fixed display preview function
+        async function displayPreview(data) {
+            const { headers, rows } = data;
+            previewTableBody.innerHTML = '';
+            
+            let validCount = 0;
+            let warningCount = 0;
+            let errorCount = 0;
+            
+            console.log('Menampilkan preview untuk', rows.length, 'baris data');
+
+            // Show first 5 rows for preview
+            const previewRows = rows.slice(0, 5);
+            
+            for (let i = 0; i < previewRows.length; i++) {
+                const row = previewRows[i];
+                const tr = document.createElement('tr');
+                tr.className = 'preview-row';
+                
+                // Validate row
+                const validation = await validateBookRow(row, i + 2);
+                
+                if (validation.isValid) {
+                    validCount++;
+                    tr.classList.add('success');
+                } else if (validation.hasWarnings) {
+                    warningCount++;
+                    tr.classList.add('warning');
+                } else {
+                    errorCount++;
+                    tr.classList.add('error');
+                }
+                
+                // Display data for preview
+                const title = validation.rowData[0] || '-';
+                const author = validation.rowData[1] || '-';
+                const basePrice = validation.rowData[3] ? `$${parseFloat(validation.rowData[3]).toFixed(2)}` : '-';
+                const publisher = validation.rowData[4] || '-';
+                const category = validation.rowData[5] || '-';
+                const discount = validation.rowData[6] || '-';
+                
+                let statusText = '✅ Valid';
+                let statusClass = 'status-success';
+                
+                if (validation.errors.length > 0) {
+                    statusText = `❌ ${validation.errors[0]}`;
+                    statusClass = 'status-error';
+                } else if (validation.warnings.length > 0) {
+                    statusText = `⚠️ ${validation.warnings[0]}`;
+                    statusClass = 'status-warning';
+                }
+                
+                tr.innerHTML = `
+                    <td><strong>${title}</strong></td>
+                    <td>${author}</td>
+                    <td>${basePrice}</td>
+                    <td>${publisher}</td>
+                    <td>${category}</td>
+                    <td>${discount}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                `;
+                
+                previewTableBody.appendChild(tr);
+            }
+            
+            // Show statistics
+            previewStats.innerHTML = `
+                <div class="upload-stats">
+                    <div class="stat-item">
+                        <div class="stat-number stat-success">${validCount}</div>
+                        <div class="stat-label">Data Valid</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number stat-warning">${warningCount}</div>
+                        <div class="stat-label">Peringatan</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number stat-error">${errorCount}</div>
+                        <div class="stat-label">Error</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number stat-total">${rows.length}</div>
+                        <div class="stat-label">Total Data</div>
+                    </div>
+                </div>
+                ${rows.length > 5 ? `
+                    <p style="text-align: center; margin-top: 1rem; padding: 0.5rem; background: #f8f9fa; border-radius: 6px;">
+                        📊 Menampilkan 5 baris pertama dari total ${rows.length} baris data
+                    </p>
+                ` : ''}
+                ${errorCount > 0 ? `
+                    <p style="text-align: center; margin-top: 1rem; color: var(--danger); font-weight: 500;">
+                        ⚠️ Perbaiki data yang error sebelum melanjutkan
+                    </p>
+                ` : ''}
+                ${validCount === 0 ? `
+                    <p style="text-align: center; margin-top: 1rem; color: var(--warning); font-weight: 500;">
+                        📝 Tidak ada data yang valid. Periksa format file Excel Anda.
+                    </p>
+                ` : ''}
+            `;
+        }
+
+        // Fixed process button event listener
+        processExcelBtn.addEventListener('click', async () => {
+            const file = excelFileInput.files[0];
+            if (!file) {
+                alert('❌ Silakan pilih file Excel terlebih dahulu');
+                return;
+            }
+
+            if (!confirm(`Apakah Anda yakin ingin memproses data dari file Excel?\n\n• File: ${file.name}\n• Data yang valid akan disimpan ke database.`)) {
+                return;
+            }
+            
+            processExcelBtn.disabled = true;
+            processExcelBtn.textContent = '⏳ Memproses...';
+            uploadProgress.style.display = 'block';
+            
+            try {
+                const data = await readExcelFile(file);
+                
+                // Validasi tambahan sebelum proses
+                if (data.rows.length === 0) {
+                    throw new Error('Tidak ada data yang dapat diproses');
+                }
+                
+                await processExcelData(data.rows);
+            } catch (error) {
+                console.error('Error processing Excel data:', error);
+                alert('❌ Gagal memproses data Excel: ' + error.message);
+            } finally {
+                processExcelBtn.disabled = false;
+                processExcelBtn.textContent = '🚀 Proses dan Simpan Data';
+                uploadProgress.style.display = 'none';
+                progressBar.style.width = '0%';
+                progressText.textContent = '0%';
+            }
+        });
+
+        // Fixed process Excel data function
+        async function processExcelData(rows) {
+            let successCount = 0;
+            let errorCount = 0;
+            let totalRows = rows.length;
+            
+            console.log('Memproses', totalRows, 'baris data...');
+
+            // Update progress
+            const updateProgress = (current, total) => {
+                const percent = Math.round((current / total) * 100);
+                progressBar.style.width = `${percent}%`;
+                progressText.textContent = `${percent}% (${current}/${total})`;
+            };
+
+            // Array untuk menampung error details
+            const errorDetails = [];
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const rowNumber = i + 2;
+                
+                try {
+                    // Validate row
+                    const validation = await validateBookRow(row, rowNumber);
+                    if (validation.errors.length > 0) {
+                        const errorMsg = `Baris ${rowNumber}: ${validation.errors[0]}`;
+                        console.error(errorMsg);
+                        errorDetails.push(errorMsg);
+                        errorCount++;
+                        updateProgress(i + 1, totalRows);
+                        continue;
+                    }
+
+                    // Prepare book data dengan handling yang lebih baik
+                    const bookData = {
+                        title: String(row[0] || '').trim(),
+                        author: String(row[1] || '').trim(),
+                        original_price: parseFloat(row[2]) || 0,
+                        base_price: parseFloat(row[3]) || 0,
+                        volumes: row[7] ? String(row[7]).trim() : null,
+                        pages: row[8] ? String(row[8]).trim() : null,
+                        year: row[9] ? String(row[9]).trim() : null,
+                        description: row[17] ? String(row[17]).trim() : '',
+                        discount: row[6] ? String(row[6]).trim() : null,
+                        text_color: row[12] ? String(row[12]).trim() : null,
+                        cover_type: row[13] ? String(row[13]).trim() : null,
+                        paper_type: row[14] ? String(row[14]).trim() : null,
+                        print_count: row[15] ? parseInt(row[15]) || null : null,
+                        editor: row[16] ? String(row[16]).trim() : null,
+                        weight_value: row[10] ? parseFloat(row[10]) || null : null,
+                        weight_unit: row[11] ? String(row[11]).trim() : null,
+                        cover_image_url: row[18] ? String(row[18]).trim() : null,
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    };
+
+                    // Find publisher ID
+                    if (row[4] && String(row[4]).trim() !== '') {
+                        const publisherName = String(row[4]).trim();
+                        const publisher = allPublishers.find(p => 
+                            p.name.toLowerCase() === publisherName.toLowerCase()
+                        );
+                        if (publisher) {
+                            bookData.publisher_id = publisher.id;
+                        }
+                    }
+                    
+                    // Find category ID
+                    if (row[5] && String(row[5]).trim() !== '') {
+                        const categoryName = String(row[5]).trim();
+                        const category = allCategories.find(c => 
+                            c.name_id.toLowerCase() === categoryName.toLowerCase()
+                        );
+                        if (category) {
+                            bookData.category_id = category.id;
+                        }
+                    }
+
+                    console.log('Menyimpan data buku:', bookData.title);
+
+                    // Insert book
+                    const { data: insertedData, error } = await supabase
+                        .from('books')
+                        .insert([bookData])
+                        .select();
+
+                    if (error) {
+                        console.error(`Error insert baris ${rowNumber}:`, error);
+                        errorDetails.push(`Baris ${rowNumber}: ${error.message}`);
+                        errorCount++;
+                    } else {
+                        successCount++;
+                        console.log(`✅ Berhasil menyimpan: ${bookData.title}`);
+                    }
+                    
+                } catch (error) {
+                    console.error(`Unexpected error baris ${rowNumber}:`, error);
+                    errorDetails.push(`Baris ${rowNumber}: ${error.message}`);
+                    errorCount++;
+                }
+                
+                // Update progress
+                updateProgress(i + 1, totalRows);
+                
+                // Small delay to prevent overwhelming the server
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            
+            // Show results
+            let message = `📊 **HASIL IMPORT EXCEL**\n\n`;
+            message += `✅ ${successCount} buku berhasil diimpor\n`;
+            message += `❌ ${errorCount} gagal\n`;
+            message += `📋 Total data: ${totalRows}\n\n`;
+            
+            if (errorCount > 0) {
+                message += `⚠️ Beberapa data gagal diimpor.\n`;
+                message += `Error details:\n${errorDetails.slice(0, 5).join('\n')}`;
+                if (errorDetails.length > 5) {
+                    message += `\n... dan ${errorDetails.length - 5} error lainnya`;
+                }
+            } else {
+                message += `🎉 Semua data berhasil diimpor!`;
+            }
+            
+            alert(message);
+            
+            // Close modal and refresh data
+            closeUploadExcelModalFunc();
+            
+            // Refresh book list
+            setTimeout(() => {
+                window.fetchBooks();
+            }, 1000);
+        }
+
+        // ==============================================
+        // INITIALIZATION
+        // ==============================================
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Excel upload functionality initialized');
+            
+            // Check if XLSX library is available
+            if (typeof XLSX === 'undefined') {
+                console.warn('XLSX library not loaded. Download template might not work.');
+                downloadTemplateBtn.innerHTML = '📥 Download Template (CSV)';
+                downloadTemplateBtn.title = 'Menggunakan format CSV karena library Excel tidak tersedia';
+            } else {
+                console.log('✅ XLSX library ready for use');
+            }
+
+            // Load publishers and categories for validation
+            loadPublishersAndCategories();
+        });
+
+        async function loadPublishersAndCategories() {
+            try {
+                // Load publishers
+                const { data: publishers, error: pubError } = await supabase
+                    .from('publishers')
+                    .select('id, name');
+                
+                if (!pubError) {
+                    allPublishers = publishers || [];
+                    console.log('Loaded publishers:', allPublishers.length);
+                }
+
+                // Load categories
+                const { data: categories, error: catError } = await supabase
+                    .from('categories')
+                    .select('id, name_id');
+                
+                if (!catError) {
+                    allCategories = categories || [];
+                    console.log('Loaded categories:', allCategories.length);
+                }
+            } catch (error) {
+                console.error('Error loading publishers and categories:', error);
+            }
+        }
+
+        // Add to global scope for other functions to use
+        window.loadPublishersAndCategories = loadPublishersAndCategories;
+
     </script>
 </body>
 </html>
