@@ -7,47 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin - Toko Buku Islam</title>
     <style>
-    .excel-actions {
-    background: var(--primary-light);
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    border: 1px solid var(--border);
-}
-
-.preview-row.error {
-    background-color: #ffe6e6;
-}
-
-.preview-row.success {
-    background-color: #e6ffe6;
-}
-
-.status-badge {
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.status-error {
-    background: var(--danger);
-    color: white;
-}
-
-.status-success {
-    background: var(--success);
-    color: white;
-}
-
-.status-warning {
-    background: var(--warning);
-    color: white;
-}
      :root {
     --primary: #2c3e50;
     --primary-light: #f8f9fa;
@@ -790,147 +749,240 @@ h2 {
         font-size: 1.3rem;
     }
 }
-.excel-actions {
-    background: var(--primary-light);
-    padding: 1.5rem;
+/* Bulk Upload Styles */
+.bulk-upload-container {
+    background: var(--light);
     border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+}
+
+.upload-info {
     margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--primary-light);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary);
+}
+
+.upload-info p {
+    margin: 0;
+    color: var(--dark);
+    font-size: 0.95rem;
+}
+
+.upload-actions {
     display: flex;
+    gap: 1rem;
     align-items: center;
-    gap: 1rem;
     flex-wrap: wrap;
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
 }
-
-.excel-actions strong {
-    color: var(--primary);
-    font-family: var(--heading-font);
-}
-
-.preview-row.error {
-    background-color: #ffe6e6;
-    border-left: 4px solid var(--danger);
-}
-
-.preview-row.success {
-    background-color: #e6ffe6;
-    border-left: 4px solid var(--success);
-}
-
-.preview-row.warning {
-    background-color: #fff9e6;
-    border-left: 4px solid var(--warning);
-}
-
-.status-badge {
-    padding: 0.35rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    white-space: nowrap;
-    display: inline-block;
-}
-
-.status-error {
-    background: var(--danger);
-    color: white;
-}
-
-.status-success {
-    background: var(--success);
-    color: white;
-}
-
-.status-warning {
-    background: var(--warning);
-    color: white;
-}
-
-.upload-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.stat-item {
-    text-align: center;
-    padding: 1.25rem;
-    border-radius: 10px;
-    background: white;
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.2s ease;
-}
-
-.stat-item:hover {
-    transform: translateY(-2px);
-}
-
-.stat-number {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    font-family: var(--heading-font);
-}
-
-.stat-label {
-    font-size: 0.9rem;
-    color: var(--secondary);
-    font-weight: 500;
-}
-
-.stat-success { color: var(--success); }
-.stat-warning { color: var(--warning); }
-.stat-error { color: var(--danger); }
-.stat-total { color: var(--primary); }
 
 .download-btn {
-    position: relative;
-    transition: all 0.3s ease;
+    background: var(--success);
+    color: var(--light);
 }
 
 .download-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+    background: #219653;
 }
 
-.download-btn.loading {
-    opacity: 0.7;
-    pointer-events: none;
+.upload-btn {
+    background: var(--warning);
+    color: var(--light);
+    cursor: pointer;
 }
 
-.download-btn.loading::after {
-    content: '';
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    border: 2px solid transparent;
-    border-top: 2px solid white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+.upload-btn:hover {
+    background: #e67e22;
 }
 
-@keyframes spin {
-    0% { transform: translateY(-50%) rotate(0deg); }
-    100% { transform: translateY(-50%) rotate(360deg); }
+.file-upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
 }
 
-/* Progress bar animation */
-#progressBar {
-    background: linear-gradient(90deg, var(--success), #2ecc71);
-    animation: pulse 1.5s ease-in-out infinite alternate;
+.file-name {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-style: italic;
 }
 
-@keyframes pulse {
-    0% { opacity: 0.8; }
-    100% { opacity: 1; }
+.upload-progress {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: var(--primary-light);
+    border-radius: 8px;
 }
 
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--success);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--dark);
+}
+
+.upload-results {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: var(--primary-light);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.results-summary {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.result-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    min-width: 100px;
+}
+
+.result-item.success {
+    background: rgba(39, 174, 96, 0.1);
+    border: 1px solid var(--success);
+}
+
+.result-item.failed {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid var(--danger);
+}
+
+.result-item.skipped {
+    background: rgba(243, 156, 18, 0.1);
+    border: 1px solid var(--warning);
+}
+
+.result-count {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.result-item.success .result-count {
+    color: var(--success);
+}
+
+.result-item.failed .result-count {
+    color: var(--danger);
+}
+
+.result-item.skipped .result-count {
+    color: var(--warning);
+}
+
+.results-details {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    background: var(--light);
+}
+
+.result-row.success {
+    border-left: 4px solid var(--success);
+}
+
+.result-row.failed {
+    border-left: 4px solid var(--danger);
+}
+
+.result-row.skipped {
+    border-left: 4px solid var(--warning);
+}
+
+.result-info {
+    flex: 1;
+}
+
+.result-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.result-message {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.result-status {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.result-status.success {
+    background: var(--success);
+    color: var(--light);
+}
+
+.result-status.failed {
+    background: var(--danger);
+    color: var(--light);
+}
+
+.result-status.skipped {
+    background: var(--warning);
+    color: var(--light);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .upload-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .file-upload-wrapper {
+        justify-content: space-between;
+    }
+    
+    .results-summary {
+        justify-content: center;
+    }
+    
+    .result-item {
+        min-width: 80px;
+        padding: 0.75rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -982,69 +1034,58 @@ h2 {
                     </div>
                 </div>
             </header>
-            <!-- Excel Upload Section -->
-<div class="excel-actions">
-    <strong data-lang-key="excel-actions">Impor Excel:</strong>
-    <button class="btn submit-btn" id="downloadTemplateBtn" data-lang-key="download-template">
-        📥 Download Template Excel
-    </button>
-    <button class="btn submit-btn" id="openUploadExcelBtn" data-lang-key="upload-excel">
-        📤 Upload Data Excel
-    </button>
-</div>
-
-<!-- Modal untuk Upload Excel -->
-<div id="uploadExcelModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 data-lang-key="upload-excel-title">Upload Data Buku dari Excel</h2>
-            <button class="close-modal">&times;</button>
+            <!-- Tambahkan di dalam section books, setelah filter section -->
+<div class="form-section">
+    <h2 data-lang-key="bulk-upload-title">Upload Buku Massal via Excel</h2>
+    <div class="bulk-upload-container">
+        <div class="upload-info">
+            <p data-lang-key="bulk-upload-description">Upload data buku secara massal menggunakan file Excel. Unduh template terlebih dahulu untuk memastikan format yang benar.</p>
         </div>
-        <div class="form-section">
-            <div class="form-group">
-                <label for="excelFile" data-lang-key="select-excel-file">Pilih File Excel (.xlsx, .xls)</label>
-                <input type="file" id="excelFile" accept=".xlsx, .xls">
-                <small style="color: #666; margin-top: 0.5rem; display: block;">
-                    📝 Download template terlebih dahulu untuk format yang benar
-                </small>
+        
+        <div class="upload-actions">
+            <button type="button" class="btn download-btn" id="downloadTemplate" data-lang-key="download-template">
+                📥 Unduh Template Excel
+            </button>
+            <div class="file-upload-wrapper">
+                <input type="file" id="excelFile" accept=".xlsx, .xls" style="display: none;">
+                <label for="excelFile" class="btn upload-btn" data-lang-key="upload-excel">
+                    📤 Upload File Excel
+                </label>
+                <span id="fileName" class="file-name" data-lang-key="no-file-selected">Belum ada file dipilih</span>
             </div>
-            
-            <div id="uploadProgress" style="display: none; margin: 1rem 0;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                    <span>Progress:</span>
-                    <span id="progressText">0%</span>
+            <button type="button" class="btn submit-btn" id="processExcel" disabled data-lang-key="process-data">
+                🔄 Proses Data
+            </button>
+        </div>
+        
+        <div class="upload-progress" id="uploadProgress" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressStatus" data-lang-key="processing">Memproses...</span>
+                <span id="progressCount">0/0</span>
+            </div>
+        </div>
+        
+        <div class="upload-results" id="uploadResults" style="display: none;">
+            <h4 data-lang-key="upload-results">Hasil Upload</h4>
+            <div class="results-summary">
+                <div class="result-item success">
+                    <span class="result-count" id="successCount">0</span>
+                    <span data-lang-key="successful">Berhasil</span>
                 </div>
-                <div style="width: 100%; height: 10px; background: #f0f0f0; border-radius: 5px; overflow: hidden;">
-                    <div id="progressBar" style="width: 0%; height: 100%; background: var(--success); transition: width 0.3s;"></div>
+                <div class="result-item failed">
+                    <span class="result-count" id="failedCount">0</span>
+                    <span data-lang-key="failed">Gagal</span>
+                </div>
+                <div class="result-item skipped">
+                    <span class="result-count" id="skippedCount">0</span>
+                    <span data-lang-key="skipped">Dilewati</span>
                 </div>
             </div>
-            
-            <div id="excelPreview" style="margin-top: 1rem; display: none;">
-                <h4 data-lang-key="preview-data">Preview Data (5 baris pertama)</h4>
-                <div class="table-wrapper">
-                    <table class="admin-table" id="previewTable">
-                        <thead>
-                            <tr>
-                                <th>Judul</th>
-                                <th>Penulis</th>
-                                <th>Harga Dasar</th>
-                                <th>Penerbit</th>
-                                <th>Kategori</th>
-                                <th>Diskon</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="previewTableBody"></tbody>
-                    </table>
-                </div>
-                <div id="previewStats" style="margin-top: 1rem; padding: 1rem; background: var(--primary-light); border-radius: 8px;"></div>
-            </div>
-            
-            <div class="form-buttons" style="margin-top: 1.5rem;">
-                <button class="btn submit-btn" id="processExcelBtn" disabled data-lang-key="process-data">
-                    🚀 Proses dan Simpan Data
-                </button>
-                <button class="btn cancel-btn" id="cancelUploadExcel">Batal</button>
+            <div class="results-details" id="resultsDetails">
+                <!-- Detail hasil akan ditampilkan di sini -->
             </div>
         </div>
     </div>
@@ -1112,7 +1153,6 @@ h2 {
                                     </select>
                                 </div>
                             </div>
-                           
                             <div class="form-group">
                                 <label data-lang-key="book-text-color">Warna Tulisan</label>
                                 <div class="custom-input">
@@ -3353,895 +3393,377 @@ h2 {
             });
         });
     });
-    // ==============================================
-        // KODE LENGKAP EXCEL FUNCTIONALITY
-        // ==============================================
+    // Tambahkan di bagian JavaScript, setelah deklarasi variabel global
 
-        // Inisialisasi variabel
-        const uploadExcelModal = document.getElementById('uploadExcelModal');
-        const openUploadExcelBtn = document.getElementById('openUploadExcelBtn');
-        const closeUploadExcelModal = uploadExcelModal.querySelector('.close-modal');
-        const cancelUploadExcelBtn = document.getElementById('cancelUploadExcel');
-        const excelFileInput = document.getElementById('excelFile');
-        const processExcelBtn = document.getElementById('processExcelBtn');
-        const downloadTemplateBtn = document.getElementById('downloadTemplateBtn');
-        const previewTableBody = document.getElementById('previewTableBody');
-        const excelPreview = document.getElementById('excelPreview');
-        const previewStats = document.getElementById('previewStats');
-        const uploadProgress = document.getElementById('uploadProgress');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
+// Excel Upload Functionality
+const downloadTemplateBtn = document.getElementById('downloadTemplate');
+const excelFileInput = document.getElementById('excelFile');
+const fileNameSpan = document.getElementById('fileName');
+const processExcelBtn = document.getElementById('processExcel');
+const uploadProgress = document.getElementById('uploadProgress');
+const progressFill = document.getElementById('progressFill');
+const progressStatus = document.getElementById('progressStatus');
+const progressCount = document.getElementById('progressCount');
+const uploadResults = document.getElementById('uploadResults');
+const successCount = document.getElementById('successCount');
+const failedCount = document.getElementById('failedCount');
+const skippedCount = document.getElementById('skippedCount');
+const resultsDetails = document.getElementById('resultsDetails');
 
-        let allPublishers = [];
-        let allCategories = [];
+// Download Excel Template
+downloadTemplateBtn.addEventListener('click', downloadExcelTemplate);
 
-        // ==============================================
-        // DOWNLOAD TEMPLATE FUNCTION
-        // ==============================================
+function downloadExcelTemplate() {
+    // Create workbook
+    const wb = XLSX.utils.book_new();
+    
+    // Define template data
+    const templateData = [
+        {
+            'Judul Buku*': 'Nama lengkap buku',
+            'Penulis*': 'Nama penulis',
+            'Harga Asli (USD)*': '19.99',
+            'Harga Dasar (USD)*': '15.99',
+            'Penerbit': 'Nama penerbit (harus sudah ada di sistem)',
+            'Kategori': 'Nama kategori (harus sudah ada di sistem)',
+            'Diskon': '10%',
+            'Jilid': '1',
+            'Halaman': '250',
+            'Tahun Terbit': '2024',
+            'Berat Nilai': '0.5',
+            'Berat Satuan': 'kg',
+            'Warna Tulisan': 'Hitam',
+            'Jenis Cover': 'Hard Cover',
+            'Jenis Kertas': 'HVS',
+            'Cetakan Ke': '1',
+            'Editor': 'Nama editor',
+            'Deskripsi': 'Deskripsi lengkap buku',
+            'URL Gambar Sampul': 'https://example.com/image.jpg'
+        }
+    ];
+    
+    // Create worksheet
+    const ws = XLSX.utils.json_to_sheet(templateData);
+    
+    // Set column widths
+    const colWidths = [
+        { wch: 25 }, // Judul Buku
+        { wch: 20 }, // Penulis
+        { wch: 15 }, // Harga Asli
+        { wch: 15 }, // Harga Dasar
+        { wch: 20 }, // Penerbit
+        { wch: 15 }, // Kategori
+        { wch: 10 }, // Diskon
+        { wch: 8 },  // Jilid
+        { wch: 10 }, // Halaman
+        { wch: 12 }, // Tahun Terbit
+        { wch: 12 }, // Berat Nilai
+        { wch: 12 }, // Berat Satuan
+        { wch: 15 }, // Warna Tulisan
+        { wch: 15 }, // Jenis Cover
+        { wch: 15 }, // Jenis Kertas
+        { wch: 12 }, // Cetakan Ke
+        { wch: 15 }, // Editor
+        { wch: 30 }, // Deskripsi
+        { wch: 30 }  // URL Gambar Sampul
+    ];
+    ws['!cols'] = colWidths;
+    
+    // Add worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Template Buku');
+    
+    // Add instructions sheet
+    const instructions = [
+        { 'Kolom': 'Judul Buku*', 'Keterangan': 'Wajib diisi. Judul lengkap buku' },
+        { 'Kolom': 'Penulis*', 'Keterangan': 'Wajib diisi. Nama penulis buku' },
+        { 'Kolom': 'Harga Asli (USD)*', 'Keterangan': 'Wajib diisi. Harga asli dalam USD (angka)' },
+        { 'Kolom': 'Harga Dasar (USD)*', 'Keterangan': 'Wajib diisi. Harga dasar dalam USD (angka)' },
+        { 'Kolom': 'Penerbit', 'Keterangan': 'Nama penerbit harus sudah terdaftar di sistem' },
+        { 'Kolom': 'Kategori', 'Keterangan': 'Nama kategori harus sudah terdaftar di sistem' },
+        { 'Kolom': 'Diskon', 'Keterangan': 'Format: 10% atau 0.1 (opsional)' },
+        { 'Kolom': 'Jilid', 'Keterangan': 'Jumlah jilid (opsional)' },
+        { 'Kolom': 'Halaman', 'Keterangan': 'Jumlah halaman (opsional)' },
+        { 'Kolom': 'Tahun Terbit', 'Keterangan': 'Tahun terbit (opsional)' },
+        { 'Kolom': 'Berat Nilai', 'Keterangan': 'Nilai berat (angka, opsional)' },
+        { 'Kolom': 'Berat Satuan', 'Keterangan': 'Satuan berat: kg, g, ons, lb (opsional)' },
+        { 'Kolom': 'Warna Tulisan', 'Keterangan': 'Warna teks buku (opsional)' },
+        { 'Kolom': 'Jenis Cover', 'Keterangan': 'Jenis sampul buku (opsional)' },
+        { 'Kolom': 'Jenis Kertas', 'Keterangan': 'Jenis kertas buku (opsional)' },
+        { 'Kolom': 'Cetakan Ke', 'Keterangan': 'Angka cetakan (opsional)' },
+        { 'Kolom': 'Editor', 'Keterangan': 'Nama editor (opsional)' },
+        { 'Kolom': 'Deskripsi', 'Keterangan': 'Deskripsi buku (opsional)' },
+        { 'Kolom': 'URL Gambar Sampul', 'Keterangan': 'URL gambar sampul buku (opsional)' }
+    ];
+    
+    const wsInstructions = XLSX.utils.json_to_sheet(instructions);
+    const instructionColWidths = [
+        { wch: 20 }, // Kolom
+        { wch: 50 }  // Keterangan
+    ];
+    wsInstructions['!cols'] = instructionColWidths;
+    XLSX.utils.book_append_sheet(wb, wsInstructions, 'Petunjuk Pengisian');
+    
+    // Download the file
+    XLSX.writeFile(wb, 'Template_Upload_Buku.xlsx');
+}
 
-        downloadTemplateBtn.addEventListener('click', async function() {
-            const button = this;
-            const originalText = button.innerHTML;
+// File selection handler
+excelFileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        fileNameSpan.textContent = file.name;
+        fileNameSpan.style.color = 'var(--dark)';
+        processExcelBtn.disabled = false;
+    } else {
+        fileNameSpan.textContent = 'Belum ada file dipilih';
+        fileNameSpan.style.color = '#6c757d';
+        processExcelBtn.disabled = true;
+    }
+});
+
+// Process Excel data
+processExcelBtn.addEventListener('click', processExcelFile);
+
+async function processExcelFile() {
+    const file = excelFileInput.files[0];
+    if (!file) return;
+    
+    // Reset results
+    resetUploadResults();
+    uploadProgress.style.display = 'block';
+    
+    try {
+        const data = await readExcelFile(file);
+        await processBookData(data);
+    } catch (error) {
+        console.error('Error processing Excel file:', error);
+        progressStatus.textContent = 'Error: ' + error.message;
+        progressFill.style.background = 'var(--danger)';
+    }
+}
+
+function readExcelFile(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                // Get first worksheet
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                
+                resolve(jsonData);
+            } catch (error) {
+                reject(new Error('Format file Excel tidak valid'));
+            }
+        };
+        
+        reader.onerror = function() {
+            reject(new Error('Gagal membaca file'));
+        };
+        
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+async function processBookData(data) {
+    let success = 0;
+    let failed = 0;
+    let skipped = 0;
+    
+    const totalRows = data.length;
+    let processedRows = 0;
+    
+    // Show upload results
+    uploadResults.style.display = 'block';
+    
+    for (const row of data) {
+        processedRows++;
+        const progress = (processedRows / totalRows) * 100;
+        
+        progressFill.style.width = `${progress}%`;
+        progressCount.textContent = `${processedRows}/${totalRows}`;
+        
+        try {
+            // Validate required fields
+            if (!row['Judul Buku'] || !row['Penulis'] || !row['Harga Asli (USD)'] || !row['Harga Dasar (USD)']) {
+                addResultRow('failed', row['Judul Buku'] || 'Data tanpa judul', 'Data tidak lengkap - field wajib kosong');
+                failed++;
+                continue;
+            }
             
-            try {
-                // Show loading state
-                button.classList.add('loading');
-                button.innerHTML = '⏳ Membuat Template...';
-                button.disabled = true;
-
-                console.log('Memulai proses download template...');
-                
-                // Check if XLSX is available, if not use CSV fallback
-                if (typeof XLSX === 'undefined') {
-                    console.log('XLSX tidak tersedia, menggunakan fallback CSV');
-                    downloadTemplateCSV();
-                    return;
-                }
-
-                // Create clean template data - KOSONG dan RAPI
-                const templateData = [
-                    // Header row saja - DATA KOSONG
-                    [
-                        'JUDUL_BUKU*', 
-                        'PENULIS*', 
-                        'HARGA_ASLI_USD*', 
-                        'HARGA_DASAR_USD*', 
-                        'PENERBIT', 
-                        'KATEGORI', 
-                        'DISKON', 
-                        'JILID', 
-                        'HALAMAN', 
-                        'TAHUN_TERBIT', 
-                        'BERAT_NILAI', 
-                        'BERAT_UNIT', 
-                        'WARNA_TULISAN', 
-                        'JENIS_COVER', 
-                        'JENIS_KERTAS', 
-                        'CETAKAN_KE', 
-                        'EDITOR', 
-                        'DESKRIPSI', 
-                        'URL_GAMBAR'
-                    ],
-                    // Baris kosong untuk diisi user
-                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-                    ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
-                ];
-
-                // Create workbook
-                const wb = XLSX.utils.book_new();
-                const ws = XLSX.utils.aoa_to_sheet(templateData);
-                
-                // Set column widths yang RAPI
-                ws['!cols'] = [
-                    {wch: 35},  // JUDUL_BUKU
-                    {wch: 25},  // PENULIS
-                    {wch: 15},  // HARGA_ASLI_USD
-                    {wch: 15},  // HARGA_DASAR_USD
-                    {wch: 20},  // PENERBIT
-                    {wch: 15},  // KATEGORI
-                    {wch: 10},  // DISKON
-                    {wch: 8},   // JILID
-                    {wch: 10},  // HALAMAN
-                    {wch: 12},  // TAHUN_TERBIT
-                    {wch: 12},  // BERAT_NILAI
-                    {wch: 10},  // BERAT_UNIT
-                    {wch: 15},  // WARNA_TULISAN
-                    {wch: 15},  // JENIS_COVER
-                    {wch: 15},  // JENIS_KERTAS
-                    {wch: 12},  // CETAKAN_KE
-                    {wch: 15},  // EDITOR
-                    {wch: 50},  // DESKRIPSI
-                    {wch: 30}   // URL_GAMBAR
-                ];
-
-                // Style untuk header - biar terlihat profesional
-                const headerRange = XLSX.utils.decode_range(ws['!ref']);
-                for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
-                    const cellAddress = XLSX.utils.encode_cell({r: 0, c: col});
-                    if (ws[cellAddress]) {
-                        ws[cellAddress].s = {
-                            font: { 
-                                bold: true, 
-                                color: { rgb: "FFFFFF" },
-                                sz: 11
-                            },
-                            fill: {
-                                fgColor: { rgb: "2C3E50" }
-                            },
-                            alignment: {
-                                horizontal: "center",
-                                vertical: "center"
-                            },
-                            border: {
-                                top: { style: "thin", color: { rgb: "1A252F" } },
-                                left: { style: "thin", color: { rgb: "1A252F" } },
-                                bottom: { style: "thin", color: { rgb: "1A252F" } },
-                                right: { style: "thin", color: { rgb: "1A252F" } }
-                            }
-                        };
-                    }
-                }
-
-                // Add worksheet to workbook
-                XLSX.utils.book_append_sheet(wb, ws, 'Data Buku');
-
-                // Create instruction sheet yang JELAS
-                const instructionData = [
-                    ['PANDUAN PENGGUNAAN TEMPLATE'],
-                    [''],
-                    ['📋 INSTRUKSI PENGGUNAAN:'],
-                    ['1. Isi data pada sheet "Data Buku"'],
-                    ['2. Kolom dengan tanda * (bintang) wajib diisi'],
-                    ['3. Jangan mengubah nama kolom/header'],
-                    ['4. Hapus baris yang tidak digunakan'],
-                    [''],
-                    ['🎯 KOLOM WAJIB (*):'],
-                    ['• JUDUL_BUKU - Judul lengkap buku'],
-                    ['• PENULIS - Nama penulis/pengarang'],
-                    ['• HARGA_ASLI_USD - Harga asli dalam USD (contoh: 25.00)'],
-                    ['• HARGA_DASAR_USD - Harga dasar dalam USD (contoh: 20.00)'],
-                    [''],
-                    ['📝 KOLOM OPSIONAL:'],
-                    ['• PENERBIT - Nama penerbit (harus sesuai data di sistem)'],
-                    ['• KATEGORI - Nama kategori (harus sesuai data di sistem)'],
-                    ['• DISKON - Diskon dalam persen (contoh: 10%)'],
-                    ['• JILID - Jumlah jilid (angka)'],
-                    ['• HALAMAN - Jumlah halaman (angka)'],
-                    ['• TAHUN_TERBIT - Tahun terbit (angka)'],
-                    ['• BERAT_NILAI - Nilai berat (angka)'],
-                    ['• BERAT_UNIT - Satuan berat (kg, g, ons, lb)'],
-                    ['• WARNA_TULISAN - Warna teks/tulisan'],
-                    ['• JENIS_COVER - Hard Cover, Soft Cover, Flexi Cover, Spiral'],
-                    ['• JENIS_KERTAS - HVS, Art Paper, Book Paper, Matt Paper, Glossy Paper'],
-                    ['• CETAKAN_KE - Angka cetakan (angka)'],
-                    ['• EDITOR - Nama editor'],
-                    ['• DESKRIPSI - Deskripsi lengkap buku'],
-                    ['• URL_GAMBAR - URL gambar sampul buku'],
-                    [''],
-                    ['⚠️ CATATAN PENTING:'],
-                    ['• Data akan divalidasi sebelum disimpan'],
-                    ['• Pastikan format angka menggunakan titik (.) untuk desimal'],
-                    ['• Untuk diskon, gunakan format: 10% (dengan simbol %)'],
-                    ['• URL gambar harus accessible dari internet'],
-                    ['• Simpan file dalam format .xlsx']
-                ];
-
-                const ws2 = XLSX.utils.aoa_to_sheet(instructionData);
-                const instructionColWidths = [
-                    {wch: 35},
-                    {wch: 65}
-                ];
-                ws2['!cols'] = instructionColWidths;
-                XLSX.utils.book_append_sheet(wb, ws2, 'Panduan');
-
-                // Generate filename
-                const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-                const filename = `template_buku_kosong_${timestamp}.xlsx`;
-
-                // Download the file
-                console.log('Men-download template kosong...');
-                XLSX.writeFile(wb, filename);
-
-                // Success feedback
-                button.innerHTML = '✅ Template Kosong Berhasil Didownload!';
-                console.log('Template Excel kosong berhasil didownload:', filename);
-                
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    button.classList.remove('loading');
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                }, 2000);
-
-            } catch (error) {
-                console.error('Error dalam download template Excel:', error);
-                
-                // Fallback to CSV if Excel fails
-                console.log('Fallback ke CSV...');
-                downloadTemplateCSV();
-            }
-        });
-
-        // CSV Fallback Function - JUGA KOSONG
-        function downloadTemplateCSV() {
-            try {
-                const button = downloadTemplateBtn;
-                
-                // Create CSV content - KOSONG
-                const csvContent = [
-                    'JUDUL_BUKU*,PENULIS*,HARGA_ASLI_USD*,HARGA_DASAR_USD*,PENERBIT,KATEGORI,DISKON,JILID,HALAMAN,TAHUN_TERBIT,BERAT_NILAI,BERAT_UNIT,WARNA_TULISAN,JENIS_COVER,JENIS_KERTAS,CETAKAN_KE,EDITOR,DESKRIPSI,URL_GAMBAR',
-                    ',,,,,,,,,,,,,,,,,,',
-                    ',,,,,,,,,,,,,,,,,,',
-                    ',,,,,,,,,,,,,,,,,,',
-                    ',,,,,,,,,,,,,,,,,,',
-                    ',,,,,,,,,,,,,,,,,,',
-                    ',,,,,,,,,,,,,,,,,,',
-                    ',,,,,,,,,,,,,,,,,,',
-                    ',,,,,,,,,,,,,,,,,,',
-                    ',,,,,,,,,,,,,,,,,,'
-                ].join('\n');
-
-                // Create blob and download
-                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                const url = URL.createObjectURL(blob);
-                
-                const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-                const filename = `template_buku_kosong_${timestamp}.csv`;
-                
-                link.setAttribute('href', url);
-                link.setAttribute('download', filename);
-                link.style.visibility = 'hidden';
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // Success feedback for CSV
-                button.innerHTML = '✅ Template CSV Kosong Berhasil Didownload!';
-                console.log('Template CSV kosong berhasil didownload:', filename);
-                
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    button.classList.remove('loading');
-                    button.innerHTML = '📥 Download Template Excel Kosong';
-                    button.disabled = false;
-                }, 2000);
-                
-            } catch (error) {
-                console.error('Error dalam download template CSV:', error);
-                
-                // Final error feedback
-                const button = downloadTemplateBtn;
-                button.classList.remove('loading');
-                button.innerHTML = '❌ Gagal Download';
-                button.style.background = 'var(--danger)';
-                
-                alert('Gagal mendownload template. Silakan coba refresh halaman atau hubungi administrator.');
-                
-                // Reset button after 3 seconds
-                setTimeout(() => {
-                    button.innerHTML = '📥 Download Template Excel Kosong';
-                    button.style.background = '';
-                    button.disabled = false;
-                }, 3000);
-            }
-        }
-
-        // ==============================================
-        // UPLOAD EXCEL FUNCTIONALITY
-        // ==============================================
-
-        // Open upload modal
-        openUploadExcelBtn.addEventListener('click', () => {
-            uploadExcelModal.style.display = 'block';
-        });
-
-        // Close upload modal
-        closeUploadExcelModal.addEventListener('click', closeUploadExcelModalFunc);
-        cancelUploadExcelBtn.addEventListener('click', closeUploadExcelModalFunc);
-
-        function closeUploadExcelModalFunc() {
-            uploadExcelModal.style.display = 'none';
-            excelFileInput.value = '';
-            excelPreview.style.display = 'none';
-            uploadProgress.style.display = 'none';
-            processExcelBtn.disabled = true;
-            progressBar.style.width = '0%';
-            progressText.textContent = '0%';
-        }
-
-        // Handle Excel file selection
-        excelFileInput.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            try {
-                processExcelBtn.disabled = true;
-                processExcelBtn.textContent = '📂 Memuat file...';
-                
-                console.log('File dipilih:', file.name, file.size, 'bytes');
-                
-                const data = await readExcelFile(file);
-                await displayPreview(data);
-                
-                excelPreview.style.display = 'block';
-                processExcelBtn.disabled = false;
-                processExcelBtn.textContent = '🚀 Proses dan Simpan Data';
-            } catch (error) {
-                console.error('Error reading Excel file:', error);
-                alert('❌ Gagal membaca file Excel: ' + error.message + '\n\nPastikan file tidak rusak dan formatnya .xlsx atau .xls');
-                processExcelBtn.disabled = true;
-                processExcelBtn.textContent = 'Proses dan Simpan Data';
-            }
-        });
-
-        // Fixed Read Excel File function
-        function readExcelFile(file) {
-            return new Promise((resolve, reject) => {
-                // Validasi file
-                if (!file) {
-                    reject(new Error('Tidak ada file yang dipilih'));
-                    return;
-                }
-
-                // Validasi tipe file
-                const validTypes = [
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    'application/vnd.ms-excel',
-                    'application/vnd.ms-excel.sheet.macroEnabled.12'
-                ];
-                
-                if (!validTypes.includes(file.type) && !file.name.match(/\.(xlsx|xls)$/i)) {
-                    reject(new Error('File harus dalam format Excel (.xlsx atau .xls)'));
-                    return;
-                }
-
-                // Validasi ukuran file (max 10MB)
-                if (file.size > 10 * 1024 * 1024) {
-                    reject(new Error('Ukuran file terlalu besar. Maksimal 10MB'));
-                    return;
-                }
-
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    try {
-                        console.log('Memproses file Excel...');
-                        
-                        if (!e.target.result) {
-                            reject(new Error('File kosong atau tidak dapat dibaca'));
-                            return;
-                        }
-
-                        const data = new Uint8Array(e.target.result);
-                        
-                        // Parse Excel file
-                        const workbook = XLSX.read(data, { 
-                            type: 'array',
-                            cellText: false,
-                            cellDates: true
-                        });
-                        
-                        if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
-                            reject(new Error('File Excel tidak memiliki sheet'));
-                            return;
-                        }
-
-                        const firstSheetName = workbook.SheetNames[0];
-                        console.log('Menggunakan sheet:', firstSheetName);
-                        
-                        const worksheet = workbook.Sheets[firstSheetName];
-                        
-                        if (!worksheet) {
-                            reject(new Error('Sheet pertama tidak ditemukan'));
-                            return;
-                        }
-
-                        // Convert to JSON dengan handling yang lebih baik
-                        const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
-                            header: 1,
-                            defval: '',
-                            blankrows: false
-                        });
-
-                        console.log('Data mentah dari Excel:', jsonData);
-
-                        // Remove completely empty rows
-                        const filteredData = jsonData.filter(row => 
-                            Array.isArray(row) && 
-                            row.some(cell => 
-                                cell !== null && 
-                                cell !== '' && 
-                                cell !== undefined &&
-                                String(cell).trim() !== ''
-                            )
-                        );
-
-                        console.log('Data setelah filter:', filteredData);
-
-                        if (filteredData.length < 2) {
-                            reject(new Error('File Excel tidak berisi data. Pastikan ada header dan minimal 1 baris data'));
-                            return;
-                        }
-
-                        // Get headers and rows
-                        const headers = filteredData[0].map(header => 
-                            String(header).trim().toUpperCase()
-                        );
-                        const rows = filteredData.slice(1);
-
-                        console.log('Headers:', headers);
-                        console.log('Jumlah baris data:', rows.length);
-
-                        resolve({ headers, rows });
-                        
-                    } catch (error) {
-                        console.error('Error parsing Excel:', error);
-                        reject(new Error('Format file Excel tidak valid: ' + error.message));
-                    }
-                };
-                
-                reader.onerror = function(error) {
-                    console.error('FileReader error:', error);
-                    reject(new Error('Gagal membaca file: ' + error));
-                };
-                
-                reader.onabort = function() {
-                    reject(new Error('Pembacaan file dibatalkan'));
-                };
-                
-                // Read the file
-                reader.readAsArrayBuffer(file);
-            });
-        }
-
-        // Fixed validation function
-        async function validateBookRow(row, rowNumber) {
-            const errors = [];
-            const warnings = [];
-            
-            // Helper function untuk get value dari row
-            const getValue = (index) => {
-                if (index >= row.length) return '';
-                const value = row[index];
-                return value !== null && value !== undefined ? String(value).trim() : '';
+            // Prepare book data
+            const bookData = {
+                title: row['Judul Buku'],
+                author: row['Penulis'],
+                original_price: parseFloat(row['Harga Asli (USD)']) || 0,
+                base_price: parseFloat(row['Harga Dasar (USD)']) || 0,
+                volumes: row['Jilid'] || '',
+                pages: row['Halaman'] || '',
+                year: row['Tahun Terbit'] || '',
+                description: row['Deskripsi'] || '',
+                discount: row['Diskon'] || '',
+                text_color: row['Warna Tulisan'] || '',
+                cover_type: row['Jenis Cover'] || '',
+                paper_type: row['Jenis Kertas'] || '',
+                print_count: row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null,
+                editor: row['Editor'] || '',
+                weight_value: row['Berat Nilai'] ? parseFloat(row['Berat Nilai']) : null,
+                weight_unit: row['Berat Satuan'] || '',
+                cover_image_url: row['URL Gambar Sampul'] || ''
             };
-
-            const title = getValue(0);
-            const author = getValue(1);
-            const originalPrice = getValue(2);
-            const basePrice = getValue(3);
-            const publisher = getValue(4);
-            const category = getValue(5);
-            const weightUnit = getValue(11);
-
-            console.log(`Validasi baris ${rowNumber}:`, { title, author, originalPrice, basePrice });
-
-            // Check required fields
-            if (!title) {
-                errors.push(`Judul buku wajib diisi`);
-            } else if (title.length < 2) {
-                errors.push(`Judul buku terlalu pendek`);
-            }
-
-            if (!author) {
-                errors.push(`Penulis wajib diisi`);
-            } else if (author.length < 2) {
-                errors.push(`Nama penulis terlalu pendek`);
-            }
-
-            // Check harga
-            if (!originalPrice) {
-                errors.push(`Harga asli wajib diisi`);
-            } else if (isNaN(parseFloat(originalPrice)) || parseFloat(originalPrice) <= 0) {
-                errors.push(`Harga asli harus angka positif`);
-            }
-
-            if (!basePrice) {
-                errors.push(`Harga dasar wajib diisi`);
-            } else if (isNaN(parseFloat(basePrice)) || parseFloat(basePrice) <= 0) {
-                errors.push(`Harga dasar harus angka positif`);
-            }
-
-            // Check publisher exists
-            if (publisher) {
-                const publisherExists = allPublishers.some(p => 
-                    p.name.toLowerCase() === publisher.toLowerCase()
+            
+            // Handle publisher
+            if (row['Penerbit']) {
+                const publisher = allPublishers.find(p => 
+                    p.name.toLowerCase() === row['Penerbit'].toLowerCase().trim()
                 );
-                if (!publisherExists) {
-                    warnings.push(`Penerbit "${publisher}" tidak ditemukan di sistem`);
-                }
-            }
-            
-            // Check category exists
-            const categoryName = getValue(5);
-            if (categoryName) {
-                const categoryExists = allCategories.some(c => 
-                    c.name_id.toLowerCase() === categoryName.toLowerCase()
-                );
-                if (!categoryExists) {
-                    warnings.push(`Kategori "${categoryName}" tidak ditemukan di sistem`);
-                }
-            }
-            
-            // Validate weight unit
-            if (weightUnit) {
-                const validUnits = ['kg', 'g', 'ons', 'lb'];
-                const unit = weightUnit.toLowerCase();
-                if (!validUnits.includes(unit)) {
-                    warnings.push(`Satuan berat "${weightUnit}" tidak valid. Gunakan: kg, g, ons, lb`);
-                }
-            }
-            
-            // Validate numeric fields
-            const volumes = getValue(7);
-            if (volumes && isNaN(parseInt(volumes))) {
-                warnings.push(`Jilid harus angka`);
-            }
-            
-            const pages = getValue(8);
-            if (pages && isNaN(parseInt(pages))) {
-                warnings.push(`Halaman harus angka`);
-            }
-            
-            const year = getValue(9);
-            if (year && (isNaN(parseInt(year)) || parseInt(year) < 1000 || parseInt(year) > 2100)) {
-                warnings.push(`Tahun terbit harus angka antara 1000-2100`);
-            }
-            
-            const weightValue = getValue(10);
-            if (weightValue && isNaN(parseFloat(weightValue))) {
-                warnings.push(`Berat nilai harus angka`);
-            }
-            
-            const printCount = getValue(15);
-            if (printCount && isNaN(parseInt(printCount))) {
-                warnings.push(`Cetakan ke harus angka`);
-            }
-
-            return {
-                isValid: errors.length === 0,
-                hasWarnings: warnings.length > 0,
-                errors: errors,
-                warnings: warnings,
-                rowData: row
-            };
-        }
-
-        // Fixed display preview function
-        async function displayPreview(data) {
-            const { headers, rows } = data;
-            previewTableBody.innerHTML = '';
-            
-            let validCount = 0;
-            let warningCount = 0;
-            let errorCount = 0;
-            
-            console.log('Menampilkan preview untuk', rows.length, 'baris data');
-
-            // Show first 5 rows for preview
-            const previewRows = rows.slice(0, 5);
-            
-            for (let i = 0; i < previewRows.length; i++) {
-                const row = previewRows[i];
-                const tr = document.createElement('tr');
-                tr.className = 'preview-row';
-                
-                // Validate row
-                const validation = await validateBookRow(row, i + 2);
-                
-                if (validation.isValid) {
-                    validCount++;
-                    tr.classList.add('success');
-                } else if (validation.hasWarnings) {
-                    warningCount++;
-                    tr.classList.add('warning');
+                if (publisher) {
+                    bookData.publisher_id = publisher.id;
                 } else {
-                    errorCount++;
-                    tr.classList.add('error');
+                    addResultRow('failed', bookData.title, `Penerbit "${row['Penerbit']}" tidak ditemukan`);
+                    failed++;
+                    continue;
                 }
-                
-                // Display data for preview
-                const title = validation.rowData[0] || '-';
-                const author = validation.rowData[1] || '-';
-                const basePrice = validation.rowData[3] ? `$${parseFloat(validation.rowData[3]).toFixed(2)}` : '-';
-                const publisher = validation.rowData[4] || '-';
-                const category = validation.rowData[5] || '-';
-                const discount = validation.rowData[6] || '-';
-                
-                let statusText = '✅ Valid';
-                let statusClass = 'status-success';
-                
-                if (validation.errors.length > 0) {
-                    statusText = `❌ ${validation.errors[0]}`;
-                    statusClass = 'status-error';
-                } else if (validation.warnings.length > 0) {
-                    statusText = `⚠️ ${validation.warnings[0]}`;
-                    statusClass = 'status-warning';
-                }
-                
-                tr.innerHTML = `
-                    <td><strong>${title}</strong></td>
-                    <td>${author}</td>
-                    <td>${basePrice}</td>
-                    <td>${publisher}</td>
-                    <td>${category}</td>
-                    <td>${discount}</td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                `;
-                
-                previewTableBody.appendChild(tr);
             }
             
-            // Show statistics
-            previewStats.innerHTML = `
-                <div class="upload-stats">
-                    <div class="stat-item">
-                        <div class="stat-number stat-success">${validCount}</div>
-                        <div class="stat-label">Data Valid</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number stat-warning">${warningCount}</div>
-                        <div class="stat-label">Peringatan</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number stat-error">${errorCount}</div>
-                        <div class="stat-label">Error</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number stat-total">${rows.length}</div>
-                        <div class="stat-label">Total Data</div>
-                    </div>
-                </div>
-                ${rows.length > 5 ? `
-                    <p style="text-align: center; margin-top: 1rem; padding: 0.5rem; background: #f8f9fa; border-radius: 6px;">
-                        📊 Menampilkan 5 baris pertama dari total ${rows.length} baris data
-                    </p>
-                ` : ''}
-                ${errorCount > 0 ? `
-                    <p style="text-align: center; margin-top: 1rem; color: var(--danger); font-weight: 500;">
-                        ⚠️ Perbaiki data yang error sebelum melanjutkan
-                    </p>
-                ` : ''}
-                ${validCount === 0 ? `
-                    <p style="text-align: center; margin-top: 1rem; color: var(--warning); font-weight: 500;">
-                        📝 Tidak ada data yang valid. Periksa format file Excel Anda.
-                    </p>
-                ` : ''}
-            `;
-        }
-
-        // Fixed process button event listener
-        processExcelBtn.addEventListener('click', async () => {
-            const file = excelFileInput.files[0];
-            if (!file) {
-                alert('❌ Silakan pilih file Excel terlebih dahulu');
-                return;
-            }
-
-            if (!confirm(`Apakah Anda yakin ingin memproses data dari file Excel?\n\n• File: ${file.name}\n• Data yang valid akan disimpan ke database.`)) {
-                return;
-            }
-            
-            processExcelBtn.disabled = true;
-            processExcelBtn.textContent = '⏳ Memproses...';
-            uploadProgress.style.display = 'block';
-            
-            try {
-                const data = await readExcelFile(file);
-                
-                // Validasi tambahan sebelum proses
-                if (data.rows.length === 0) {
-                    throw new Error('Tidak ada data yang dapat diproses');
+            // Handle category
+            if (row['Kategori']) {
+                const category = allCategories.find(c => 
+                    c.name_id.toLowerCase() === row['Kategori'].toLowerCase().trim()
+                );
+                if (category) {
+                    bookData.category_id = category.id;
+                } else {
+                    addResultRow('failed', bookData.title, `Kategori "${row['Kategori']}" tidak ditemukan`);
+                    failed++;
+                    continue;
                 }
-                
-                await processExcelData(data.rows);
-            } catch (error) {
-                console.error('Error processing Excel data:', error);
-                alert('❌ Gagal memproses data Excel: ' + error.message);
-            } finally {
-                processExcelBtn.disabled = false;
-                processExcelBtn.textContent = '🚀 Proses dan Simpan Data';
-                uploadProgress.style.display = 'none';
-                progressBar.style.width = '0%';
-                progressText.textContent = '0%';
-            }
-        });
-
-        // Fixed process Excel data function
-        async function processExcelData(rows) {
-            let successCount = 0;
-            let errorCount = 0;
-            let totalRows = rows.length;
-            
-            console.log('Memproses', totalRows, 'baris data...');
-
-            // Update progress
-            const updateProgress = (current, total) => {
-                const percent = Math.round((current / total) * 100);
-                progressBar.style.width = `${percent}%`;
-                progressText.textContent = `${percent}% (${current}/${total})`;
-            };
-
-            // Array untuk menampung error details
-            const errorDetails = [];
-
-            for (let i = 0; i < rows.length; i++) {
-                const row = rows[i];
-                const rowNumber = i + 2;
-                
-                try {
-                    // Validate row
-                    const validation = await validateBookRow(row, rowNumber);
-                    if (validation.errors.length > 0) {
-                        const errorMsg = `Baris ${rowNumber}: ${validation.errors[0]}`;
-                        console.error(errorMsg);
-                        errorDetails.push(errorMsg);
-                        errorCount++;
-                        updateProgress(i + 1, totalRows);
-                        continue;
-                    }
-
-                    // Prepare book data dengan handling yang lebih baik
-                    const bookData = {
-                        title: String(row[0] || '').trim(),
-                        author: String(row[1] || '').trim(),
-                        original_price: parseFloat(row[2]) || 0,
-                        base_price: parseFloat(row[3]) || 0,
-                        volumes: row[7] ? String(row[7]).trim() : null,
-                        pages: row[8] ? String(row[8]).trim() : null,
-                        year: row[9] ? String(row[9]).trim() : null,
-                        description: row[17] ? String(row[17]).trim() : '',
-                        discount: row[6] ? String(row[6]).trim() : null,
-                        text_color: row[12] ? String(row[12]).trim() : null,
-                        cover_type: row[13] ? String(row[13]).trim() : null,
-                        paper_type: row[14] ? String(row[14]).trim() : null,
-                        print_count: row[15] ? parseInt(row[15]) || null : null,
-                        editor: row[16] ? String(row[16]).trim() : null,
-                        weight_value: row[10] ? parseFloat(row[10]) || null : null,
-                        weight_unit: row[11] ? String(row[11]).trim() : null,
-                        cover_image_url: row[18] ? String(row[18]).trim() : null,
-                        created_at: new Date().toISOString(),
-                        updated_at: new Date().toISOString()
-                    };
-
-                    // Find publisher ID
-                    if (row[4] && String(row[4]).trim() !== '') {
-                        const publisherName = String(row[4]).trim();
-                        const publisher = allPublishers.find(p => 
-                            p.name.toLowerCase() === publisherName.toLowerCase()
-                        );
-                        if (publisher) {
-                            bookData.publisher_id = publisher.id;
-                        }
-                    }
-                    
-                    // Find category ID
-                    if (row[5] && String(row[5]).trim() !== '') {
-                        const categoryName = String(row[5]).trim();
-                        const category = allCategories.find(c => 
-                            c.name_id.toLowerCase() === categoryName.toLowerCase()
-                        );
-                        if (category) {
-                            bookData.category_id = category.id;
-                        }
-                    }
-
-                    console.log('Menyimpan data buku:', bookData.title);
-
-                    // Insert book
-                    const { data: insertedData, error } = await supabase
-                        .from('books')
-                        .insert([bookData])
-                        .select();
-
-                    if (error) {
-                        console.error(`Error insert baris ${rowNumber}:`, error);
-                        errorDetails.push(`Baris ${rowNumber}: ${error.message}`);
-                        errorCount++;
-                    } else {
-                        successCount++;
-                        console.log(`✅ Berhasil menyimpan: ${bookData.title}`);
-                    }
-                    
-                } catch (error) {
-                    console.error(`Unexpected error baris ${rowNumber}:`, error);
-                    errorDetails.push(`Baris ${rowNumber}: ${error.message}`);
-                    errorCount++;
-                }
-                
-                // Update progress
-                updateProgress(i + 1, totalRows);
-                
-                // Small delay to prevent overwhelming the server
-                await new Promise(resolve => setTimeout(resolve, 100));
             }
             
-            // Show results
-            let message = `📊 **HASIL IMPORT EXCEL**\n\n`;
-            message += `✅ ${successCount} buku berhasil diimpor\n`;
-            message += `❌ ${errorCount} gagal\n`;
-            message += `📋 Total data: ${totalRows}\n\n`;
+            // Check if book already exists
+            const { data: existingBook } = await supabase
+                .from('books')
+                .select('id')
+                .eq('title', bookData.title)
+                .eq('author', bookData.author)
+                .single();
             
-            if (errorCount > 0) {
-                message += `⚠️ Beberapa data gagal diimpor.\n`;
-                message += `Error details:\n${errorDetails.slice(0, 5).join('\n')}`;
-                if (errorDetails.length > 5) {
-                    message += `\n... dan ${errorDetails.length - 5} error lainnya`;
-                }
+            if (existingBook) {
+                addResultRow('skipped', bookData.title, 'Buku sudah ada di sistem');
+                skipped++;
+                continue;
+            }
+            
+            // Insert book
+            const { error } = await supabase.from('books').insert([bookData]);
+            
+            if (error) {
+                addResultRow('failed', bookData.title, `Error: ${error.message}`);
+                failed++;
             } else {
-                message += `🎉 Semua data berhasil diimpor!`;
+                addResultRow('success', bookData.title, 'Buku berhasil ditambahkan');
+                success++;
             }
             
-            alert(message);
-            
-            // Close modal and refresh data
-            closeUploadExcelModalFunc();
-            
-            // Refresh book list
-            setTimeout(() => {
-                window.fetchBooks();
-            }, 1000);
+        } catch (error) {
+            addResultRow('failed', row['Judul Buku'] || 'Data tanpa judul', `Error: ${error.message}`);
+            failed++;
         }
+        
+        // Update counts
+        updateResultCounts(success, failed, skipped);
+        
+        // Small delay to show progress
+        await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    
+    // Final update
+    progressStatus.textContent = 'Selesai';
+    progressFill.style.background = 'var(--success)';
+    
+    // Refresh books list
+    setTimeout(() => {
+        window.fetchBooks();
+    }, 1000);
+}
 
-        // ==============================================
-        // INITIALIZATION
-        // ==============================================
+function resetUploadResults() {
+    successCount.textContent = '0';
+    failedCount.textContent = '0';
+    skippedCount.textContent = '0';
+    resultsDetails.innerHTML = '';
+    progressFill.style.width = '0%';
+    progressFill.style.background = 'var(--success)';
+    progressStatus.textContent = 'Memproses...';
+    progressCount.textContent = '0/0';
+}
 
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Excel upload functionality initialized');
-            
-            // Check if XLSX library is available
-            if (typeof XLSX === 'undefined') {
-                console.warn('XLSX library not loaded. Download template might not work.');
-                downloadTemplateBtn.innerHTML = '📥 Download Template (CSV)';
-                downloadTemplateBtn.title = 'Menggunakan format CSV karena library Excel tidak tersedia';
-            } else {
-                console.log('✅ XLSX library ready for use');
-            }
+function addResultRow(status, title, message) {
+    const statusText = {
+        'success': 'Berhasil',
+        'failed': 'Gagal',
+        'skipped': 'Dilewati'
+    };
+    
+    const row = document.createElement('div');
+    row.className = `result-row ${status}`;
+    row.innerHTML = `
+        <div class="result-info">
+            <div class="result-title">${title}</div>
+            <div class="result-message">${message}</div>
+        </div>
+        <div class="result-status ${status}">${statusText[status]}</div>
+    `;
+    
+    resultsDetails.appendChild(row);
+}
 
-            // Load publishers and categories for validation
-            loadPublishersAndCategories();
-        });
+function updateResultCounts(success, failed, skipped) {
+    successCount.textContent = success;
+    failedCount.textContent = failed;
+    skippedCount.textContent = skipped;
+}
 
-        async function loadPublishersAndCategories() {
-            try {
-                // Load publishers
-                const { data: publishers, error: pubError } = await supabase
-                    .from('publishers')
-                    .select('id, name');
-                
-                if (!pubError) {
-                    allPublishers = publishers || [];
-                    console.log('Loaded publishers:', allPublishers.length);
-                }
+// Add translations for new text
+translations.id['bulk-upload-title'] = 'Upload Buku Massal via Excel';
+translations.id['bulk-upload-description'] = 'Upload data buku secara massal menggunakan file Excel. Unduh template terlebih dahulu untuk memastikan format yang benar.';
+translations.id['download-template'] = '📥 Unduh Template Excel';
+translations.id['upload-excel'] = '📤 Upload File Excel';
+translations.id['no-file-selected'] = 'Belum ada file dipilih';
+translations.id['process-data'] = '🔄 Proses Data';
+translations.id['processing'] = 'Memproses...';
+translations.id['upload-results'] = 'Hasil Upload';
+translations.id['successful'] = 'Berhasil';
+translations.id['failed'] = 'Gagal';
+translations.id['skipped'] = 'Dilewati';
 
-                // Load categories
-                const { data: categories, error: catError } = await supabase
-                    .from('categories')
-                    .select('id, name_id');
-                
-                if (!catError) {
-                    allCategories = categories || [];
-                    console.log('Loaded categories:', allCategories.length);
-                }
-            } catch (error) {
-                console.error('Error loading publishers and categories:', error);
-            }
-        }
+translations.en['bulk-upload-title'] = 'Bulk Upload Books via Excel';
+translations.en['bulk-upload-description'] = 'Upload book data in bulk using Excel file. Download the template first to ensure correct format.';
+translations.en['download-template'] = '📥 Download Excel Template';
+translations.en['upload-excel'] = '📤 Upload Excel File';
+translations.en['no-file-selected'] = 'No file selected';
+translations.en['process-data'] = '🔄 Process Data';
+translations.en['processing'] = 'Processing...';
+translations.en['upload-results'] = 'Upload Results';
+translations.en['successful'] = 'Successful';
+translations.en['failed'] = 'Failed';
+translations.en['skipped'] = 'Skipped';
 
-        // Add to global scope for other functions to use
-        window.loadPublishersAndCategories = loadPublishersAndCategories;
-
+translations.ar['bulk-upload-title'] = 'رفع الكتب بكميات كبيرة عبر Excel';
+translations.ar['bulk-upload-description'] = 'رفع بيانات الكتاب بكميات كبيرة باستخدام ملف Excel. قم بتنزيل القالب أولاً لضمان التنسيق الصحيح.';
+translations.ar['download-template'] = '📥 تنزيل قالب Excel';
+translations.ar['upload-excel'] = '📤 رفع ملف Excel';
+translations.ar['no-file-selected'] = 'لم يتم اختيار ملف';
+translations.ar['process-data'] = '🔄 معالجة البيانات';
+translations.ar['processing'] = 'جاري المعالجة...';
+translations.ar['upload-results'] = 'نتائج الرفع';
+translations.ar['successful'] = 'ناجح';
+translations.ar['failed'] = 'فشل';
+translations.ar['skipped'] = 'تم تخطيه';
     </script>
 </body>
 </html>
