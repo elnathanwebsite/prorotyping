@@ -1787,11 +1787,729 @@ h2 {
             </form>
         </div>
     </div>
-     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // Language translations
+    const translations = {
+        id: {
+            "dashboard-title": "Panel Admin - Toko Buku Islam",
+            "dashboard-subtitle": "Kelola data buku, penerbit, kategori, dan banner dengan mudah",
+            "menu-books": "Buku",
+            "menu-publishers": "Penerbit",
+            "menu-categories": "Kategori",
+            "menu-banners": "Banner",
+            "menu-orders": "Pesanan",
+            "menu-currency": "Kurs",
+            "add-book-title": "Tambah Buku Baru",
+            "book-title": "Judul Buku",
+            "book-author": "Penulis",
+            "book-original-price": "Harga Asli (USD)",
+            "book-base-price": "Harga Dasar (USD)",
+            "book-publisher": "Penerbit",
+            "book-category": "Kategori",
+            "book-discount": "Diskon",
+            "book-volumes": "Jilid",
+            "book-pages": "Halaman",
+            "book-year": "Tahun Terbit",
+            "book-weight": "Berat Buku",
+            "book-text-color": "Warna Tulisan",
+            "book-cover-type": "Jenis Cover",
+            "book-paper-type": "Jenis Kertas",
+            "book-print-count": "Cetakan Ke",
+            "book-editor": "Editor",
+            "book-description": "Deskripsi Buku",
+            "book-cover": "Sampul Buku",
+            "upload-file": "Unggah File",
+            "use-url": "Gunakan URL",
+            "save-book": "Simpan Buku",
+            "cancel-edit": "Batal Edit",
+            "price-calculator": "Kalkulator Harga Setelah Diskon",
+            "base-price-usd": "Harga Dasar (USD):",
+            "discount": "Diskon:",
+            "final-price-usd": "Harga Setelah Diskon (USD):",
+            "final-price-idr": "Harga Setelah Diskon (IDR):",
+            "final-price-egp": "Harga Setelah Diskon (EGP):",
+            "filter-search": "Filter dan Pencarian Buku",
+            "search-title": "Cari Judul",
+            "search-author": "Cari Penulis",
+            "filter-publisher": "Penerbit",
+            "filter-category": "Kategori",
+            "filter-cover-type": "Jenis Cover",
+            "filter-paper-type": "Jenis Kertas",
+            "apply-filter": "Terapkan Filter",
+            "reset-filter": "Reset Filter",
+            "bulk-actions": "Aksi Massal:",
+            "select-action": "Pilih Aksi",
+            "delete-books": "Hapus Buku",
+            "apply": "Terapkan",
+            "book-list": "Daftar Buku",
+            "table-image": "Gambar",
+            "table-book-info": "Informasi Buku",
+            "table-details": "Detail",
+            "table-weight": "Berat",
+            "table-price-usd": "Harga USD",
+            "table-price-idr": "Harga IDR",
+            "table-price-egp": "Harga EGP",
+            "table-discount": "Diskon",
+            "table-actions": "Aksi",
+            "loading-books": "Memuat data buku...",
+            "add-publisher-title": "Tambah Penerbit Baru",
+            "publisher-name": "Nama Penerbit",
+            "publisher-letter": "Huruf",
+            "publisher-discount": "Diskon",
+            "publisher-logo": "Logo Penerbit",
+            "save-publisher": "Simpan Penerbit",
+            "publisher-list": "Daftar Penerbit",
+            "table-logo": "Logo",
+            "table-name": "Nama",
+            "table-letter": "Huruf",
+            "loading-publishers": "Memuat data penerbit...",
+            "add-category-title": "Tambah Kategori Baru",
+            "category-name-id": "Nama (ID)",
+            "category-name-en": "Nama (EN)",
+            "category-name-ar": "Nama (AR)",
+            "category-color": "Warna",
+            "category-link": "Link Kategori",
+            "category-image": "Gambar Kategori",
+            "save-category": "Simpan Kategori",
+            "category-list": "Daftar Kategori",
+            "table-name-id": "Nama (ID)",
+            "table-name-en": "Nama (EN)",
+            "table-color": "Warna",
+            "table-link": "Link",
+            "loading-categories": "Memuat data kategori...",
+            "add-banner-title": "Tambah Banner Baru",
+            "banner-title": "Judul Banner",
+            "banner-type": "Tipe",
+            "banner-order": "Urutan Tampil",
+            "banner-image": "Gambar Banner",
+            "save-banner": "Simpan Banner",
+            "banner-list": "Daftar Banner",
+            "table-title": "Judul",
+            "table-type": "Tipe",
+            "table-order": "Urutan",
+            "loading-banners": "Memuat data banner...",
+            "order-list": "Daftar Pesanan",
+            "table-customer-name": "Nama Pelanggan",
+            "table-book": "Buku",
+            "table-total-idr": "Total (IDR)",
+            "table-status": "Status",
+            "table-date": "Tanggal",
+            "loading-orders": "Memuat data pesanan...",
+            "currency-settings": "Pengaturan Kurs Mata Uang",
+            "currency-description": "Harga dasar produk disimpan dalam USD. Atur kurs di sini untuk mengonversi harga saat ditampilkan.",
+            "usd-to-idr": "USD ke IDR",
+            "usd-to-egp": "USD ke EGP",
+            "save-settings": "Simpan Pengaturan",
+            "edit-book-title": "Edit Buku - Semua Data",
+            "update-book": "Perbarui Buku",
+            "cancel": "Batal",
+            // Excel Upload Translations
+            "bulk-upload-title": "Upload Buku Massal via Excel",
+            "bulk-upload-description": "Upload data buku secara massal menggunakan file Excel. Unduh template terlebih dahulu untuk memastikan format yang benar.",
+            "download-template": "📥 Unduh Template Excel",
+            "upload-excel": "📤 Upload File Excel",
+            "no-file-selected": "Belum ada file dipilih",
+            "process-data": "🔄 Proses Data",
+            "processing": "Memproses...",
+            "upload-results": "Hasil Upload",
+            "successful": "Berhasil",
+            "failed": "Gagal",
+            "skipped": "Dilewati",
+            "instructions-title": "Petunjuk Penggunaan",
+            "book-title-inst": "Judul Buku* - Wajib diisi. Judul lengkap buku",
+            "author-inst": "Penulis* - Wajib diisi. Nama penulis buku",
+            "original-price-inst": "Harga Asli (USD)* - Wajib diisi. Harga asli dalam USD (angka)",
+            "base-price-inst": "Harga Dasar (USD)* - Wajib diisi. Harga dasar dalam USD (angka)",
+            "publisher-inst": "Penerbit - Nama penerbit harus sudah terdaftar di sistem",
+            "category-inst": "Kategori - Nama kategori harus sudah terdaftar di sistem",
+            "discount-inst": "Diskon - Format: 10% atau 0.1 (opsional)",
+            "volumes-inst": "Jilid - Jumlah jilid (opsional)",
+            "pages-inst": "Halaman - Jumlah halaman (opsional)",
+            "year-inst": "Tahun Terbit - Tahun terbit (opsional)",
+            "weight-value-inst": "Berat Nilai - Nilai berat (angka, opsional)",
+            "weight-unit-inst": "Berat Satuan - Satuan berat: kg, g, ons, lb (opsional)",
+            "text-color-inst": "Warna Tulisan - Warna teks buku (opsional)",
+            "cover-type-inst": "Jenis Cover - Jenis sampul buku (opsional)",
+            "paper-type-inst": "Jenis Kertas - Jenis kertas buku (opsional)",
+            "print-count-inst": "Cetakan Ke - Angka cetakan (opsional)",
+            "editor-inst": "Editor - Nama editor (opsional)",
+            "description-inst": "Deskripsi - Deskripsi buku (opsional)",
+            "cover-url-inst": "URL Gambar Sampul - URL gambar sampul buku (opsional)",
+            "required-fields": "* Field wajib diisi",
+            "template-success": "Template berhasil diunduh! Silakan isi data buku Anda.",
+            "template-error": "Terjadi kesalahan saat mengunduh template. Silakan coba lagi.",
+            "file-error": "Format file Excel tidak valid",
+            "file-read-error": "Gagal membaca file",
+            "required-field-missing": "Data tidak lengkap - field wajib kosong",
+            "book-added": "Buku berhasil ditambahkan ke database",
+            "book-exists": "Buku sudah ada di sistem",
+            "save-error": "Gagal menyimpan ke database",
+            "upload-complete": "Proses upload selesai!",
+            "success-count": "Berhasil",
+            "failed-count": "Gagal",
+            "skipped-count": "Dilewati"
+        },
+        en: {
+            "dashboard-title": "Admin Panel - Islamic Book Store",
+            "dashboard-subtitle": "Manage books, publishers, categories, and banners easily",
+            "menu-books": "Books",
+            "menu-publishers": "Publishers",
+            "menu-categories": "Categories",
+            "menu-banners": "Banners",
+            "menu-orders": "Orders",
+            "menu-currency": "Currency",
+            "add-book-title": "Add New Book",
+            "book-title": "Book Title",
+            "book-author": "Author",
+            "book-original-price": "Original Price (USD)",
+            "book-base-price": "Base Price (USD)",
+            "book-publisher": "Publisher",
+            "book-category": "Category",
+            "book-discount": "Discount",
+            "book-volumes": "Volumes",
+            "book-pages": "Pages",
+            "book-year": "Publication Year",
+            "book-weight": "Book Weight",
+            "book-text-color": "Text Color",
+            "book-cover-type": "Cover Type",
+            "book-paper-type": "Paper Type",
+            "book-print-count": "Print Edition",
+            "book-editor": "Editor",
+            "book-description": "Book Description",
+            "book-cover": "Book Cover",
+            "upload-file": "Upload File",
+            "use-url": "Use URL",
+            "save-book": "Save Book",
+            "cancel-edit": "Cancel Edit",
+            "price-calculator": "Price Calculator After Discount",
+            "base-price-usd": "Base Price (USD):",
+            "discount": "Discount:",
+            "final-price-usd": "Final Price (USD):",
+            "final-price-idr": "Final Price (IDR):",
+            "final-price-egp": "Final Price (EGP):",
+            "filter-search": "Filter and Search Books",
+            "search-title": "Search Title",
+            "search-author": "Search Author",
+            "filter-publisher": "Publisher",
+            "filter-category": "Category",
+            "filter-cover-type": "Cover Type",
+            "filter-paper-type": "Paper Type",
+            "apply-filter": "Apply Filter",
+            "reset-filter": "Reset Filter",
+            "bulk-actions": "Bulk Actions:",
+            "select-action": "Select Action",
+            "delete-books": "Delete Books",
+            "apply": "Apply",
+            "book-list": "Book List",
+            "table-image": "Image",
+            "table-book-info": "Book Information",
+            "table-details": "Details",
+            "table-weight": "Weight",
+            "table-price-usd": "Price USD",
+            "table-price-idr": "Price IDR",
+            "table-price-egp": "Price EGP",
+            "table-discount": "Discount",
+            "table-actions": "Actions",
+            "loading-books": "Loading book data...",
+            "add-publisher-title": "Add New Publisher",
+            "publisher-name": "Publisher Name",
+            "publisher-letter": "Letter",
+            "publisher-discount": "Discount",
+            "publisher-logo": "Publisher Logo",
+            "save-publisher": "Save Publisher",
+            "publisher-list": "Publisher List",
+            "table-logo": "Logo",
+            "table-name": "Name",
+            "table-letter": "Letter",
+            "loading-publishers": "Loading publisher data...",
+            "add-category-title": "Add New Category",
+            "category-name-id": "Name (ID)",
+            "category-name-en": "Name (EN)",
+            "category-name-ar": "Name (AR)",
+            "category-color": "Color",
+            "category-link": "Category Link",
+            "category-image": "Category Image",
+            "save-category": "Save Category",
+            "category-list": "Category List",
+            "table-name-id": "Name (ID)",
+            "table-name-en": "Name (EN)",
+            "table-color": "Color",
+            "table-link": "Link",
+            "loading-categories": "Loading category data...",
+            "add-banner-title": "Add New Banner",
+            "banner-title": "Banner Title",
+            "banner-type": "Type",
+            "banner-order": "Display Order",
+            "banner-image": "Banner Image",
+            "save-banner": "Save Banner",
+            "banner-list": "Banner List",
+            "table-title": "Title",
+            "table-type": "Type",
+            "table-order": "Order",
+            "loading-banners": "Loading banner data...",
+            "order-list": "Order List",
+            "table-customer-name": "Customer Name",
+            "table-book": "Book",
+            "table-total-idr": "Total (IDR)",
+            "table-status": "Status",
+            "table-date": "Date",
+            "loading-orders": "Loading order data...",
+            "currency-settings": "Currency Rate Settings",
+            "currency-description": "Product base prices are stored in USD. Set rates here to convert prices when displayed.",
+            "usd-to-idr": "USD to IDR",
+            "usd-to-egp": "USD to EGP",
+            "save-settings": "Save Settings",
+            "edit-book-title": "Edit Book - All Data",
+            "update-book": "Update Book",
+            "cancel": "Cancel",
+            // Excel Upload Translations
+            "bulk-upload-title": "Bulk Upload Books via Excel",
+            "bulk-upload-description": "Upload book data in bulk using Excel file. Download the template first to ensure correct format.",
+            "download-template": "📥 Download Excel Template",
+            "upload-excel": "📤 Upload Excel File",
+            "no-file-selected": "No file selected",
+            "process-data": "🔄 Process Data",
+            "processing": "Processing...",
+            "upload-results": "Upload Results",
+            "successful": "Successful",
+            "failed": "Failed",
+            "skipped": "Skipped",
+            "instructions-title": "Usage Instructions",
+            "book-title-inst": "Book Title* - Required. Complete book title",
+            "author-inst": "Author* - Required. Book author name",
+            "original-price-inst": "Original Price (USD)* - Required. Original price in USD (number)",
+            "base-price-inst": "Base Price (USD)* - Required. Base price in USD (number)",
+            "publisher-inst": "Publisher - Publisher name must be registered in the system",
+            "category-inst": "Category - Category name must be registered in the system",
+            "discount-inst": "Discount - Format: 10% or 0.1 (optional)",
+            "volumes-inst": "Volumes - Number of volumes (optional)",
+            "pages-inst": "Pages - Number of pages (optional)",
+            "year-inst": "Publication Year - Publication year (optional)",
+            "weight-value-inst": "Weight Value - Weight value (number, optional)",
+            "weight-unit-inst": "Weight Unit - Weight unit: kg, g, ons, lb (optional)",
+            "text-color-inst": "Text Color - Book text color (optional)",
+            "cover-type-inst": "Cover Type - Book cover type (optional)",
+            "paper-type-inst": "Paper Type - Book paper type (optional)",
+            "print-count-inst": "Print Edition - Print edition number (optional)",
+            "editor-inst": "Editor - Editor name (optional)",
+            "description-inst": "Description - Book description (optional)",
+            "cover-url-inst": "Cover Image URL - Book cover image URL (optional)",
+            "required-fields": "* Required fields",
+            "template-success": "Template downloaded successfully! Please fill in your book data.",
+            "template-error": "Error downloading template. Please try again.",
+            "file-error": "Invalid Excel file format",
+            "file-read-error": "Failed to read file",
+            "required-field-missing": "Incomplete data - required fields empty",
+            "book-added": "Book successfully added to database",
+            "book-exists": "Book already exists in system",
+            "save-error": "Failed to save to database",
+            "upload-complete": "Upload process completed!",
+            "success-count": "Successful",
+            "failed-count": "Failed",
+            "skipped-count": "Skipped"
+        },
+        ar: {
+            "dashboard-title": "لوحة التحكم - مكتبة الكتب الإسلامية",
+            "dashboard-subtitle": "إدارة الكتب والناشرين والفئات واللافتات بسهولة",
+            "menu-books": "الكتب",
+            "menu-publishers": "الناشرون",
+            "menu-categories": "الفئات",
+            "menu-banners": "اللافتات",
+            "menu-orders": "الطلبات",
+            "menu-currency": "العملة",
+            "add-book-title": "إضافة كتاب جديد",
+            "book-title": "عنوان الكتاب",
+            "book-author": "المؤلف",
+            "book-original-price": "السعر الأصلي (دولار أمريكي)",
+            "book-base-price": "السعر الأساسي (دولار أمريكي)",
+            "book-publisher": "الناشر",
+            "book-category": "الفئة",
+            "book-discount": "خصم",
+            "book-volumes": "المجلدات",
+            "book-pages": "الصفحات",
+            "book-year": "سنة النشر",
+            "book-weight": "وزن الكتاب",
+            "book-text-color": "لون النص",
+            "book-cover-type": "نوع الغلاف",
+            "book-paper-type": "نوع الورق",
+            "book-print-count": "طبعة",
+            "book-editor": "المحرر",
+            "book-description": "وصف الكتاب",
+            "book-cover": "غلاف الكتاب",
+            "upload-file": "رفع ملف",
+            "use-url": "استخدام الرابط",
+            "save-book": "حفظ الكتاب",
+            "cancel-edit": "إلغاء التعديل",
+            "price-calculator": "حاسبة السعر بعد الخصم",
+            "base-price-usd": "السعر الأساسي (دولار أمريكي):",
+            "discount": "خصم:",
+            "final-price-usd": "السعر النهائي (دولار أمريكي):",
+            "final-price-idr": "السعر النهائي (روبية إندونيسية):",
+            "final-price-egp": "السعر النهائي (جنيه مصري):",
+            "filter-search": "تصفية وبحث الكتب",
+            "search-title": "بحث العنوان",
+            "search-author": "بحث المؤلف",
+            "filter-publisher": "الناشر",
+            "filter-category": "الفئة",
+            "filter-cover-type": "نوع الغلاف",
+            "filter-paper-type": "نوع الورق",
+            "apply-filter": "تطبيق التصفية",
+            "reset-filter": "إعادة تعيين التصفية",
+            "bulk-actions": "إجراءات جماعية:",
+            "select-action": "اختر الإجراء",
+            "delete-books": "حذف الكتب",
+            "apply": "تطبيق",
+            "book-list": "قائمة الكتب",
+            "table-image": "الصورة",
+            "table-book-info": "معلومات الكتاب",
+            "table-details": "التفاصيل",
+            "table-weight": "الوزن",
+            "table-price-usd": "السعر دولار أمريكي",
+            "table-price-idr": "السعر روبية إندونيسية",
+            "table-price-egp": "السعر جنيه مصري",
+            "table-discount": "خصم",
+            "table-actions": "الإجراءات",
+            "loading-books": "جاري تحميل بيانات الكتب...",
+            "add-publisher-title": "إضافة ناشر جديد",
+            "publisher-name": "اسم الناشر",
+            "publisher-letter": "الحرف",
+            "publisher-discount": "خصم",
+            "publisher-logo": "شعار الناشر",
+            "save-publisher": "حفظ الناشر",
+            "publisher-list": "قائمة الناشرين",
+            "table-logo": "الشعار",
+            "table-name": "الاسم",
+            "table-letter": "الحرف",
+            "loading-publishers": "جاري تحميل بيانات الناشرين...",
+            "add-category-title": "إضافة فئة جديدة",
+            "category-name-id": "الاسم (ID)",
+            "category-name-en": "الاسم (EN)",
+            "category-name-ar": "الاسم (AR)",
+            "category-color": "اللون",
+            "category-link": "رابط الفئة",
+            "category-image": "صورة الفئة",
+            "save-category": "حفظ الفئة",
+            "category-list": "قائمة الفئات",
+            "table-name-id": "الاسم (ID)",
+            "table-name-en": "الاسم (EN)",
+            "table-color": "اللون",
+            "table-link": "الرابط",
+            "loading-categories": "جاري تحميل بيانات الفئات...",
+            "add-banner-title": "إضافة لافتة جديدة",
+            "banner-title": "عنوان اللافتة",
+            "banner-type": "النوع",
+            "banner-order": "ترتيب العرض",
+            "banner-image": "صورة اللافتة",
+            "save-banner": "حفظ اللافتة",
+            "banner-list": "قائمة اللافتات",
+            "table-title": "العنوان",
+            "table-type": "النوع",
+            "table-order": "الترتيب",
+            "loading-banners": "جاري تحميل بيانات اللافتات...",
+            "order-list": "قائمة الطلبات",
+            "table-customer-name": "اسم العميل",
+            "table-book": "الكتاب",
+            "table-total-idr": "الإجمالي (روبية إندونيسية)",
+            "table-status": "الحالة",
+            "table-date": "التاريخ",
+            "loading-orders": "جاري تحميل بيانات الطلبات...",
+            "currency-settings": "إعدادات سعر الصرف",
+            "currency-description": "يتم تخزين الأسعار الأساسية للمنتجات بالدولار الأمريكي. اضبط الأسعار هنا لتحويل الأسعار عند عرضها.",
+            "usd-to-idr": "دولار أمريكي إلى روبية إندونيسية",
+            "usd-to-egp": "دولار أمريكي إلى جنيه مصري",
+            "save-settings": "حفظ الإعدادات",
+            "edit-book-title": "تعديل الكتاب - جميع البيانات",
+            "update-book": "تحديث الكتاب",
+            "cancel": "إلغاء",
+            // Excel Upload Translations
+            "bulk-upload-title": "رفع الكتب بكميات كبيرة عبر Excel",
+            "bulk-upload-description": "رفع بيانات الكتاب بكميات كبيرة باستخدام ملف Excel. قم بتنزيل القالب أولاً لضمان التنسيق الصحيح.",
+            "download-template": "📥 تنزيل قالب Excel",
+            "upload-excel": "📤 رفع ملف Excel",
+            "no-file-selected": "لم يتم اختيار ملف",
+            "process-data": "🔄 معالجة البيانات",
+            "processing": "جاري المعالجة...",
+            "upload-results": "نتائج الرفع",
+            "successful": "ناجح",
+            "failed": "فشل",
+            "skipped": "تم تخطيه",
+            "instructions-title": "تعليمات الاستخدام",
+            "book-title-inst": "عنوان الكتاب* - مطلوب. العنوان الكامل للكتاب",
+            "author-inst": "المؤلف* - مطلوب. اسم مؤلف الكتاب",
+            "original-price-inst": "السعر الأصلي (دولار أمريكي)* - مطلوب. السعر الأصلي بالدولار الأمريكي (رقم)",
+            "base-price-inst": "السعر الأساسي (دولار أمريكي)* - مطلوب. السعر الأساسي بالدولار الأمريكي (رقم)",
+            "publisher-inst": "الناشر - يجب أن يكون اسم الناشر مسجلاً في النظام",
+            "category-inst": "الفئة - يجب أن يكون اسم الفئة مسجلاً في النظام",
+            "discount-inst": "الخصم - التنسيق: 10% أو 0.1 (اختياري)",
+            "volumes-inst": "المجلدات - عدد المجلدات (اختياري)",
+            "pages-inst": "الصفحات - عدد الصفحات (اختياري)",
+            "year-inst": "سنة النشر - سنة النشر (اختياري)",
+            "weight-value-inst": "قيمة الوزن - قيمة الوزن (رقم، اختياري)",
+            "weight-unit-inst": "وحدة الوزن - وحدة الوزن: كجم، غرام، أونصة، رطل (اختياري)",
+            "text-color-inst": "لون النص - لون نص الكتاب (اختياري)",
+            "cover-type-inst": "نوع الغلاف - نوع غلاف الكتاب (اختياري)",
+            "paper-type-inst": "نوع الورق - نوع ورق الكتاب (اختياري)",
+            "print-count-inst": "الطبعة - رقم الطبعة (اختياري)",
+            "editor-inst": "المحرر - اسم المحرر (اختياري)",
+            "description-inst": "الوصف - وصف الكتاب (اختياري)",
+            "cover-url-inst": "رابط صورة الغلاف - رابط صورة غلاف الكتاب (اختياري)",
+            "required-fields": "* الحقول المطلوبة",
+            "template-success": "تم تنزيل القالب بنجاح! يرجى ملء بيانات الكتاب الخاصة بك.",
+            "template-error": "خطأ في تنزيل القالب. يرجى المحاولة مرة أخرى.",
+            "file-error": "تنسيق ملف Excel غير صالح",
+            "file-read-error": "فشل في قراءة الملف",
+            "required-field-missing": "بيانات غير مكتملة - الحقول المطلوبة فارغة",
+            "book-added": "تمت إضافة الكتاب إلى قاعدة البيانات بنجاح",
+            "book-exists": "الكتاب موجود بالفعل في النظام",
+            "save-error": "فشل الحفظ في قاعدة البيانات",
+            "upload-complete": "اكتملت عملية الرفع!",
+            "success-count": "ناجح",
+            "failed-count": "فشل",
+            "skipped-count": "تم تخطيه"
+        }
+    };
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-           // DOM Elements
+    // Current language
+    let currentLanguage = 'id';
+
+    // Language selector functionality
+    const languageBtn = document.getElementById('languageBtn');
+    const languageDropdown = document.getElementById('languageDropdown');
+    const currentLangFlag = document.getElementById('currentLangFlag');
+    const currentLangText = document.getElementById('currentLangText');
+
+    languageBtn.addEventListener('click', () => {
+        languageDropdown.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!languageBtn.contains(e.target) && !languageDropdown.contains(e.target)) {
+            languageDropdown.classList.remove('show');
+        }
+    });
+
+    // Language option click handlers
+    const languageOptions = document.querySelectorAll('.language-option');
+    languageOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const lang = option.getAttribute('data-lang');
+            changeLanguage(lang);
+            
+            // Update active state
+            languageOptions.forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+            
+            // Update button display
+            const flag = option.querySelector('span:first-child').textContent;
+            const text = option.querySelector('span:last-child').textContent;
+            currentLangFlag.textContent = flag;
+            currentLangText.textContent = text;
+            
+            // Close dropdown
+            languageDropdown.classList.remove('show');
+        });
+    });
+
+    // Change language function
+    function changeLanguage(lang) {
+        currentLanguage = lang;
+        document.documentElement.lang = lang;
+        
+        // Update all elements with data-lang-key attribute
+        const elements = document.querySelectorAll('[data-lang-key]');
+        elements.forEach(element => {
+            const key = element.getAttribute('data-lang-key');
+            if (translations[lang] && translations[lang][key]) {
+                element.textContent = translations[lang][key];
+            }
+        });
+        
+        // Update placeholders
+        updatePlaceholders(lang);
+        
+        // Update RTL for Arabic
+        if (lang === 'ar') {
+            document.body.style.direction = 'rtl';
+            document.querySelector('.main-content').style.marginLeft = '0';
+            document.querySelector('.main-content').style.marginRight = 'var(--sidebar-width)';
+            document.querySelector('.sidebar').style.left = 'auto';
+            document.querySelector('.sidebar').style.right = '0';
+        } else {
+            document.body.style.direction = 'ltr';
+            document.querySelector('.main-content').style.marginLeft = 'var(--sidebar-width)';
+            document.querySelector('.main-content').style.marginRight = '0';
+            document.querySelector('.sidebar').style.left = '0';
+            document.querySelector('.sidebar').style.right = 'auto';
+        }
+    }
+
+    // Update placeholders based on language
+    function updatePlaceholders(lang) {
+        const placeholders = {
+            id: {
+                'bookTitle': 'Masukkan judul buku',
+                'bookAuthor': 'Nama penulis',
+                'bookOriginalPrice': '0.00',
+                'bookBasePrice': '0.00',
+                'bookDiscount': 'Contoh: 10%',
+                'bookVolumes': 'Jumlah jilid',
+                'bookPages': 'Jumlah halaman',
+                'bookYear': 'Tahun terbit',
+                'bookWeightValue': 'Nilai berat',
+                'bookTextColorInput': 'Ketik manual',
+                'bookCoverTypeInput': 'Ketik manual',
+                'bookPaperTypeInput': 'Ketik manual',
+                'bookPrintCount': 'Angka cetakan',
+                'bookEditor': 'Nama editor',
+                'bookDescription': 'Deskripsi lengkap buku',
+                'bookCoverImageUrl': 'Masukkan URL gambar',
+                'searchTitle': 'Kata kunci judul...',
+                'searchAuthor': 'Nama penulis...',
+                'filterCoverType': 'Jenis cover...',
+                'filterPaperType': 'Jenis kertas...',
+                'publisherName': 'Nama penerbit',
+                'publisherLetter': 'Huruf penerbit',
+                'publisherDiscount': 'Contoh: 10%',
+                'categoryNameId': 'Nama dalam Bahasa Indonesia',
+                'categoryNameEn': 'Nama dalam Bahasa Inggris',
+                'categoryNameAr': 'Nama dalam Bahasa Arab',
+                'bannerTitle': 'Judul banner',
+                'bannerType': 'Contoh: promo, utama',
+                'bannerDisplayOrder': 'Angka urutan',
+                'usdToIdr': 'Kurs USD ke Rupiah',
+                'usdToEgp': 'Kurs USD ke Pound Mesir'
+            },
+            en: {
+                'bookTitle': 'Enter book title',
+                'bookAuthor': 'Author name',
+                'bookOriginalPrice': '0.00',
+                'bookBasePrice': '0.00',
+                'bookDiscount': 'Example: 10%',
+                'bookVolumes': 'Number of volumes',
+                'bookPages': 'Number of pages',
+                'bookYear': 'Publication year',
+                'bookWeightValue': 'Weight value',
+                'bookTextColorInput': 'Type manually',
+                'bookCoverTypeInput': 'Type manually',
+                'bookPaperTypeInput': 'Type manually',
+                'bookPrintCount': 'Print edition number',
+                'bookEditor': 'Editor name',
+                'bookDescription': 'Complete book description',
+                'bookCoverImageUrl': 'Enter image URL',
+                'searchTitle': 'Title keywords...',
+                'searchAuthor': 'Author name...',
+                'filterCoverType': 'Cover type...',
+                'filterPaperType': 'Paper type...',
+                'publisherName': 'Publisher name',
+                'publisherLetter': 'Publisher letter',
+                'publisherDiscount': 'Example: 10%',
+                'categoryNameId': 'Name in Indonesian',
+                'categoryNameEn': 'Name in English',
+                'categoryNameAr': 'Name in Arabic',
+                'bannerTitle': 'Banner title',
+                'bannerType': 'Example: promo, main',
+                'bannerDisplayOrder': 'Order number',
+                'usdToIdr': 'USD to IDR rate',
+                'usdToEgp': 'USD to EGP rate'
+            },
+            ar: {
+                'bookTitle': 'أدخل عنوان الكتاب',
+                'bookAuthor': 'اسم المؤلف',
+                'bookOriginalPrice': '0.00',
+                'bookBasePrice': '0.00',
+                'bookDiscount': 'مثال: 10%',
+                'bookVolumes': 'عدد المجلدات',
+                'bookPages': 'عدد الصفحات',
+                'bookYear': 'سنة النشر',
+                'bookWeightValue': 'قيمة الوزن',
+                'bookTextColorInput': 'اكتب يدوياً',
+                'bookCoverTypeInput': 'اكتب يدوياً',
+                'bookPaperTypeInput': 'اكتب يدوياً',
+                'bookPrintCount': 'رقم الطبعة',
+                'bookEditor': 'اسم المحرر',
+                'bookDescription': 'وصف الكتاب الكامل',
+                'bookCoverImageUrl': 'أدخل رابط الصورة',
+                'searchTitle': 'كلمات مفتاحية للعنوان...',
+                'searchAuthor': 'اسم المؤلف...',
+                'filterCoverType': 'نوع الغلاف...',
+                'filterPaperType': 'نوع الورق...',
+                'publisherName': 'اسم الناشر',
+                'publisherLetter': 'حرف الناشر',
+                'publisherDiscount': 'مثال: 10%',
+                'categoryNameId': 'الاسم بالإندونيسية',
+                'categoryNameEn': 'الاسم بالإنجليزية',
+                'categoryNameAr': 'الاسم بالعربية',
+                'bannerTitle': 'عنوان اللافتة',
+                'bannerType': 'مثال: ترويجي، رئيسي',
+                'bannerDisplayOrder': 'رقم الترتيب',
+                'usdToIdr': 'سعر صرف الدولار إلى الروبية الإندونيسية',
+                'usdToEgp': 'سعر صرف الدولار إلى الجنيه المصري'
+            }
+        };
+        
+        // Update all input placeholders
+        for (const [id, placeholder] of Object.entries(placeholders[lang])) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.placeholder = placeholder;
+            }
+        }
+    }
+
+    // Menu toggle for mobile
+    document.getElementById('menuToggle').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.toggle('active');
+    });
+
+    // Navigation
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetSection = button.getAttribute('data-section');
+            
+            // Update active nav button
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Show target section
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === `${targetSection}-section`) {
+                    section.classList.add('active');
+                }
+            });
+            
+            // Close mobile menu
+            if (window.innerWidth <= 1024) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+        });
+    });
+
+    // Check screen size on load and resize
+    function checkScreenSize() {
+        const menuToggle = document.getElementById('menuToggle');
+        if (window.innerWidth <= 1024) {
+            menuToggle.style.display = 'block';
+        } else {
+            menuToggle.style.display = 'none';
+            document.getElementById('sidebar').classList.remove('active');
+        }
+    }
+
+    window.addEventListener('load', checkScreenSize);
+    window.addEventListener('resize', checkScreenSize);
+
+    // Initialize with Indonesian language
+    changeLanguage('id');
+
+    // Excel Upload Functionality
+    function initExcelUpload() {
         const downloadTemplateBtn = document.getElementById('downloadTemplate');
         const excelFileInput = document.getElementById('excelFile');
         const fileNameSpan = document.getElementById('fileName');
@@ -1806,6 +2524,8 @@ h2 {
         const skippedCount = document.getElementById('skippedCount');
         const resultsDetails = document.getElementById('resultsDetails');
 
+        if (!downloadTemplateBtn) return; // Exit if elements don't exist
+
         // Download Excel Template
         downloadTemplateBtn.addEventListener('click', downloadExcelTemplate);
 
@@ -1814,8 +2534,82 @@ h2 {
                 // Create workbook
                 const wb = XLSX.utils.book_new();
                 
-                // Define template data
-                const templateData = [
+                // Define template data based on language
+                const templateData = getTemplateDataByLanguage();
+                
+                // Create worksheet
+                const ws = XLSX.utils.json_to_sheet(templateData);
+                
+                // Set column widths
+                const colWidths = getColumnWidthsByLanguage();
+                ws['!cols'] = colWidths;
+                
+                // Add worksheet to workbook
+                const sheetName = getSheetNameByLanguage();
+                XLSX.utils.book_append_sheet(wb, ws, sheetName);
+                
+                // Download the file
+                const fileName = getFileNameByLanguage();
+                XLSX.writeFile(wb, fileName);
+                
+                alert(translations[currentLanguage]['template-success']);
+            } catch (error) {
+                console.error('Error downloading template:', error);
+                alert(translations[currentLanguage]['template-error']);
+            }
+        }
+
+        function getTemplateDataByLanguage() {
+            if (currentLanguage === 'ar') {
+                return [
+                    {
+                        'عنوان الكتاب': 'كتاب دليل الصلاة الكامل',
+                        'المؤلف': 'الأستاذ أحمد',
+                        'السعر الأصلي (دولار أمريكي)': '25.00',
+                        'السعر الأساسي (دولار أمريكي)': '20.00',
+                        'الناشر': 'مكتبة المسلم',
+                        'الفئة': 'فقه',
+                        'الخصم': '10%',
+                        'المجلدات': '1',
+                        'الصفحات': '300',
+                        'سنة النشر': '2023',
+                        'قيمة الوزن': '0.5',
+                        'وحدة الوزن': 'كجم',
+                        'لون النص': 'أسود',
+                        'نوع الغلاف': 'غلاف مقوى',
+                        'نوع الورق': 'HVS',
+                        'الطبعة': '1',
+                        'المحرر': 'محرر إسلامي',
+                        'الوصف': 'كتاب دليل الصلاة الكامل للمبتدئين والمتقدمين',
+                        'رابط صورة الغلاف': 'https://example.com/shalat.jpg'
+                    }
+                ];
+            } else if (currentLanguage === 'en') {
+                return [
+                    {
+                        'Book Title': 'Complete Prayer Guide Book',
+                        'Author': 'Ustadz Ahmad',
+                        'Original Price (USD)': '25.00',
+                        'Base Price (USD)': '20.00',
+                        'Publisher': 'Muslim Library',
+                        'Category': 'Fiqh',
+                        'Discount': '10%',
+                        'Volumes': '1',
+                        'Pages': '300',
+                        'Publication Year': '2023',
+                        'Weight Value': '0.5',
+                        'Weight Unit': 'kg',
+                        'Text Color': 'Black',
+                        'Cover Type': 'Hard Cover',
+                        'Paper Type': 'HVS',
+                        'Print Edition': '1',
+                        'Editor': 'Islamic Editor',
+                        'Description': 'Complete prayer guide book for beginners and advanced',
+                        'Cover Image URL': 'https://example.com/shalat.jpg'
+                    }
+                ];
+            } else {
+                return [
                     {
                         'Judul Buku': 'Buku Panduan Shalat Lengkap',
                         'Penulis': 'Ustadz Ahmad',
@@ -1836,68 +2630,48 @@ h2 {
                         'Editor': 'Editor Islam',
                         'Deskripsi': 'Buku panduan shalat lengkap untuk pemula dan lanjutan',
                         'URL Gambar Sampul': 'https://example.com/shalat.jpg'
-                    },
-                    {
-                        'Judul Buku': 'Tafsir Al-Quran Jilid 1',
-                        'Penulis': 'Dr. Muhammad Ali',
-                        'Harga Asli (USD)': '30.00',
-                        'Harga Dasar (USD)': '25.00',
-                        'Penerbit': 'Penerbit Quran',
-                        'Kategori': 'Tafsir',
-                        'Diskon': '15%',
-                        'Jilid': '1',
-                        'Halaman': '450',
-                        'Tahun Terbit': '2022',
-                        'Berat Nilai': '0.8',
-                        'Berat Satuan': 'kg',
-                        'Warna Tulisan': 'Hitam',
-                        'Jenis Cover': 'Hard Cover',
-                        'Jenis Kertas': 'Book Paper',
-                        'Cetakan Ke': '2',
-                        'Editor': 'Tim Editor Quran',
-                        'Deskripsi': 'Tafsir Al-Quran jilid pertama dengan penjelasan mendalam',
-                        'URL Gambar Sampul': 'https://example.com/tafsir.jpg'
                     }
                 ];
-                
-                // Create worksheet
-                const ws = XLSX.utils.json_to_sheet(templateData);
-                
-                // Set column widths
-                const colWidths = [
-                    { wch: 25 }, // Judul Buku
-                    { wch: 20 }, // Penulis
-                    { wch: 15 }, // Harga Asli
-                    { wch: 15 }, // Harga Dasar
-                    { wch: 20 }, // Penerbit
-                    { wch: 15 }, // Kategori
-                    { wch: 10 }, // Diskon
-                    { wch: 8 },  // Jilid
-                    { wch: 10 }, // Halaman
-                    { wch: 12 }, // Tahun Terbit
-                    { wch: 12 }, // Berat Nilai
-                    { wch: 12 }, // Berat Satuan
-                    { wch: 15 }, // Warna Tulisan
-                    { wch: 15 }, // Jenis Cover
-                    { wch: 15 }, // Jenis Kertas
-                    { wch: 12 }, // Cetakan Ke
-                    { wch: 15 }, // Editor
-                    { wch: 30 }, // Deskripsi
-                    { wch: 30 }  // URL Gambar Sampul
-                ];
-                ws['!cols'] = colWidths;
-                
-                // Add worksheet to workbook
-                XLSX.utils.book_append_sheet(wb, ws, 'Template Buku');
-                
-                // Download the file
-                XLSX.writeFile(wb, 'Template_Upload_Buku.xlsx');
-                
-                alert('Template berhasil diunduh! Silakan isi data buku Anda.');
-            } catch (error) {
-                console.error('Error downloading template:', error);
-                alert('Terjadi kesalahan saat mengunduh template. Silakan coba lagi.');
             }
+        }
+
+        function getColumnWidthsByLanguage() {
+            if (currentLanguage === 'ar') {
+                return [
+                    { wch: 25 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, 
+                    { wch: 20 }, { wch: 15 }, { wch: 10 }, { wch: 12 }, 
+                    { wch: 10 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, 
+                    { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 12 }, 
+                    { wch: 15 }, { wch: 30 }, { wch: 30 }
+                ];
+            } else if (currentLanguage === 'en') {
+                return [
+                    { wch: 25 }, { wch: 20 }, { wch: 18 }, { wch: 16 }, 
+                    { wch: 20 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, 
+                    { wch: 10 }, { wch: 15 }, { wch: 12 }, { wch: 12 }, 
+                    { wch: 12 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, 
+                    { wch: 15 }, { wch: 30 }, { wch: 25 }
+                ];
+            } else {
+                return [
+                    { wch: 25 }, { wch: 20 }, { wch: 15 }, { wch: 15 }, 
+                    { wch: 20 }, { wch: 15 }, { wch: 10 }, { wch: 8 }, 
+                    { wch: 10 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, 
+                    { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 12 }, 
+                    { wch: 15 }, { wch: 30 }, { wch: 30 }
+                ];
+            }
+        }
+
+        function getSheetNameByLanguage() {
+            return currentLanguage === 'ar' ? 'قالب الكتاب' : 
+                   currentLanguage === 'en' ? 'Book Template' : 'Template Buku';
+        }
+
+        function getFileNameByLanguage() {
+            return currentLanguage === 'ar' ? 'قالب_رفع_الكتاب.xlsx' :
+                   currentLanguage === 'en' ? 'Book_Upload_Template.xlsx' :
+                   'Template_Upload_Buku.xlsx';
         }
 
         // File selection handler
@@ -1908,7 +2682,7 @@ h2 {
                 fileNameSpan.style.color = 'var(--dark)';
                 processExcelBtn.disabled = false;
             } else {
-                fileNameSpan.textContent = 'Belum ada file dipilih';
+                fileNameSpan.textContent = translations[currentLanguage]['no-file-selected'];
                 fileNameSpan.style.color = '#6c757d';
                 processExcelBtn.disabled = true;
             }
@@ -1950,19 +2724,18 @@ h2 {
                         
                         resolve(jsonData);
                     } catch (error) {
-                        reject(new Error('Format file Excel tidak valid'));
+                        reject(new Error(translations[currentLanguage]['file-error']));
                     }
                 };
                 
                 reader.onerror = function() {
-                    reject(new Error('Gagal membaca file'));
+                    reject(new Error(translations[currentLanguage]['file-read-error']));
                 };
                 
                 reader.readAsArrayBuffer(file);
             });
         }
 
-        // Simulate processing book data (in a real app, this would connect to your database)
         async function processBookData(data) {
             let success = 0;
             let failed = 0;
@@ -1974,6 +2747,9 @@ h2 {
             // Show upload results
             uploadResults.style.display = 'block';
             
+            // Define field names based on language
+            const fieldNames = getFieldNamesByLanguage();
+            
             for (const row of data) {
                 processedRows++;
                 const progress = (processedRows / totalRows) * 100;
@@ -1983,8 +2759,12 @@ h2 {
                 
                 try {
                     // Validate required fields
-                    if (!row['Judul Buku'] || !row['Penulis'] || !row['Harga Asli (USD)'] || !row['Harga Dasar (USD)']) {
-                        addResultRow('failed', row['Judul Buku'] || 'Data tanpa judul', 'Data tidak lengkap - field wajib kosong');
+                    if (!row[fieldNames.title] || !row[fieldNames.author] || 
+                        !row[fieldNames.originalPrice] || !row[fieldNames.basePrice]) {
+                        addResultRow('failed', 
+                            row[fieldNames.title] || translations[currentLanguage]['required-field-missing'], 
+                            translations[currentLanguage]['required-field-missing']
+                        );
                         failed++;
                         continue;
                     }
@@ -1996,18 +2776,30 @@ h2 {
                     const randomResult = Math.random();
                     
                     if (randomResult < 0.7) {
-                        addResultRow('success', row['Judul Buku'], 'Buku berhasil ditambahkan ke database');
+                        addResultRow('success', 
+                            row[fieldNames.title], 
+                            translations[currentLanguage]['book-added']
+                        );
                         success++;
                     } else if (randomResult < 0.9) {
-                        addResultRow('skipped', row['Judul Buku'], 'Buku sudah ada di sistem');
+                        addResultRow('skipped', 
+                            row[fieldNames.title], 
+                            translations[currentLanguage]['book-exists']
+                        );
                         skipped++;
                     } else {
-                        addResultRow('failed', row['Judul Buku'], 'Gagal menyimpan ke database');
+                        addResultRow('failed', 
+                            row[fieldNames.title], 
+                            translations[currentLanguage]['save-error']
+                        );
                         failed++;
                     }
                     
                 } catch (error) {
-                    addResultRow('failed', row['Judul Buku'] || 'Data tanpa judul', `Error: ${error.message}`);
+                    addResultRow('failed', 
+                        row[fieldNames.title] || translations[currentLanguage]['required-field-missing'], 
+                        `Error: ${error.message}`
+                    );
                     failed++;
                 }
                 
@@ -2016,13 +2808,88 @@ h2 {
             }
             
             // Final update
-            progressStatus.textContent = 'Selesai';
+            progressStatus.textContent = translations[currentLanguage]['successful'];
             progressFill.style.background = 'var(--success)';
             
             // Show completion message
             setTimeout(() => {
-                alert(`Proses upload selesai!\nBerhasil: ${success}\nGagal: ${failed}\nDilewati: ${skipped}`);
+                alert(`${translations[currentLanguage]['upload-complete']}\n${
+                    translations[currentLanguage]['success-count']}: ${success}\n${
+                    translations[currentLanguage]['failed-count']}: ${failed}\n${
+                    translations[currentLanguage]['skipped-count']}: ${skipped}`
+                );
             }, 1000);
+        }
+
+        // Helper function to get field names based on current language
+        function getFieldNamesByLanguage() {
+            if (currentLanguage === 'ar') {
+                return {
+                    title: 'عنوان الكتاب',
+                    author: 'المؤلف',
+                    originalPrice: 'السعر الأصلي (دولار أمريكي)',
+                    basePrice: 'السعر الأساسي (دولار أمريكي)',
+                    publisher: 'الناشر',
+                    category: 'الفئة',
+                    discount: 'الخصم',
+                    volumes: 'المجلدات',
+                    pages: 'الصفحات',
+                    year: 'سنة النشر',
+                    weightValue: 'قيمة الوزن',
+                    weightUnit: 'وحدة الوزن',
+                    textColor: 'لون النص',
+                    coverType: 'نوع الغلاف',
+                    paperType: 'نوع الورق',
+                    printCount: 'الطبعة',
+                    editor: 'المحرر',
+                    description: 'الوصف',
+                    coverUrl: 'رابط صورة الغلاف'
+                };
+            } else if (currentLanguage === 'en') {
+                return {
+                    title: 'Book Title',
+                    author: 'Author',
+                    originalPrice: 'Original Price (USD)',
+                    basePrice: 'Base Price (USD)',
+                    publisher: 'Publisher',
+                    category: 'Category',
+                    discount: 'Discount',
+                    volumes: 'Volumes',
+                    pages: 'Pages',
+                    year: 'Publication Year',
+                    weightValue: 'Weight Value',
+                    weightUnit: 'Weight Unit',
+                    textColor: 'Text Color',
+                    coverType: 'Cover Type',
+                    paperType: 'Paper Type',
+                    printCount: 'Print Edition',
+                    editor: 'Editor',
+                    description: 'Description',
+                    coverUrl: 'Cover Image URL'
+                };
+            } else {
+                return {
+                    title: 'Judul Buku',
+                    author: 'Penulis',
+                    originalPrice: 'Harga Asli (USD)',
+                    basePrice: 'Harga Dasar (USD)',
+                    publisher: 'Penerbit',
+                    category: 'Kategori',
+                    discount: 'Diskon',
+                    volumes: 'Jilid',
+                    pages: 'Halaman',
+                    year: 'Tahun Terbit',
+                    weightValue: 'Berat Nilai',
+                    weightUnit: 'Berat Satuan',
+                    textColor: 'Warna Tulisan',
+                    coverType: 'Jenis Cover',
+                    paperType: 'Jenis Kertas',
+                    printCount: 'Cetakan Ke',
+                    editor: 'Editor',
+                    description: 'Deskripsi',
+                    coverUrl: 'URL Gambar Sampul'
+                };
+            }
         }
 
         function resetUploadResults() {
@@ -2032,15 +2899,15 @@ h2 {
             resultsDetails.innerHTML = '';
             progressFill.style.width = '0%';
             progressFill.style.background = 'var(--success)';
-            progressStatus.textContent = 'Memproses...';
+            progressStatus.textContent = translations[currentLanguage]['processing'];
             progressCount.textContent = '0/0';
         }
 
         function addResultRow(status, title, message) {
             const statusText = {
-                'success': 'Berhasil',
-                'failed': 'Gagal',
-                'skipped': 'Dilewati'
+                'success': translations[currentLanguage]['successful'],
+                'failed': translations[currentLanguage]['failed'],
+                'skipped': translations[currentLanguage]['skipped']
             };
             
             const row = document.createElement('div');
@@ -2061,589 +2928,12 @@ h2 {
             failedCount.textContent = failed;
             skippedCount.textContent = skipped;
         }
-       // Language translations
-        const translations = {
-            id: {
-                "dashboard-title": "Panel Admin - Toko Buku Islam",
-                "dashboard-subtitle": "Kelola data buku, penerbit, kategori, dan banner dengan mudah",
-                "menu-books": "Buku",
-                "menu-publishers": "Penerbit",
-                "menu-categories": "Kategori",
-                "menu-banners": "Banner",
-                "menu-orders": "Pesanan",
-                "menu-currency": "Kurs",
-                "add-book-title": "Tambah Buku Baru",
-                "book-title": "Judul Buku",
-                "book-author": "Penulis",
-                "book-original-price": "Harga Asli (USD)",
-                "book-base-price": "Harga Dasar (USD)",
-                "book-publisher": "Penerbit",
-                "book-category": "Kategori",
-                "book-discount": "Diskon",
-                "book-volumes": "Jilid",
-                "book-pages": "Halaman",
-                "book-year": "Tahun Terbit",
-                "book-weight": "Berat Buku",
-                "book-text-color": "Warna Tulisan",
-                "book-cover-type": "Jenis Cover",
-                "book-paper-type": "Jenis Kertas",
-                "book-print-count": "Cetakan Ke",
-                "book-editor": "Editor",
-                "book-description": "Deskripsi Buku",
-                "book-cover": "Sampul Buku",
-                "upload-file": "Unggah File",
-                "use-url": "Gunakan URL",
-                "save-book": "Simpan Buku",
-                "cancel-edit": "Batal Edit",
-                "price-calculator": "Kalkulator Harga Setelah Diskon",
-                "base-price-usd": "Harga Dasar (USD):",
-                "discount": "Diskon:",
-                "final-price-usd": "Harga Setelah Diskon (USD):",
-                "final-price-idr": "Harga Setelah Diskon (IDR):",
-                "final-price-egp": "Harga Setelah Diskon (EGP):",
-                "filter-search": "Filter dan Pencarian Buku",
-                "search-title": "Cari Judul",
-                "search-author": "Cari Penulis",
-                "filter-publisher": "Penerbit",
-                "filter-category": "Kategori",
-                "filter-cover-type": "Jenis Cover",
-                "filter-paper-type": "Jenis Kertas",
-                "apply-filter": "Terapkan Filter",
-                "reset-filter": "Reset Filter",
-                "bulk-actions": "Aksi Massal:",
-                "select-action": "Pilih Aksi",
-                "delete-books": "Hapus Buku",
-                "apply": "Terapkan",
-                "book-list": "Daftar Buku",
-                "table-image": "Gambar",
-                "table-book-info": "Informasi Buku",
-                "table-details": "Detail",
-                "table-weight": "Berat",
-                "table-price-usd": "Harga USD",
-                "table-price-idr": "Harga IDR",
-                "table-price-egp": "Harga EGP",
-                "table-discount": "Diskon",
-                "table-actions": "Aksi",
-                "loading-books": "Memuat data buku...",
-                "add-publisher-title": "Tambah Penerbit Baru",
-                "publisher-name": "Nama Penerbit",
-                "publisher-letter": "Huruf",
-                "publisher-discount": "Diskon",
-                "publisher-logo": "Logo Penerbit",
-                "save-publisher": "Simpan Penerbit",
-                "publisher-list": "Daftar Penerbit",
-                "table-logo": "Logo",
-                "table-name": "Nama",
-                "table-letter": "Huruf",
-                "loading-publishers": "Memuat data penerbit...",
-                "add-category-title": "Tambah Kategori Baru",
-                "category-name-id": "Nama (ID)",
-                "category-name-en": "Nama (EN)",
-                "category-name-ar": "Nama (AR)",
-                "category-color": "Warna",
-                "category-link": "Link Kategori",
-                "category-image": "Gambar Kategori",
-                "save-category": "Simpan Kategori",
-                "category-list": "Daftar Kategori",
-                "table-name-id": "Nama (ID)",
-                "table-name-en": "Nama (EN)",
-                "table-color": "Warna",
-                "table-link": "Link",
-                "loading-categories": "Memuat data kategori...",
-                "add-banner-title": "Tambah Banner Baru",
-                "banner-title": "Judul Banner",
-                "banner-type": "Tipe",
-                "banner-order": "Urutan Tampil",
-                "banner-image": "Gambar Banner",
-                "save-banner": "Simpan Banner",
-                "banner-list": "Daftar Banner",
-                "table-title": "Judul",
-                "table-type": "Tipe",
-                "table-order": "Urutan",
-                "loading-banners": "Memuat data banner...",
-                "order-list": "Daftar Pesanan",
-                "table-customer-name": "Nama Pelanggan",
-                "table-book": "Buku",
-                "table-total-idr": "Total (IDR)",
-                "table-status": "Status",
-                "table-date": "Tanggal",
-                "loading-orders": "Memuat data pesanan...",
-                "currency-settings": "Pengaturan Kurs Mata Uang",
-                "currency-description": "Harga dasar produk disimpan dalam USD. Atur kurs di sini untuk mengonversi harga saat ditampilkan.",
-                "usd-to-idr": "USD ke IDR",
-                "usd-to-egp": "USD ke EGP",
-                "save-settings": "Simpan Pengaturan",
-                "edit-book-title": "Edit Buku - Semua Data",
-                "update-book": "Perbarui Buku",
-                "cancel": "Batal"
-            },
-            en: {
-                "dashboard-title": "Admin Panel - Islamic Book Store",
-                "dashboard-subtitle": "Manage books, publishers, categories, and banners easily",
-                "menu-books": "Books",
-                "menu-publishers": "Publishers",
-                "menu-categories": "Categories",
-                "menu-banners": "Banners",
-                "menu-orders": "Orders",
-                "menu-currency": "Currency",
-                "add-book-title": "Add New Book",
-                "book-title": "Book Title",
-                "book-author": "Author",
-                "book-original-price": "Original Price (USD)",
-                "book-base-price": "Base Price (USD)",
-                "book-publisher": "Publisher",
-                "book-category": "Category",
-                "book-discount": "Discount",
-                "book-volumes": "Volumes",
-                "book-pages": "Pages",
-                "book-year": "Publication Year",
-                "book-weight": "Book Weight",
-                "book-text-color": "Text Color",
-                "book-cover-type": "Cover Type",
-                "book-paper-type": "Paper Type",
-                "book-print-count": "Print Edition",
-                "book-editor": "Editor",
-                "book-description": "Book Description",
-                "book-cover": "Book Cover",
-                "upload-file": "Upload File",
-                "use-url": "Use URL",
-                "save-book": "Save Book",
-                "cancel-edit": "Cancel Edit",
-                "price-calculator": "Price Calculator After Discount",
-                "base-price-usd": "Base Price (USD):",
-                "discount": "Discount:",
-                "final-price-usd": "Final Price (USD):",
-                "final-price-idr": "Final Price (IDR):",
-                "final-price-egp": "Final Price (EGP):",
-                "filter-search": "Filter and Search Books",
-                "search-title": "Search Title",
-                "search-author": "Search Author",
-                "filter-publisher": "Publisher",
-                "filter-category": "Category",
-                "filter-cover-type": "Cover Type",
-                "filter-paper-type": "Paper Type",
-                "apply-filter": "Apply Filter",
-                "reset-filter": "Reset Filter",
-                "bulk-actions": "Bulk Actions:",
-                "select-action": "Select Action",
-                "delete-books": "Delete Books",
-                "apply": "Apply",
-                "book-list": "Book List",
-                "table-image": "Image",
-                "table-book-info": "Book Information",
-                "table-details": "Details",
-                "table-weight": "Weight",
-                "table-price-usd": "Price USD",
-                "table-price-idr": "Price IDR",
-                "table-price-egp": "Price EGP",
-                "table-discount": "Discount",
-                "table-actions": "Actions",
-                "loading-books": "Loading book data...",
-                "add-publisher-title": "Add New Publisher",
-                "publisher-name": "Publisher Name",
-                "publisher-letter": "Letter",
-                "publisher-discount": "Discount",
-                "publisher-logo": "Publisher Logo",
-                "save-publisher": "Save Publisher",
-                "publisher-list": "Publisher List",
-                "table-logo": "Logo",
-                "table-name": "Name",
-                "table-letter": "Letter",
-                "loading-publishers": "Loading publisher data...",
-                "add-category-title": "Add New Category",
-                "category-name-id": "Name (ID)",
-                "category-name-en": "Name (EN)",
-                "category-name-ar": "Name (AR)",
-                "category-color": "Color",
-                "category-link": "Category Link",
-                "category-image": "Category Image",
-                "save-category": "Save Category",
-                "category-list": "Category List",
-                "table-name-id": "Name (ID)",
-                "table-name-en": "Name (EN)",
-                "table-color": "Color",
-                "table-link": "Link",
-                "loading-categories": "Loading category data...",
-                "add-banner-title": "Add New Banner",
-                "banner-title": "Banner Title",
-                "banner-type": "Type",
-                "banner-order": "Display Order",
-                "banner-image": "Banner Image",
-                "save-banner": "Save Banner",
-                "banner-list": "Banner List",
-                "table-title": "Title",
-                "table-type": "Type",
-                "table-order": "Order",
-                "loading-banners": "Loading banner data...",
-                "order-list": "Order List",
-                "table-customer-name": "Customer Name",
-                "table-book": "Book",
-                "table-total-idr": "Total (IDR)",
-                "table-status": "Status",
-                "table-date": "Date",
-                "loading-orders": "Loading order data...",
-                "currency-settings": "Currency Rate Settings",
-                "currency-description": "Product base prices are stored in USD. Set rates here to convert prices when displayed.",
-                "usd-to-idr": "USD to IDR",
-                "usd-to-egp": "USD to EGP",
-                "save-settings": "Save Settings",
-                "edit-book-title": "Edit Book - All Data",
-                "update-book": "Update Book",
-                "cancel": "Cancel"
-            },
-            ar: {
-                "dashboard-title": "لوحة التحكم - مكتبة الكتب الإسلامية",
-                "dashboard-subtitle": "إدارة الكتب والناشرين والفئات واللافتات بسهولة",
-                "menu-books": "الكتب",
-                "menu-publishers": "الناشرون",
-                "menu-categories": "الفئات",
-                "menu-banners": "اللافتات",
-                "menu-orders": "الطلبات",
-                "menu-currency": "العملة",
-                "add-book-title": "إضافة كتاب جديد",
-                "book-title": "عنوان الكتاب",
-                "book-author": "المؤلف",
-                "book-original-price": "السعر الأصلي (دولار أمريكي)",
-                "book-base-price": "السعر الأساسي (دولار أمريكي)",
-                "book-publisher": "الناشر",
-                "book-category": "الفئة",
-                "book-discount": "خصم",
-                "book-volumes": "المجلدات",
-                "book-pages": "الصفحات",
-                "book-year": "سنة النشر",
-                "book-weight": "وزن الكتاب",
-                "book-text-color": "لون النص",
-                "book-cover-type": "نوع الغلاف",
-                "book-paper-type": "نوع الورق",
-                "book-print-count": "طبعة",
-                "book-editor": "المحرر",
-                "book-description": "وصف الكتاب",
-                "book-cover": "غلاف الكتاب",
-                "upload-file": "رفع ملف",
-                "use-url": "استخدام الرابط",
-                "save-book": "حفظ الكتاب",
-                "cancel-edit": "إلغاء التعديل",
-                "price-calculator": "حاسبة السعر بعد الخصم",
-                "base-price-usd": "السعر الأساسي (دولار أمريكي):",
-                "discount": "خصم:",
-                "final-price-usd": "السعر النهائي (دولار أمريكي):",
-                "final-price-idr": "السعر النهائي (روبية إندونيسية):",
-                "final-price-egp": "السعر النهائي (جنيه مصري):",
-                "filter-search": "تصفية وبحث الكتب",
-                "search-title": "بحث العنوان",
-                "search-author": "بحث المؤلف",
-                "filter-publisher": "الناشر",
-                "filter-category": "الفئة",
-                "filter-cover-type": "نوع الغلاف",
-                "filter-paper-type": "نوع الورق",
-                "apply-filter": "تطبيق التصفية",
-                "reset-filter": "إعادة تعيين التصفية",
-                "bulk-actions": "إجراءات جماعية:",
-                "select-action": "اختر الإجراء",
-                "delete-books": "حذف الكتب",
-                "apply": "تطبيق",
-                "book-list": "قائمة الكتب",
-                "table-image": "الصورة",
-                "table-book-info": "معلومات الكتاب",
-                "table-details": "التفاصيل",
-                "table-weight": "الوزن",
-                "table-price-usd": "السعر دولار أمريكي",
-                "table-price-idr": "السعر روبية إندونيسية",
-                "table-price-egp": "السعر جنيه مصري",
-                "table-discount": "خصم",
-                "table-actions": "الإجراءات",
-                "loading-books": "جاري تحميل بيانات الكتب...",
-                "add-publisher-title": "إضافة ناشر جديد",
-                "publisher-name": "اسم الناشر",
-                "publisher-letter": "الحرف",
-                "publisher-discount": "خصم",
-                "publisher-logo": "شعار الناشر",
-                "save-publisher": "حفظ الناشر",
-                "publisher-list": "قائمة الناشرين",
-                "table-logo": "الشعار",
-                "table-name": "الاسم",
-                "table-letter": "الحرف",
-                "loading-publishers": "جاري تحميل بيانات الناشرين...",
-                "add-category-title": "إضافة فئة جديدة",
-                "category-name-id": "الاسم (ID)",
-                "category-name-en": "الاسم (EN)",
-                "category-name-ar": "الاسم (AR)",
-                "category-color": "اللون",
-                "category-link": "رابط الفئة",
-                "category-image": "صورة الفئة",
-                "save-category": "حفظ الفئة",
-                "category-list": "قائمة الفئات",
-                "table-name-id": "الاسم (ID)",
-                "table-name-en": "الاسم (EN)",
-                "table-color": "اللون",
-                "table-link": "الرابط",
-                "loading-categories": "جاري تحميل بيانات الفئات...",
-                "add-banner-title": "إضافة لافتة جديدة",
-                "banner-title": "عنوان اللافتة",
-                "banner-type": "النوع",
-                "banner-order": "ترتيب العرض",
-                "banner-image": "صورة اللافتة",
-                "save-banner": "حفظ اللافتة",
-                "banner-list": "قائمة اللافتات",
-                "table-title": "العنوان",
-                "table-type": "النوع",
-                "table-order": "الترتيب",
-                "loading-banners": "جاري تحميل بيانات اللافتات...",
-                "order-list": "قائمة الطلبات",
-                "table-customer-name": "اسم العميل",
-                "table-book": "الكتاب",
-                "table-total-idr": "الإجمالي (روبية إندونيسية)",
-                "table-status": "الحالة",
-                "table-date": "التاريخ",
-                "loading-orders": "جاري تحميل بيانات الطلبات...",
-                "currency-settings": "إعدادات سعر الصرف",
-                "currency-description": "يتم تخزين الأسعار الأساسية للمنتجات بالدولار الأمريكي. اضبط الأسعار هنا لتحويل الأسعار عند عرضها.",
-                "usd-to-idr": "دولار أمريكي إلى روبية إندونيسية",
-                "usd-to-egp": "دولار أمريكي إلى جنيه مصري",
-                "save-settings": "حفظ الإعدادات",
-                "edit-book-title": "تعديل الكتاب - جميع البيانات",
-                "update-book": "تحديث الكتاب",
-                "cancel": "إلغاء"
-            }
-        };
+    }
 
-        // Current language
-        let currentLanguage = 'id';
-
-        // Language selector functionality
-        const languageBtn = document.getElementById('languageBtn');
-        const languageDropdown = document.getElementById('languageDropdown');
-        const currentLangFlag = document.getElementById('currentLangFlag');
-        const currentLangText = document.getElementById('currentLangText');
-
-        languageBtn.addEventListener('click', () => {
-            languageDropdown.classList.toggle('show');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!languageBtn.contains(e.target) && !languageDropdown.contains(e.target)) {
-                languageDropdown.classList.remove('show');
-            }
-        });
-
-        // Language option click handlers
-        const languageOptions = document.querySelectorAll('.language-option');
-        languageOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const lang = option.getAttribute('data-lang');
-                changeLanguage(lang);
-                
-                // Update active state
-                languageOptions.forEach(opt => opt.classList.remove('active'));
-                option.classList.add('active');
-                
-                // Update button display
-                const flag = option.querySelector('span:first-child').textContent;
-                const text = option.querySelector('span:last-child').textContent;
-                currentLangFlag.textContent = flag;
-                currentLangText.textContent = text;
-                
-                // Close dropdown
-                languageDropdown.classList.remove('show');
-            });
-        });
-
-        // Change language function
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            document.documentElement.lang = lang;
-            
-            // Update all elements with data-lang-key attribute
-            const elements = document.querySelectorAll('[data-lang-key]');
-            elements.forEach(element => {
-                const key = element.getAttribute('data-lang-key');
-                if (translations[lang] && translations[lang][key]) {
-                    element.textContent = translations[lang][key];
-                }
-            });
-            
-            // Update placeholders
-            updatePlaceholders(lang);
-            
-            // Update RTL for Arabic
-            if (lang === 'ar') {
-                document.body.style.direction = 'rtl';
-                document.querySelector('.main-content').style.marginLeft = '0';
-                document.querySelector('.main-content').style.marginRight = 'var(--sidebar-width)';
-                document.querySelector('.sidebar').style.left = 'auto';
-                document.querySelector('.sidebar').style.right = '0';
-            } else {
-                document.body.style.direction = 'ltr';
-                document.querySelector('.main-content').style.marginLeft = 'var(--sidebar-width)';
-                document.querySelector('.main-content').style.marginRight = '0';
-                document.querySelector('.sidebar').style.left = '0';
-                document.querySelector('.sidebar').style.right = 'auto';
-            }
-        }
-
-        // Update placeholders based on language
-        function updatePlaceholders(lang) {
-            const placeholders = {
-                id: {
-                    'bookTitle': 'Masukkan judul buku',
-                    'bookAuthor': 'Nama penulis',
-                    'bookOriginalPrice': '0.00',
-                    'bookBasePrice': '0.00',
-                    'bookDiscount': 'Contoh: 10%',
-                    'bookVolumes': 'Jumlah jilid',
-                    'bookPages': 'Jumlah halaman',
-                    'bookYear': 'Tahun terbit',
-                    'bookWeightValue': 'Nilai berat',
-                    'bookTextColorInput': 'Ketik manual',
-                    'bookCoverTypeInput': 'Ketik manual',
-                    'bookPaperTypeInput': 'Ketik manual',
-                    'bookPrintCount': 'Angka cetakan',
-                    'bookEditor': 'Nama editor',
-                    'bookDescription': 'Deskripsi lengkap buku',
-                    'bookCoverImageUrl': 'Masukkan URL gambar',
-                    'searchTitle': 'Kata kunci judul...',
-                    'searchAuthor': 'Nama penulis...',
-                    'filterCoverType': 'Jenis cover...',
-                    'filterPaperType': 'Jenis kertas...',
-                    'publisherName': 'Nama penerbit',
-                    'publisherLetter': 'Huruf penerbit',
-                    'publisherDiscount': 'Contoh: 10%',
-                    'categoryNameId': 'Nama dalam Bahasa Indonesia',
-                    'categoryNameEn': 'Nama dalam Bahasa Inggris',
-                    'categoryNameAr': 'Nama dalam Bahasa Arab',
-                    'bannerTitle': 'Judul banner',
-                    'bannerType': 'Contoh: promo, utama',
-                    'bannerDisplayOrder': 'Angka urutan',
-                    'usdToIdr': 'Kurs USD ke Rupiah',
-                    'usdToEgp': 'Kurs USD ke Pound Mesir'
-                },
-                en: {
-                    'bookTitle': 'Enter book title',
-                    'bookAuthor': 'Author name',
-                    'bookOriginalPrice': '0.00',
-                    'bookBasePrice': '0.00',
-                    'bookDiscount': 'Example: 10%',
-                    'bookVolumes': 'Number of volumes',
-                    'bookPages': 'Number of pages',
-                    'bookYear': 'Publication year',
-                    'bookWeightValue': 'Weight value',
-                    'bookTextColorInput': 'Type manually',
-                    'bookCoverTypeInput': 'Type manually',
-                    'bookPaperTypeInput': 'Type manually',
-                    'bookPrintCount': 'Print edition number',
-                    'bookEditor': 'Editor name',
-                    'bookDescription': 'Complete book description',
-                    'bookCoverImageUrl': 'Enter image URL',
-                    'searchTitle': 'Title keywords...',
-                    'searchAuthor': 'Author name...',
-                    'filterCoverType': 'Cover type...',
-                    'filterPaperType': 'Paper type...',
-                    'publisherName': 'Publisher name',
-                    'publisherLetter': 'Publisher letter',
-                    'publisherDiscount': 'Example: 10%',
-                    'categoryNameId': 'Name in Indonesian',
-                    'categoryNameEn': 'Name in English',
-                    'categoryNameAr': 'Name in Arabic',
-                    'bannerTitle': 'Banner title',
-                    'bannerType': 'Example: promo, main',
-                    'bannerDisplayOrder': 'Order number',
-                    'usdToIdr': 'USD to IDR rate',
-                    'usdToEgp': 'USD to EGP rate'
-                },
-                ar: {
-                    'bookTitle': 'أدخل عنوان الكتاب',
-                    'bookAuthor': 'اسم المؤلف',
-                    'bookOriginalPrice': '0.00',
-                    'bookBasePrice': '0.00',
-                    'bookDiscount': 'مثال: 10%',
-                    'bookVolumes': 'عدد المجلدات',
-                    'bookPages': 'عدد الصفحات',
-                    'bookYear': 'سنة النشر',
-                    'bookWeightValue': 'قيمة الوزن',
-                    'bookTextColorInput': 'اكتب يدوياً',
-                    'bookCoverTypeInput': 'اكتب يدوياً',
-                    'bookPaperTypeInput': 'اكتب يدوياً',
-                    'bookPrintCount': 'رقم الطبعة',
-                    'bookEditor': 'اسم المحرر',
-                    'bookDescription': 'وصف الكتاب الكامل',
-                    'bookCoverImageUrl': 'أدخل رابط الصورة',
-                    'searchTitle': 'كلمات مفتاحية للعنوان...',
-                    'searchAuthor': 'اسم المؤلف...',
-                    'filterCoverType': 'نوع الغلاف...',
-                    'filterPaperType': 'نوع الورق...',
-                    'publisherName': 'اسم الناشر',
-                    'publisherLetter': 'حرف الناشر',
-                    'publisherDiscount': 'مثال: 10%',
-                    'categoryNameId': 'الاسم بالإندونيسية',
-                    'categoryNameEn': 'الاسم بالإنجليزية',
-                    'categoryNameAr': 'الاسم بالعربية',
-                    'bannerTitle': 'عنوان اللافتة',
-                    'bannerType': 'مثال: ترويجي، رئيسي',
-                    'bannerDisplayOrder': 'رقم الترتيب',
-                    'usdToIdr': 'سعر صرف الدولار إلى الروبية الإندونيسية',
-                    'usdToEgp': 'سعر صرف الدولار إلى الجنيه المصري'
-                }
-            };
-            
-            // Update all input placeholders
-            for (const [id, placeholder] of Object.entries(placeholders[lang])) {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.placeholder = placeholder;
-                }
-            }
-        }
-
-        // Menu toggle for mobile
-        document.getElementById('menuToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
-        });
-
-        // Navigation
-        const navButtons = document.querySelectorAll('.nav-btn');
-        const contentSections = document.querySelectorAll('.content-section');
-
-        navButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetSection = button.getAttribute('data-section');
-                
-                // Update active nav button
-                navButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                // Show target section
-                contentSections.forEach(section => {
-                    section.classList.remove('active');
-                    if (section.id === `${targetSection}-section`) {
-                        section.classList.add('active');
-                    }
-                });
-                
-                // Close mobile menu
-                if (window.innerWidth <= 1024) {
-                    document.getElementById('sidebar').classList.remove('active');
-                }
-            });
-        });
-
-        // Check screen size on load and resize
-        function checkScreenSize() {
-            const menuToggle = document.getElementById('menuToggle');
-            if (window.innerWidth <= 1024) {
-                menuToggle.style.display = 'block';
-            } else {
-                menuToggle.style.display = 'none';
-                document.getElementById('sidebar').classList.remove('active');
-            }
-        }
-
-        window.addEventListener('load', checkScreenSize);
-        window.addEventListener('resize', checkScreenSize);
-
-        // Initialize with Indonesian language
-        changeLanguage('id');
+    // Initialize Excel upload when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
+        initExcelUpload();
+        
         const supabaseUrl = 'https://rfqpsuzmonfmnvthxinb.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmcXBzdXptb25mbW52dGh4aW5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1OTQyMjUsImV4cCI6MjA3NjE3MDIyNX0.gJFzuE-KJrdSoIKMTIDszTdNLDl_sJkIhgo7wmXRGWA';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
@@ -3766,6 +4056,7 @@ h2 {
             });
         });
     });
+</script>
     </script>
 </body>
 </html>
