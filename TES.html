@@ -749,240 +749,319 @@ h2 {
         font-size: 1.3rem;
     }
 }
-/* Bulk Upload Styles */
-.bulk-upload-container {
-    background: var(--light);
-    border-radius: 12px;
-    padding: 2rem;
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 15px rgba(0,0,0,0.04);
-}
+     * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.upload-info {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: var(--primary-light);
-    border-radius: 8px;
-    border-left: 4px solid var(--primary);
-}
+        body {
+            font-family: var(--font-family);
+            background-color: #f8f9fa;
+            color: var(--dark);
+            line-height: 1.6;
+            font-weight: 400;
+            padding: 20px;
+        }
 
-.upload-info p {
-    margin: 0;
-    color: var(--dark);
-    font-size: 0.95rem;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--light);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+        }
 
-.upload-actions {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-}
+        h1 {
+            font-family: var(--heading-font);
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
 
-.download-btn {
-    background: var(--success);
-    color: var(--light);
-}
+        .description {
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
 
-.download-btn:hover {
-    background: #219653;
-}
+        .upload-section {
+            margin-bottom: 2rem;
+        }
 
-.upload-btn {
-    background: var(--warning);
-    color: var(--light);
-    cursor: pointer;
-}
+        .upload-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
 
-.upload-btn:hover {
-    background: #e67e22;
-}
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-family);
+            text-decoration: none;
+        }
 
-.file-upload-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex: 1;
-}
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
 
-.file-name {
-    font-size: 0.9rem;
-    color: #6c757d;
-    font-style: italic;
-}
+        .download-btn {
+            background: var(--success);
+            color: var(--light);
+        }
 
-.upload-progress {
-    margin: 1.5rem 0;
-    padding: 1rem;
-    background: var(--primary-light);
-    border-radius: 8px;
-}
+        .download-btn:hover {
+            background: #219653;
+        }
 
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background: var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 0.5rem;
-}
+        .upload-btn {
+            background: var(--warning);
+            color: var(--light);
+            cursor: pointer;
+        }
 
-.progress-fill {
-    height: 100%;
-    background: var(--success);
-    border-radius: 4px;
-    transition: width 0.3s ease;
-    width: 0%;
-}
+        .upload-btn:hover {
+            background: #e67e22;
+        }
 
-.progress-text {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    color: var(--dark);
-}
+        .submit-btn {
+            background: var(--primary);
+            color: var(--light);
+        }
 
-.upload-results {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    background: var(--primary-light);
-    border-radius: 8px;
-    border: 1px solid var(--border);
-}
+        .submit-btn:hover {
+            background: var(--primary-dark);
+        }
 
-.results-summary {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-}
+        .submit-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
-.result-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    border-radius: 8px;
-    min-width: 100px;
-}
+        .file-upload-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
 
-.result-item.success {
-    background: rgba(39, 174, 96, 0.1);
-    border: 1px solid var(--success);
-}
+        .file-name {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-style: italic;
+        }
 
-.result-item.failed {
-    background: rgba(231, 76, 60, 0.1);
-    border: 1px solid var(--danger);
-}
+        .upload-progress {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: var(--primary-light);
+            border-radius: 8px;
+            display: none;
+        }
 
-.result-item.skipped {
-    background: rgba(243, 156, 18, 0.1);
-    border: 1px solid var(--warning);
-}
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
 
-.result-count {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
 
-.result-item.success .result-count {
-    color: var(--success);
-}
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
 
-.result-item.failed .result-count {
-    color: var(--danger);
-}
+        .upload-results {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--primary-light);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: none;
+        }
 
-.result-item.skipped .result-count {
-    color: var(--warning);
-}
+        .results-summary {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
 
-.results-details {
-    max-height: 300px;
-    overflow-y: auto;
-}
+        .result-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 8px;
+            min-width: 100px;
+        }
 
-.result-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
-    border-radius: 6px;
-    background: var(--light);
-}
+        .result-item.success {
+            background: rgba(39, 174, 96, 0.1);
+            border: 1px solid var(--success);
+        }
 
-.result-row.success {
-    border-left: 4px solid var(--success);
-}
+        .result-item.failed {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid var(--danger);
+        }
 
-.result-row.failed {
-    border-left: 4px solid var(--danger);
-}
+        .result-item.skipped {
+            background: rgba(243, 156, 18, 0.1);
+            border: 1px solid var(--warning);
+        }
 
-.result-row.skipped {
-    border-left: 4px solid var(--warning);
-}
+        .result-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
 
-.result-info {
-    flex: 1;
-}
+        .result-item.success .result-count {
+            color: var(--success);
+        }
 
-.result-title {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
+        .result-item.failed .result-count {
+            color: var(--danger);
+        }
 
-.result-message {
-    font-size: 0.85rem;
-    color: #6c757d;
-}
+        .result-item.skipped .result-count {
+            color: var(--warning);
+        }
 
-.result-status {
-    font-size: 0.8rem;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-weight: 600;
-}
+        .results-details {
+            max-height: 300px;
+            overflow-y: auto;
+        }
 
-.result-status.success {
-    background: var(--success);
-    color: var(--light);
-}
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            background: var(--light);
+        }
 
-.result-status.failed {
-    background: var(--danger);
-    color: var(--light);
-}
+        .result-row.success {
+            border-left: 4px solid var(--success);
+        }
 
-.result-status.skipped {
-    background: var(--warning);
-    color: var(--light);
-}
+        .result-row.failed {
+            border-left: 4px solid var(--danger);
+        }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .upload-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .file-upload-wrapper {
-        justify-content: space-between;
-    }
-    
-    .results-summary {
-        justify-content: center;
-    }
-    
-    .result-item {
-        min-width: 80px;
-        padding: 0.75rem;
-    }
-}
+        .result-row.skipped {
+            border-left: 4px solid var(--warning);
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-message {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .result-status {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .result-status.success {
+            background: var(--success);
+            color: var(--light);
+        }
+
+        .result-status.failed {
+            background: var(--danger);
+            color: var(--light);
+        }
+
+        .result-status.skipped {
+            background: var(--warning);
+            color: var(--light);
+        }
+
+        .instructions {
+            background: var(--primary-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .instructions h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .instructions ul {
+            padding-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions strong {
+            color: var(--primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .upload-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .file-upload-wrapper {
+                justify-content: space-between;
+            }
+            
+            .results-summary {
+                justify-content: center;
+            }
+            
+            .result-item {
+                min-width: 80px;
+                padding: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1034,62 +1113,85 @@ h2 {
                     </div>
                 </div>
             </header>
-            <!-- Tambahkan di dalam section books, setelah filter section -->
-<div class="form-section">
-    <h2 data-lang-key="bulk-upload-title">Upload Buku Massal via Excel</h2>
-    <div class="bulk-upload-container">
-        <div class="upload-info">
-            <p data-lang-key="bulk-upload-description">Upload data buku secara massal menggunakan file Excel. Unduh template terlebih dahulu untuk memastikan format yang benar.</p>
-        </div>
+               <div class="container">
+        <h1>Upload Buku via Excel</h1>
+        <p class="description">Upload data buku secara massal menggunakan file Excel. Unduh template terlebih dahulu untuk memastikan format yang benar.</p>
         
-        <div class="upload-actions">
-            <button type="button" class="btn download-btn" id="downloadTemplate" data-lang-key="download-template">
-                📥 Unduh Template Excel
-            </button>
-            <div class="file-upload-wrapper">
-                <input type="file" id="excelFile" accept=".xlsx, .xls" style="display: none;">
-                <label for="excelFile" class="btn upload-btn" data-lang-key="upload-excel">
-                    📤 Upload File Excel
-                </label>
-                <span id="fileName" class="file-name" data-lang-key="no-file-selected">Belum ada file dipilih</span>
-            </div>
-            <button type="button" class="btn submit-btn" id="processExcel" disabled data-lang-key="process-data">
-                🔄 Proses Data
-            </button>
-        </div>
-        
-        <div class="upload-progress" id="uploadProgress" style="display: none;">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="progress-text">
-                <span id="progressStatus" data-lang-key="processing">Memproses...</span>
-                <span id="progressCount">0/0</span>
-            </div>
-        </div>
-        
-        <div class="upload-results" id="uploadResults" style="display: none;">
-            <h4 data-lang-key="upload-results">Hasil Upload</h4>
-            <div class="results-summary">
-                <div class="result-item success">
-                    <span class="result-count" id="successCount">0</span>
-                    <span data-lang-key="successful">Berhasil</span>
+        <div class="upload-section">
+            <div class="upload-actions">
+                <button type="button" class="btn download-btn" id="downloadTemplate">
+                    📥 Unduh Template Excel
+                </button>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="excelFile" accept=".xlsx, .xls" style="display: none;">
+                    <label for="excelFile" class="btn upload-btn">
+                        📤 Upload File Excel
+                    </label>
+                    <span id="fileName" class="file-name">Belum ada file dipilih</span>
                 </div>
-                <div class="result-item failed">
-                    <span class="result-count" id="failedCount">0</span>
-                    <span data-lang-key="failed">Gagal</span>
+                <button type="button" class="btn submit-btn" id="processExcel" disabled>
+                    🔄 Proses Data
+                </button>
+            </div>
+            
+            <div class="upload-progress" id="uploadProgress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div class="result-item skipped">
-                    <span class="result-count" id="skippedCount">0</span>
-                    <span data-lang-key="skipped">Dilewati</span>
+                <div class="progress-text">
+                    <span id="progressStatus">Memproses...</span>
+                    <span id="progressCount">0/0</span>
                 </div>
             </div>
-            <div class="results-details" id="resultsDetails">
-                <!-- Detail hasil akan ditampilkan di sini -->
+            
+            <div class="upload-results" id="uploadResults">
+                <h3>Hasil Upload</h3>
+                <div class="results-summary">
+                    <div class="result-item success">
+                        <span class="result-count" id="successCount">0</span>
+                        <span>Berhasil</span>
+                    </div>
+                    <div class="result-item failed">
+                        <span class="result-count" id="failedCount">0</span>
+                        <span>Gagal</span>
+                    </div>
+                    <div class="result-item skipped">
+                        <span class="result-count" id="skippedCount">0</span>
+                        <span>Dilewati</span>
+                    </div>
+                </div>
+                <div class="results-details" id="resultsDetails">
+                    <!-- Detail hasil akan ditampilkan di sini -->
+                </div>
             </div>
+        </div>
+
+        <div class="instructions">
+            <h3>Petunjuk Penggunaan</h3>
+            <ul>
+                <li><strong>Judul Buku*</strong> - Wajib diisi. Judul lengkap buku</li>
+                <li><strong>Penulis*</strong> - Wajib diisi. Nama penulis buku</li>
+                <li><strong>Harga Asli (USD)*</strong> - Wajib diisi. Harga asli dalam USD (angka)</li>
+                <li><strong>Harga Dasar (USD)*</strong> - Wajib diisi. Harga dasar dalam USD (angka)</li>
+                <li><strong>Penerbit</strong> - Nama penerbit harus sudah terdaftar di sistem</li>
+                <li><strong>Kategori</strong> - Nama kategori harus sudah terdaftar di sistem</li>
+                <li><strong>Diskon</strong> - Format: 10% atau 0.1 (opsional)</li>
+                <li><strong>Jilid</strong> - Jumlah jilid (opsional)</li>
+                <li><strong>Halaman</strong> - Jumlah halaman (opsional)</li>
+                <li><strong>Tahun Terbit</strong> - Tahun terbit (opsional)</li>
+                <li><strong>Berat Nilai</strong> - Nilai berat (angka, opsional)</li>
+                <li><strong>Berat Satuan</strong> - Satuan berat: kg, g, ons, lb (opsional)</li>
+                <li><strong>Warna Tulisan</strong> - Warna teks buku (opsional)</li>
+                <li><strong>Jenis Cover</strong> - Jenis sampul buku (opsional)</li>
+                <li><strong>Jenis Kertas</strong> - Jenis kertas buku (opsional)</li>
+                <li><strong>Cetakan Ke</strong> - Angka cetakan (opsional)</li>
+                <li><strong>Editor</strong> - Nama editor (opsional)</li>
+                <li><strong>Deskripsi</strong> - Deskripsi buku (opsional)</li>
+                <li><strong>URL Gambar Sampul</strong> - URL gambar sampul buku (opsional)</li>
+            </ul>
+            <p style="margin-top: 1rem; font-style: italic;">* Field wajib diisi</p>
         </div>
     </div>
-</div>
             <section id="books-section" class="content-section active">
                 <div class="form-section">
                     <h2 id="booksFormTitle" data-lang-key="add-book-title">Tambah Buku Baru</h2>
@@ -1685,9 +1787,280 @@ h2 {
             </form>
         </div>
     </div>
- 
+     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+           // DOM Elements
+        const downloadTemplateBtn = document.getElementById('downloadTemplate');
+        const excelFileInput = document.getElementById('excelFile');
+        const fileNameSpan = document.getElementById('fileName');
+        const processExcelBtn = document.getElementById('processExcel');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const progressFill = document.getElementById('progressFill');
+        const progressStatus = document.getElementById('progressStatus');
+        const progressCount = document.getElementById('progressCount');
+        const uploadResults = document.getElementById('uploadResults');
+        const successCount = document.getElementById('successCount');
+        const failedCount = document.getElementById('failedCount');
+        const skippedCount = document.getElementById('skippedCount');
+        const resultsDetails = document.getElementById('resultsDetails');
+
+        // Download Excel Template
+        downloadTemplateBtn.addEventListener('click', downloadExcelTemplate);
+
+        function downloadExcelTemplate() {
+            try {
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+                
+                // Define template data
+                const templateData = [
+                    {
+                        'Judul Buku': 'Buku Panduan Shalat Lengkap',
+                        'Penulis': 'Ustadz Ahmad',
+                        'Harga Asli (USD)': '25.00',
+                        'Harga Dasar (USD)': '20.00',
+                        'Penerbit': 'Pustaka Muslim',
+                        'Kategori': 'Fiqih',
+                        'Diskon': '10%',
+                        'Jilid': '1',
+                        'Halaman': '300',
+                        'Tahun Terbit': '2023',
+                        'Berat Nilai': '0.5',
+                        'Berat Satuan': 'kg',
+                        'Warna Tulisan': 'Hitam',
+                        'Jenis Cover': 'Hard Cover',
+                        'Jenis Kertas': 'HVS',
+                        'Cetakan Ke': '1',
+                        'Editor': 'Editor Islam',
+                        'Deskripsi': 'Buku panduan shalat lengkap untuk pemula dan lanjutan',
+                        'URL Gambar Sampul': 'https://example.com/shalat.jpg'
+                    },
+                    {
+                        'Judul Buku': 'Tafsir Al-Quran Jilid 1',
+                        'Penulis': 'Dr. Muhammad Ali',
+                        'Harga Asli (USD)': '30.00',
+                        'Harga Dasar (USD)': '25.00',
+                        'Penerbit': 'Penerbit Quran',
+                        'Kategori': 'Tafsir',
+                        'Diskon': '15%',
+                        'Jilid': '1',
+                        'Halaman': '450',
+                        'Tahun Terbit': '2022',
+                        'Berat Nilai': '0.8',
+                        'Berat Satuan': 'kg',
+                        'Warna Tulisan': 'Hitam',
+                        'Jenis Cover': 'Hard Cover',
+                        'Jenis Kertas': 'Book Paper',
+                        'Cetakan Ke': '2',
+                        'Editor': 'Tim Editor Quran',
+                        'Deskripsi': 'Tafsir Al-Quran jilid pertama dengan penjelasan mendalam',
+                        'URL Gambar Sampul': 'https://example.com/tafsir.jpg'
+                    }
+                ];
+                
+                // Create worksheet
+                const ws = XLSX.utils.json_to_sheet(templateData);
+                
+                // Set column widths
+                const colWidths = [
+                    { wch: 25 }, // Judul Buku
+                    { wch: 20 }, // Penulis
+                    { wch: 15 }, // Harga Asli
+                    { wch: 15 }, // Harga Dasar
+                    { wch: 20 }, // Penerbit
+                    { wch: 15 }, // Kategori
+                    { wch: 10 }, // Diskon
+                    { wch: 8 },  // Jilid
+                    { wch: 10 }, // Halaman
+                    { wch: 12 }, // Tahun Terbit
+                    { wch: 12 }, // Berat Nilai
+                    { wch: 12 }, // Berat Satuan
+                    { wch: 15 }, // Warna Tulisan
+                    { wch: 15 }, // Jenis Cover
+                    { wch: 15 }, // Jenis Kertas
+                    { wch: 12 }, // Cetakan Ke
+                    { wch: 15 }, // Editor
+                    { wch: 30 }, // Deskripsi
+                    { wch: 30 }  // URL Gambar Sampul
+                ];
+                ws['!cols'] = colWidths;
+                
+                // Add worksheet to workbook
+                XLSX.utils.book_append_sheet(wb, ws, 'Template Buku');
+                
+                // Download the file
+                XLSX.writeFile(wb, 'Template_Upload_Buku.xlsx');
+                
+                alert('Template berhasil diunduh! Silakan isi data buku Anda.');
+            } catch (error) {
+                console.error('Error downloading template:', error);
+                alert('Terjadi kesalahan saat mengunduh template. Silakan coba lagi.');
+            }
+        }
+
+        // File selection handler
+        excelFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileNameSpan.textContent = file.name;
+                fileNameSpan.style.color = 'var(--dark)';
+                processExcelBtn.disabled = false;
+            } else {
+                fileNameSpan.textContent = 'Belum ada file dipilih';
+                fileNameSpan.style.color = '#6c757d';
+                processExcelBtn.disabled = true;
+            }
+        });
+
+        // Process Excel data
+        processExcelBtn.addEventListener('click', processExcelFile);
+
+        async function processExcelFile() {
+            const file = excelFileInput.files[0];
+            if (!file) return;
+            
+            // Reset results
+            resetUploadResults();
+            uploadProgress.style.display = 'block';
+            
+            try {
+                const data = await readExcelFile(file);
+                await processBookData(data);
+            } catch (error) {
+                console.error('Error processing Excel file:', error);
+                progressStatus.textContent = 'Error: ' + error.message;
+                progressFill.style.background = 'var(--danger)';
+            }
+        }
+
+        function readExcelFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        
+                        // Get first worksheet
+                        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                        
+                        resolve(jsonData);
+                    } catch (error) {
+                        reject(new Error('Format file Excel tidak valid'));
+                    }
+                };
+                
+                reader.onerror = function() {
+                    reject(new Error('Gagal membaca file'));
+                };
+                
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        // Simulate processing book data (in a real app, this would connect to your database)
+        async function processBookData(data) {
+            let success = 0;
+            let failed = 0;
+            let skipped = 0;
+            
+            const totalRows = data.length;
+            let processedRows = 0;
+            
+            // Show upload results
+            uploadResults.style.display = 'block';
+            
+            for (const row of data) {
+                processedRows++;
+                const progress = (processedRows / totalRows) * 100;
+                
+                progressFill.style.width = `${progress}%`;
+                progressCount.textContent = `${processedRows}/${totalRows}`;
+                
+                try {
+                    // Validate required fields
+                    if (!row['Judul Buku'] || !row['Penulis'] || !row['Harga Asli (USD)'] || !row['Harga Dasar (USD)']) {
+                        addResultRow('failed', row['Judul Buku'] || 'Data tanpa judul', 'Data tidak lengkap - field wajib kosong');
+                        failed++;
+                        continue;
+                    }
+                    
+                    // Simulate processing delay
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    // Random result for demo (in real app, this would be actual processing)
+                    const randomResult = Math.random();
+                    
+                    if (randomResult < 0.7) {
+                        addResultRow('success', row['Judul Buku'], 'Buku berhasil ditambahkan ke database');
+                        success++;
+                    } else if (randomResult < 0.9) {
+                        addResultRow('skipped', row['Judul Buku'], 'Buku sudah ada di sistem');
+                        skipped++;
+                    } else {
+                        addResultRow('failed', row['Judul Buku'], 'Gagal menyimpan ke database');
+                        failed++;
+                    }
+                    
+                } catch (error) {
+                    addResultRow('failed', row['Judul Buku'] || 'Data tanpa judul', `Error: ${error.message}`);
+                    failed++;
+                }
+                
+                // Update counts
+                updateResultCounts(success, failed, skipped);
+            }
+            
+            // Final update
+            progressStatus.textContent = 'Selesai';
+            progressFill.style.background = 'var(--success)';
+            
+            // Show completion message
+            setTimeout(() => {
+                alert(`Proses upload selesai!\nBerhasil: ${success}\nGagal: ${failed}\nDilewati: ${skipped}`);
+            }, 1000);
+        }
+
+        function resetUploadResults() {
+            successCount.textContent = '0';
+            failedCount.textContent = '0';
+            skippedCount.textContent = '0';
+            resultsDetails.innerHTML = '';
+            progressFill.style.width = '0%';
+            progressFill.style.background = 'var(--success)';
+            progressStatus.textContent = 'Memproses...';
+            progressCount.textContent = '0/0';
+        }
+
+        function addResultRow(status, title, message) {
+            const statusText = {
+                'success': 'Berhasil',
+                'failed': 'Gagal',
+                'skipped': 'Dilewati'
+            };
+            
+            const row = document.createElement('div');
+            row.className = `result-row ${status}`;
+            row.innerHTML = `
+                <div class="result-info">
+                    <div class="result-title">${title}</div>
+                    <div class="result-message">${message}</div>
+                </div>
+                <div class="result-status ${status}">${statusText[status]}</div>
+            `;
+            
+            resultsDetails.appendChild(row);
+        }
+
+        function updateResultCounts(success, failed, skipped) {
+            successCount.textContent = success;
+            failedCount.textContent = failed;
+            skippedCount.textContent = skipped;
+        }
        // Language translations
         const translations = {
             id: {
@@ -3393,377 +3766,6 @@ h2 {
             });
         });
     });
-    // Tambahkan di bagian JavaScript, setelah deklarasi variabel global
-
-// Excel Upload Functionality
-const downloadTemplateBtn = document.getElementById('downloadTemplate');
-const excelFileInput = document.getElementById('excelFile');
-const fileNameSpan = document.getElementById('fileName');
-const processExcelBtn = document.getElementById('processExcel');
-const uploadProgress = document.getElementById('uploadProgress');
-const progressFill = document.getElementById('progressFill');
-const progressStatus = document.getElementById('progressStatus');
-const progressCount = document.getElementById('progressCount');
-const uploadResults = document.getElementById('uploadResults');
-const successCount = document.getElementById('successCount');
-const failedCount = document.getElementById('failedCount');
-const skippedCount = document.getElementById('skippedCount');
-const resultsDetails = document.getElementById('resultsDetails');
-
-// Download Excel Template
-downloadTemplateBtn.addEventListener('click', downloadExcelTemplate);
-
-function downloadExcelTemplate() {
-    // Create workbook
-    const wb = XLSX.utils.book_new();
-    
-    // Define template data
-    const templateData = [
-        {
-            'Judul Buku*': 'Nama lengkap buku',
-            'Penulis*': 'Nama penulis',
-            'Harga Asli (USD)*': '19.99',
-            'Harga Dasar (USD)*': '15.99',
-            'Penerbit': 'Nama penerbit (harus sudah ada di sistem)',
-            'Kategori': 'Nama kategori (harus sudah ada di sistem)',
-            'Diskon': '10%',
-            'Jilid': '1',
-            'Halaman': '250',
-            'Tahun Terbit': '2024',
-            'Berat Nilai': '0.5',
-            'Berat Satuan': 'kg',
-            'Warna Tulisan': 'Hitam',
-            'Jenis Cover': 'Hard Cover',
-            'Jenis Kertas': 'HVS',
-            'Cetakan Ke': '1',
-            'Editor': 'Nama editor',
-            'Deskripsi': 'Deskripsi lengkap buku',
-            'URL Gambar Sampul': 'https://example.com/image.jpg'
-        }
-    ];
-    
-    // Create worksheet
-    const ws = XLSX.utils.json_to_sheet(templateData);
-    
-    // Set column widths
-    const colWidths = [
-        { wch: 25 }, // Judul Buku
-        { wch: 20 }, // Penulis
-        { wch: 15 }, // Harga Asli
-        { wch: 15 }, // Harga Dasar
-        { wch: 20 }, // Penerbit
-        { wch: 15 }, // Kategori
-        { wch: 10 }, // Diskon
-        { wch: 8 },  // Jilid
-        { wch: 10 }, // Halaman
-        { wch: 12 }, // Tahun Terbit
-        { wch: 12 }, // Berat Nilai
-        { wch: 12 }, // Berat Satuan
-        { wch: 15 }, // Warna Tulisan
-        { wch: 15 }, // Jenis Cover
-        { wch: 15 }, // Jenis Kertas
-        { wch: 12 }, // Cetakan Ke
-        { wch: 15 }, // Editor
-        { wch: 30 }, // Deskripsi
-        { wch: 30 }  // URL Gambar Sampul
-    ];
-    ws['!cols'] = colWidths;
-    
-    // Add worksheet to workbook
-    XLSX.utils.book_append_sheet(wb, ws, 'Template Buku');
-    
-    // Add instructions sheet
-    const instructions = [
-        { 'Kolom': 'Judul Buku*', 'Keterangan': 'Wajib diisi. Judul lengkap buku' },
-        { 'Kolom': 'Penulis*', 'Keterangan': 'Wajib diisi. Nama penulis buku' },
-        { 'Kolom': 'Harga Asli (USD)*', 'Keterangan': 'Wajib diisi. Harga asli dalam USD (angka)' },
-        { 'Kolom': 'Harga Dasar (USD)*', 'Keterangan': 'Wajib diisi. Harga dasar dalam USD (angka)' },
-        { 'Kolom': 'Penerbit', 'Keterangan': 'Nama penerbit harus sudah terdaftar di sistem' },
-        { 'Kolom': 'Kategori', 'Keterangan': 'Nama kategori harus sudah terdaftar di sistem' },
-        { 'Kolom': 'Diskon', 'Keterangan': 'Format: 10% atau 0.1 (opsional)' },
-        { 'Kolom': 'Jilid', 'Keterangan': 'Jumlah jilid (opsional)' },
-        { 'Kolom': 'Halaman', 'Keterangan': 'Jumlah halaman (opsional)' },
-        { 'Kolom': 'Tahun Terbit', 'Keterangan': 'Tahun terbit (opsional)' },
-        { 'Kolom': 'Berat Nilai', 'Keterangan': 'Nilai berat (angka, opsional)' },
-        { 'Kolom': 'Berat Satuan', 'Keterangan': 'Satuan berat: kg, g, ons, lb (opsional)' },
-        { 'Kolom': 'Warna Tulisan', 'Keterangan': 'Warna teks buku (opsional)' },
-        { 'Kolom': 'Jenis Cover', 'Keterangan': 'Jenis sampul buku (opsional)' },
-        { 'Kolom': 'Jenis Kertas', 'Keterangan': 'Jenis kertas buku (opsional)' },
-        { 'Kolom': 'Cetakan Ke', 'Keterangan': 'Angka cetakan (opsional)' },
-        { 'Kolom': 'Editor', 'Keterangan': 'Nama editor (opsional)' },
-        { 'Kolom': 'Deskripsi', 'Keterangan': 'Deskripsi buku (opsional)' },
-        { 'Kolom': 'URL Gambar Sampul', 'Keterangan': 'URL gambar sampul buku (opsional)' }
-    ];
-    
-    const wsInstructions = XLSX.utils.json_to_sheet(instructions);
-    const instructionColWidths = [
-        { wch: 20 }, // Kolom
-        { wch: 50 }  // Keterangan
-    ];
-    wsInstructions['!cols'] = instructionColWidths;
-    XLSX.utils.book_append_sheet(wb, wsInstructions, 'Petunjuk Pengisian');
-    
-    // Download the file
-    XLSX.writeFile(wb, 'Template_Upload_Buku.xlsx');
-}
-
-// File selection handler
-excelFileInput.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        fileNameSpan.textContent = file.name;
-        fileNameSpan.style.color = 'var(--dark)';
-        processExcelBtn.disabled = false;
-    } else {
-        fileNameSpan.textContent = 'Belum ada file dipilih';
-        fileNameSpan.style.color = '#6c757d';
-        processExcelBtn.disabled = true;
-    }
-});
-
-// Process Excel data
-processExcelBtn.addEventListener('click', processExcelFile);
-
-async function processExcelFile() {
-    const file = excelFileInput.files[0];
-    if (!file) return;
-    
-    // Reset results
-    resetUploadResults();
-    uploadProgress.style.display = 'block';
-    
-    try {
-        const data = await readExcelFile(file);
-        await processBookData(data);
-    } catch (error) {
-        console.error('Error processing Excel file:', error);
-        progressStatus.textContent = 'Error: ' + error.message;
-        progressFill.style.background = 'var(--danger)';
-    }
-}
-
-function readExcelFile(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            try {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                
-                // Get first worksheet
-                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(worksheet);
-                
-                resolve(jsonData);
-            } catch (error) {
-                reject(new Error('Format file Excel tidak valid'));
-            }
-        };
-        
-        reader.onerror = function() {
-            reject(new Error('Gagal membaca file'));
-        };
-        
-        reader.readAsArrayBuffer(file);
-    });
-}
-
-async function processBookData(data) {
-    let success = 0;
-    let failed = 0;
-    let skipped = 0;
-    
-    const totalRows = data.length;
-    let processedRows = 0;
-    
-    // Show upload results
-    uploadResults.style.display = 'block';
-    
-    for (const row of data) {
-        processedRows++;
-        const progress = (processedRows / totalRows) * 100;
-        
-        progressFill.style.width = `${progress}%`;
-        progressCount.textContent = `${processedRows}/${totalRows}`;
-        
-        try {
-            // Validate required fields
-            if (!row['Judul Buku'] || !row['Penulis'] || !row['Harga Asli (USD)'] || !row['Harga Dasar (USD)']) {
-                addResultRow('failed', row['Judul Buku'] || 'Data tanpa judul', 'Data tidak lengkap - field wajib kosong');
-                failed++;
-                continue;
-            }
-            
-            // Prepare book data
-            const bookData = {
-                title: row['Judul Buku'],
-                author: row['Penulis'],
-                original_price: parseFloat(row['Harga Asli (USD)']) || 0,
-                base_price: parseFloat(row['Harga Dasar (USD)']) || 0,
-                volumes: row['Jilid'] || '',
-                pages: row['Halaman'] || '',
-                year: row['Tahun Terbit'] || '',
-                description: row['Deskripsi'] || '',
-                discount: row['Diskon'] || '',
-                text_color: row['Warna Tulisan'] || '',
-                cover_type: row['Jenis Cover'] || '',
-                paper_type: row['Jenis Kertas'] || '',
-                print_count: row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null,
-                editor: row['Editor'] || '',
-                weight_value: row['Berat Nilai'] ? parseFloat(row['Berat Nilai']) : null,
-                weight_unit: row['Berat Satuan'] || '',
-                cover_image_url: row['URL Gambar Sampul'] || ''
-            };
-            
-            // Handle publisher
-            if (row['Penerbit']) {
-                const publisher = allPublishers.find(p => 
-                    p.name.toLowerCase() === row['Penerbit'].toLowerCase().trim()
-                );
-                if (publisher) {
-                    bookData.publisher_id = publisher.id;
-                } else {
-                    addResultRow('failed', bookData.title, `Penerbit "${row['Penerbit']}" tidak ditemukan`);
-                    failed++;
-                    continue;
-                }
-            }
-            
-            // Handle category
-            if (row['Kategori']) {
-                const category = allCategories.find(c => 
-                    c.name_id.toLowerCase() === row['Kategori'].toLowerCase().trim()
-                );
-                if (category) {
-                    bookData.category_id = category.id;
-                } else {
-                    addResultRow('failed', bookData.title, `Kategori "${row['Kategori']}" tidak ditemukan`);
-                    failed++;
-                    continue;
-                }
-            }
-            
-            // Check if book already exists
-            const { data: existingBook } = await supabase
-                .from('books')
-                .select('id')
-                .eq('title', bookData.title)
-                .eq('author', bookData.author)
-                .single();
-            
-            if (existingBook) {
-                addResultRow('skipped', bookData.title, 'Buku sudah ada di sistem');
-                skipped++;
-                continue;
-            }
-            
-            // Insert book
-            const { error } = await supabase.from('books').insert([bookData]);
-            
-            if (error) {
-                addResultRow('failed', bookData.title, `Error: ${error.message}`);
-                failed++;
-            } else {
-                addResultRow('success', bookData.title, 'Buku berhasil ditambahkan');
-                success++;
-            }
-            
-        } catch (error) {
-            addResultRow('failed', row['Judul Buku'] || 'Data tanpa judul', `Error: ${error.message}`);
-            failed++;
-        }
-        
-        // Update counts
-        updateResultCounts(success, failed, skipped);
-        
-        // Small delay to show progress
-        await new Promise(resolve => setTimeout(resolve, 100));
-    }
-    
-    // Final update
-    progressStatus.textContent = 'Selesai';
-    progressFill.style.background = 'var(--success)';
-    
-    // Refresh books list
-    setTimeout(() => {
-        window.fetchBooks();
-    }, 1000);
-}
-
-function resetUploadResults() {
-    successCount.textContent = '0';
-    failedCount.textContent = '0';
-    skippedCount.textContent = '0';
-    resultsDetails.innerHTML = '';
-    progressFill.style.width = '0%';
-    progressFill.style.background = 'var(--success)';
-    progressStatus.textContent = 'Memproses...';
-    progressCount.textContent = '0/0';
-}
-
-function addResultRow(status, title, message) {
-    const statusText = {
-        'success': 'Berhasil',
-        'failed': 'Gagal',
-        'skipped': 'Dilewati'
-    };
-    
-    const row = document.createElement('div');
-    row.className = `result-row ${status}`;
-    row.innerHTML = `
-        <div class="result-info">
-            <div class="result-title">${title}</div>
-            <div class="result-message">${message}</div>
-        </div>
-        <div class="result-status ${status}">${statusText[status]}</div>
-    `;
-    
-    resultsDetails.appendChild(row);
-}
-
-function updateResultCounts(success, failed, skipped) {
-    successCount.textContent = success;
-    failedCount.textContent = failed;
-    skippedCount.textContent = skipped;
-}
-
-// Add translations for new text
-translations.id['bulk-upload-title'] = 'Upload Buku Massal via Excel';
-translations.id['bulk-upload-description'] = 'Upload data buku secara massal menggunakan file Excel. Unduh template terlebih dahulu untuk memastikan format yang benar.';
-translations.id['download-template'] = '📥 Unduh Template Excel';
-translations.id['upload-excel'] = '📤 Upload File Excel';
-translations.id['no-file-selected'] = 'Belum ada file dipilih';
-translations.id['process-data'] = '🔄 Proses Data';
-translations.id['processing'] = 'Memproses...';
-translations.id['upload-results'] = 'Hasil Upload';
-translations.id['successful'] = 'Berhasil';
-translations.id['failed'] = 'Gagal';
-translations.id['skipped'] = 'Dilewati';
-
-translations.en['bulk-upload-title'] = 'Bulk Upload Books via Excel';
-translations.en['bulk-upload-description'] = 'Upload book data in bulk using Excel file. Download the template first to ensure correct format.';
-translations.en['download-template'] = '📥 Download Excel Template';
-translations.en['upload-excel'] = '📤 Upload Excel File';
-translations.en['no-file-selected'] = 'No file selected';
-translations.en['process-data'] = '🔄 Process Data';
-translations.en['processing'] = 'Processing...';
-translations.en['upload-results'] = 'Upload Results';
-translations.en['successful'] = 'Successful';
-translations.en['failed'] = 'Failed';
-translations.en['skipped'] = 'Skipped';
-
-translations.ar['bulk-upload-title'] = 'رفع الكتب بكميات كبيرة عبر Excel';
-translations.ar['bulk-upload-description'] = 'رفع بيانات الكتاب بكميات كبيرة باستخدام ملف Excel. قم بتنزيل القالب أولاً لضمان التنسيق الصحيح.';
-translations.ar['download-template'] = '📥 تنزيل قالب Excel';
-translations.ar['upload-excel'] = '📤 رفع ملف Excel';
-translations.ar['no-file-selected'] = 'لم يتم اختيار ملف';
-translations.ar['process-data'] = '🔄 معالجة البيانات';
-translations.ar['processing'] = 'جاري المعالجة...';
-translations.ar['upload-results'] = 'نتائج الرفع';
-translations.ar['successful'] = 'ناجح';
-translations.ar['failed'] = 'فشل';
-translations.ar['skipped'] = 'تم تخطيه';
     </script>
 </body>
 </html>
