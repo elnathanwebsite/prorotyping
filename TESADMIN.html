@@ -3377,6 +3377,9 @@ const EXCEL_TEMPLATE = {
     ]
 };
 
+// Global variables
+let isUploading = false;
+
 // Initialize bulk upload functionality
 function initBulkUpload() {
     const downloadTemplateBtn = document.getElementById('downloadTemplate');
@@ -3389,10 +3392,17 @@ function initBulkUpload() {
     if (excelFileInput) {
         excelFileInput.addEventListener('change', handleExcelUpload);
     }
+    
+    console.log('Bulk upload initialized');
 }
 
 // Download Excel template
 async function downloadExcelTemplate() {
+    if (isUploading) {
+        showNotification('Sedang memproses upload, tunggu sebentar', 'warning');
+        return;
+    }
+
     try {
         // Load required libraries
         await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
@@ -3413,6 +3423,11 @@ async function downloadExcelTemplate() {
         // Set column widths
         ws['!cols'] = EXCEL_TEMPLATE.columns.map(col => ({ width: col.width }));
         
+        // Style header row
+        if (!ws['!merges']) ws['!merges'] = [];
+        if (!ws['!rows']) ws['!rows'] = [];
+        ws['!rows'][0] = { hpt: 20 }; // Set header row height
+        
         // Add worksheet to workbook
         XLSX.utils.book_append_sheet(wb, ws, 'Template Buku');
         
@@ -3420,48 +3435,80 @@ async function downloadExcelTemplate() {
         const instructionData = [
             ['PANDUAN PENGISIAN TEMPLATE BUKU'],
             [''],
-            ['Kolom dengan tanda * (bintang) wajib diisi'],
+            ['📋 INFORMASI UMUM:'],
+            ['- Kolom dengan tanda * (bintang) wajib diisi'],
+            ['- Hapus baris contoh sebelum mengisi data Anda'],
+            ['- Simpan file dalam format .xlsx'],
             [''],
-            ['HARGA:'],
+            ['💰 HARGA:'],
             ['- Harga Asli: Harga sebelum diskon'],
             ['- Harga Dasar: Harga setelah diskon penerbit'],
             ['- Format: angka desimal (contoh: 25.99)'],
+            ['- Jangan gunakan simbol mata uang ($, Rp, dll)'],
             [''],
-            ['DISKON:'],
+            ['🎯 DISKON:'],
             ['- Format: persentase (contoh: 10%)'],
+            ['- Bisa juga angka saja (10 akan diubah jadi 10%)'],
             ['- Kosongkan jika tidak ada diskon'],
             [''],
-            ['PENERBIT & KATEGORI:'],
-            ['- Harus sudah terdaftar di sistem'],
-            ['- Gunakan nama persis seperti di sistem'],
+            ['🏢 PENERBIT & 📚 KATEGORI:'],
+            ['- Sistem akan mencocokkan dengan data yang ada'],
+            ['- Tidak harus sama persis, bisa partial match'],
+            ['- Contoh: "Pustaka Imam" akan cocok dengan "Pustaka Imam Syafii"'],
             [''],
-            ['BERAT:'],
+            ['⚖️ BERAT:'],
             ['- Satuan: kg, g, ons, lb'],
-            ['- Contoh: 0.5 kg, 500 g'],
+            ['- Contoh: 0.5 kg, 500 g, 2 ons'],
+            ['- Jika satuan tidak valid, akan default ke kg'],
             [''],
-            ['CATATAN:'],
-            ['- Pastikan format data sesuai'],
-            ['- Simpan file dalam format .xlsx'],
-            ['- Hapus baris contoh sebelum upload']
+            ['📝 CATATAN:'],
+            ['- Data akan divalidasi sebelum disimpan'],
+            ['- Baris dengan error akan ditampilkan dan bisa diperbaiki'],
+            ['- Upload bisa diulang dengan file yang sudah diperbaiki'],
+            [''],
+            ['❌ CONTOH FORMAT SALAH:'],
+            ['- Harga: $25.00 (salah) → 25.00 (benar)'],
+            ['- Diskon: 10 (salah) → 10% (benar)'],
+            ['- Berat: 500 (salah) → 500 g (benar)']
         ];
         
         const instructionWs = XLSX.utils.aoa_to_sheet(instructionData);
+        
+        // Set column widths for instructions
+        instructionWs['!cols'] = [{ width: 80 }];
+        
         XLSX.utils.book_append_sheet(wb, instructionWs, 'Panduan');
         
         // Download file
         XLSX.writeFile(wb, 'template_upload_buku.xlsx');
         
-        showNotification('Template berhasil didownload', 'success');
+        showNotification('Template berhasil didownload! Periksa sheet "Panduan" untuk petunjuk lengkap.', 'success');
+        
     } catch (error) {
         console.error('Error downloading template:', error);
-        showNotification('Gagal mendownload template', 'error');
+        showNotification('Gagal mendownload template: ' + error.message, 'error');
     }
 }
 
 // Handle Excel file upload
 async function handleExcelUpload(event) {
+    if (isUploading) {
+        showNotification('Sedang memproses upload sebelumnya, tunggu sebentar', 'warning');
+        return;
+    }
+
     const file = event.target.files[0];
     if (!file) return;
+    
+    // Validate file type
+    if (!file.name.match(/\.(xlsx|xls)$/i)) {
+        showNotification('Hanya file Excel (.xlsx, .xls) yang didukung', 'error');
+        resetUploadForm();
+        return;
+    }
+    
+    isUploading = true;
+    disableUploadButtons(true);
     
     try {
         // Load required libraries
@@ -3470,10 +3517,32 @@ async function handleExcelUpload(event) {
         showUploadProgress(0, 'Membaca file Excel...');
         
         const data = await readExcelFile(file);
+        
+        // Debug: Tampilkan data yang dibaca
+        console.log('📊 Data dari Excel:', data);
+        console.log('📈 Jumlah baris:', data.length);
+        
+        if (data.length === 0) {
+            showNotification('File Excel kosong atau tidak ada data. Pastikan ada data di bawah header.', 'warning');
+            resetUploadForm();
+            return;
+        }
+        
+        // Show file info
+        showFileInfo(file, data.length);
+        
         const books = await validateExcelData(data);
         
         if (books.length === 0) {
-            showNotification('Tidak ada data buku yang valid untuk diupload', 'warning');
+            showNotification('Tidak ada data buku yang valid untuk diupload. Periksa hasil validasi di bawah.', 'warning');
+            resetUploadForm();
+            return;
+        }
+        
+        // Confirm before upload
+        const shouldProceed = confirm(`Ditemukan ${books.length} buku valid. Lanjutkan upload?`);
+        if (!shouldProceed) {
+            showNotification('Upload dibatalkan', 'info');
             resetUploadForm();
             return;
         }
@@ -3481,9 +3550,12 @@ async function handleExcelUpload(event) {
         await processBulkUpload(books);
         
     } catch (error) {
-        console.error('Error processing Excel file:', error);
+        console.error('❌ Error processing Excel file:', error);
         showNotification('Gagal memproses file Excel: ' + error.message, 'error');
         resetUploadForm();
+    } finally {
+        isUploading = false;
+        disableUploadButtons(false);
     }
 }
 
@@ -3496,25 +3568,69 @@ function readExcelFile(file) {
             try {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, { type: 'array' });
-                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                const firstSheetName = workbook.SheetNames[0];
+                const firstSheet = workbook.Sheets[firstSheetName];
                 
-                // Remove header row
-                const headers = jsonData[0];
-                const rows = jsonData.slice(1).filter(row => row.length > 0);
+                console.log('📋 Sheet name:', firstSheetName);
                 
-                // Convert to object array
-                const result = rows.map(row => {
-                    const obj = {};
-                    headers.forEach((header, index) => {
-                        obj[header] = row[index];
-                    });
-                    return obj;
+                // Convert to JSON dengan header
+                const jsonData = XLSX.utils.sheet_to_json(firstSheet, { 
+                    header: 1,
+                    defval: '',
+                    blankrows: false
                 });
                 
-                resolve(result);
+                console.log('📄 Raw Excel data:', jsonData);
+                
+                if (!jsonData || jsonData.length === 0) {
+                    reject(new Error('File Excel kosong'));
+                    return;
+                }
+                
+                // Cari header row (baris pertama yang tidak kosong)
+                let headerRowIndex = 0;
+                for (let i = 0; i < jsonData.length; i++) {
+                    if (jsonData[i].some(cell => cell && cell.toString().trim() !== '')) {
+                        headerRowIndex = i;
+                        break;
+                    }
+                }
+                
+                const headers = jsonData[headerRowIndex].map(header => 
+                    header ? header.toString().trim() : ''
+                );
+                
+                console.log('🏷️ Headers found:', headers);
+                
+                // Process data rows (setelah header)
+                const rows = [];
+                for (let i = headerRowIndex + 1; i < jsonData.length; i++) {
+                    const row = jsonData[i];
+                    // Skip empty rows
+                    if (!row || row.length === 0 || !row.some(cell => cell !== null && cell !== '' && cell !== undefined)) {
+                        continue;
+                    }
+                    
+                    const rowObj = {};
+                    headers.forEach((header, index) => {
+                        if (header && header.trim() !== '') {
+                            const value = row[index];
+                            rowObj[header] = value !== undefined ? value : '';
+                        }
+                    });
+                    
+                    // Only add row if it has at least one non-empty required field
+                    if (rowObj['Judul Buku*'] || rowObj['Penulis*']) {
+                        rows.push(rowObj);
+                    }
+                }
+                
+                console.log('✅ Processed rows:', rows);
+                resolve(rows);
+                
             } catch (error) {
-                reject(error);
+                console.error('❌ Error reading Excel:', error);
+                reject(new Error('Format file Excel tidak valid: ' + error.message));
             }
         };
         
@@ -3534,84 +3650,157 @@ async function validateExcelData(data) {
     const publishers = await getPublishers();
     const categories = await getCategories();
     
+    console.log('🏢 Publishers available:', publishers.map(p => p.name));
+    console.log('📚 Categories available:', categories.map(c => c.name_id));
+    
     for (let i = 0; i < data.length; i++) {
         const row = data[i];
-        const rowNumber = i + 2; // +2 because of header and 1-based index
+        const rowNumber = i + 2; // +2 karena header dan index 1-based
         
         try {
+            // Skip row kosong
+            if (!row['Judul Buku*'] && !row['Penulis*']) {
+                console.log(`⏩ Baris ${rowNumber} dilewati: data kosong`);
+                continue;
+            }
+
             // Required field validation
-            if (!row['Judul Buku*']) {
+            if (!row['Judul Buku*'] || row['Judul Buku*'].toString().trim() === '') {
                 throw new Error(`Judul Buku wajib diisi`);
             }
-            if (!row['Penulis*']) {
+            if (!row['Penulis*'] || row['Penulis*'].toString().trim() === '') {
                 throw new Error(`Penulis wajib diisi`);
             }
-            if (!row['Harga Asli (USD)*'] || isNaN(parseFloat(row['Harga Asli (USD)*']))) {
-                throw new Error(`Harga Asli harus berupa angka`);
+            
+            const originalPrice = parseFloat(row['Harga Asli (USD)*']);
+            if (!row['Harga Asli (USD)*'] || isNaN(originalPrice) || originalPrice <= 0) {
+                throw new Error(`Harga Asli harus berupa angka positif`);
             }
-            if (!row['Harga Dasar (USD)*'] || isNaN(parseFloat(row['Harga Dasar (USD)*']))) {
-                throw new Error(`Harga Dasar harus berupa angka`);
+            
+            const basePrice = parseFloat(row['Harga Dasar (USD)*']);
+            if (!row['Harga Dasar (USD)*'] || isNaN(basePrice) || basePrice <= 0) {
+                throw new Error(`Harga Dasar harus berupa angka positif`);
             }
-            if (!row['Penerbit*']) {
+
+            // Publisher validation - flexible matching
+            let publisher = null;
+            if (row['Penerbit*'] && row['Penerbit*'].toString().trim() !== '') {
+                const publisherName = row['Penerbit*'].toString().trim();
+                
+                // Exact match
+                publisher = publishers.find(p => 
+                    p.name.toLowerCase() === publisherName.toLowerCase()
+                );
+                
+                // Partial match jika exact tidak ditemukan
+                if (!publisher) {
+                    publisher = publishers.find(p => 
+                        p.name.toLowerCase().includes(publisherName.toLowerCase()) ||
+                        publisherName.toLowerCase().includes(p.name.toLowerCase())
+                    );
+                }
+                
+                if (!publisher) {
+                    const availablePublishers = publishers.map(p => p.name).join(', ');
+                    throw new Error(`Penerbit "${publisherName}" tidak ditemukan. Penerbit yang tersedia: ${availablePublishers}`);
+                }
+            } else {
                 throw new Error(`Penerbit wajib diisi`);
             }
-            if (!row['Kategori*']) {
+
+            // Category validation - flexible matching
+            let category = null;
+            if (row['Kategori*'] && row['Kategori*'].toString().trim() !== '') {
+                const categoryName = row['Kategori*'].toString().trim();
+                
+                // Exact match
+                category = categories.find(c => 
+                    c.name_id.toLowerCase() === categoryName.toLowerCase()
+                );
+                
+                // Partial match jika exact tidak ditemukan
+                if (!category) {
+                    category = categories.find(c => 
+                        c.name_id.toLowerCase().includes(categoryName.toLowerCase()) ||
+                        categoryName.toLowerCase().includes(c.name_id.toLowerCase())
+                    );
+                }
+                
+                if (!category) {
+                    const availableCategories = categories.map(c => c.name_id).join(', ');
+                    throw new Error(`Kategori "${categoryName}" tidak ditemukan. Kategori yang tersedia: ${availableCategories}`);
+                }
+            } else {
                 throw new Error(`Kategori wajib diisi`);
             }
             
-            // Publisher validation
-            const publisher = publishers.find(p => 
-                p.name.toLowerCase() === row['Penerbit*'].toString().toLowerCase().trim()
-            );
-            if (!publisher) {
-                throw new Error(`Penerbit "${row['Penerbit*']}" tidak ditemukan`);
-            }
-            
-            // Category validation
-            const category = categories.find(c => 
-                c.name_id.toLowerCase() === row['Kategori*'].toString().toLowerCase().trim()
-            );
-            if (!category) {
-                throw new Error(`Kategori "${row['Kategori*']}" tidak ditemukan`);
-            }
-            
-            // Discount validation
+            // Discount validation - flexible
             let discount = row['Diskon'] || '';
-            if (discount && !discount.toString().includes('%')) {
-                throw new Error(`Format diskon harus dalam persen (contoh: 10%)`);
+            if (discount && discount.toString().trim() !== '') {
+                discount = discount.toString().replace('%', '').trim();
+                if (!isNaN(parseFloat(discount)) && parseFloat(discount) > 0) {
+                    discount = parseFloat(discount) + '%';
+                } else {
+                    discount = ''; // Jika format salah, kosongkan
+                }
             }
             
-            // Weight unit validation
+            // Weight unit validation - flexible
             const weightUnit = row['Berat Satuan'] || '';
-            if (weightUnit && !['kg', 'g', 'ons', 'lb'].includes(weightUnit.toLowerCase())) {
-                throw new Error(`Satuan berat harus kg, g, ons, atau lb`);
+            const validUnits = ['kg', 'g', 'ons', 'lb'];
+            let finalWeightUnit = weightUnit && weightUnit.toString().trim() !== '' ? weightUnit.toString().trim() : '';
+            if (finalWeightUnit && !validUnits.includes(finalWeightUnit.toLowerCase())) {
+                // Default ke kg jika satuan tidak valid
+                finalWeightUnit = 'kg';
+            }
+            
+            // Weight value validation
+            let weightValue = null;
+            if (row['Berat Nilai'] && row['Berat Nilai'].toString().trim() !== '') {
+                weightValue = parseFloat(row['Berat Nilai']);
+                if (isNaN(weightValue) || weightValue <= 0) {
+                    weightValue = null; // Jika nilai tidak valid, set null
+                }
+            }
+            
+            // Print count validation
+            let printCount = null;
+            if (row['Cetakan Ke'] && row['Cetakan Ke'].toString().trim() !== '') {
+                printCount = parseInt(row['Cetakan Ke']);
+                if (isNaN(printCount) || printCount <= 0) {
+                    printCount = null;
+                }
             }
             
             // Prepare book data
             const bookData = {
                 title: row['Judul Buku*'].toString().trim(),
                 author: row['Penulis*'].toString().trim(),
-                original_price: parseFloat(row['Harga Asli (USD)*']),
-                base_price: parseFloat(row['Harga Dasar (USD)*']),
+                original_price: originalPrice,
+                base_price: basePrice,
                 publisher_id: publisher.id,
                 category_id: category.id,
-                discount: discount.toString().trim(),
-                volumes: row['Jilid'] ? row['Jilid'].toString().trim() : null,
-                pages: row['Halaman'] ? row['Halaman'].toString().trim() : null,
-                year: row['Tahun Terbit'] ? row['Tahun Terbit'].toString().trim() : null,
-                weight_value: row['Berat Nilai'] ? parseFloat(row['Berat Nilai']) : null,
-                weight_unit: weightUnit,
-                text_color: row['Warna Tulisan'] ? row['Warna Tulisan'].toString().trim() : null,
-                cover_type: row['Jenis Cover'] ? row['Jenis Cover'].toString().trim() : null,
-                paper_type: row['Jenis Kertas'] ? row['Jenis Kertas'].toString().trim() : null,
-                print_count: row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null,
-                editor: row['Editor'] ? row['Editor'].toString().trim() : null,
-                description: row['Deskripsi'] ? row['Deskripsi'].toString().trim() : null
+                discount: discount,
+                volumes: row['Jilid'] && row['Jilid'].toString().trim() !== '' ? row['Jilid'].toString().trim() : null,
+                pages: row['Halaman'] && row['Halaman'].toString().trim() !== '' ? row['Halaman'].toString().trim() : null,
+                year: row['Tahun Terbit'] && row['Tahun Terbit'].toString().trim() !== '' ? row['Tahun Terbit'].toString().trim() : null,
+                weight_value: weightValue,
+                weight_unit: finalWeightUnit,
+                text_color: row['Warna Tulisan'] && row['Warna Tulisan'].toString().trim() !== '' ? row['Warna Tulisan'].toString().trim() : null,
+                cover_type: row['Jenis Cover'] && row['Jenis Cover'].toString().trim() !== '' ? row['Jenis Cover'].toString().trim() : null,
+                paper_type: row['Jenis Kertas'] && row['Jenis Kertas'].toString().trim() !== '' ? row['Jenis Kertas'].toString().trim() : null,
+                print_count: printCount,
+                editor: row['Editor'] && row['Editor'].toString().trim() !== '' ? row['Editor'].toString().trim() : null,
+                description: row['Deskripsi'] && row['Deskripsi'].toString().trim() !== '' ? row['Deskripsi'].toString().trim() : null,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
             };
             
             validBooks.push(bookData);
+            console.log(`✅ Baris ${rowNumber} valid:`, bookData.title);
             
         } catch (error) {
+            console.log(`❌ Baris ${rowNumber} error:`, error.message);
             errors.push({
                 row: rowNumber,
                 title: row['Judul Buku*'] || 'Tidak ada judul',
@@ -3619,7 +3808,7 @@ async function validateExcelData(data) {
             });
         }
     }
-    
+
     // Show validation results
     showValidationResults(validBooks, errors);
     
@@ -3648,17 +3837,25 @@ async function processBulkUpload(books) {
                 throw new Error(error.message);
             }
             
-            results.success.push(book.title);
+            results.success.push({
+                title: book.title,
+                author: book.author,
+                price: book.base_price
+            });
             
         } catch (error) {
+            console.error(`❌ Gagal upload buku "${book.title}":`, error);
             results.error.push({
                 title: book.title,
                 error: error.message
             });
         }
+        
+        // Small delay to avoid overwhelming the database
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
     
-    showUploadProgress(100, 'Upload selesai');
+    showUploadProgress(100, 'Upload selesai!');
     showUploadResults(results);
     resetUploadForm();
     
@@ -3667,7 +3864,7 @@ async function processBulkUpload(books) {
         if (window.fetchBooks) {
             window.fetchBooks();
         }
-    }, 1000);
+    }, 2000);
 }
 
 // Utility functions
@@ -3681,19 +3878,31 @@ function loadScript(src) {
         const script = document.createElement('script');
         script.src = src;
         script.onload = resolve;
-        script.onerror = reject;
+        script.onerror = () => reject(new Error(`Gagal load script: ${src}`));
         document.head.appendChild(script);
     });
 }
 
 async function getPublishers() {
-    const { data } = await supabase.from('publishers').select('id, name');
-    return data || [];
+    try {
+        const { data, error } = await supabase.from('publishers').select('id, name');
+        if (error) throw error;
+        return data || [];
+    } catch (error) {
+        console.error('Error fetching publishers:', error);
+        return [];
+    }
 }
 
 async function getCategories() {
-    const { data } = await supabase.from('categories').select('id, name_id');
-    return data || [];
+    try {
+        const { data, error } = await supabase.from('categories').select('id, name_id');
+        if (error) throw error;
+        return data || [];
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        return [];
+    }
 }
 
 function showUploadProgress(percent, text) {
@@ -3708,6 +3917,28 @@ function showUploadProgress(percent, text) {
     }
 }
 
+function showFileInfo(file, rowCount) {
+    const uploadResults = document.getElementById('uploadResults');
+    const resultsContent = document.getElementById('resultsContent');
+    
+    if (!uploadResults || !resultsContent) return;
+    
+    const fileInfo = `
+        <div class="file-info">
+            <h5>📁 Informasi File:</h5>
+            <div class="file-details">
+                <div><strong>Nama File:</strong> ${file.name}</div>
+                <div><strong>Ukuran:</strong> ${(file.size / 1024).toFixed(2)} KB</div>
+                <div><strong>Jumlah Baris:</strong> ${rowCount} baris</div>
+                <div><strong>Waktu Upload:</strong> ${new Date().toLocaleString('id-ID')}</div>
+            </div>
+        </div>
+    `;
+    
+    resultsContent.innerHTML = fileInfo;
+    uploadResults.style.display = 'block';
+}
+
 function showValidationResults(validBooks, errors) {
     const uploadResults = document.getElementById('uploadResults');
     const resultsContent = document.getElementById('resultsContent');
@@ -3715,25 +3946,32 @@ function showValidationResults(validBooks, errors) {
     if (!uploadResults || !resultsContent) return;
     
     let html = `
+        <div class="validation-header">
+            <h5>📊 Hasil Validasi</h5>
+        </div>
         <div class="bulk-summary">
             <div class="summary-item">
-                <span>Data valid:</span>
-                <span>${validBooks.length} buku</span>
+                <span>✅ Data valid:</span>
+                <span><strong>${validBooks.length} buku</strong></span>
             </div>
             <div class="summary-item">
-                <span>Error:</span>
-                <span>${errors.length} baris</span>
+                <span>❌ Error:</span>
+                <span><strong>${errors.length} baris</strong></span>
             </div>
             <div class="summary-total">
-                <span>Total data:</span>
-                <span>${validBooks.length + errors.length} baris</span>
+                <span>📈 Total data:</span>
+                <span><strong>${validBooks.length + errors.length} baris</strong></span>
             </div>
         </div>
     `;
     
     if (errors.length > 0) {
-        html += '<h5>Data dengan Error:</h5>';
-        errors.forEach(error => {
+        html += `
+            <div class="errors-section">
+                <h6>⚠️ Data dengan Error (Perbaiki sebelum upload):</h6>
+                <div class="errors-list">
+        `;
+        errors.slice(0, 10).forEach(error => {
             html += `
                 <div class="result-item result-error">
                     <div class="result-icon">❌</div>
@@ -3744,27 +3982,51 @@ function showValidationResults(validBooks, errors) {
                 </div>
             `;
         });
+        
+        if (errors.length > 10) {
+            html += `
+                <div class="result-item result-error">
+                    <div class="result-icon">📋</div>
+                    <div class="result-message">
+                        <em>... dan ${errors.length - 10} error lainnya</em>
+                    </div>
+                </div>
+            `;
+        }
+        
+        html += `</div></div>`;
     }
     
     if (validBooks.length > 0) {
-        html += '<h5>Data Valid:</h5>';
+        html += `
+            <div class="valid-section">
+                <h6>📚 Data Valid (Siap diupload):</h6>
+                <div class="valid-list">
+        `;
         validBooks.slice(0, 5).forEach(book => {
             html += `
                 <div class="result-item result-success">
                     <div class="result-icon">✅</div>
                     <div class="result-message">
                         <strong>${book.title}</strong><br>
-                        <small>${book.author} - $${book.base_price}</small>
+                        <small>${book.author} - $${book.base_price} - ${book.publisher_id}</small>
                     </div>
                 </div>
             `;
         });
         
         if (validBooks.length > 5) {
-            html += `<div style="text-align: center; margin-top: 0.5rem;">
-                <em>... dan ${validBooks.length - 5} buku lainnya</em>
-            </div>`;
+            html += `
+                <div class="result-item result-success">
+                    <div class="result-icon">📚</div>
+                    <div class="result-message">
+                        <em>... dan ${validBooks.length - 5} buku lainnya</em>
+                    </div>
+                </div>
+            `;
         }
+        
+        html += `</div></div>`;
     }
     
     resultsContent.innerHTML = html;
@@ -3778,21 +4040,32 @@ function showUploadResults(results) {
     if (!uploadResults || !resultsContent) return;
     
     let html = `
+        <div class="upload-header">
+            <h5>🎉 Hasil Upload</h5>
+        </div>
         <div class="bulk-summary">
             <div class="summary-item">
-                <span>Berhasil:</span>
-                <span>${results.success.length} buku</span>
+                <span>✅ Berhasil:</span>
+                <span><strong>${results.success.length} buku</strong></span>
             </div>
             <div class="summary-item">
-                <span>Gagal:</span>
-                <span>${results.error.length} buku</span>
+                <span>❌ Gagal:</span>
+                <span><strong>${results.error.length} buku</strong></span>
+            </div>
+            <div class="summary-total">
+                <span>📊 Total diproses:</span>
+                <span><strong>${results.success.length + results.error.length} buku</strong></span>
             </div>
         </div>
     `;
     
     if (results.error.length > 0) {
-        html += '<h5>Buku yang Gagal diupload:</h5>';
-        results.error.forEach(item => {
+        html += `
+            <div class="errors-section">
+                <h6>❌ Buku yang Gagal diupload:</h6>
+                <div class="errors-list">
+        `;
+        results.error.slice(0, 5).forEach(item => {
             html += `
                 <div class="result-item result-error">
                     <div class="result-icon">❌</div>
@@ -3803,26 +4076,64 @@ function showUploadResults(results) {
                 </div>
             `;
         });
+        
+        if (results.error.length > 5) {
+            html += `
+                <div class="result-item result-error">
+                    <div class="result-icon">📋</div>
+                    <div class="result-message">
+                        <em>... dan ${results.error.length - 5} error lainnya</em>
+                    </div>
+                </div>
+            `;
+        }
+        
+        html += `</div></div>`;
     }
     
     if (results.success.length > 0) {
-        html += '<h5>Buku yang Berhasil diupload:</h5>';
-        results.success.slice(0, 5).forEach(title => {
+        html += `
+            <div class="success-section">
+                <h6>✅ Buku yang Berhasil diupload:</h6>
+                <div class="success-list">
+        `;
+        results.success.slice(0, 5).forEach(item => {
             html += `
                 <div class="result-item result-success">
                     <div class="result-icon">✅</div>
                     <div class="result-message">
-                        <strong>${title}</strong>
+                        <strong>${item.title}</strong><br>
+                        <small>${item.author} - $${item.price}</small>
                     </div>
                 </div>
             `;
         });
         
         if (results.success.length > 5) {
-            html += `<div style="text-align: center; margin-top: 0.5rem;">
-                <em>... dan ${results.success.length - 5} buku lainnya</em>
-            </div>`;
+            html += `
+                <div class="result-item result-success">
+                    <div class="result-icon">📚</div>
+                    <div class="result-message">
+                        <em>... dan ${results.success.length - 5} buku lainnya</em>
+                    </div>
+                </div>
+            `;
         }
+        
+        html += `</div></div>`;
+        
+        // Success message
+        html += `
+            <div class="success-message">
+                <div class="result-item result-success">
+                    <div class="result-icon">🎉</div>
+                    <div class="result-message">
+                        <strong>Upload berhasil!</strong><br>
+                        <small>Data buku telah disimpan ke database dan akan muncul di daftar buku.</small>
+                    </div>
+                </div>
+            </div>
+        `;
     }
     
     resultsContent.innerHTML = html;
@@ -3840,63 +4151,70 @@ function resetUploadForm() {
     if (uploadProgress) {
         setTimeout(() => {
             uploadProgress.style.display = 'none';
-        }, 2000);
+        }, 3000);
+    }
+}
+
+function disableUploadButtons(disabled) {
+    const downloadBtn = document.getElementById('downloadTemplate');
+    const uploadBtn = document.querySelector('label[for="excelFile"]');
+    
+    if (downloadBtn) {
+        downloadBtn.disabled = disabled;
+        downloadBtn.style.opacity = disabled ? '0.6' : '1';
+    }
+    
+    if (uploadBtn) {
+        uploadBtn.style.opacity = disabled ? '0.6' : '1';
+        uploadBtn.style.cursor = disabled ? 'not-allowed' : 'pointer';
     }
 }
 
 function showNotification(message, type = 'info') {
-    // You can implement a notification system here
-    alert(message);
+    // Simple notification - bisa diganti dengan library notifikasi
+    const bgColor = type === 'success' ? '#4CAF50' : 
+                   type === 'error' ? '#f44336' : 
+                   type === 'warning' ? '#ff9800' : '#2196F3';
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${bgColor};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 5px;
+        z-index: 10000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        max-width: 400px;
+        word-wrap: break-word;
+    `;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, 5000);
 }
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    initBulkUpload();
+    // Tunggu sebentar untuk memastikan semua resource loaded
+    setTimeout(() => {
+        initBulkUpload();
+        console.log('🚀 Bulk Upload System Ready!');
+    }, 1000);
 });
 
-// Add translations for new text
-const bulkUploadTranslations = {
-    id: {
-        "bulk-upload": "Upload Buku dari Excel",
-        "upload-instruction": "Download template Excel, isi data buku, lalu upload file di sini.",
-        "download-template": "📥 Download Template Excel",
-        "template-guide": "Panduan Pengisian Template:",
-        "guide-required": "Kolom dengan * wajib diisi",
-        "guide-price": "Harga dalam format angka (contoh: 25.99)",
-        "guide-discount": "Diskon dalam format persen (contoh: 10%)",
-        "guide-publisher": "Penerbit harus sudah terdaftar di sistem",
-        "guide-category": "Kategori harus sudah terdaftar di sistem"
-    },
-    en: {
-        "bulk-upload": "Upload Books from Excel",
-        "upload-instruction": "Download Excel template, fill in book data, then upload the file here.",
-        "download-template": "📥 Download Excel Template",
-        "template-guide": "Template Filling Guide:",
-        "guide-required": "Columns with * are required",
-        "guide-price": "Price in number format (example: 25.99)",
-        "guide-discount": "Discount in percentage format (example: 10%)",
-        "guide-publisher": "Publisher must be registered in the system",
-        "guide-category": "Category must be registered in the system"
-    },
-    ar: {
-        "bulk-upload": "رفع الكتب من Excel",
-        "upload-instruction": "قم بتنزيل قالب Excel، املأ بيانات الكتاب، ثم ارفع الملف هنا.",
-        "download-template": "📥 تنزيل قالب Excel",
-        "template-guide": "دليل تعبئة القالب:",
-        "guide-required": "الحقول مع * مطلوبة",
-        "guide-price": "السعر بتنسيق رقمي (مثال: 25.99)",
-        "guide-discount": "الخصم بنسبة مئوية (مثال: 10%)",
-        "guide-publisher": "يجب أن يكون الناشر مسجلاً في النظام",
-        "guide-category": "يجب أن تكون الفئة مسجلة في النظام"
-    }
-};
-
-// Merge with existing translations
-Object.keys(bulkUploadTranslations).forEach(lang => {
-    if (translations[lang]) {
-        translations[lang] = { ...translations[lang], ...bulkUploadTranslations[lang] };
-    }
-});
+// Export functions untuk akses global
+window.downloadExcelTemplate = downloadExcelTemplate;
+window.handleExcelUpload = handleExcelUpload;
     </script>
 </body>
 </html>
