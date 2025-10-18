@@ -1238,7 +1238,9 @@
                             <tr>
                                 <th data-lang-key="table-customer-name">Nama Pelanggan</th>
                                 <th data-lang-key="table-book">Buku</th>
+                                <th width="120" data-lang-key="table-total-usd">Total (USD)</th>
                                 <th width="120" data-lang-key="table-total-idr">Total (IDR)</th>
+                                <th width="120" data-lang-key="table-total-egp">Total (EGP)</th>
                                 <th width="100" data-lang-key="table-status">Status</th>
                                 <th width="150" data-lang-key="table-date">Tanggal</th>
                             </tr>
@@ -1600,7 +1602,9 @@
                 "order-list": "Daftar Pesanan",
                 "table-customer-name": "Nama Pelanggan",
                 "table-book": "Buku",
+                "table-total-usd": "Total (USD)",
                 "table-total-idr": "Total (IDR)",
+                "table-total-egp": "Total (EGP)",
                 "table-status": "Status",
                 "table-date": "Tanggal",
                 "loading-orders": "Memuat data pesanan...",
@@ -1724,7 +1728,9 @@
                 "order-list": "Order List",
                 "table-customer-name": "Customer Name",
                 "table-book": "Book",
+                "table-total-usd": "Total (USD)",
                 "table-total-idr": "Total (IDR)",
+                "table-total-egp": "Total (EGP)",
                 "table-status": "Status",
                 "table-date": "Date",
                 "loading-orders": "Loading order data...",
@@ -1848,7 +1854,9 @@
                 "order-list": "قائمة الطلبات",
                 "table-customer-name": "اسم العميل",
                 "table-book": "الكتاب",
+                "table-total-usd": "الإجمالي (دولار أمريكي)",
                 "table-total-idr": "الإجمالي (روبية إندونيسية)",
+                "table-total-egp": "الإجمالي (جنيه مصري)",
                 "table-status": "الحالة",
                 "table-date": "التاريخ",
                 "loading-orders": "جاري تحميل بيانات الطلبات...",
@@ -2190,14 +2198,14 @@
                             const worksheet = workbook.Sheets[firstSheetName];
                             
                             // Konversi ke JSON
-                            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
                             
                             // Filter baris kosong jika diperlukan
                             const filteredData = skipEmptyRows ? 
                                 jsonData.filter(row => {
                                     // Cek jika ada setidaknya satu kolom yang terisi
                                     return Object.values(row).some(value => 
-                                        value !== null && value !== undefined && value !== ''
+                                        value !== null && value !== undefined && value.toString().trim() !== ''
                                     );
                                 }) : jsonData;
                             
@@ -2293,11 +2301,11 @@
                     errors.push(`Baris ${index + 1}: Penulis harus diisi`);
                 }
                 
-                if (bookData.base_price == null || isNaN(bookData.base_price)) {
+                if (isNaN(bookData.base_price)) {
                     errors.push(`Baris ${index + 1}: Harga dasar harus berupa angka`);
                 }
                 
-                if (bookData.original_price == null || isNaN(bookData.original_price)) {
+                if (isNaN(bookData.original_price)) {
                     errors.push(`Baris ${index + 1}: Harga asli harus berupa angka`);
                 }
                 
@@ -2664,14 +2672,23 @@
                 if (action === 'delete') {
                     if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedBooks.size} buku?`)) return;
                     
-                    for (const bookId of selectedBooks) {
-                        await deleteItem('books', bookId, () => {});
+                    const idsToDelete = Array.from(selectedBooks);
+
+                    const { error } = await supabase
+                        .from('books')
+                        .delete()
+                        .in('id', idsToDelete);
+
+                    if (error) {
+                        console.error('Error bulk deleting books:', error);
+                        alert('Gagal menghapus buku.');
+                    } else {
+                        selectedBooks.clear();
+                        updateSelectedCount();
+                        selectAllCheckbox.checked = false;
+                        window.fetchBooks();
+                        alert(`${idsToDelete.length} buku berhasil dihapus`);
                     }
-                    selectedBooks.clear();
-                    updateSelectedCount();
-                    selectAllCheckbox.checked = false;
-                    window.fetchBooks();
-                    alert(`${selectedBooks.size} buku berhasil dihapus`);
                 }
             });
 
@@ -3386,14 +3403,20 @@
 
             const ordersTableBody = document.getElementById('ordersTableBody');
             const renderOrders = (orders) => {
-                ordersTableBody.innerHTML = orders.map(o => `
+                ordersTableBody.innerHTML = orders.map(o => {
+                    const totalIdr = o.total_price || 0;
+                    const totalUsd = totalIdr / currencySettings.usd_rate;
+                    const totalEgp = totalUsd * currencySettings.egp_rate;
+                    return `
                     <tr>
                         <td>${o.name}</td>
                         <td>${o.book_title}</td>
-                        <td>Rp ${o.total_price.toLocaleString('id-ID')}</td>
+                        <td>$${totalUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td>Rp ${totalIdr.toLocaleString('id-ID')}</td>
+                        <td>E£ ${totalEgp.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td>${o.status}</td>
                         <td>${new Date(o.created_at).toLocaleString('id-ID')}</td>
-                    </tr>`).join('');
+                    </tr>`}).join('');
             };
             
             window.fetchOrders = () => fetchData('orders', 'ordersTableBody', 'loadingOrders', renderOrders);
