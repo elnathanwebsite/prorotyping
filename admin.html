@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin - Toko Buku Islam</title>
     <style>
-        /* CSS tetap sama seperti sebelumnya */
         :root {
             --primary: #2c3e50;
             --primary-light: #f8f9fa;
@@ -862,12 +861,16 @@
                                 <input type="number" step="0.01" id="bookBasePrice" placeholder="0.00" required>
                             </div>
                             <div class="form-group">
-                                <label for="bookPublisher" data-lang-key="book-publisher">Penerbit</label>
-                                <input type="text" id="bookPublisher" placeholder="Nama penerbit">
+                                <label for="bookPublisherSelect" data-lang-key="book-publisher">Penerbit</label>
+                                <select id="bookPublisherSelect">
+                                    <option value="">-- Pilih Penerbit --</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="bookCategory" data-lang-key="book-category">Kategori</label>
-                                <input type="text" id="bookCategory" placeholder="Nama kategori">
+                                <label for="bookCategorySelect" data-lang-key="book-category">Kategori</label>
+                                <select id="bookCategorySelect">
+                                    <option value="">-- Pilih Kategori --</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="bookDiscount" data-lang-key="book-discount">Diskon</label>
@@ -1008,11 +1011,15 @@
                         </div>
                         <div class="form-group">
                             <label for="filterPublisher" data-lang-key="filter-publisher">Penerbit</label>
-                            <input type="text" id="filterPublisher" placeholder="Nama penerbit...">
+                            <select id="filterPublisher">
+                                <option value="">Semua Penerbit</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="filterCategory" data-lang-key="filter-category">Kategori</label>
-                            <input type="text" id="filterCategory" placeholder="Nama kategori...">
+                            <select id="filterCategory">
+                                <option value="">Semua Kategori</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="filterCoverType" data-lang-key="filter-cover-type">Jenis Cover</label>
@@ -1294,12 +1301,16 @@
                         <input type="number" step="0.01" id="editBookBasePrice" placeholder="0.00" required>
                     </div>
                     <div class="form-group">
-                        <label for="editBookPublisher" data-lang-key="book-publisher">Penerbit</label>
-                        <input type="text" id="editBookPublisher" placeholder="Nama penerbit">
+                        <label for="editBookPublisherSelect" data-lang-key="book-publisher">Penerbit</label>
+                        <select id="editBookPublisherSelect">
+                            <option value="">-- Pilih Penerbit --</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="editBookCategory" data-lang-key="book-category">Kategori</label>
-                        <input type="text" id="editBookCategory" placeholder="Nama kategori">
+                        <label for="editBookCategorySelect" data-lang-key="book-category">Kategori</label>
+                        <select id="editBookCategorySelect">
+                            <option value="">-- Pilih Kategori --</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="editBookDiscount" data-lang-key="book-discount">Diskon</label>
@@ -1983,6 +1994,10 @@
             let selectedBooks = new Set();
             let currentFilters = {};
 
+            // Jadikan variabel global tersedia di window object
+            window.allPublishers = allPublishers;
+            window.allCategories = allCategories;
+
             // ==================== FUNGSI UMUM ====================
 
             function saveFormData(formId) {
@@ -2084,100 +2099,6 @@
                 }
             }
 
-            // ==================== FUNGSI BARU UNTUK PENERBIT & PENULIS ====================
-
-            // Fungsi untuk mencari atau membuat penerbit berdasarkan nama
-            async function findOrCreatePublisher(publisherName) {
-                if (!publisherName || publisherName.trim() === '') {
-                    return null;
-                }
-
-                // Cari penerbit berdasarkan nama
-                const { data: existingPublishers, error } = await supabase
-                    .from('publishers')
-                    .select('*')
-                    .ilike('name', publisherName.trim());
-
-                if (error) {
-                    console.error('Error searching for publisher:', error);
-                    return null;
-                }
-
-                // Jika penerbit sudah ada, kembalikan data penerbit
-                if (existingPublishers && existingPublishers.length > 0) {
-                    return existingPublishers[0];
-                }
-
-                // Jika tidak ada, buat penerbit baru
-                const newPublisher = {
-                    name: publisherName.trim(),
-                    letter: publisherName.trim().charAt(0).toUpperCase(),
-                    discount: ''
-                };
-
-                const { data: createdPublisher, error: createError } = await supabase
-                    .from('publishers')
-                    .insert([newPublisher])
-                    .select();
-
-                if (createError) {
-                    console.error('Error creating publisher:', createError);
-                    return null;
-                }
-
-                // Refresh daftar penerbit
-                window.fetchPublishers();
-                
-                return createdPublisher[0];
-            }
-
-            // Fungsi untuk mencari atau membuat kategori berdasarkan nama
-            async function findOrCreateCategory(categoryName) {
-                if (!categoryName || categoryName.trim() === '') {
-                    return null;
-                }
-
-                // Cari kategori berdasarkan nama
-                const { data: existingCategories, error } = await supabase
-                    .from('categories')
-                    .select('*')
-                    .ilike('name_id', categoryName.trim());
-
-                if (error) {
-                    console.error('Error searching for category:', error);
-                    return null;
-                }
-
-                // Jika kategori sudah ada, kembalikan data kategori
-                if (existingCategories && existingCategories.length > 0) {
-                    return existingCategories[0];
-                }
-
-                // Jika tidak ada, buat kategori baru
-                const newCategory = {
-                    name_id: categoryName.trim(),
-                    name_en: categoryName.trim(),
-                    name_ar: categoryName.trim(),
-                    color: '#3498db',
-                    link: `/kategori/${slugify(categoryName.trim())}`
-                };
-
-                const { data: createdCategory, error: createError } = await supabase
-                    .from('categories')
-                    .insert([newCategory])
-                    .select();
-
-                if (createError) {
-                    console.error('Error creating category:', createError);
-                    return null;
-                }
-
-                // Refresh daftar kategori
-                window.fetchCategories();
-                
-                return createdCategory[0];
-            }
-
             // ==================== FUNGSI UPLOAD EXCEL ====================
 
             // Variabel untuk template Excel
@@ -2230,21 +2151,21 @@
                     // Load publishers
                     const { data: publishers, error: pubError } = await supabase.from('publishers').select('id, name');
                     if (pubError) throw pubError;
-                    allPublishers = publishers || [];
+                    window.allPublishers = publishers || [];
 
                     // Load categories
                     const { data: categories, error: catError } = await supabase.from('categories').select('id, name_id');
                     if (catError) throw catError;
-                    allCategories = categories || [];
+                    window.allCategories = categories || [];
 
-                    console.log('Loaded publishers:', allPublishers.length);
-                    console.log('Loaded categories:', allCategories.length);
+                    console.log('Loaded publishers:', window.allPublishers.length);
+                    console.log('Loaded categories:', window.allCategories.length);
                     
-                    return { publishers: allPublishers, categories: allCategories };
+                    return { publishers: window.allPublishers, categories: window.allCategories };
                 } catch (error) {
                     console.error('Error loading publishers and categories:', error);
-                    allPublishers = [];
-                    allCategories = [];
+                    window.allPublishers = [];
+                    window.allCategories = [];
                     return { publishers: [], categories: [] };
                 }
             }
@@ -2295,23 +2216,26 @@
             }
 
             // Fungsi untuk memetakan data Excel ke format database
-            async function mapExcelToBookData(excelData) {
-                const results = [];
-                
-                for (let i = 0; i < excelData.length; i++) {
-                    const row = excelData[i];
+            function mapExcelToBookData(excelData, publishers = [], categories = []) {
+                return excelData.map((row, index) => {
                     try {
-                        // Cari atau buat penerbit
+                        // Cari ID penerbit berdasarkan nama
                         let publisherId = null;
-                        if (row['Penerbit'] && row['Penerbit'].toString().trim() !== '') {
-                            const publisher = await findOrCreatePublisher(row['Penerbit'].toString());
+                        if (row['Penerbit'] && publishers && publishers.length > 0) {
+                            const publisher = publishers.find(p => 
+                                p && p.name && row['Penerbit'] && 
+                                p.name.toLowerCase() === row['Penerbit'].toString().toLowerCase().trim()
+                            );
                             publisherId = publisher ? publisher.id : null;
                         }
 
-                        // Cari atau buat kategori
+                        // Cari ID kategori berdasarkan nama
                         let categoryId = null;
-                        if (row['Kategori'] && row['Kategori'].toString().trim() !== '') {
-                            const category = await findOrCreateCategory(row['Kategori'].toString());
+                        if (row['Kategori'] && categories && categories.length > 0) {
+                            const category = categories.find(c => 
+                                c && c.name_id && row['Kategori'] &&
+                                c.name_id.toLowerCase() === row['Kategori'].toString().toLowerCase().trim()
+                            );
                             categoryId = category ? category.id : null;
                         }
 
@@ -2321,7 +2245,7 @@
                         const weightValue = row['Berat Nilai'] ? parseFloat(row['Berat Nilai']) || parseFloat(row['Berat Nilai']?.toString().replace(',', '.')) : null;
                         const printCount = row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null;
 
-                        results.push({
+                        return {
                             title: row['Judul Buku']?.toString() || '',
                             author: row['Penulis']?.toString() || '',
                             original_price: originalPrice,
@@ -2341,14 +2265,13 @@
                             editor: row['Editor']?.toString() || '',
                             description: row['Deskripsi']?.toString() || '',
                             cover_image_url: row['URL Gambar Cover']?.toString() || ''
-                        });
+                        };
                     } catch (error) {
-                        console.error(`Error mapping row ${i + 1}:`, error);
-                        // Skip row ini
+                        console.error(`Error mapping row ${index + 1}:`, error);
+                        // Return object kosong untuk row ini, akan difilter nanti
+                        return null;
                     }
-                }
-                
-                return results;
+                }).filter(row => row !== null); // Filter out rows yang error
             }
 
             // Fungsi untuk validasi data buku
@@ -2532,8 +2455,8 @@
             const bookFileInput = document.getElementById('bookCoverImageFile');
             const bookUrlInput = document.getElementById('bookCoverImageUrl');
             const bookImagePreview = document.getElementById('bookImagePreview');
-            const bookPublisherInput = document.getElementById('bookPublisher');
-            const bookCategoryInput = document.getElementById('bookCategory');
+            const bookPublisherSelect = document.getElementById('bookPublisherSelect');
+            const bookCategorySelect = document.getElementById('bookCategorySelect');
             const bookDiscountInput = document.getElementById('bookDiscount');
             const bookBasePriceInput = document.getElementById('bookBasePrice');
 
@@ -2587,6 +2510,55 @@
                 document.getElementById('editDisplayFinalPriceIDR').textContent = formatPrice(finalPriceUSD, 'IDR');
                 document.getElementById('editDisplayFinalPriceEGP').textContent = formatPrice(finalPriceUSD, 'EGP');
             }
+
+            async function populatePublisherDropdown() {
+                const { data, error } = await supabase.from('publishers').select('id, name, discount');
+                if (error) {
+                    console.error('Error fetching publishers:', error);
+                    return;
+                }
+                allPublishers = data;
+                
+                bookPublisherSelect.innerHTML = '<option value="">-- Pilih Penerbit --</option>' + 
+                    data.map(p => `<option value="${p.id}" data-discount="${p.discount || ''}">${p.name}</option>`).join('');
+                
+                document.getElementById('editBookPublisherSelect').innerHTML = '<option value="">-- Pilih Penerbit --</option>' + 
+                    data.map(p => `<option value="${p.id}" data-discount="${p.discount || ''}">${p.name}</option>`).join('');
+                
+                filterPublisher.innerHTML = '<option value="">Semua Penerbit</option>' + 
+                    data.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            }
+
+            async function populateCategoryDropdown() {
+                const { data, error } = await supabase.from('categories').select('id, name_id');
+                if (error) {
+                    console.error('Error fetching categories:', error);
+                    return;
+                }
+                allCategories = data;
+                
+                bookCategorySelect.innerHTML = '<option value="">-- Pilih Kategori --</option>' + 
+                    data.map(c => `<option value="${c.id}">${c.name_id}</option>`).join('');
+                
+                document.getElementById('editBookCategorySelect').innerHTML = '<option value="">-- Pilih Kategori --</option>' + 
+                    data.map(c => `<option value="${c.id}">${c.name_id}</option>`).join('');
+                
+                filterCategory.innerHTML = '<option value="">Semua Kategori</option>' + 
+                    data.map(c => `<option value="${c.id}">${c.name_id}</option>`).join('');
+            }
+
+            bookPublisherSelect.addEventListener('change', (e) => {
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                bookDiscountInput.value = selectedOption.dataset.discount || '';
+                updatePriceCalculator();
+                saveFormData('bookForm');
+            });
+
+            document.getElementById('editBookPublisherSelect').addEventListener('change', (e) => {
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                document.getElementById('editBookDiscount').value = selectedOption.dataset.discount || '';
+                updateEditPriceCalculator();
+            });
 
             bookBasePriceInput.addEventListener('input', () => {
                 updatePriceCalculator();
@@ -2735,22 +2707,9 @@
                 document.getElementById('editBookYear').value = data.year;
                 document.getElementById('editBookDescription').value = data.description || '';
                 document.getElementById('editBookOldCoverUrl').value = data.cover_image_url || '';
+                document.getElementById('editBookPublisherSelect').value = data.publisher_id || '';
+                document.getElementById('editBookCategorySelect').value = data.category_id || '';
                 document.getElementById('editBookDiscount').value = data.discount || '';
-                
-                // Set penerbit dan kategori berdasarkan ID
-                if (data.publisher_id) {
-                    const publisher = allPublishers.find(p => p.id === data.publisher_id);
-                    document.getElementById('editBookPublisher').value = publisher ? publisher.name : '';
-                } else {
-                    document.getElementById('editBookPublisher').value = '';
-                }
-                
-                if (data.category_id) {
-                    const category = allCategories.find(c => c.id === data.category_id);
-                    document.getElementById('editBookCategory').value = category ? category.name_id : '';
-                } else {
-                    document.getElementById('editBookCategory').value = '';
-                }
                 
                 // Set berat buku
                 if (data.weight_value && data.weight_unit) {
@@ -2819,17 +2778,15 @@
                 }
                 
                 if (currentFilters.publisher) {
-                    filteredBooks = filteredBooks.filter(book => {
-                        const publisher = allPublishers.find(p => p.id === book.publisher_id);
-                        return publisher && publisher.name.toLowerCase().includes(currentFilters.publisher.toLowerCase());
-                    });
+                    filteredBooks = filteredBooks.filter(book => 
+                        book.publisher_id === currentFilters.publisher
+                    );
                 }
                 
                 if (currentFilters.category) {
-                    filteredBooks = filteredBooks.filter(book => {
-                        const category = allCategories.find(c => c.id === book.category_id);
-                        return category && category.name_id.toLowerCase().includes(currentFilters.category.toLowerCase());
-                    });
+                    filteredBooks = filteredBooks.filter(book => 
+                        book.category_id === currentFilters.category
+                    );
                 }
                 
                 if (currentFilters.coverType) {
@@ -2917,21 +2874,6 @@
                 submitBtn.textContent = 'Menyimpan...';
                 
                 const bookId = document.getElementById('bookId').value;
-                
-                // Cari atau buat penerbit
-                let publisherId = null;
-                if (bookPublisherInput.value.trim() !== '') {
-                    const publisher = await findOrCreatePublisher(bookPublisherInput.value);
-                    publisherId = publisher ? publisher.id : null;
-                }
-                
-                // Cari atau buat kategori
-                let categoryId = null;
-                if (bookCategoryInput.value.trim() !== '') {
-                    const category = await findOrCreateCategory(bookCategoryInput.value);
-                    categoryId = category ? category.id : null;
-                }
-                
                 const bookData = {
                     title: document.getElementById('bookTitle').value,
                     author: document.getElementById('bookAuthor').value,
@@ -2941,8 +2883,8 @@
                     pages: document.getElementById('bookPages').value,
                     year: document.getElementById('bookYear').value,
                     description: document.getElementById('bookDescription').value,
-                    publisher_id: publisherId,
-                    category_id: categoryId,
+                    publisher_id: bookPublisherSelect.value || null,
+                    category_id: bookCategorySelect.value || null,
                     discount: bookDiscountInput.value,
                     text_color: getCustomInputValue('bookTextColorSelect', 'bookTextColorInput'),
                     cover_type: getCustomInputValue('bookCoverTypeSelect', 'bookCoverTypeInput'),
@@ -3025,21 +2967,6 @@
                 submitBtn.textContent = 'Menyimpan...';
                 
                 const bookId = document.getElementById('editBookId').value;
-                
-                // Cari atau buat penerbit
-                let publisherId = null;
-                if (document.getElementById('editBookPublisher').value.trim() !== '') {
-                    const publisher = await findOrCreatePublisher(document.getElementById('editBookPublisher').value);
-                    publisherId = publisher ? publisher.id : null;
-                }
-                
-                // Cari atau buat kategori
-                let categoryId = null;
-                if (document.getElementById('editBookCategory').value.trim() !== '') {
-                    const category = await findOrCreateCategory(document.getElementById('editBookCategory').value);
-                    categoryId = category ? category.id : null;
-                }
-                
                 const bookData = {
                     title: document.getElementById('editBookTitle').value,
                     author: document.getElementById('editBookAuthor').value,
@@ -3049,8 +2976,8 @@
                     pages: document.getElementById('editBookPages').value,
                     year: document.getElementById('editBookYear').value,
                     description: document.getElementById('editBookDescription').value,
-                    publisher_id: publisherId,
-                    category_id: categoryId,
+                    publisher_id: document.getElementById('editBookPublisherSelect').value || null,
+                    category_id: document.getElementById('editBookCategorySelect').value || null,
                     discount: document.getElementById('editBookDiscount').value,
                     text_color: getCustomInputValue('editBookTextColorSelect', 'editBookTextColorInput'),
                     cover_type: getCustomInputValue('editBookCoverTypeSelect', 'editBookCoverTypeInput'),
@@ -3550,7 +3477,7 @@
                     progressText.textContent = 'Memuat data referensi...';
 
                     // Pastikan data publishers dan categories sudah dimuat
-                    await loadPublishersAndCategories();
+                    const { publishers, categories } = await loadPublishersAndCategories();
                     
                     progressBar.style.width = '30%';
                     progressText.textContent = 'Membaca file Excel...';
@@ -3566,7 +3493,7 @@
                     progressText.textContent = `Menemukan ${excelData.length} data buku. Memproses...`;
 
                     // Map data Excel ke format database
-                    const booksData = await mapExcelToBookData(excelData);
+                    const booksData = mapExcelToBookData(excelData, publishers, categories);
                     
                     if (booksData.length === 0) {
                         throw new Error('Tidak ada data valid yang dapat diproses');
@@ -3634,6 +3561,10 @@
             // Load data saat aplikasi dimulai
             window.fetchCurrency().then(() => {
                 return loadPublishersAndCategories();
+            }).then(() => {
+                return populatePublisherDropdown();
+            }).then(() => {
+                return populateCategoryDropdown();
             }).then(() => {
                 window.fetchBooks();
                 window.fetchPublishers();
