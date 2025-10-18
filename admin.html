@@ -2240,31 +2240,38 @@
                         }
 
                         // Handle nilai dengan aman
-                        const originalPrice = parseFloat(row['Harga Asli (USD)']) || parseFloat(row['Harga Asli (USD)']?.toString().replace(',', '.')) || 0;
-                        const basePrice = parseFloat(row['Harga Dasar (USD)']) || parseFloat(row['Harga Dasar (USD)']?.toString().replace(',', '.')) || 0;
-                        const weightValue = row['Berat Nilai'] ? parseFloat(row['Berat Nilai']) || parseFloat(row['Berat Nilai']?.toString().replace(',', '.')) : null;
-                        const printCount = row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null;
+                        let originalPrice = row['Harga Asli (USD)'] ? parseFloat(row['Harga Asli (USD)'].toString().replace(',', '.')) : 0;
+                        if (isNaN(originalPrice)) originalPrice = 0;
+
+                        let basePrice = row['Harga Dasar (USD)'] ? parseFloat(row['Harga Dasar (USD)'].toString().replace(',', '.')) : 0;
+                        if (isNaN(basePrice)) basePrice = 0;
+
+                        let weightValue = row['Berat Nilai'] ? parseFloat(row['Berat Nilai'].toString().replace(',', '.')) : null;
+                        if (isNaN(weightValue)) weightValue = null;
+
+                        let printCount = row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null;
+                        if (isNaN(printCount)) printCount = null;
 
                         return {
-                            title: row['Judul Buku']?.toString() || '',
-                            author: row['Penulis']?.toString() || '',
+                            title: row['Judul Buku']?.toString().trim() || '',
+                            author: row['Penulis']?.toString().trim() || '',
                             original_price: originalPrice,
                             base_price: basePrice,
                             publisher_id: publisherId,
                             category_id: categoryId,
-                            discount: row['Diskon']?.toString() || '',
-                            volumes: row['Jilid']?.toString() || '',
-                            pages: row['Halaman']?.toString() || '',
-                            year: row['Tahun Terbit']?.toString() || '',
+                            discount: row['Diskon']?.toString().trim() || '',
+                            volumes: row['Jilid']?.toString().trim() || '',
+                            pages: row['Halaman']?.toString().trim() || '',
+                            year: row['Tahun Terbit']?.toString().trim() || '',
                             weight_value: weightValue,
-                            weight_unit: (row['Berat Satuan']?.toString() || 'kg').toLowerCase(),
-                            text_color: row['Warna Tulisan']?.toString() || '',
-                            cover_type: row['Jenis Cover']?.toString() || '',
-                            paper_type: row['Jenis Kertas']?.toString() || '',
+                            weight_unit: (row['Berat Satuan']?.toString().trim() || 'kg').toLowerCase(),
+                            text_color: row['Warna Tulisan']?.toString().trim() || '',
+                            cover_type: row['Jenis Cover']?.toString().trim() || '',
+                            paper_type: row['Jenis Kertas']?.toString().trim() || '',
                             print_count: printCount,
-                            editor: row['Editor']?.toString() || '',
-                            description: row['Deskripsi']?.toString() || '',
-                            cover_image_url: row['URL Gambar Cover']?.toString() || ''
+                            editor: row['Editor']?.toString().trim() || '',
+                            description: row['Deskripsi']?.toString().trim() || '',
+                            cover_image_url: row['URL Gambar Cover']?.toString().trim() || ''
                         };
                     } catch (error) {
                         console.error(`Error mapping row ${index + 1}:`, error);
@@ -2286,20 +2293,11 @@
                     errors.push(`Baris ${index + 1}: Penulis harus diisi`);
                 }
                 
-                if (!bookData.base_price || bookData.base_price <= 0) {
-                    errors.push(`Baris ${index + 1}: Harga dasar harus lebih dari 0`);
-                }
-                
-                if (!bookData.original_price || bookData.original_price <= 0) {
-                    errors.push(`Baris ${index + 1}: Harga asli harus lebih dari 0`);
-                }
-                
-                // Validasi format harga
-                if (isNaN(bookData.base_price)) {
+                if (bookData.base_price == null || isNaN(bookData.base_price)) {
                     errors.push(`Baris ${index + 1}: Harga dasar harus berupa angka`);
                 }
                 
-                if (isNaN(bookData.original_price)) {
+                if (bookData.original_price == null || isNaN(bookData.original_price)) {
                     errors.push(`Baris ${index + 1}: Harga asli harus berupa angka`);
                 }
                 
