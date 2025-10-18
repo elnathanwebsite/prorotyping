@@ -1,4 +1,6 @@
-  <!DOCTYPE html>
+
+
+   <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -746,159 +748,44 @@ h2 {
     .sidebar-header h1 {
         font-size: 1.3rem;
     }
-}
-.bulk-upload-container {
-    background: var(--light);
-    border-radius: 12px;
-    padding: 2rem;
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 15px rgba(0,0,0,0.04);
-}
-
-.upload-info {
-    margin-bottom: 1.5rem;
-}
-
-.upload-info p {
-    margin-bottom: 1rem;
-    color: var(--secondary);
-    line-height: 1.5;
-}
-
-.upload-actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.upload-progress {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
+.upload-status {
+    margin: 1rem 0;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--success);
     background: var(--primary-light);
-    border-radius: 8px;
-    border: 1px solid var(--border);
 }
 
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background: var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 0.5rem;
+.upload-status.error {
+    border-left-color: var(--danger);
+    background: #fee;
 }
 
-.progress-fill {
-    height: 100%;
-    background: var(--success);
-    width: 0%;
-    transition: width 0.3s ease;
-}
-
-.progress-text {
-    font-size: 0.9rem;
-    color: var(--secondary);
-    margin-bottom: 0.5rem;
-}
-
-.upload-stats {
-    font-size: 0.85rem;
-    color: var(--secondary);
-}
-
-.upload-results {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    background: var(--primary-light);
-    border-radius: 8px;
-    border: 1px solid var(--border);
-}
-
-.upload-results h4 {
-    margin-bottom: 1rem;
-    color: var(--primary);
-    font-family: var(--heading-font);
-}
-
-.results-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--light);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.results-table th {
-    background: var(--primary);
-    color: var(--light);
-    padding: 0.75rem;
-    text-align: left;
-    font-weight: 600;
-}
-
-.results-table td {
-    padding: 0.75rem;
-    border-bottom: 1px solid var(--border);
-}
-
-.results-table tr.success {
-    background: rgba(39, 174, 96, 0.1);
-}
-
-.results-table tr.error {
-    background: rgba(231, 76, 60, 0.1);
-}
-
-.results-table .status-success {
-    color: var(--success);
-    font-weight: 600;
-}
-
-.results-table .status-error {
-    color: var(--danger);
-    font-weight: 600;
+.upload-status.warning {
+    border-left-color: var(--warning);
+    background: #fff3cd;
 }
 
 .upload-summary {
     margin-top: 1rem;
     padding: 1rem;
-    background: var(--light);
+    background: var(--primary-light);
     border-radius: 8px;
-    border-left: 4px solid var(--primary);
 }
 
 .summary-item {
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
 }
 
-.summary-item.total {
-    font-weight: 600;
-    border-top: 1px solid var(--border);
-    padding-top: 0.5rem;
-    margin-top: 0.5rem;
-}
+.summary-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}}
 
-@media (max-width: 768px) {
-    .upload-actions {
-        flex-direction: column;
-    }
-    
-    .upload-actions .btn {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .results-table {
-        font-size: 0.8rem;
-    }
-    
-    .results-table th,
-    .results-table td {
-        padding: 0.5rem;
-    }
-}
     </style>
 </head>
 <body>
@@ -950,34 +837,67 @@ h2 {
                     </div>
                 </div>
             </header>
-            <!-- Tambahkan di bagian Books setelah filter section -->
-<div class="form-section">
-    <h2 data-lang-key="bulk-upload-title">Upload Buku dari Excel</h2>
-    <div class="bulk-upload-container">
-        <div class="upload-info">
-            <p data-lang-key="upload-info">Unggah file Excel untuk menambahkan banyak buku sekaligus. Pastikan format file sesuai dengan template.</p>
-            <div class="upload-actions">
-                <button type="button" class="btn submit-btn" id="downloadTemplate" data-lang-key="download-template">
+            <!-- Tambahkan di bagian books-section setelah filter-section -->
+<div class="bulk-actions">
+    <!-- Tombol existing... -->
+    
+    <!-- Tombol Upload Excel -->
+    <button class="btn submit-btn" id="uploadExcelBtn" data-lang-key="upload-excel">
+        📊 Upload Excel
+    </button>
+</div>
+
+<!-- Modal untuk Upload Excel -->
+<div id="excelUploadModal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h2 data-lang-key="excel-upload-title">Upload Data Buku dari Excel</h2>
+            <button class="close-modal" data-modal="excelUploadModal">&times;</button>
+        </div>
+        <div class="form-section">
+            <div style="margin-bottom: 1.5rem;">
+                <h3 data-lang-key="download-template">Download Template Excel</h3>
+                <p data-lang-key="template-description">Download template berikut dan isi data buku Anda:</p>
+                <button class="btn submit-btn" id="downloadTemplateBtn" data-lang-key="download-template-btn">
                     📥 Download Template Excel
                 </button>
-                <label for="excelFile" class="btn submit-btn" style="cursor: pointer;">
-                    📤 Upload File Excel
-                    <input type="file" id="excelFile" accept=".xlsx, .xls" style="display: none;">
-                </label>
             </div>
-        </div>
-        
-        <div class="upload-progress" id="uploadProgress" style="display: none;">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+
+            <div>
+                <h3 data-lang-key="upload-excel-file">Upload File Excel</h3>
+                <form id="excelUploadForm">
+                    <div class="form-group">
+                        <label for="excelFile" data-lang-key="select-excel-file">Pilih File Excel</label>
+                        <input type="file" id="excelFile" accept=".xlsx, .xls" required>
+                        <small style="color: #666; font-size: 0.875rem;" data-lang-key="excel-format-info">
+                            Format yang didukung: .xlsx, .xls
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="skipEmptyRows" checked>
+                            <span data-lang-key="skip-empty-rows">Lewati baris kosong</span>
+                        </label>
+                    </div>
+
+                    <div id="uploadProgress" style="display: none; margin: 1rem 0;">
+                        <div style="background: #f0f0f0; border-radius: 10px; height: 20px;">
+                            <div id="progressBar" style="background: var(--success); height: 100%; border-radius: 10px; width: 0%; transition: width 0.3s;"></div>
+                        </div>
+                        <div id="progressText" style="text-align: center; margin-top: 0.5rem;"></div>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn submit-btn" data-lang-key="upload-data">
+                            📤 Upload Data
+                        </button>
+                        <button type="button" class="btn cancel-btn" data-modal="excelUploadModal" data-lang-key="cancel">
+                            Batal
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="progress-text" id="progressText">Mempersiapkan upload...</div>
-            <div class="upload-stats" id="uploadStats"></div>
-        </div>
-        
-        <div class="upload-results" id="uploadResults" style="display: none;">
-            <h4 data-lang-key="upload-results">Hasil Upload</h4>
-            <div id="resultsContent"></div>
         </div>
     </div>
 </div>
@@ -3284,158 +3204,105 @@ h2 {
             });
         });
     });
-    // Tambahkan di bagian terjemahan
-const translations = {
-    id: {
-        // ... terjemahan yang sudah ada ...
-        "bulk-upload-title": "Upload Buku dari Excel",
-        "upload-info": "Unggah file Excel untuk menambahkan banyak buku sekaligus. Pastikan format file sesuai dengan template.",
-        "download-template": "📥 Download Template Excel",
-        "upload-results": "Hasil Upload",
-        "processing-excel": "Memproses file Excel...",
-        "uploading-books": "Mengupload buku...",
-        "upload-complete": "Upload selesai!",
-        "successful-uploads": "Berhasil diupload",
-        "failed-uploads": "Gagal diupload",
-        "total-records": "Total data",
-        "row": "Baris",
-        "title": "Judul",
-        "status": "Status",
-        "message": "Pesan",
-        "template-downloaded": "Template berhasil diunduh",
-        "no-file-selected": "Tidak ada file yang dipilih",
-        "invalid-file-type": "File harus berformat Excel (.xlsx atau .xls)",
-        "file-too-large": "File terlalu besar (maksimal 5MB)",
-        "upload-cancelled": "Upload dibatalkan"
-    },
-    en: {
-        // ... existing translations ...
-        "bulk-upload-title": "Upload Books from Excel",
-        "upload-info": "Upload Excel file to add multiple books at once. Make sure the file format matches the template.",
-        "download-template": "📥 Download Excel Template",
-        "upload-results": "Upload Results",
-        "processing-excel": "Processing Excel file...",
-        "uploading-books": "Uploading books...",
-        "upload-complete": "Upload complete!",
-        "successful-uploads": "Successful uploads",
-        "failed-uploads": "Failed uploads",
-        "total-records": "Total records",
-        "row": "Row",
-        "title": "Title",
-        "status": "Status",
-        "message": "Message",
-        "template-downloaded": "Template downloaded successfully",
-        "no-file-selected": "No file selected",
-        "invalid-file-type": "File must be Excel format (.xlsx or .xls)",
-        "file-too-large": "File too large (maximum 5MB)",
-        "upload-cancelled": "Upload cancelled"
-    },
-    ar: {
-        // ... existing translations ...
-        "bulk-upload-title": "رفع الكتب من Excel",
-        "upload-info": "قم برفع ملف Excel لإضافة عدة كتب في وقت واحد. تأكد من تطابق تنسيق الملف مع القالب.",
-        "download-template": "📥 تحميل قالب Excel",
-        "upload-results": "نتائج الرفع",
-        "processing-excel": "جاري معالجة ملف Excel...",
-        "uploading-books": "جاري رفع الكتب...",
-        "upload-complete": "اكتمل الرفع!",
-        "successful-uploads": "الرفع الناجح",
-        "failed-uploads": "الرفع الفاشل",
-        "total-records": "إجمالي السجلات",
-        "row": "الصف",
-        "title": "العنوان",
-        "status": "الحالة",
-        "message": "الرسالة",
-        "template-downloaded": "تم تحميل القالب بنجاح",
-        "no-file-selected": "لم يتم اختيار ملف",
-        "invalid-file-type": "يجب أن يكون الملف بتنسيق Excel (.xlsx أو .xls)",
-        "file-too-large": "الملف كبير جداً (الحد الأقصى 5MB)",
-        "upload-cancelled": "تم إلغاء الرفع"
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Variabel untuk template Excel
+const EXCEL_TEMPLATE_DATA = [
+    {
+        'Judul Buku*': 'Contoh: Fiqih Islam',
+        'Penulis*': 'Contoh: Ustadz Ahmad',
+        'Harga Asli (USD)*': '50.00',
+        'Harga Dasar (USD)*': '45.00',
+        'Penerbit': 'Nama Penerbit (opsional)',
+        'Kategori': 'Nama Kategori (opsional)',
+        'Diskon': '10% (opsional)',
+        'Jilid': '2 (opsional)',
+        'Halaman': '300 (opsional)',
+        'Tahun Terbit': '2024 (opsional)',
+        'Berat Nilai': '0.5 (opsional)',
+        'Berat Satuan': 'kg (opsional: kg/g/ons/lb)',
+        'Warna Tulisan': 'Hitam (opsional)',
+        'Jenis Cover': 'Hard Cover (opsional)',
+        'Jenis Kertas': 'HVS (opsional)',
+        'Cetakan Ke': '1 (opsional)',
+        'Editor': 'Nama Editor (opsional)',
+        'Deskripsi': 'Deskripsi buku... (opsional)',
+        'URL Gambar Cover': 'https://example.com/image.jpg (opsional)'
     }
-};
+];
 
 // Fungsi untuk download template Excel
-async function downloadExcelTemplate() {
-    try {
-        // Data untuk template
-        const templateData = [
-            {
-                'Judul Buku*': 'Sirah Nabawiyah',
-                'Penulis*': 'Dr. Akram Dhiya\' Al-Umari',
-                'Harga Asli USD*': '25.00',
-                'Harga Dasar USD*': '20.00',
-                'Penerbit ID': '1',
-                'Kategori ID': '1',
-                'Diskon': '10%',
-                'Jilid': '3',
-                'Halaman': '1200',
-                'Tahun Terbit': '2023',
-                'Berat Nilai': '1.5',
-                'Berat Satuan': 'kg',
-                'Warna Tulisan': 'Hitam',
-                'Jenis Cover': 'Hard Cover',
-                'Jenis Kertas': 'Book Paper',
-                'Cetakan Ke': '1',
-                'Editor': 'Tim Editor',
-                'Deskripsi': 'Buku sirah nabawiyah yang komprehensif',
-                'URL Gambar Sampul': 'https://example.com/image.jpg'
-            }
-        ];
-
-        // Header kolom
-        const headers = [
-            'Judul Buku*',
-            'Penulis*',
-            'Harga Asli USD*',
-            'Harga Dasar USD*', 
-            'Penerbit ID',
-            'Kategori ID',
-            'Diskon',
-            'Jilid',
-            'Halaman',
-            'Tahun Terbit',
-            'Berat Nilai',
-            'Berat Satuan',
-            'Warna Tulisan',
-            'Jenis Cover',
-            'Jenis Kertas',
-            'Cetakan Ke',
-            'Editor',
-            'Deskripsi',
-            'URL Gambar Sampul'
-        ];
-
-        // Buat worksheet
-        const ws = XLSX.utils.json_to_sheet(templateData, { header: headers });
-        
-        // Buat workbook
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Template Buku');
-        
-        // Tambahkan sheet untuk referensi ID
-        const refData = [
-            { 'Penerbit': 'Daftar Penerbit' },
-            { 'ID': '1', 'Nama': 'Penerbit A', 'Huruf': 'A' },
-            { 'ID': '2', 'Nama': 'Penerbit B', 'Huruf': 'B' },
-            { 'Kategori': 'Daftar Kategori' },
-            { 'ID': '1', 'Nama ID': 'Sejarah Islam', 'Nama EN': 'Islamic History' },
-            { 'ID': '2', 'Nama ID': 'Fiqih', 'Nama EN': 'Fiqh' }
-        ];
-        const refWs = XLSX.utils.json_to_sheet(refData);
-        XLSX.utils.book_append_sheet(wb, refWs, 'Referensi ID');
-        
-        // Download file
-        XLSX.writeFile(wb, 'template_upload_buku.xlsx');
-        
-        alert(getTranslation('template-downloaded'));
-    } catch (error) {
-        console.error('Error downloading template:', error);
-        alert('Gagal mengunduh template');
+function downloadExcelTemplate() {
+    const XLSX = window.XLSX;
+    if (!XLSX) {
+        alert('Library Excel tidak tersedia. Pastikan script XLSX telah dimuat.');
+        return;
     }
+
+    // Buat worksheet dari data template
+    const ws = XLSX.utils.json_to_sheet(EXCEL_TEMPLATE_DATA);
+    
+    // Buat workbook dan tambahkan worksheet
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Template Buku");
+    
+    // Generate file Excel dan download
+    XLSX.writeFile(wb, "template_data_buku.xlsx");
 }
 
-// Fungsi untuk memproses file Excel
-async function processExcelFile(file) {
+// Fungsi untuk memproses upload Excel
+async function processExcelUpload(file, skipEmptyRows = true) {
+    const XLSX = window.XLSX;
+    if (!XLSX) {
+        throw new Error('Library Excel tidak tersedia');
+    }
+
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         
@@ -3445,10 +3312,22 @@ async function processExcelFile(file) {
                 const workbook = XLSX.read(data, { type: 'array' });
                 
                 // Ambil sheet pertama
-                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
                 
-                resolve(jsonData);
+                // Konversi ke JSON
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                
+                // Filter baris kosong jika diperlukan
+                const filteredData = skipEmptyRows ? 
+                    jsonData.filter(row => {
+                        // Cek jika ada setidaknya satu kolom yang terisi
+                        return Object.values(row).some(value => 
+                            value !== null && value !== undefined && value !== ''
+                        );
+                    }) : jsonData;
+                
+                resolve(filteredData);
             } catch (error) {
                 reject(error);
             }
@@ -3462,257 +3341,280 @@ async function processExcelFile(file) {
     });
 }
 
+// Fungsi untuk memetakan data Excel ke format database
+function mapExcelToBookData(excelData, publishers, categories) {
+    return excelData.map((row, index) => {
+        // Cari ID penerbit berdasarkan nama
+        let publisherId = null;
+        if (row['Penerbit']) {
+            const publisher = publishers.find(p => 
+                p.name.toLowerCase() === row['Penerbit'].toLowerCase().trim()
+            );
+            publisherId = publisher ? publisher.id : null;
+        }
+
+        // Cari ID kategori berdasarkan nama
+        let categoryId = null;
+        if (row['Kategori']) {
+            const category = categories.find(c => 
+                c.name_id.toLowerCase() === row['Kategori'].toLowerCase().trim()
+            );
+            categoryId = category ? category.id : null;
+        }
+
+        return {
+            title: row['Judul Buku'] || '',
+            author: row['Penulis'] || '',
+            original_price: parseFloat(row['Harga Asli (USD)']) || 0,
+            base_price: parseFloat(row['Harga Dasar (USD)']) || 0,
+            publisher_id: publisherId,
+            category_id: categoryId,
+            discount: row['Diskon'] || '',
+            volumes: row['Jilid'] || '',
+            pages: row['Halaman'] || '',
+            year: row['Tahun Terbit'] || '',
+            weight_value: row['Berat Nilai'] ? parseFloat(row['Berat Nilai']) : null,
+            weight_unit: row['Berat Satuan'] || 'kg',
+            text_color: row['Warna Tulisan'] || '',
+            cover_type: row['Jenis Cover'] || '',
+            paper_type: row['Jenis Kertas'] || '',
+            print_count: row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null,
+            editor: row['Editor'] || '',
+            description: row['Deskripsi'] || '',
+            cover_image_url: row['URL Gambar Cover'] || ''
+        };
+    });
+}
+
 // Fungsi untuk validasi data buku
-function validateBookData(rowData, rowNumber) {
+function validateBookData(bookData, index) {
     const errors = [];
     
-    // Validasi field required
-    if (!rowData['Judul Buku*']) {
-        errors.push('Judul buku harus diisi');
-    }
-    if (!rowData['Penulis*']) {
-        errors.push('Penulis harus diisi');
-    }
-    if (!rowData['Harga Asli USD*'] || isNaN(parseFloat(rowData['Harga Asli USD*']))) {
-        errors.push('Harga asli USD harus angka');
-    }
-    if (!rowData['Harga Dasar USD*'] || isNaN(parseFloat(rowData['Harga Dasar USD*']))) {
-        errors.push('Harga dasar USD harus angka');
+    if (!bookData.title || bookData.title.trim() === '') {
+        errors.push(`Baris ${index + 1}: Judul buku harus diisi`);
     }
     
-    // Validasi format diskon
-    if (rowData.Diskon && !rowData.Diskon.toString().match(/^\d+(\.\d+)?%?$/)) {
-        errors.push('Format diskon tidak valid (contoh: 10% atau 10.5%)');
+    if (!bookData.author || bookData.author.trim() === '') {
+        errors.push(`Baris ${index + 1}: Penulis harus diisi`);
     }
     
-    // Validasi berat
-    if (rowData['Berat Nilai'] && isNaN(parseFloat(rowData['Berat Nilai']))) {
-        errors.push('Berat nilai harus angka');
+    if (!bookData.base_price || bookData.base_price <= 0) {
+        errors.push(`Baris ${index + 1}: Harga dasar harus lebih dari 0`);
     }
     
-    return {
-        isValid: errors.length === 0,
-        errors: errors
+    if (!bookData.original_price || bookData.original_price <= 0) {
+        errors.push(`Baris ${index + 1}: Harga asli harus lebih dari 0`);
+    }
+    
+    return errors;
+}
+
+// Fungsi untuk upload data buku ke Supabase
+async function uploadBooksToSupabase(booksData, progressCallback) {
+    const results = {
+        success: 0,
+        failed: 0,
+        errors: []
     };
-}
 
-// Fungsi untuk mengonversi data Excel ke format buku
-function convertExcelToBookData(rowData) {
-    const bookData = {
-        title: rowData['Judul Buku*'],
-        author: rowData['Penulis*'],
-        original_price: parseFloat(rowData['Harga Asli USD*']),
-        base_price: parseFloat(rowData['Harga Dasar USD*']),
-        publisher_id: rowData['Penerbit ID'] || null,
-        category_id: rowData['Kategori ID'] || null,
-        discount: rowData.Diskon || '',
-        volumes: rowData.Jilid || '',
-        pages: rowData.Halaman || '',
-        year: rowData['Tahun Terbit'] || '',
-        description: rowData.Deskripsi || '',
-        cover_image_url: rowData['URL Gambar Sampul'] || '',
-        text_color: rowData['Warna Tulisan'] || '',
-        cover_type: rowData['Jenis Cover'] || '',
-        paper_type: rowData['Jenis Kertas'] || '',
-        print_count: rowData['Cetakan Ke'] ? parseInt(rowData['Cetakan Ke']) : null,
-        editor: rowData.Editor || '',
-        weight_value: rowData['Berat Nilai'] ? parseFloat(rowData['Berat Nilai']) : null,
-        weight_unit: rowData['Berat Satuan'] || 'kg'
-    };
-    
-    return bookData;
-}
-
-// Fungsi untuk menampilkan hasil upload
-function showUploadResults(results) {
-    const resultsContainer = document.getElementById('uploadResults');
-    const resultsContent = document.getElementById('resultsContent');
-    
-    const successful = results.filter(r => r.status === 'success').length;
-    const failed = results.filter(r => r.status === 'error').length;
-    
-    let html = `
-        <div class="upload-summary">
-            <div class="summary-item">
-                <span>${getTranslation('total-records')}:</span>
-                <span>${results.length}</span>
-            </div>
-            <div class="summary-item" style="color: var(--success);">
-                <span>${getTranslation('successful-uploads')}:</span>
-                <span>${successful}</span>
-            </div>
-            <div class="summary-item" style="color: var(--danger);">
-                <span>${getTranslation('failed-uploads')}:</span>
-                <span>${failed}</span>
-            </div>
-        </div>
-    `;
-    
-    if (failed > 0) {
-        html += `
-            <table class="results-table">
-                <thead>
-                    <tr>
-                        <th>${getTranslation('row')}</th>
-                        <th>${getTranslation('title')}</th>
-                        <th>${getTranslation('status')}</th>
-                        <th>${getTranslation('message')}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${results.filter(r => r.status === 'error').map(result => `
-                        <tr class="error">
-                            <td>${result.row}</td>
-                            <td>${result.title || '-'}</td>
-                            <td class="status-error">Error</td>
-                            <td>${result.message}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        `;
-    }
-    
-    resultsContent.innerHTML = html;
-    resultsContainer.style.display = 'block';
-}
-
-// Fungsi utama untuk upload buku dari Excel
-async function uploadBooksFromExcel(file) {
-    const progressContainer = document.getElementById('uploadProgress');
-    const progressFill = document.getElementById('progressFill');
-    const progressText = document.getElementById('progressText');
-    const uploadStats = document.getElementById('uploadStats');
-    
-    try {
-        // Tampilkan progress container
-        progressContainer.style.display = 'block';
-        progressText.textContent = getTranslation('processing-excel');
-        
-        // Proses file Excel
-        const excelData = await processExcelFile(file);
-        const totalRows = excelData.length;
-        
-        progressText.textContent = getTranslation('uploading-books');
-        uploadStats.textContent = `0/${totalRows} buku diproses`;
-        
-        const results = [];
-        
-        // Process each row
-        for (let i = 0; i < totalRows; i++) {
-            const rowData = excelData[i];
-            const rowNumber = i + 2; // +2 karena header dan index mulai dari 0
-            
-            // Update progress
-            const progress = ((i + 1) / totalRows) * 100;
-            progressFill.style.width = `${progress}%`;
-            uploadStats.textContent = `${i + 1}/${totalRows} buku diproses`;
+    for (let i = 0; i < booksData.length; i++) {
+        try {
+            const bookData = booksData[i];
             
             // Validasi data
-            const validation = validateBookData(rowData, rowNumber);
-            
-            if (!validation.isValid) {
-                results.push({
-                    row: rowNumber,
-                    title: rowData['Judul Buku*'],
-                    status: 'error',
-                    message: validation.errors.join(', ')
-                });
+            const validationErrors = validateBookData(bookData, i);
+            if (validationErrors.length > 0) {
+                results.failed++;
+                results.errors.push(...validationErrors);
                 continue;
             }
+
+            // Upload ke Supabase
+            const { error } = await supabase.from('books').insert([bookData]);
             
-            try {
-                // Konversi data
-                const bookData = convertExcelToBookData(rowData);
-                
-                // Upload ke database
-                const { error } = await supabase.from('books').insert([bookData]);
-                
-                if (error) {
-                    throw new Error(error.message);
-                }
-                
-                results.push({
-                    row: rowNumber,
-                    title: bookData.title,
-                    status: 'success',
-                    message: 'Berhasil diupload'
-                });
-                
-            } catch (error) {
-                results.push({
-                    row: rowNumber,
-                    title: rowData['Judul Buku*'],
-                    status: 'error',
-                    message: error.message
-                });
+            if (error) {
+                results.failed++;
+                results.errors.push(`Baris ${i + 1}: ${error.message}`);
+            } else {
+                results.success++;
             }
             
-            // Small delay to prevent overwhelming the server
-            await new Promise(resolve => setTimeout(resolve, 100));
+            // Update progress
+            if (progressCallback) {
+                progressCallback(i + 1, booksData.length);
+            }
+            
+        } catch (error) {
+            results.failed++;
+            results.errors.push(`Baris ${i + 1}: ${error.message}`);
         }
-        
-        // Selesai
-        progressText.textContent = getTranslation('upload-complete');
-        progressFill.style.background = 'var(--success)';
-        
-        // Tampilkan hasil
-        showUploadResults(results);
-        
-        // Refresh daftar buku
-        setTimeout(() => {
-            window.fetchBooks();
-        }, 1000);
-        
-    } catch (error) {
-        console.error('Error uploading books:', error);
-        progressText.textContent = 'Error: ' + error.message;
-        progressFill.style.background = 'var(--danger)';
     }
+
+    return results;
 }
 
-// Event listeners
+// Event Listeners untuk upload Excel
 document.addEventListener('DOMContentLoaded', function() {
-    // Download template
-    document.getElementById('downloadTemplate').addEventListener('click', downloadExcelTemplate);
+    // Tombol download template
+    document.getElementById('downloadTemplateBtn').addEventListener('click', downloadExcelTemplate);
     
-    // Upload file Excel
-    document.getElementById('excelFile').addEventListener('change', function(e) {
-        const file = e.target.files[0];
+    // Tombol buka modal upload Excel
+    document.getElementById('uploadExcelBtn').addEventListener('click', function() {
+        document.getElementById('excelUploadModal').style.display = 'block';
+    });
+    
+    // Form upload Excel
+    document.getElementById('excelUploadForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        if (!file) {
-            alert(getTranslation('no-file-selected'));
+        const fileInput = document.getElementById('excelFile');
+        const skipEmptyRows = document.getElementById('skipEmptyRows').checked;
+        const progressDiv = document.getElementById('uploadProgress');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const submitBtn = this.querySelector('button[type="submit"]');
+        
+        if (!fileInput.files.length) {
+            alert('Pilih file Excel terlebih dahulu');
             return;
         }
-        
-        // Validasi tipe file
-        if (!file.name.match(/\.(xlsx|xls)$/)) {
-            alert(getTranslation('invalid-file-type'));
-            this.value = '';
-            return;
-        }
-        
-        // Validasi ukuran file (maksimal 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-            alert(getTranslation('file-too-large'));
-            this.value = '';
-            return;
-        }
-        
-        // Konfirmasi upload
-        if (confirm(`Upload ${file.name}? File akan diproses dan data buku akan ditambahkan ke database.`)) {
-            uploadBooksFromExcel(file);
-        } else {
-            this.value = '';
-            alert(getTranslation('upload-cancelled'));
+
+        const file = fileInput.files[0];
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Memproses...';
+
+        try {
+            // Tampilkan progress
+            progressDiv.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressText.textContent = 'Membaca file Excel...';
+
+            // Baca file Excel
+            const excelData = await processExcelUpload(file, skipEmptyRows);
+            
+            if (excelData.length === 0) {
+                throw new Error('Tidak ada data yang ditemukan dalam file Excel');
+            }
+
+            progressText.textContent = `Menemukan ${excelData.length} data buku. Memproses...`;
+
+            // Map data Excel ke format database
+            const booksData = mapExcelToBookData(excelData, allPublishers, allCategories);
+
+            // Upload ke Supabase
+            const uploadResults = await uploadBooksToSupabase(booksData, (current, total) => {
+                const progress = (current / total) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `Mengupload data... ${current}/${total}`;
+            });
+
+            // Tampilkan hasil
+            progressBar.style.width = '100%';
+            progressText.textContent = 'Selesai!';
+            
+            // Tampilkan summary
+            showUploadSummary(uploadResults, excelData.length);
+            
+            // Refresh data buku
+            setTimeout(() => {
+                window.fetchBooks();
+            }, 2000);
+
+        } catch (error) {
+            console.error('Error processing Excel file:', error);
+            showUploadError(error.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = '📤 Upload Data';
         }
     });
 });
 
-// Helper function untuk mendapatkan terjemahan
-function getTranslation(key) {
-    return translations[currentLanguage]?.[key] || key;
+// Fungsi untuk menampilkan summary upload
+function showUploadSummary(results, totalRows) {
+    const modalContent = document.querySelector('#excelUploadModal .modal-content');
+    
+    const summaryDiv = document.createElement('div');
+    summaryDiv.className = 'upload-summary';
+    summaryDiv.innerHTML = `
+        <h4>📊 Hasil Upload</h4>
+        <div class="summary-item">
+            <span>Total Data Ditemukan:</span>
+            <span>${totalRows}</span>
+        </div>
+        <div class="summary-item">
+            <span>Berhasil Diupload:</span>
+            <span style="color: var(--success)">${results.success}</span>
+        </div>
+        <div class="summary-item">
+            <span>Gagal Diupload:</span>
+            <span style="color: var(--danger)">${results.failed}</span>
+        </div>
+        ${results.errors.length > 0 ? `
+            <div style="margin-top: 1rem;">
+                <h5>Detail Error:</h5>
+                <div style="max-height: 200px; overflow-y: auto; background: white; padding: 0.5rem; border-radius: 4px;">
+                    ${results.errors.map(error => `<div style="color: var(--danger); font-size: 0.875rem; margin-bottom: 0.25rem;">• ${error}</div>`).join('')}
+                </div>
+            </div>
+        ` : ''}
+        <div style="margin-top: 1rem; text-align: center;">
+            <button class="btn submit-btn" onclick="closeExcelModal()">
+                Tutup
+            </button>
+        </div>
+    `;
+    
+    modalContent.appendChild(summaryDiv);
 }
+
+function showUploadError(message) {
+    const modalContent = document.querySelector('#excelUploadModal .modal-content');
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'upload-status error';
+    errorDiv.innerHTML = `
+        <strong>❌ Error:</strong> ${message}
+        <div style="margin-top: 1rem; text-align: center;">
+            <button class="btn submit-btn" onclick="closeExcelModal()">
+                Tutup
+            </button>
+        </div>
+    `;
+    
+    modalContent.appendChild(errorDiv);
+}
+
+function closeExcelModal() {
+    document.getElementById('excelUploadModal').style.display = 'none';
+    
+    // Reset form
+    document.getElementById('excelUploadForm').reset();
+    document.getElementById('uploadProgress').style.display = 'none';
+    
+    // Hapus summary/error yang ditambahkan
+    const modalContent = document.querySelector('#excelUploadModal .modal-content');
+    const existingSummary = modalContent.querySelector('.upload-summary, .upload-status');
+    if (existingSummary) {
+        existingSummary.remove();
+    }
+}
+
+// Update event listener untuk close modal
+document.querySelectorAll('.close-modal, .cancel-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const modalId = this.getAttribute('data-modal') || 'excelUploadModal';
+        document.getElementById(modalId).style.display = 'none';
+    });
+});
+
+
+
+
+
+
+
+
     </script>
 </body>
 </html>
