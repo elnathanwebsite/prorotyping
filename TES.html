@@ -2134,6 +2134,11 @@
                 }
             ];
 
+            // Fungsi untuk capitalize proper
+            function properCase(str) {
+                return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+            }
+
             // Fungsi untuk download template Excel
             function downloadExcelTemplate() {
                 const XLSX = window.XLSX;
@@ -2225,16 +2230,28 @@
 
             // Fungsi untuk handle creation penerbit dan kategori baru
             async function handleNewPublishersAndCategories(excelData) {
-                const publisherNames = new Set();
+                const publisherToDiscount = new Map();
+                const publisherToLetter = new Map();
                 const categoryNames = new Set();
 
-                // Collect unique names
+                // Collect unique names and first discount/letter for publishers
                 excelData.forEach(row => {
-                    if (row['Penerbit'] && row['Penerbit'].trim()) {
-                        publisherNames.add(row['Penerbit'].trim().toLowerCase());
+                    const pubName = row['Penerbit'] ? row['Penerbit'].trim() : null;
+                    const catName = row['Kategori'] ? row['Kategori'].trim() : null;
+                    const discount = row['Diskon'] ? row['Diskon'].trim() : '';
+
+                    if (pubName) {
+                        const lowerPub = pubName.toLowerCase();
+                        if (!publisherToDiscount.has(lowerPub) && discount) {
+                            publisherToDiscount.set(lowerPub, discount);
+                        }
+                        if (!publisherToLetter.has(lowerPub)) {
+                            publisherToLetter.set(lowerPub, pubName.charAt(0).toUpperCase());
+                        }
                     }
-                    if (row['Kategori'] && row['Kategori'].trim()) {
-                        categoryNames.add(row['Kategori'].trim().toLowerCase());
+
+                    if (catName) {
+                        categoryNames.add(catName.toLowerCase());
                     }
                 });
 
@@ -2247,27 +2264,28 @@
 
                 // New publishers
                 const newPublishers = [];
-                publisherNames.forEach(name => {
-                    if (!existingPubMap.has(name)) {
+                publisherToDiscount.forEach((discount, lowerName) => {
+                    if (!existingPubMap.has(lowerName)) {
+                        const properName = properCase(lowerName);
                         newPublishers.push({
-                            name: name.charAt(0).toUpperCase() + name.slice(1),
-                            letter: name.charAt(0).toUpperCase(),
-                            discount: ''  // Default kosong, atau bisa ambil dari row pertama yang match jika ingin
+                            name: properName,
+                            letter: publisherToLetter.get(lowerName) || properName.charAt(0).toUpperCase(),
+                            discount: discount
                         });
                     }
                 });
 
                 // New categories
                 const newCategories = [];
-                categoryNames.forEach(name => {
-                    if (!existingCatMap.has(name)) {
-                        const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+                categoryNames.forEach(lowerName => {
+                    if (!existingCatMap.has(lowerName)) {
+                        const properName = properCase(lowerName);
                         newCategories.push({
-                            name_id: capitalizedName,
-                            name_en: capitalizedName,
+                            name_id: properName,
+                            name_en: properName,
                             name_ar: '',
                             color: '#3498db',
-                            link: `/kategori/${slugify(capitalizedName)}`
+                            link: `/kategori/${slugify(properName)}`
                         });
                     }
                 });
@@ -2310,18 +2328,19 @@
                             categoryId = categoryMap.get(lowerName) || null;
                         }
 
-                        // Handle nilai dengan aman
+                        // Handle nilai dengan aman, terima teks atau angka bebas
+                        // Untuk angka, jika bukan angka, set ke 0 atau null tanpa error
                         let originalPrice = row['Harga Asli (USD)'] ? parseFloat(row['Harga Asli (USD)'].toString().replace(',', '.')) : 0;
-                        if (isNaN(originalPrice)) originalPrice = 0;
+                        if (isNaN(originalPrice)) originalPrice = 0;  // Terima apa pun, set default 0 jika bukan angka
 
                         let basePrice = row['Harga Dasar (USD)'] ? parseFloat(row['Harga Dasar (USD)'].toString().replace(',', '.')) : 0;
-                        if (isNaN(basePrice)) basePrice = 0;
+                        if (isNaN(basePrice)) basePrice = 0;  // Terima apa pun, set default 0 jika bukan angka
 
                         let weightValue = row['Berat Nilai'] ? parseFloat(row['Berat Nilai'].toString().replace(',', '.')) : null;
-                        if (isNaN(weightValue)) weightValue = null;
+                        if (isNaN(weightValue)) weightValue = null;  // Terima apa pun, set null jika bukan angka
 
                         let printCount = row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null;
-                        if (isNaN(printCount)) printCount = null;
+                        if (isNaN(printCount)) printCount = null;  // Terima apa pun, set null jika bukan angka
 
                         return {
                             title: row['Judul Buku']?.toString().trim() || '',
@@ -2352,7 +2371,7 @@
                 }).filter(row => row !== null); // Filter out rows yang error
             }
 
-            // Fungsi untuk validasi data buku
+            // Fungsi untuk validasi data buku (dimodifikasi untuk lebih lenient, hilangkan validasi harga ketat)
             function validateBookData(bookData, index) {
                 const errors = [];
                 
@@ -2364,14 +2383,7 @@
                     errors.push(`Baris ${index + 1}: Penulis harus diisi`);
                 }
                 
-                if (isNaN(bookData.base_price)) {
-                    errors.push(`Baris ${index + 1}: Harga dasar harus berupa angka`);
-                }
-                
-                if (isNaN(bookData.original_price)) {
-                    errors.push(`Baris ${index + 1}: Harga asli harus berupa angka`);
-                }
-                
+                // Hilangkan validasi isNaN untuk harga, biarkan default ke 0 jika bukan angka
                 // Validasi format diskon
                 if (bookData.discount && bookData.discount.trim() !== '') {
                     const discountStr = bookData.discount.toString();
@@ -2403,7 +2415,7 @@
                             continue;
                         }
                         
-                        // Validasi data
+                        // Validasi data (lenient)
                         const validationErrors = validateBookData(bookData, i);
                         if (validationErrors.length > 0) {
                             results.failed++;
@@ -2470,7 +2482,7 @@
                             <h5>Detail Error (${results.errors.length} error):</h5>
                             <div style="max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border);">
                                 ${results.errors.slice(0, 20).map(error => `<div style="color: var(--danger); font-size: 0.875rem; margin-bottom: 0.25rem;">• ${error}</div>`).join('')}
-                                ${results.errors.length > 20 ? `<div style="color: var(--warning); font-size: 0.875rem;">• ... dan ${results.errors.length - 20} error lainnya</div>` : ''}
+                                ${results.errors.length > 20 ? `<div style="color: var(--color); font-size: 0.875rem;">• ... dan ${results.errors.length - 20} error lainnya</div>` : ''}
                             </div>
                         </div>
                     ` : ''}
@@ -3580,7 +3592,7 @@
                     const { publisherMap, categoryMap } = await handleNewPublishersAndCategories(excelData);
 
                     progressBar.style.width = '70%';
-                    progressText.textContent = `Memproses ${excelData.length} data valid...`;
+                    progressText.textContent = `Memproses ${excelData.length} data data valid...`;
 
                     // Map data Excel ke format database
                     const booksData = mapExcelToBookData(excelData, publisherMap, categoryMap);
