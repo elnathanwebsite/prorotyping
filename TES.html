@@ -1107,11 +1107,24 @@
                         </div>
                     </form>
                 </div>
+
+                <div class="bulk-actions">
+                    <strong data-lang-key="bulk-actions">Aksi Massal:</strong>
+                    <select id="publisherBulkAction">
+                        <option value="" data-lang-key="select-action">Pilih Aksi</option>
+                        <option value="delete">Hapus Penerbit</option>
+                        <option value="edit_discount">Edit Diskon</option>
+                    </select>
+                    <button id="applyPublisherBulkAction" class="btn submit-btn" data-lang-key="apply">Terapkan</button>
+                    <span id="publisherSelectedCount">0 penerbit terpilih</span>
+                </div>
+
                 <h2 data-lang-key="publisher-list">Daftar Penerbit</h2>
                 <div class="table-wrapper">
                     <table class="admin-table">
                         <thead>
                             <tr>
+                                <th width="40"><input type="checkbox" id="publisherSelectAll"></th>
                                 <th width="80" data-lang-key="table-logo">Logo</th>
                                 <th data-lang-key="table-name">Nama</th>
                                 <th width="80" data-lang-key="table-letter">Huruf</th>
@@ -1164,11 +1177,24 @@
                         </div>
                     </form>
                 </div>
+
+                <div class="bulk-actions">
+                    <strong data-lang-key="bulk-actions">Aksi Massal:</strong>
+                    <select id="categoryBulkAction">
+                        <option value="" data-lang-key="select-action">Pilih Aksi</option>
+                        <option value="delete">Hapus Kategori</option>
+                        <option value="edit_color">Edit Warna</option>
+                    </select>
+                    <button id="applyCategoryBulkAction" class="btn submit-btn" data-lang-key="apply">Terapkan</button>
+                    <span id="categorySelectedCount">0 kategori terpilih</span>
+                </div>
+
                 <h2 data-lang-key="category-list">Daftar Kategori</h2>
                 <div class="table-wrapper">
                     <table class="admin-table">
                         <thead>
                             <tr>
+                                <th width="40"><input type="checkbox" id="categorySelectAll"></th>
                                 <th width="80" data-lang-key="table-image">Gambar</th>
                                 <th data-lang-key="table-name-id">Nama (ID)</th>
                                 <th data-lang-key="table-name-en">Nama (EN)</th>
@@ -1214,11 +1240,24 @@
                         </div>
                     </form>
                 </div>
+
+                <div class="bulk-actions">
+                    <strong data-lang-key="bulk-actions">Aksi Massal:</strong>
+                    <select id="bannerBulkAction">
+                        <option value="" data-lang-key="select-action">Pilih Aksi</option>
+                        <option value="delete">Hapus Banner</option>
+                        <option value="edit_type">Edit Tipe</option>
+                    </select>
+                    <button id="applyBannerBulkAction" class="btn submit-btn" data-lang-key="apply">Terapkan</button>
+                    <span id="bannerSelectedCount">0 banner terpilih</span>
+                </div>
+
                 <h2 data-lang-key="banner-list">Daftar Banner</h2>
                 <div class="table-wrapper">
                     <table class="admin-table">
                         <thead>
                             <tr>
+                                <th width="40"><input type="checkbox" id="bannerSelectAll"></th>
                                 <th width="100" data-lang-key="table-image">Gambar</th>
                                 <th data-lang-key="table-title">Judul</th>
                                 <th width="120" data-lang-key="table-type">Tipe</th>
@@ -1513,6 +1552,14 @@
                     <select id="bulkCategorySelect">
                         <option value="">-- Pilih Kategori --</option>
                     </select>
+                </div>
+                <div class="form-group" id="bulkColorGroup" style="display: none;">
+                    <label for="bulkColor">Warna Baru</label>
+                    <input type="color" id="bulkColor">
+                </div>
+                <div class="form-group" id="bulkTypeGroup" style="display: none;">
+                    <label for="bulkType">Tipe Baru</label>
+                    <input type="text" id="bulkType" placeholder="Masukkan tipe baru">
                 </div>
                 <div class="form-buttons">
                     <button type="submit" class="btn submit-btn">Simpan Perubahan</button>
@@ -2038,6 +2085,9 @@
             let allPublishers = [];
             let allCategories = [];
             let selectedBooks = new Set();
+            let selectedPublishers = new Set();
+            let selectedCategories = new Set();
+            let selectedBanners = new Set();
             let currentFilters = {};
 
             // Jadikan variabel global tersedia di window object
@@ -2143,6 +2193,123 @@
                 } else {
                     fetchFunction();
                 }
+            }
+
+            // Fungsi Bulk Action General yang Diperkuat
+            async function performBulkDelete(tableName, idsToDelete, fetchFunction) {
+                if (idsToDelete.length === 0) return { success: 0, failed: 0, errors: [] };
+
+                const BATCH_SIZE = 50; // Lebih kecil untuk keamanan
+                const MAX_RETRIES = 3; // Sistem pemaksaan dengan retry
+                const results = { success: 0, failed: 0, errors: [] };
+
+                for (let i = 0; i < idsToDelete.length; i += BATCH_SIZE) {
+                    const batch = idsToDelete.slice(i, i + BATCH_SIZE);
+                    let retryCount = 0;
+                    let success = false;
+
+                    while (retryCount < MAX_RETRIES && !success) {
+                        try {
+                            // Validasi ID: convert ke number jika string, filter invalid
+                            const validatedBatch = batch.map(id => parseInt(id)).filter(id => !isNaN(id));
+                            if (validatedBatch.length === 0) {
+                                results.failed += batch.length;
+                                results.errors.push(`Batch ${i/BATCH_SIZE + 1}: Semua ID tidak valid`);
+                                break;
+                            }
+
+                            const { data, error } = await supabase
+                                .from(tableName)
+                                .delete()
+                                .in('id', validatedBatch)
+                                .select('id');
+
+                            if (error) {
+                                if (error.code === '42501' || error.message.includes('permission')) {
+                                    throw new Error('Permission denied - check Supabase RLS policies');
+                                }
+                                throw error;
+                            }
+
+                            results.success += data.length;
+                            results.failed += validatedBatch.length - data.length;
+                            if (validatedBatch.length - data.length > 0) {
+                                results.errors.push(`Batch ${i/BATCH_SIZE + 1}: ${validatedBatch.length - data.length} ID tidak ditemukan`);
+                            }
+                            success = true;
+                        } catch (err) {
+                            retryCount++;
+                            console.error(`Bulk delete error in batch ${i/BATCH_SIZE + 1}, retry ${retryCount}:`, err);
+                            results.errors.push(`Batch ${i/BATCH_SIZE + 1}, retry ${retryCount}: ${err.message}`);
+                            if (retryCount === MAX_RETRIES) {
+                                results.failed += batch.length;
+                            }
+                            // Wait exponential backoff
+                            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retryCount)));
+                        }
+                    }
+                }
+
+                // Force refresh setelah delete
+                if (results.success > 0) {
+                    fetchFunction();
+                }
+
+                return results;
+            }
+
+            async function performBulkEdit(tableName, idsToUpdate, updateData, fetchFunction) {
+                if (idsToUpdate.length === 0) return { success: 0, failed: 0, errors: [] };
+
+                const BATCH_SIZE = 50;
+                const MAX_RETRIES = 3;
+                const results = { success: 0, failed: 0, errors: [] };
+
+                for (let i = 0; i < idsToUpdate.length; i += BATCH_SIZE) {
+                    const batch = idsToUpdate.slice(i, i + BATCH_SIZE);
+                    let retryCount = 0;
+                    let success = false;
+
+                    while (retryCount < MAX_RETRIES && !success) {
+                        try {
+                            const validatedBatch = batch.map(id => parseInt(id)).filter(id => !isNaN(id));
+                            if (validatedBatch.length === 0) {
+                                results.failed += batch.length;
+                                results.errors.push(`Batch ${i/BATCH_SIZE + 1}: Semua ID tidak valid`);
+                                break;
+                            }
+
+                            const { data, error } = await supabase
+                                .from(tableName)
+                                .update(updateData)
+                                .in('id', validatedBatch)
+                                .select('id');
+
+                            if (error) throw error;
+
+                            results.success += data.length;
+                            results.failed += validatedBatch.length - data.length;
+                            if (validatedBatch.length - data.length > 0) {
+                                results.errors.push(`Batch ${i/BATCH_SIZE + 1}: ${validatedBatch.length - data.length} ID gagal diupdate`);
+                            }
+                            success = true;
+                        } catch (err) {
+                            retryCount++;
+                            console.error(`Bulk edit error in batch ${i/BATCH_SIZE + 1}, retry ${retryCount}:`, err);
+                            results.errors.push(`Batch ${i/BATCH_SIZE + 1}, retry ${retryCount}: ${err.message}`);
+                            if (retryCount === MAX_RETRIES) {
+                                results.failed += batch.length;
+                            }
+                            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retryCount)));
+                        }
+                    }
+                }
+
+                if (results.success > 0) {
+                    fetchFunction();
+                }
+
+                return results;
             }
 
             // ==================== FUNGSI UPLOAD EXCEL ====================
@@ -2553,8 +2720,12 @@
             const bulkEditTitle = document.getElementById('bulkEditTitle');
             const bulkDiscountGroup = document.getElementById('bulkDiscountGroup');
             const bulkCategoryGroup = document.getElementById('bulkCategoryGroup');
+            const bulkColorGroup = document.getElementById('bulkColorGroup');
+            const bulkTypeGroup = document.getElementById('bulkTypeGroup');
             const bulkCategorySelect = document.getElementById('bulkCategorySelect');
             const bulkDiscount = document.getElementById('bulkDiscount');
+            const bulkColor = document.getElementById('bulkColor');
+            const bulkType = document.getElementById('bulkType');
 
             function updatePriceCalculator() {
                 const basePrice = parseFloat(bookBasePriceInput.value) || 0;
@@ -2741,64 +2912,289 @@
                     if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedBooks.size} buku?`)) return;
                     
                     const idsToDelete = Array.from(selectedBooks);
-                    try {
-                        const { error } = await supabase
-                            .from('books')
-                            .delete()
-                            .in('id', idsToDelete);
-
-                        if (error) throw error;
-
-                        selectedBooks.clear();
-                        updateSelectedCount();
-                        selectAllCheckbox.checked = false;
-                        window.fetchBooks();
-                        alert(`${idsToDelete.length} buku berhasil dihapus`);
-                    } catch (error) {
-                        console.error('Error bulk deleting books:', error);
-                        alert('Gagal menghapus buku. Error: ' + error.message);
-                    }
+                    const deleteResults = await performBulkDelete('books', idsToDelete, window.fetchBooks);
+                    
+                    selectedBooks.clear();
+                    updateSelectedCount();
+                    selectAllCheckbox.checked = false;
+                    
+                    alert(`Hasil penghapusan: Berhasil ${deleteResults.success}, Gagal ${deleteResults.failed}. Error: ${deleteResults.errors.join('\n') || 'Tidak ada'}`);
                 } else if (action === 'edit_discount' || action === 'edit_category') {
                     bulkEditTitle.textContent = action === 'edit_discount' ? translations[currentLanguage]['edit-discount-title'] : translations[currentLanguage]['edit-category-title'];
                     bulkDiscountGroup.style.display = action === 'edit_discount' ? 'block' : 'none';
                     bulkCategoryGroup.style.display = action === 'edit_category' ? 'block' : 'none';
+                    bulkColorGroup.style.display = 'none';
+                    bulkTypeGroup.style.display = 'none';
                     bulkEditModal.style.display = 'block';
                     currentBulkAction = action;
+                    currentBulkTable = 'books';
+                }
+            });
+
+            // Bulk for Publishers
+            const publisherSelectAll = document.getElementById('publisherSelectAll');
+            const publisherBulkAction = document.getElementById('publisherBulkAction');
+            const applyPublisherBulkAction = document.getElementById('applyPublisherBulkAction');
+            const publisherSelectedCount = document.getElementById('publisherSelectedCount');
+
+            function updatePublisherSelectedCount() {
+                publisherSelectedCount.textContent = `${selectedPublishers.size} penerbit terpilih`;
+            }
+
+            function handlePublisherSelection(id, isChecked) {
+                if (isChecked) {
+                    selectedPublishers.add(id);
+                } else {
+                    selectedPublishers.delete(id);
+                }
+                updatePublisherSelectedCount();
+            }
+
+            publisherSelectAll.addEventListener('change', (e) => {
+                const checkboxes = publishersTableBody.querySelectorAll('.publisher-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = e.target.checked;
+                    handlePublisherSelection(checkbox.dataset.id, e.target.checked);
+                });
+            });
+
+            applyPublisherBulkAction.addEventListener('click', async () => {
+                const action = publisherBulkAction.value;
+                if (!action) {
+                    alert('Pilih aksi terlebih dahulu');
+                    return;
+                }
+
+                if (selectedPublishers.size === 0) {
+                    alert('Pilih setidaknya satu penerbit');
+                    return;
+                }
+
+                if (action === 'delete') {
+                    if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedPublishers.size} penerbit?`)) return;
+                    
+                    const idsToDelete = Array.from(selectedPublishers);
+                    const deleteResults = await performBulkDelete('publishers', idsToDelete, window.fetchPublishers);
+                    
+                    selectedPublishers.clear();
+                    updatePublisherSelectedCount();
+                    publisherSelectAll.checked = false;
+                    
+                    alert(`Hasil penghapusan: Berhasil ${deleteResults.success}, Gagal ${deleteResults.failed}. Error: ${deleteResults.errors.join('\n') || 'Tidak ada'}`);
+                } else if (action === 'edit_discount') {
+                    bulkEditTitle.textContent = translations[currentLanguage]['edit-discount-title'];
+                    bulkDiscountGroup.style.display = 'block';
+                    bulkCategoryGroup.style.display = 'none';
+                    bulkColorGroup.style.display = 'none';
+                    bulkTypeGroup.style.display = 'none';
+                    bulkEditModal.style.display = 'block';
+                    currentBulkAction = action;
+                    currentBulkTable = 'publishers';
+                }
+            });
+
+            // Bulk for Categories
+            const categorySelectAll = document.getElementById('categorySelectAll');
+            const categoryBulkAction = document.getElementById('categoryBulkAction');
+            const applyCategoryBulkAction = document.getElementById('applyCategoryBulkAction');
+            const categorySelectedCount = document.getElementById('categorySelectedCount');
+
+            function updateCategorySelectedCount() {
+                categorySelectedCount.textContent = `${selectedCategories.size} kategori terpilih`;
+            }
+
+            function handleCategorySelection(id, isChecked) {
+                if (isChecked) {
+                    selectedCategories.add(id);
+                } else {
+                    selectedCategories.delete(id);
+                }
+                updateCategorySelectedCount();
+            }
+
+            categorySelectAll.addEventListener('change', (e) => {
+                const checkboxes = categoriesTableBody.querySelectorAll('.category-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = e.target.checked;
+                    handleCategorySelection(checkbox.dataset.id, e.target.checked);
+                });
+            });
+
+            applyCategoryBulkAction.addEventListener('click', async () => {
+                const action = categoryBulkAction.value;
+                if (!action) {
+                    alert('Pilih aksi terlebih dahulu');
+                    return;
+                }
+
+                if (selectedCategories.size === 0) {
+                    alert('Pilih setidaknya satu kategori');
+                    return;
+                }
+
+                if (action === 'delete') {
+                    if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedCategories.size} kategori?`)) return;
+                    
+                    const idsToDelete = Array.from(selectedCategories);
+                    const deleteResults = await performBulkDelete('categories', idsToDelete, window.fetchCategories);
+                    
+                    selectedCategories.clear();
+                    updateCategorySelectedCount();
+                    categorySelectAll.checked = false;
+                    
+                    alert(`Hasil penghapusan: Berhasil ${deleteResults.success}, Gagal ${deleteResults.failed}. Error: ${deleteResults.errors.join('\n') || 'Tidak ada'}`);
+                } else if (action === 'edit_color') {
+                    bulkEditTitle.textContent = 'Edit Warna Massal';
+                    bulkDiscountGroup.style.display = 'none';
+                    bulkCategoryGroup.style.display = 'none';
+                    bulkColorGroup.style.display = 'block';
+                    bulkTypeGroup.style.display = 'none';
+                    bulkEditModal.style.display = 'block';
+                    currentBulkAction = action;
+                    currentBulkTable = 'categories';
+                }
+            });
+
+            // Bulk for Banners
+            const bannerSelectAll = document.getElementById('bannerSelectAll');
+            const bannerBulkAction = document.getElementById('bannerBulkAction');
+            const applyBannerBulkAction = document.getElementById('applyBannerBulkAction');
+            const bannerSelectedCount = document.getElementById('bannerSelectedCount');
+
+            function updateBannerSelectedCount() {
+                bannerSelectedCount.textContent = `${selectedBanners.size} banner terpilih`;
+            }
+
+            function handleBannerSelection(id, isChecked) {
+                if (isChecked) {
+                    selectedBanners.add(id);
+                } else {
+                    selectedBanners.delete(id);
+                }
+                updateBannerSelectedCount();
+            }
+
+            bannerSelectAll.addEventListener('change', (e) => {
+                const checkboxes = bannersTableBody.querySelectorAll('.banner-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = e.target.checked;
+                    handleBannerSelection(checkbox.dataset.id, e.target.checked);
+                });
+            });
+
+            applyBannerBulkAction.addEventListener('click', async () => {
+                const action = bannerBulkAction.value;
+                if (!action) {
+                    alert('Pilih aksi terlebih dahulu');
+                    return;
+                }
+
+                if (selectedBanners.size === 0) {
+                    alert('Pilih setidaknya satu banner');
+                    return;
+                }
+
+                if (action === 'delete') {
+                    if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedBanners.size} banner?`)) return;
+                    
+                    const idsToDelete = Array.from(selectedBanners);
+                    const deleteResults = await performBulkDelete('banners', idsToDelete, window.fetchBanners);
+                    
+                    selectedBanners.clear();
+                    updateBannerSelectedCount();
+                    bannerSelectAll.checked = false;
+                    
+                    alert(`Hasil penghapusan: Berhasil ${deleteResults.success}, Gagal ${deleteResults.failed}. Error: ${deleteResults.errors.join('\n') || 'Tidak ada'}`);
+                } else if (action === 'edit_type') {
+                    bulkEditTitle.textContent = 'Edit Tipe Massal';
+                    bulkDiscountGroup.style.display = 'none';
+                    bulkCategoryGroup.style.display = 'none';
+                    bulkColorGroup.style.display = 'none';
+                    bulkTypeGroup.style.display = 'block';
+                    bulkEditModal.style.display = 'block';
+                    currentBulkAction = action;
+                    currentBulkTable = 'banners';
                 }
             });
 
             let currentBulkAction = '';
+            let currentBulkTable = '';
 
             bulkEditForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const idsToUpdate = Array.from(selectedBooks);
+                let idsToUpdate;
                 let updateData = {};
-                if (currentBulkAction === 'edit_discount') {
-                    updateData.discount = bulkDiscount.value;
-                } else if (currentBulkAction === 'edit_category') {
-                    updateData.category_id = bulkCategorySelect.value || null;
+                switch (currentBulkTable) {
+                    case 'books':
+                        idsToUpdate = Array.from(selectedBooks);
+                        if (currentBulkAction === 'edit_discount') {
+                            updateData.discount = bulkDiscount.value;
+                        } else if (currentBulkAction === 'edit_category') {
+                            updateData.category_id = bulkCategorySelect.value || null;
+                        }
+                        break;
+                    case 'publishers':
+                        idsToUpdate = Array.from(selectedPublishers);
+                        if (currentBulkAction === 'edit_discount') {
+                            updateData.discount = bulkDiscount.value;
+                        }
+                        break;
+                    case 'categories':
+                        idsToUpdate = Array.from(selectedCategories);
+                        if (currentBulkAction === 'edit_color') {
+                            updateData.color = bulkColor.value;
+                        }
+                        break;
+                    case 'banners':
+                        idsToUpdate = Array.from(selectedBanners);
+                        if (currentBulkAction === 'edit_type') {
+                            updateData.type = bulkType.value;
+                        }
+                        break;
+                    default:
+                        return;
                 }
 
-                try {
-                    const { error } = await supabase
-                        .from('books')
-                        .update(updateData)
-                        .in('id', idsToUpdate);
-
-                    if (error) throw error;
-
-                    alert(`${idsToUpdate.length} buku berhasil diperbarui`);
-                    bulkEditModal.style.display = 'none';
-                    bulkEditForm.reset();
-                    selectedBooks.clear();
-                    updateSelectedCount();
-                    selectAllCheckbox.checked = false;
-                    window.fetchBooks();
-                } catch (error) {
-                    console.error('Error bulk editing books:', error);
-                    alert('Gagal memperbarui buku. Error: ' + error.message);
+                const editResults = await performBulkEdit(currentBulkTable, idsToUpdate, updateData, getFetchFunction(currentBulkTable));
+                
+                bulkEditModal.style.display = 'none';
+                bulkEditForm.reset();
+                
+                switch (currentBulkTable) {
+                    case 'books':
+                        selectedBooks.clear();
+                        updateSelectedCount();
+                        selectAllCheckbox.checked = false;
+                        break;
+                    case 'publishers':
+                        selectedPublishers.clear();
+                        updatePublisherSelectedCount();
+                        publisherSelectAll.checked = false;
+                        break;
+                    case 'categories':
+                        selectedCategories.clear();
+                        updateCategorySelectedCount();
+                        categorySelectAll.checked = false;
+                        break;
+                    case 'banners':
+                        selectedBanners.clear();
+                        updateBannerSelectedCount();
+                        bannerSelectAll.checked = false;
+                        break;
                 }
+
+                alert(`Hasil edit: Berhasil ${editResults.success}, Gagal ${editResults.failed}. Error: ${editResults.errors.join('\n') || 'Tidak ada'}`);
             });
+
+            function getFetchFunction(table) {
+                switch (table) {
+                    case 'books': return window.fetchBooks;
+                    case 'publishers': return window.fetchPublishers;
+                    case 'categories': return window.fetchCategories;
+                    case 'banners': return window.fetchBanners;
+                    default: return () => {};
+                }
+            }
 
             document.querySelector('.close-modal[data-modal="bulkEditModal"]').addEventListener('click', () => {
                 bulkEditModal.style.display = 'none';
@@ -3176,6 +3572,7 @@
             const renderPublishers = (publishers) => {
                 publishersTableBody.innerHTML = publishers.map(p => `
                     <tr>
+                        <td><input type="checkbox" class="publisher-checkbox" data-id="${p.id}" ${selectedPublishers.has(p.id) ? 'checked' : ''}></td>
                         <td><img src="${p.logo_url || 'https://via.placeholder.com/60x60.png?text=No+Logo'}" class="table-image" alt="Logo"></td>
                         <td>${p.name}</td>
                         <td>${p.letter}</td>
@@ -3185,6 +3582,12 @@
                             <button class="btn delete-btn" data-id="${p.id}">🗑️ Hapus</button>
                         </td>
                     </tr>`).join('');
+
+                publishersTableBody.querySelectorAll('.publisher-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', (e) => {
+                        handlePublisherSelection(e.target.dataset.id, e.target.checked);
+                    });
+                });
             };
             
             window.fetchPublishers = () => fetchData('publishers', 'publishersTableBody', 'loadingPublishers', renderPublishers);
@@ -3296,6 +3699,7 @@
             const renderCategories = (categories) => {
                 categoriesTableBody.innerHTML = categories.map(c => `
                     <tr>
+                        <td><input type="checkbox" class="category-checkbox" data-id="${c.id}" ${selectedCategories.has(c.id) ? 'checked' : ''}></td>
                         <td><img src="${c.image_url || 'https://via.placeholder.com/60x60.png?text=No+Image'}" class="table-image" alt="Category"></td>
                         <td>${c.name_id}</td>
                         <td>${c.name_en}</td>
@@ -3306,6 +3710,12 @@
                             <button class="btn delete-btn" data-id="${c.id}">🗑️ Hapus</button>
                         </td>
                     </tr>`).join('');
+
+                categoriesTableBody.querySelectorAll('.category-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', (e) => {
+                        handleCategorySelection(e.target.dataset.id, e.target.checked);
+                    });
+                });
             };
             
             window.fetchCategories = () => fetchData('categories', 'categoriesTableBody', 'loadingCategories', renderCategories);
@@ -3414,6 +3824,7 @@
             const renderBanners = (banners) => {
                 bannersTableBody.innerHTML = banners.map(b => `
                     <tr>
+                        <td><input type="checkbox" class="banner-checkbox" data-id="${b.id}" ${selectedBanners.has(b.id) ? 'checked' : ''}></td>
                         <td><img src="${b.image_url || 'https://via.placeholder.com/60x60.png?text=No+Image'}" class="table-image" alt="Banner"></td>
                         <td>${b.title}</td>
                         <td>${b.type}</td>
@@ -3423,6 +3834,12 @@
                             <button class="btn delete-btn" data-id="${b.id}">🗑️ Hapus</button>
                         </td>
                     </tr>`).join('');
+
+                bannersTableBody.querySelectorAll('.banner-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', (e) => {
+                        handleBannerSelection(e.target.dataset.id, e.target.checked);
+                    });
+                });
             };
             
             window.fetchBanners = () => fetchData('banners', 'bannersTableBody', 'loadingBanners', renderBanners);
