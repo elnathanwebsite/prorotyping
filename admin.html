@@ -2116,9 +2116,9 @@
                     'Penulis*': 'Contoh: Ustadz Ahmad',
                     'Harga Asli (USD)*': '50.00',
                     'Harga Dasar (USD)*': '45.00',
-                    'Penerbit': 'Nama Penerbit (opsional)',
-                    'Kategori': 'Nama Kategori (opsional)',
-                    'Diskon': '10% (opsional)',
+                    'Penerbit': 'Nama Penerbit (opsional, jika baru akan dibuat otomatis)',
+                    'Kategori': 'Nama Kategori (opsional, jika baru akan dibuat otomatis)',
+                    'Diskon': '10% (opsional, untuk buku; jika penerbit baru, diskon ini digunakan sebagai default penerbit)',
                     'Jilid': '2 (opsional)',
                     'Halaman': '300 (opsional)',
                     'Tahun Terbit': '2024 (opsional)',
@@ -2133,6 +2133,11 @@
                     'URL Gambar Cover': 'https://example.com/image.jpg (opsional)'
                 }
             ];
+
+            // Fungsi untuk capitalize proper
+            function properCase(str) {
+                return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+            }
 
             // Fungsi untuk download template Excel
             function downloadExcelTemplate() {
@@ -2223,28 +2228,104 @@
                 });
             }
 
+            // Fungsi untuk handle creation penerbit dan kategori baru
+            async function handleNewPublishersAndCategories(excelData) {
+                const publisherToDiscount = new Map();
+                const publisherToLetter = new Map();
+                const categoryNames = new Set();
+
+                // Collect unique names and first discount/letter for publishers
+                excelData.forEach(row => {
+                    const pubName = row['Penerbit'] ? row['Penerbit'].trim() : null;
+                    const catName = row['Kategori'] ? row['Kategori'].trim() : null;
+                    const discount = row['Diskon'] ? row['Diskon'].trim() : '';
+
+                    if (pubName) {
+                        const lowerPub = pubName.toLowerCase();
+                        if (!publisherToDiscount.has(lowerPub) && discount) {
+                            publisherToDiscount.set(lowerPub, discount);
+                        }
+                        if (!publisherToLetter.has(lowerPub)) {
+                            publisherToLetter.set(lowerPub, pubName.charAt(0).toUpperCase());
+                        }
+                    }
+
+                    if (catName) {
+                        categoryNames.add(catName.toLowerCase());
+                    }
+                });
+
+                // Fetch existing
+                const { data: existingPublishers } = await supabase.from('publishers').select('id, name');
+                const { data: existingCategories } = await supabase.from('categories').select('id, name_id');
+
+                const existingPubMap = new Map(existingPublishers.map(p => [p.name.toLowerCase(), p.id]));
+                const existingCatMap = new Map(existingCategories.map(c => [c.name_id.toLowerCase(), c.id]));
+
+                // New publishers
+                const newPublishers = [];
+                publisherToDiscount.forEach((discount, lowerName) => {
+                    if (!existingPubMap.has(lowerName)) {
+                        const properName = properCase(lowerName);
+                        newPublishers.push({
+                            name: properName,
+                            letter: publisherToLetter.get(lowerName) || properName.charAt(0).toUpperCase(),
+                            discount: discount
+                        });
+                    }
+                });
+
+                // New categories
+                const newCategories = [];
+                categoryNames.forEach(lowerName => {
+                    if (!existingCatMap.has(lowerName)) {
+                        const properName = properCase(lowerName);
+                        newCategories.push({
+                            name_id: properName,
+                            name_en: properName,
+                            name_ar: '',
+                            color: '#3498db',
+                            link: `/kategori/${slugify(properName)}`
+                        });
+                    }
+                });
+
+                // Insert new publishers
+                if (newPublishers.length > 0) {
+                    const { data: insertedPubs, error: pubError } = await supabase.from('publishers').insert(newPublishers).select('id, name');
+                    if (pubError) throw pubError;
+                    insertedPubs.forEach(p => existingPubMap.set(p.name.toLowerCase(), p.id));
+                }
+
+                // Insert new categories
+                if (newCategories.length > 0) {
+                    const { data: insertedCats, error: catError } = await supabase.from('categories').insert(newCategories).select('id, name_id');
+                    if (catError) throw catError;
+                    insertedCats.forEach(c => existingCatMap.set(c.name_id.toLowerCase(), c.id));
+                }
+
+                // Refresh global lists
+                await loadPublishersAndCategories();
+
+                return { publisherMap: existingPubMap, categoryMap: existingCatMap };
+            }
+
             // Fungsi untuk memetakan data Excel ke format database
-            function mapExcelToBookData(excelData, publishers = [], categories = []) {
+            function mapExcelToBookData(excelData, publisherMap, categoryMap) {
                 return excelData.map((row, index) => {
                     try {
-                        // Cari ID penerbit berdasarkan nama
+                        // Cari ID penerbit
                         let publisherId = null;
-                        if (row['Penerbit'] && publishers && publishers.length > 0) {
-                            const publisher = publishers.find(p => 
-                                p && p.name && row['Penerbit'] && 
-                                p.name.toLowerCase() === row['Penerbit'].toString().toLowerCase().trim()
-                            );
-                            publisherId = publisher ? publisher.id : null;
+                        if (row['Penerbit'] && row['Penerbit'].trim()) {
+                            const lowerName = row['Penerbit'].trim().toLowerCase();
+                            publisherId = publisherMap.get(lowerName) || null;
                         }
 
-                        // Cari ID kategori berdasarkan nama
+                        // Cari ID kategori
                         let categoryId = null;
-                        if (row['Kategori'] && categories && categories.length > 0) {
-                            const category = categories.find(c => 
-                                c && c.name_id && row['Kategori'] &&
-                                c.name_id.toLowerCase() === row['Kategori'].toString().toLowerCase().trim()
-                            );
-                            categoryId = category ? category.id : null;
+                        if (row['Kategori'] && row['Kategori'].trim()) {
+                            const lowerName = row['Kategori'].trim().toLowerCase();
+                            categoryId = categoryMap.get(lowerName) || null;
                         }
 
                         // Handle nilai dengan aman
@@ -3498,7 +3579,7 @@
                     progressText.textContent = 'Memuat data referensi...';
 
                     // Pastikan data publishers dan categories sudah dimuat
-                    const { publishers, categories } = await loadPublishersAndCategories();
+                    await loadPublishersAndCategories();
                     
                     progressBar.style.width = '30%';
                     progressText.textContent = 'Membaca file Excel...';
@@ -3511,17 +3592,20 @@
                     }
 
                     progressBar.style.width = '50%';
-                    progressText.textContent = `Menemukan ${excelData.length} data buku. Memproses...`;
+                    progressText.textContent = `Menemukan ${excelData.length} data buku. Memproses penerbit & kategori baru...`;
+
+                    // Handle creation penerbit dan kategori baru
+                    const { publisherMap, categoryMap } = await handleNewPublishersAndCategories(excelData);
+
+                    progressBar.style.width = '70%';
+                    progressText.textContent = `Memproses ${excelData.length} data valid...`;
 
                     // Map data Excel ke format database
-                    const booksData = mapExcelToBookData(excelData, publishers, categories);
+                    const booksData = mapExcelToBookData(excelData, publisherMap, categoryMap);
                     
                     if (booksData.length === 0) {
                         throw new Error('Tidak ada data valid yang dapat diproses');
                     }
-
-                    progressBar.style.width = '70%';
-                    progressText.textContent = `Memproses ${booksData.length} data valid...`;
 
                     // Upload ke Supabase
                     const uploadResults = await uploadBooksToSupabase(booksData, (current, total) => {
@@ -3537,9 +3621,11 @@
                     // Tampilkan summary
                     showUploadSummary(uploadResults, excelData.length);
                     
-                    // Refresh data buku
+                    // Refresh data buku, penerbit, kategori
                     setTimeout(() => {
                         window.fetchBooks();
+                        window.fetchPublishers();
+                        window.fetchCategories();
                     }, 2000);
 
                 } catch (error) {
