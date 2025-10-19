@@ -3,108 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Toko Buku Islam</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <title>Panel Admin - Toko Buku Islam</title>
     <style>
         :root {
-            --primary-color: #2c5aa0;
-            --secondary-color: #ffffff;
-            --accent-color: #e74c3c;
-            --text-color: #333333;
-            --light-gray: #f5f5f5;
-            --border-color: #e0e0e0;
+            --primary: #2c3e50;
+            --primary-light: #f8f9fa;
+            --primary-dark: #1a252f;
+            --secondary: #34495e;
+            --light: #ffffff;
+            --dark: #2c3e50;
+            --border: #eaeaea;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
             --sidebar-width: 250px;
-            --header-height: 60px;
-            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --heading-font: 'Poppins', 'Inter', 'Segoe UI', Roboto, sans-serif;
         }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #ffffff;
-            color: var(--text-color);
-            transition: all 0.3s ease;
+            font-family: var(--font-family);
+            background-color: #f8f9fa;
+            color: var(--dark);
+            line-height: 1.6;
+            font-weight: 400;
         }
 
-        .container {
+        .app-container {
             display: flex;
             min-height: 100vh;
         }
 
-        /* Header Styles */
-        .header {
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--light);
+            color: var(--dark);
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: var(--header-height);
-            background-color: white;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            z-index: 1000;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
         }
 
-        .menu-toggle {
-            display: none;
-            background: none;
+        .sidebar-header h1 {
+            font-family: var(--heading-font);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .sidebar-header p {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            color: var(--secondary);
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-btn {
+            display: block;
+            width: 100%;
+            background: transparent;
+            color: var(--dark);
             border: none;
-            font-size: 1.5rem;
+            padding: 1rem 1.5rem;
             cursor: pointer;
-            margin-right: 15px;
-            color: var(--primary-color);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-align: left;
+            border-left: 3px solid transparent;
+            font-weight: 500;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
+        .nav-btn:hover {
+            background: var(--primary-light);
         }
 
-        .header-right {
+        .nav-btn.active {
+            background: var(--primary-light);
+            border-left-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            background: var(--light);
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--light);
+            color: var(--secondary);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .header-title {
+            text-align: right;
+        }
+
+        .header-title h1 {
+            font-family: var(--heading-font);
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .header-title p {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
             align-items: center;
         }
 
         .language-selector {
             position: relative;
-            margin-right: 15px;
         }
 
         .language-btn {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            background: var(--light-gray);
-            border: none;
-            border-radius: 4px;
-            padding: 8px 12px;
-            cursor: pointer;
+            gap: 0.5rem;
             font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .language-btn:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .language-dropdown {
             position: absolute;
             top: 100%;
             right: 0;
-            background: white;
-            border-radius: 4px;
-            box-shadow: var(--shadow);
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 1000;
             min-width: 150px;
             display: none;
-            z-index: 1001;
+            margin-top: 0.5rem;
         }
 
         .language-dropdown.show {
@@ -112,368 +186,389 @@
         }
 
         .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
             display: flex;
             align-items: center;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-bottom: 1px solid var(--light-gray);
+            gap: 0.5rem;
         }
 
-        .language-option:last-child {
-            border-bottom: none;
+        .language-option:hover {
+            background: var(--primary-light);
         }
 
-        .language-option:hover, .language-option.active {
-            background: var(--light-gray);
+        .language-option.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 500;
         }
 
-        .language-option span:first-child {
-            margin-right: 8px;
-            font-size: 1.2rem;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            position: fixed;
-            top: var(--header-height);
-            left: 0;
-            width: var(--sidebar-width);
-            height: calc(100vh - var(--header-height));
-            background-color: white;
-            box-shadow: var(--shadow);
-            padding: 20px 0;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-            z-index: 999;
-        }
-
-        .nav-list {
-            list-style: none;
-        }
-
-        .nav-item {
-            margin-bottom: 5px;
-        }
-
-        .nav-btn {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding: 12px 20px;
-            background: none;
-            border: none;
-            text-align: left;
-            cursor: pointer;
-            font-size: 1rem;
-            color: var(--text-color);
-            transition: background-color 0.2s;
-        }
-
-        .nav-btn:hover {
-            background-color: var(--light-gray);
-        }
-
-        .nav-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .nav-btn i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* Main Content Styles */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            margin-top: var(--header-height);
-            padding: 20px;
-            transition: margin-left 0.3s ease;
+        main {
+            padding: 2rem;
         }
 
         .content-section {
             display: none;
+            animation: fadeIn 0.5s ease;
         }
 
         .content-section.active {
             display: block;
         }
 
-        .section-title {
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            font-size: 1.8rem;
+        h2 {
+            font-family: var(--heading-font);
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
         }
 
-        .section-subtitle {
-            margin-bottom: 30px;
-            color: #666;
-            font-size: 1rem;
+        .form-section {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
         }
 
-        /* Card Styles */
-        .card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
         }
 
-        .card-title {
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            color: var(--primary-color);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        /* Form Styles */
         .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 1rem;
-            background-color: white;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .form-row {
             display: flex;
-            gap: 15px;
+            flex-direction: column;
         }
 
-        .form-col {
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .form-grid input,
+        .form-grid select,
+        .form-grid textarea {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--light);
+            font-family: var(--font-family);
+        }
+
+        .form-grid input:focus,
+        .form-grid select:focus,
+        .form-grid textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+        }
+
+        .form-grid input[readonly] {
+            background-color: var(--primary-light);
+            color: #6c757d;
+        }
+
+        .custom-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .custom-input select {
             flex: 1;
         }
 
-        .form-radio-group {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 10px;
+        .custom-input input {
+            flex: 2;
         }
 
-        .form-radio {
+        .form-buttons {
             display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-flex;
             align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-family);
         }
 
-        .form-radio input {
-            margin-right: 5px;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: var(--light);
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .cancel-btn {
+            background: var(--danger);
+            color: var(--light);
+        }
+
+        .cancel-btn:hover {
+            background: #c0392b;
+        }
+
+        .edit-btn {
+            background: var(--warning);
+            color: var(--light);
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            color: var(--light);
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .image-upload-container {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--primary-light);
+            border-radius: 12px;
+            border: 1px dashed var(--border);
+        }
+
+        .image-upload-container label {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+            color: var(--dark);
         }
 
         .image-preview {
             max-width: 200px;
             max-height: 200px;
-            margin-top: 10px;
-            display: none;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-top: 1rem;
+            background: var(--light);
+            object-fit: contain;
+            display: block;
         }
 
-        .price-calculator {
-            background: var(--light-gray);
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-            border: 1px solid var(--border-color);
-        }
-
-        .price-row {
+        .image-source-selector {
+            margin-bottom: 1rem;
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
-        .price-label {
-            font-weight: 500;
-        }
-
-        .price-value {
-            font-weight: bold;
-        }
-
-        /* Button Styles */
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
+        .image-source-selector label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: normal;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #1e4a8a;
-        }
-
-        .btn-secondary {
-            background-color: var(--light-gray);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: #e0e0e0;
-        }
-
-        .btn-danger {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #c0392b;
-        }
-
-        .submit-btn {
-            margin-top: 20px;
-        }
-
-        /* Table Styles */
-        .table-container {
+        .table-wrapper {
             overflow-x: auto;
+            background: var(--light);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-top: 1.5rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
         }
 
-        .data-table {
+        .admin-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            min-width: 800px;
         }
 
-        .data-table th, .data-table td {
-            padding: 12px 15px;
+        .admin-table th {
+            background: var(--primary-light);
+            padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .data-table th {
-            background-color: var(--light-gray);
             font-weight: 600;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            font-family: var(--heading-font);
         }
 
-        .data-table tr:hover {
-            background-color: rgba(0, 0, 0, 0.02);
+        .admin-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .admin-table tbody tr:hover {
+            background: var(--primary-light);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
         }
 
         .table-image {
             width: 60px;
             height: 60px;
             object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-        }
-
-        .action-buttons .btn {
-            padding: 5px 10px;
-            font-size: 0.8rem;
-        }
-
-        /* Filter Section */
-        .filter-section {
-            background: white;
             border-radius: 8px;
-            box-shadow: var(--shadow);
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border);
         }
 
-        .filter-row {
+        .price-display {
             display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 15px;
+            flex-direction: column;
+            gap: 0.25rem;
         }
 
-        .filter-group {
-            flex: 1;
-            min-width: 150px;
+        .original-price {
+            text-decoration: line-through;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .discounted-price {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .discount-badge {
+            background: var(--danger);
+            color: var(--light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        .price-calculator {
+            background: var(--primary-light);
+            color: var(--dark);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .price-calculator h4 {
+            margin: 0 0 1rem 0;
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-family: var(--heading-font);
+            font-weight: 600;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(44, 62, 80, 0.1);
+        }
+
+        .price-label {
+            font-weight: 500;
         }
 
         .bulk-actions {
+            background: var(--primary-light);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 1rem;
+            flex-wrap: wrap;
+            border: 1px solid var(--border);
         }
 
-        /* Excel Upload Section */
-        .excel-upload-section {
-            background: white;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+        .bulk-actions select,
+        .bulk-actions button {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
         }
 
-        .upload-area {
-            border: 2px dashed var(--border-color);
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: border-color 0.3s;
+        .book-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
         }
 
-        .upload-area:hover {
-            border-color: var(--primary-color);
+        .detail-item {
+            display: flex;
+            flex-direction: column;
         }
 
-        .upload-area.dragover {
-            border-color: var(--primary-color);
-            background-color: rgba(44, 90, 160, 0.05);
+        .detail-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .upload-icon {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 10px;
+        .detail-value {
+            font-size: 0.875rem;
+            font-weight: 500;
         }
 
-        .upload-text {
-            margin-bottom: 15px;
+        .filter-section {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
         }
 
-        .file-input {
-            display: none;
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
 
-        .template-download {
-            margin-top: 15px;
-            text-align: center;
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
         }
 
-        /* Modal Styles */
+        .apply-filter {
+            background: var(--primary);
+            color: var(--light);
+        }
+
+        .reset-filter {
+            background: #6c757d;
+            color: var(--light);
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -481,1012 +576,928 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1100;
-            overflow-y: auto;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 800px;
-            position: relative;
-            border: 1px solid var(--border-color);
+            background: var(--light);
+            margin: 2% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 95%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            font-family: var(--heading-font);
+            font-weight: 600;
+            border: none;
+            padding: 0;
+            margin: 0;
         }
 
         .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
+            background: none;
+            border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #666;
+            color: #6c757d;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
 
         .close-modal:hover {
-            color: var(--accent-color);
+            background: var(--primary-light);
+            color: var(--dark);
         }
 
-        /* Loading Styles */
-        .loading {
+        #loadingBooks,
+        #loadingPublishers,
+        #loadingCategories,
+        #loadingBanners,
+        #loadingOrders {
             text-align: center;
-            padding: 20px;
+            padding: 2rem;
+            color: #6c757d;
             font-style: italic;
-            color: #666;
         }
 
-        /* Book Details Grid */
-        .book-details-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 5px;
+        .upload-status {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--success);
+            background: var(--primary-light);
         }
 
-        .detail-item {
+        .upload-status.error {
+            border-left-color: var(--danger);
+            background: #fee;
+        }
+
+        .upload-status.warning {
+            border-left-color: var(--warning);
+            background: #fff3cd;
+        }
+
+        .upload-summary {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--primary-light);
+            border-radius: 8px;
+        }
+
+        .summary-item {
             display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
         }
 
-        .detail-label {
-            font-weight: 500;
-            margin-right: 5px;
-            min-width: 100px;
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
         }
 
-        .detail-value {
-            color: #666;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Price Display */
-        .price-display {
-            display: flex;
-            flex-direction: column;
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-50px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .original-price {
-            text-decoration: line-through;
-            color: #999;
-            font-size: 0.8rem;
-        }
-
-        .discounted-price {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .discount-badge {
-            background: var(--accent-color);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            margin-top: 3px;
-            display: inline-block;
-        }
-
-        /* Responsive Styles */
         @media (max-width: 1024px) {
-            .menu-toggle {
-                display: block;
-            }
-
             .sidebar {
                 transform: translateX(-100%);
             }
-
+            
             .sidebar.active {
                 transform: translateX(0);
             }
-
+            
             .main-content {
                 margin-left: 0;
             }
-
-            .form-row {
+            
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 101;
+                background: var(--primary);
+                color: var(--light);
+                border: none;
+                border-radius: 6px;
+                padding: 0.5rem;
+                cursor: pointer;
+            }
+            
+            header {
                 flex-direction: column;
-                gap: 0;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .header-title {
+                text-align: left;
+                width: 100%;
             }
         }
 
         @media (max-width: 768px) {
-            .filter-row {
-                flex-direction: column;
+            main {
+                padding: 1rem;
             }
-
+            
+            .form-section {
+                padding: 1.5rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .modal-content {
+                margin: 5% auto;
+                padding: 1.5rem;
+                width: 98%;
+            }
+            
             .bulk-actions {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: stretch;
             }
+            
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-title h1 {
+                font-size: 1.5rem;
+            }
+        }
 
-            .action-buttons {
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem;
+            }
+            
+            header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .form-buttons {
                 flex-direction: column;
             }
-        }
-
-        /* RTL Support */
-        [dir="rtl"] .sidebar {
-            left: auto;
-            right: 0;
-        }
-
-        [dir="rtl"] .main-content {
-            margin-left: 0;
-            margin-right: var(--sidebar-width);
-        }
-
-        [dir="rtl"] .nav-btn i {
-            margin-right: 0;
-            margin-left: 10px;
-        }
-
-        [dir="rtl"] .language-option span:first-child {
-            margin-right: 0;
-            margin-left: 8px;
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .sidebar-header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .sidebar-header h1 {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-left">
-                <button class="menu-toggle" id="menuToggle">☰</button>
-                <div class="logo" data-lang-key="dashboard-title">Panel Admin - Toko Buku Islam</div>
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>Panel Admin</h1>
+                <p>Toko Buku Islam</p>
             </div>
-            <div class="header-right">
-                <div class="language-selector">
-                    <button class="language-btn" id="languageBtn">
-                        <span id="currentLangFlag">🇮🇩</span>
-                        <span id="currentLangText">Indonesia</span>
-                    </button>
-                    <div class="language-dropdown" id="languageDropdown">
-                        <div class="language-option active" data-lang="id">
-                            <span>🇮🇩</span>
-                            <span>Indonesia</span>
-                        </div>
-                        <div class="language-option" data-lang="en">
-                            <span>🇺🇸</span>
-                            <span>English</span>
-                        </div>
-                        <div class="language-option" data-lang="ar">
-                            <span>🇸🇦</span>
-                            <span>العربية</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Sidebar -->
-        <nav class="sidebar" id="sidebar">
-            <ul class="nav-list">
-                <li class="nav-item">
-                    <button class="nav-btn active" data-section="books">
-                        <i>📚</i>
-                        <span data-lang-key="menu-books">Buku</span>
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-btn" data-section="publishers">
-                        <i>🏢</i>
-                        <span data-lang-key="menu-publishers">Penerbit</span>
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-btn" data-section="categories">
-                        <i>📂</i>
-                        <span data-lang-key="menu-categories">Kategori</span>
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-btn" data-section="banners">
-                        <i>🖼️</i>
-                        <span data-lang-key="menu-banners">Banner</span>
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-btn" data-section="orders">
-                        <i>📦</i>
-                        <span data-lang-key="menu-orders">Pesanan</span>
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-btn" data-section="currency">
-                        <i>💱</i>
-                        <span data-lang-key="menu-currency">Kurs</span>
-                    </button>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Main Content -->
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-section="books" data-lang-key="menu-books">Buku</button>
+                <button class="nav-btn" data-section="publishers" data-lang-key="menu-publishers">Penerbit</button>
+                <button class="nav-btn" data-section="categories" data-lang-key="menu-categories">Kategori</button>
+                <button class="nav-btn" data-section="banners" data-lang-key="menu-banners">Banner</button>
+                <button class="nav-btn" data-section="orders" data-lang-key="menu-orders">Pesanan</button>
+                <button class="nav-btn" data-section="currency" data-lang-key="menu-currency">Kurs</button>
+            </nav>
+        </aside>
+        
         <main class="main-content">
-            <!-- Books Section -->
-            <section id="books-section" class="content-section active">
-                <h1 class="section-title" data-lang-key="dashboard-title">Panel Admin - Toko Buku Islam</h1>
-                <p class="section-subtitle" data-lang-key="dashboard-subtitle">Kelola data buku, penerbit, kategori, dan banner dengan mudah</p>
-                
-                <!-- Excel Upload Section -->
-                <div class="excel-upload-section">
-                    <h2 class="card-title">Upload Data Buku dari Excel</h2>
-                    <div class="upload-area" id="uploadArea">
-                        <div class="upload-icon">📤</div>
-                        <div class="upload-text">
-                            <p>Seret file Excel ke sini atau klik untuk memilih file</p>
-                            <p><small>Format yang didukung: .xlsx, .xls, .csv</small></p>
+            <button class="menu-toggle" id="menuToggle" style="display: none;">☰ Menu</button>
+            
+            <header>
+                <div class="header-title">
+                    <h1 data-lang-key="dashboard-title">Panel Admin - Toko Buku Islam</h1>
+                    <p data-lang-key="dashboard-subtitle">Kelola data buku, penerbit, kategori, dan banner dengan mudah</p>
+                </div>
+                <div class="header-actions">
+                    <div class="language-selector">
+                        <button class="language-btn" id="languageBtn">
+                            <span id="currentLangFlag">🇮🇩</span>
+                            <span id="currentLangText">Indonesia</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="language-dropdown" id="languageDropdown">
+                            <div class="language-option active" data-lang="id">
+                                <span>🇮🇩</span>
+                                <span>Indonesia</span>
+                            </div>
+                            <div class="language-option" data-lang="en">
+                                <span>🇬🇧</span>
+                                <span>English</span>
+                            </div>
+                            <div class="language-option" data-lang="ar">
+                                <span>🇸🇦</span>
+                                <span>العربية</span>
+                            </div>
                         </div>
-                        <input type="file" id="excelFileInput" class="file-input" accept=".xlsx,.xls,.csv">
-                        <button class="btn btn-secondary" id="browseFilesBtn">Pilih File</button>
-                    </div>
-                    <div id="uploadStatus"></div>
-                    <div class="template-download">
-                        <p>Download template Excel untuk mengisi data buku:</p>
-                        <button class="btn btn-primary" id="downloadTemplateBtn">Download Template</button>
                     </div>
                 </div>
-                
-                <!-- Add Book Form -->
-                <div class="card">
-                    <h2 class="card-title" id="booksFormTitle" data-lang-key="add-book-title">Tambah Buku Baru</h2>
+            </header>
+            
+            <section id="books-section" class="content-section active">
+                <div class="form-section">
+                    <h2 id="booksFormTitle" data-lang-key="add-book-title">Tambah Buku Baru</h2>
                     <form id="bookForm">
                         <input type="hidden" id="bookId">
                         <input type="hidden" id="bookOldCoverUrl">
-                        
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="bookTitle" data-lang-key="book-title">Judul Buku</label>
-                                    <input type="text" id="bookTitle" class="form-control" placeholder="Masukkan judul buku" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="bookAuthor" data-lang-key="book-author">Penulis</label>
-                                    <input type="text" id="bookAuthor" class="form-control" placeholder="Nama penulis" required>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-col">
-                                        <div class="form-group">
-                                            <label class="form-label" for="bookOriginalPrice" data-lang-key="book-original-price">Harga Asli (USD)</label>
-                                            <input type="number" id="bookOriginalPrice" class="form-control" placeholder="0.00" step="0.01" min="0">
-                                        </div>
-                                    </div>
-                                    <div class="form-col">
-                                        <div class="form-group">
-                                            <label class="form-label" for="bookBasePrice" data-lang-key="book-base-price">Harga Dasar (USD)</label>
-                                            <input type="number" id="bookBasePrice" class="form-control" placeholder="0.00" step="0.01" min="0" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-col">
-                                        <div class="form-group">
-                                            <label class="form-label" for="bookPublisherSelect" data-lang-key="book-publisher">Penerbit</label>
-                                            <select id="bookPublisherSelect" class="form-control">
-                                                <option value="">-- Pilih Penerbit --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-col">
-                                        <div class="form-group">
-                                            <label class="form-label" for="bookCategorySelect" data-lang-key="book-category">Kategori</label>
-                                            <select id="bookCategorySelect" class="form-control">
-                                                <option value="">-- Pilih Kategori --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="bookDiscount" data-lang-key="book-discount">Diskon</label>
-                                    <input type="text" id="bookDiscount" class="form-control" placeholder="Contoh: 10%">
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="bookTitle" data-lang-key="book-title">Judul Buku</label>
+                                <input type="text" id="bookTitle" placeholder="Masukkan judul buku" required>
                             </div>
-                            
-                            <div class="form-col">
-                                <div class="form-row">
-                                    <div class="form-col">
-                                        <div class="form-group">
-                                            <label class="form-label" for="bookVolumes" data-lang-key="book-volumes">Jilid</label>
-                                            <input type="number" id="bookVolumes" class="form-control" placeholder="Jumlah jilid" min="1">
-                                        </div>
-                                    </div>
-                                    <div class="form-col">
-                                        <div class="form-group">
-                                            <label class="form-label" for="bookPages" data-lang-key="book-pages">Halaman</label>
-                                            <input type="number" id="bookPages" class="form-control" placeholder="Jumlah halaman" min="1">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="bookYear" data-lang-key="book-year">Tahun Terbit</label>
-                                    <input type="number" id="bookYear" class="form-control" placeholder="Tahun terbit" min="1000" max="2099">
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-col">
-                                        <div class="form-group">
-                                            <label class="form-label" for="bookWeightValue" data-lang-key="book-weight">Berat Buku</label>
-                                            <input type="number" id="bookWeightValue" class="form-control" placeholder="Nilai berat" step="0.01" min="0">
-                                        </div>
-                                    </div>
-                                    <div class="form-col">
-                                        <div class="form-group">
-                                            <label class="form-label" for="bookWeightUnit">Satuan</label>
-                                            <select id="bookWeightUnit" class="form-control">
-                                                <option value="g">Gram</option>
-                                                <option value="kg">Kilogram</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="bookAuthor" data-lang-key="book-author">Penulis</label>
+                                <input type="text" id="bookAuthor" placeholder="Nama penulis" required>
                             </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" data-lang-key="book-text-color">Warna Tulisan</label>
-                                    <select id="bookTextColorSelect" class="form-control">
-                                        <option value="">-- Pilih Warna --</option>
-                                        <option value="Hitam">Hitam</option>
-                                        <option value="Putih">Putih</option>
-                                        <option value="Emas">Emas</option>
-                                        <option value="Perak">Perak</option>
+                            <div class="form-group">
+                                <label for="bookOriginalPrice" data-lang-key="book-original-price">Harga Asli (USD)</label>
+                                <input type="number" step="0.01" id="bookOriginalPrice" placeholder="0.00" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bookBasePrice" data-lang-key="book-base-price">Harga Dasar (USD)</label>
+                                <input type="number" step="0.01" id="bookBasePrice" placeholder="0.00" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bookPublisherSelect" data-lang-key="book-publisher">Penerbit</label>
+                                <select id="bookPublisherSelect">
+                                    <option value="">-- Pilih Penerbit --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="bookCategorySelect" data-lang-key="book-category">Kategori</label>
+                                <select id="bookCategorySelect">
+                                    <option value="">-- Pilih Kategori --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="bookDiscount" data-lang-key="book-discount">Diskon</label>
+                                <input type="text" id="bookDiscount" placeholder="Contoh: 10%">
+                            </div>
+                            <div class="form-group">
+                                <label for="bookVolumes" data-lang-key="book-volumes">Jilid</label>
+                                <input type="text" id="bookVolumes" placeholder="Jumlah jilid">
+                            </div>
+                            <div class="form-group">
+                                <label for="bookPages" data-lang-key="book-pages">Halaman</label>
+                                <input type="text" id="bookPages" placeholder="Jumlah halaman">
+                            </div>
+                            <div class="form-group">
+                                <label for="bookYear" data-lang-key="book-year">Tahun Terbit</label>
+                                <input type="text" id="bookYear" placeholder="Tahun terbit">
+                            </div>
+                            <div class="form-group">
+                                <label for="bookWeight" data-lang-key="book-weight">Berat Buku</label>
+                                <div class="custom-input">
+                                    <input type="number" step="0.01" id="bookWeightValue" placeholder="Nilai berat">
+                                    <select id="bookWeightUnit">
+                                        <option value="kg">kg</option>
+                                        <option value="g">g</option>
+                                        <option value="ons">ons</option>
+                                        <option value="lb">lb</option>
                                     </select>
-                                    <input type="text" id="bookTextColorInput" class="form-control" style="margin-top: 5px;" placeholder="Ketik manual">
                                 </div>
                             </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" data-lang-key="book-cover-type">Jenis Cover</label>
-                                    <select id="bookCoverTypeSelect" class="form-control">
-                                        <option value="">-- Pilih Jenis --</option>
+                            <div class="form-group">
+                                <label data-lang-key="book-text-color">Warna Tulisan</label>
+                                <div class="custom-input">
+                                    <select id="bookTextColorSelect">
+                                        <option value="">-- Pilih --</option>
+                                        <option value="Hitam">Hitam</option>
+                                        <option value="Biru">Biru</option>
+                                        <option value="Hijau">Hijau</option>
+                                        <option value="Merah">Merah</option>
+                                        <option value="Coklat">Coklat</option>
+                                        <option value="Ungu">Ungu</option>
+                                    </select>
+                                    <input type="text" id="bookTextColorInput" placeholder="Ketik manual">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label data-lang-key="book-cover-type">Jenis Cover</label>
+                                <div class="custom-input">
+                                    <select id="bookCoverTypeSelect">
+                                        <option value="">-- Pilih --</option>
                                         <option value="Hard Cover">Hard Cover</option>
                                         <option value="Soft Cover">Soft Cover</option>
+                                        <option value="Flexi Cover">Flexi Cover</option>
                                         <option value="Spiral">Spiral</option>
                                     </select>
-                                    <input type="text" id="bookCoverTypeInput" class="form-control" style="margin-top: 5px;" placeholder="Ketik manual">
+                                    <input type="text" id="bookCoverTypeInput" placeholder="Ketik manual">
                                 </div>
                             </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" data-lang-key="book-paper-type">Jenis Kertas</label>
-                                    <select id="bookPaperTypeSelect" class="form-control">
-                                        <option value="">-- Pilih Jenis --</option>
+                            <div class="form-group">
+                                <label data-lang-key="book-paper-type">Jenis Kertas</label>
+                                <div class="custom-input">
+                                    <select id="bookPaperTypeSelect">
+                                        <option value="">-- Pilih --</option>
                                         <option value="HVS">HVS</option>
                                         <option value="Art Paper">Art Paper</option>
                                         <option value="Book Paper">Book Paper</option>
+                                        <option value="Matt Paper">Matt Paper</option>
+                                        <option value="Glossy Paper">Glossy Paper</option>
                                     </select>
-                                    <input type="text" id="bookPaperTypeInput" class="form-control" style="margin-top: 5px;" placeholder="Ketik manual">
+                                    <input type="text" id="bookPaperTypeInput" placeholder="Ketik manual">
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bookPrintCount" data-lang-key="book-print-count">Cetakan Ke</label>
+                                <input type="number" id="bookPrintCount" placeholder="Angka cetakan">
+                            </div>
+                            <div class="form-group">
+                                <label for="bookEditor" data-lang-key="book-editor">Editor</label>
+                                <input type="text" id="bookEditor" placeholder="Nama editor">
+                            </div>
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label for="bookDescription" data-lang-key="book-description">Deskripsi Buku</label>
+                                <textarea id="bookDescription" placeholder="Deskripsi lengkap buku" rows="4"></textarea>
                             </div>
                         </div>
                         
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="bookPrintCount" data-lang-key="book-print-count">Cetakan Ke</label>
-                                    <input type="number" id="bookPrintCount" class="form-control" placeholder="Angka cetakan" min="1">
-                                </div>
-                            </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="bookEditor" data-lang-key="book-editor">Editor</label>
-                                    <input type="text" id="bookEditor" class="form-control" placeholder="Nama editor">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="bookDescription" data-lang-key="book-description">Deskripsi Buku</label>
-                            <textarea id="bookDescription" class="form-control" rows="4" placeholder="Deskripsi lengkap buku"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" data-lang-key="book-cover">Sampul Buku</label>
-                            <div class="form-radio-group">
-                                <div class="form-radio">
-                                    <input type="radio" id="bookImageUpload" name="bookImageSource" value="upload" checked>
-                                    <label for="bookImageUpload" data-lang-key="upload-file">Unggah File</label>
-                                </div>
-                                <div class="form-radio">
-                                    <input type="radio" id="bookImageUrl" name="bookImageSource" value="url">
-                                    <label for="bookImageUrl" data-lang-key="use-url">Gunakan URL</label>
-                                </div>
-                            </div>
-                            
-                            <div id="bookCoverImageFile">
-                                <input type="file" id="bookCoverImageFileInput" class="form-control" accept="image/*">
-                            </div>
-                            <div id="bookCoverImageUrl" style="display: none;">
-                                <input type="url" id="bookCoverImageUrlInput" class="form-control" placeholder="Masukkan URL gambar">
-                            </div>
-                            
-                            <img id="bookImagePreview" class="image-preview" alt="Preview">
-                        </div>
-                        
-                        <!-- Price Calculator -->
                         <div class="price-calculator">
-                            <h3 data-lang-key="price-calculator">Kalkulator Harga Setelah Diskon</h3>
+                            <h4 data-lang-key="price-calculator">Kalkulator Harga Setelah Diskon</h4>
                             <div class="price-row">
                                 <span class="price-label" data-lang-key="base-price-usd">Harga Dasar (USD):</span>
-                                <span class="price-value" id="displayBasePriceUSD">$0.00</span>
+                                <span id="displayBasePriceUSD">$0.00</span>
                             </div>
                             <div class="price-row">
                                 <span class="price-label" data-lang-key="discount">Diskon:</span>
-                                <span class="price-value" id="displayDiscountPercent">0%</span>
+                                <span id="displayDiscountPercent">0%</span>
                             </div>
                             <div class="price-row">
                                 <span class="price-label" data-lang-key="final-price-usd">Harga Setelah Diskon (USD):</span>
-                                <span class="price-value" id="displayFinalPriceUSD">$0.00</span>
+                                <span id="displayFinalPriceUSD" class="discounted-price">$0.00</span>
                             </div>
                             <div class="price-row">
                                 <span class="price-label" data-lang-key="final-price-idr">Harga Setelah Diskon (IDR):</span>
-                                <span class="price-value" id="displayFinalPriceIDR">Rp 0</span>
+                                <span id="displayFinalPriceIDR" class="discounted-price">Rp 0</span>
                             </div>
                             <div class="price-row">
                                 <span class="price-label" data-lang-key="final-price-egp">Harga Setelah Diskon (EGP):</span>
-                                <span class="price-value" id="displayFinalPriceEGP">E£ 0</span>
+                                <span id="displayFinalPriceEGP" class="discounted-price">E£ 0</span>
                             </div>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary submit-btn" data-lang-key="save-book">Simpan Buku</button>
-                        <button type="button" class="btn btn-secondary" id="cancelEditBook" style="display: none;" data-lang-key="cancel-edit">Batal Edit</button>
+                        <div class="image-upload-container">
+                            <label data-lang-key="book-cover">Sampul Buku</label>
+                            <div class="image-source-selector">
+                                <label><input type="radio" name="bookImageSource" value="upload" checked> <span data-lang-key="upload-file">Unggah File</span></label>
+                                <label><input type="radio" name="bookImageSource" value="url"> <span data-lang-key="use-url">Gunakan URL</span></label>
+                            </div>
+                            <input type="file" id="bookCoverImageFile" accept="image/*">
+                            <input type="url" id="bookCoverImageUrl" placeholder="Masukkan URL gambar" style="display:none;">
+                            <img id="bookImagePreview" class="image-preview" src="" alt="Preview Sampul" style="display:none;">
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="submit" class="btn submit-btn" data-lang-key="save-book">Simpan Buku</button>
+                            <button type="button" class="btn cancel-btn" id="cancelEditBook" style="display:none;" data-lang-key="cancel-edit">Batal Edit</button>
+                        </div>
                     </form>
                 </div>
-                
-                <!-- Filter and Search -->
+
                 <div class="filter-section">
                     <h3 data-lang-key="filter-search">Filter dan Pencarian Buku</h3>
-                    <div class="filter-row">
-                        <div class="filter-group">
-                            <input type="text" id="searchTitle" class="form-control" placeholder="Kata kunci judul..." data-lang-key="search-title">
+                    <div class="filter-grid">
+                        <div class="form-group">
+                            <label for="searchTitle" data-lang-key="search-title">Cari Judul</label>
+                            <input type="text" id="searchTitle" placeholder="Kata kunci judul...">
                         </div>
-                        <div class="filter-group">
-                            <input type="text" id="searchAuthor" class="form-control" placeholder="Nama penulis..." data-lang-key="search-author">
+                        <div class="form-group">
+                            <label for="searchAuthor" data-lang-key="search-author">Cari Penulis</label>
+                            <input type="text" id="searchAuthor" placeholder="Nama penulis...">
                         </div>
-                        <div class="filter-group">
-                            <select id="filterPublisher" class="form-control" data-lang-key="filter-publisher">
+                        <div class="form-group">
+                            <label for="filterPublisher" data-lang-key="filter-publisher">Penerbit</label>
+                            <select id="filterPublisher">
                                 <option value="">Semua Penerbit</option>
                             </select>
                         </div>
-                        <div class="filter-group">
-                            <select id="filterCategory" class="form-control" data-lang-key="filter-category">
+                        <div class="form-group">
+                            <label for="filterCategory" data-lang-key="filter-category">Kategori</label>
+                            <select id="filterCategory">
                                 <option value="">Semua Kategori</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="filter-row">
-                        <div class="filter-group">
-                            <input type="text" id="filterCoverType" class="form-control" placeholder="Jenis cover..." data-lang-key="filter-cover-type">
+                        <div class="form-group">
+                            <label for="filterCoverType" data-lang-key="filter-cover-type">Jenis Cover</label>
+                            <input type="text" id="filterCoverType" placeholder="Jenis cover...">
                         </div>
-                        <div class="filter-group">
-                            <input type="text" id="filterPaperType" class="form-control" placeholder="Jenis kertas..." data-lang-key="filter-paper-type">
-                        </div>
-                        <div class="filter-group">
-                            <button class="btn btn-primary" id="applyFilter" data-lang-key="apply-filter">Terapkan Filter</button>
-                            <button class="btn btn-secondary" id="resetFilter" data-lang-key="reset-filter">Reset Filter</button>
+                        <div class="form-group">
+                            <label for="filterPaperType" data-lang-key="filter-paper-type">Jenis Kertas</label>
+                            <input type="text" id="filterPaperType" placeholder="Jenis kertas...">
                         </div>
                     </div>
-                    
-                    <!-- Bulk Actions -->
-                    <div class="bulk-actions">
-                        <span data-lang-key="bulk-actions">Aksi Massal:</span>
-                        <select id="bulkAction" class="form-control" style="width: auto;">
-                            <option value="" data-lang-key="select-action">Pilih Aksi</option>
-                            <option value="delete" data-lang-key="delete-books">Hapus Buku</option>
-                        </select>
-                        <button class="btn btn-primary" id="applyBulkAction" data-lang-key="apply">Terapkan</button>
-                        <span id="selectedCount">0 buku terpilih</span>
-                        <input type="checkbox" id="selectAllCheckbox">
-                        <label for="selectAllCheckbox">Pilih Semua</label>
+                    <div class="filter-buttons">
+                        <button class="btn apply-filter" id="applyFilter" data-lang-key="apply-filter">Terapkan Filter</button>
+                        <button class="btn reset-filter" id="resetFilter" data-lang-key="reset-filter">Reset Filter</button>
                     </div>
                 </div>
-                
-                <!-- Books List -->
-                <div class="card">
-                    <h2 class="card-title" data-lang-key="book-list">Daftar Buku</h2>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox" id="selectAllCheckboxHeader"></th>
-                                    <th data-lang-key="table-image">Gambar</th>
-                                    <th data-lang-key="table-book-info">Informasi Buku</th>
-                                    <th data-lang-key="table-details">Detail</th>
-                                    <th data-lang-key="table-weight">Berat</th>
-                                    <th data-lang-key="table-price-usd">Harga USD</th>
-                                    <th data-lang-key="table-price-idr">Harga IDR</th>
-                                    <th data-lang-key="table-price-egp">Harga EGP</th>
-                                    <th data-lang-key="table-discount">Diskon</th>
-                                    <th data-lang-key="table-actions">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="booksTableBody">
-                                <tr>
-                                    <td colspan="10" class="loading" id="loadingBooks" data-lang-key="loading-books">Memuat data buku...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+
+                <div class="bulk-actions">
+                    <strong data-lang-key="bulk-actions">Aksi Massal:</strong>
+                    <select id="bulkAction">
+                        <option value="" data-lang-key="select-action">Pilih Aksi</option>
+                        <option value="delete" data-lang-key="delete-books">Hapus Buku</option>
+                    </select>
+                    <button id="applyBulkAction" class="btn submit-btn" data-lang-key="apply">Terapkan</button>
+                    <span id="selectedCount">0 buku terpilih</span>
+                    
+                    <!-- Tombol Upload Excel -->
+                    <button class="btn submit-btn" id="uploadExcelBtn" data-lang-key="upload-excel">
+                        📊 Upload Excel
+                    </button>
+                </div>
+
+                <h2 data-lang-key="book-list">Daftar Buku</h2>
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th width="40"><input type="checkbox" id="selectAll"></th>
+                                <th width="80" data-lang-key="table-image">Gambar</th>
+                                <th data-lang-key="table-book-info">Informasi Buku</th>
+                                <th data-lang-key="table-details">Detail</th>
+                                <th data-lang-key="table-weight">Berat</th>
+                                <th data-lang-key="table-price-usd">Harga USD</th>
+                                <th data-lang-key="table-price-idr">Harga IDR</th>
+                                <th data-lang-key="table-price-egp">Harga EGP</th>
+                                <th width="80" data-lang-key="table-discount">Diskon</th>
+                                <th width="120" data-lang-key="table-actions">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booksTableBody"></tbody>
+                    </table>
+                    <p id="loadingBooks" data-lang-key="loading-books">Memuat data buku...</p>
                 </div>
             </section>
 
-            <!-- Publishers Section -->
             <section id="publishers-section" class="content-section">
-                <h1 class="section-title" data-lang-key="menu-publishers">Penerbit</h1>
-                
-                <!-- Add Publisher Form -->
-                <div class="card">
-                    <h2 class="card-title" id="publishersFormTitle" data-lang-key="add-publisher-title">Tambah Penerbit Baru</h2>
+                <div class="form-section">
+                    <h2 id="publishersFormTitle" data-lang-key="add-publisher-title">Tambah Penerbit Baru</h2>
                     <form id="publisherForm">
                         <input type="hidden" id="publisherId">
                         <input type="hidden" id="publisherOldLogoUrl">
-                        
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="publisherName" data-lang-key="publisher-name">Nama Penerbit</label>
-                                    <input type="text" id="publisherName" class="form-control" placeholder="Nama penerbit" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="publisherLetter" data-lang-key="publisher-letter">Huruf</label>
-                                    <input type="text" id="publisherLetter" class="form-control" placeholder="Huruf penerbit" maxlength="1">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="publisherDiscount" data-lang-key="publisher-discount">Diskon</label>
-                                    <input type="text" id="publisherDiscount" class="form-control" placeholder="Contoh: 10%">
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="publisherName" data-lang-key="publisher-name">Nama Penerbit</label>
+                                <input type="text" id="publisherName" placeholder="Nama penerbit" required>
                             </div>
-                            
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" data-lang-key="publisher-logo">Logo Penerbit</label>
-                                    <input type="file" id="publisherLogoFile" class="form-control" accept="image/*">
-                                    <img id="publisherImagePreview" class="image-preview" alt="Preview">
-                                </div>
+                            <div class="form-group">
+                                <label for="publisherLetter" data-lang-key="publisher-letter">Huruf</label>
+                                <input type="text" id="publisherLetter" placeholder="Huruf penerbit" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="publisherDiscount" data-lang-key="publisher-discount">Diskon</label>
+                                <input type="text" id="publisherDiscount" placeholder="Contoh: 10%">
                             </div>
                         </div>
-                        
-                        <button type="submit" class="btn btn-primary submit-btn" data-lang-key="save-publisher">Simpan Penerbit</button>
-                        <button type="button" class="btn btn-secondary" id="cancelEditPublisher" style="display: none;" data-lang-key="cancel-edit">Batal Edit</button>
+                        <div class="image-upload-container">
+                            <label for="publisherLogoFile" data-lang-key="publisher-logo">Logo Penerbit</label>
+                            <input type="file" id="publisherLogoFile" accept="image/*">
+                            <img id="publisherImagePreview" class="image-preview" src="" alt="Preview Logo" style="display:none;">
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn submit-btn" data-lang-key="save-publisher">Simpan Penerbit</button>
+                            <button type="button" class="btn cancel-btn" id="cancelEditPublisher" style="display:none;" data-lang-key="cancel-edit">Batal Edit</button>
+                        </div>
                     </form>
                 </div>
-                
-                <!-- Publishers List -->
-                <div class="card">
-                    <h2 class="card-title" data-lang-key="publisher-list">Daftar Penerbit</h2>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th data-lang-key="table-logo">Logo</th>
-                                    <th data-lang-key="table-name">Nama</th>
-                                    <th data-lang-key="table-letter">Huruf</th>
-                                    <th data-lang-key="table-discount">Diskon</th>
-                                    <th data-lang-key="table-actions">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="publishersTableBody">
-                                <tr>
-                                    <td colspan="5" class="loading" id="loadingPublishers" data-lang-key="loading-publishers">Memuat data penerbit...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <h2 data-lang-key="publisher-list">Daftar Penerbit</h2>
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th width="80" data-lang-key="table-logo">Logo</th>
+                                <th data-lang-key="table-name">Nama</th>
+                                <th width="80" data-lang-key="table-letter">Huruf</th>
+                                <th width="100" data-lang-key="table-discount">Diskon</th>
+                                <th width="120" data-lang-key="table-actions">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="publishersTableBody"></tbody>
+                    </table>
+                    <p id="loadingPublishers" data-lang-key="loading-publishers">Memuat data penerbit...</p>
                 </div>
             </section>
 
-            <!-- Categories Section -->
             <section id="categories-section" class="content-section">
-                <h1 class="section-title" data-lang-key="menu-categories">Kategori</h1>
-                
-                <!-- Add Category Form -->
-                <div class="card">
-                    <h2 class="card-title" id="categoriesFormTitle" data-lang-key="add-category-title">Tambah Kategori Baru</h2>
+                <div class="form-section">
+                    <h2 id="categoriesFormTitle" data-lang-key="add-category-title">Tambah Kategori Baru</h2>
                     <form id="categoryForm">
                         <input type="hidden" id="categoryId">
                         <input type="hidden" id="categoryOldImageUrl">
-                        
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="categoryNameId" data-lang-key="category-name-id">Nama (ID)</label>
-                                    <input type="text" id="categoryNameId" class="form-control" placeholder="Nama dalam Bahasa Indonesia" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="categoryNameEn" data-lang-key="category-name-en">Nama (EN)</label>
-                                    <input type="text" id="categoryNameEn" class="form-control" placeholder="Nama dalam Bahasa Inggris">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="categoryNameAr" data-lang-key="category-name-ar">Nama (AR)</label>
-                                    <input type="text" id="categoryNameAr" class="form-control" placeholder="Nama dalam Bahasa Arab">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="categoryColor" data-lang-key="category-color">Warna</label>
-                                    <input type="color" id="categoryColor" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="categoryLink" data-lang-key="category-link">Link Kategori</label>
-                                    <input type="text" id="categoryLink" class="form-control" placeholder="Link kategori">
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="categoryNameId" data-lang-key="category-name-id">Nama (ID)</label>
+                                <input type="text" id="categoryNameId" placeholder="Nama dalam Bahasa Indonesia" required>
                             </div>
-                            
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" data-lang-key="category-image">Gambar Kategori</label>
-                                    <input type="file" id="categoryImageFile" class="form-control" accept="image/*">
-                                    <img id="categoryImagePreview" class="image-preview" alt="Preview">
-                                </div>
+                            <div class="form-group">
+                                <label for="categoryNameEn" data-lang-key="category-name-en">Nama (EN)</label>
+                                <input type="text" id="categoryNameEn" placeholder="Nama dalam Bahasa Inggris" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryNameAr" data-lang-key="category-name-ar">Nama (AR)</label>
+                                <input type="text" id="categoryNameAr" placeholder="Nama dalam Bahasa Arab" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryColor" data-lang-key="category-color">Warna</label>
+                                <input type="color" id="categoryColor" value="#3498db">
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryLink" data-lang-key="category-link">Link Kategori</label>
+                                <input type="text" id="categoryLink" placeholder="Link akan dibuat otomatis" readonly>
                             </div>
                         </div>
-                        
-                        <button type="submit" class="btn btn-primary submit-btn" data-lang-key="save-category">Simpan Kategori</button>
-                        <button type="button" class="btn btn-secondary" id="cancelEditCategory" style="display: none;" data-lang-key="cancel-edit">Batal Edit</button>
+                        <div class="image-upload-container">
+                            <label for="categoryImageFile" data-lang-key="category-image">Gambar Kategori</label>
+                            <input type="file" id="categoryImageFile" accept="image/*">
+                            <img id="categoryImagePreview" class="image-preview" src="" alt="Preview Gambar" style="display:none;">
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn submit-btn" data-lang-key="save-category">Simpan Kategori</button>
+                            <button type="button" class="btn cancel-btn" id="cancelEditCategory" style="display:none;" data-lang-key="cancel-edit">Batal Edit</button>
+                        </div>
                     </form>
                 </div>
-                
-                <!-- Categories List -->
-                <div class="card">
-                    <h2 class="card-title" data-lang-key="category-list">Daftar Kategori</h2>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th data-lang-key="table-image">Gambar</th>
-                                    <th data-lang-key="table-name-id">Nama (ID)</th>
-                                    <th data-lang-key="table-name-en">Nama (EN)</th>
-                                    <th data-lang-key="table-color">Warna</th>
-                                    <th data-lang-key="table-link">Link</th>
-                                    <th data-lang-key="table-actions">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="categoriesTableBody">
-                                <tr>
-                                    <td colspan="6" class="loading" id="loadingCategories" data-lang-key="loading-categories">Memuat data kategori...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <h2 data-lang-key="category-list">Daftar Kategori</h2>
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th width="80" data-lang-key="table-image">Gambar</th>
+                                <th data-lang-key="table-name-id">Nama (ID)</th>
+                                <th data-lang-key="table-name-en">Nama (EN)</th>
+                                <th width="100" data-lang-key="table-color">Warna</th>
+                                <th data-lang-key="table-link">Link</th>
+                                <th width="120" data-lang-key="table-actions">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesTableBody"></tbody>
+                    </table>
+                    <p id="loadingCategories" data-lang-key="loading-categories">Memuat data kategori...</p>
                 </div>
             </section>
 
-            <!-- Banners Section -->
             <section id="banners-section" class="content-section">
-                <h1 class="section-title" data-lang-key="menu-banners">Banner</h1>
-                
-                <!-- Add Banner Form -->
-                <div class="card">
-                    <h2 class="card-title" id="bannersFormTitle" data-lang-key="add-banner-title">Tambah Banner Baru</h2>
+                <div class="form-section">
+                    <h2 id="bannersFormTitle" data-lang-key="add-banner-title">Tambah Banner Baru</h2>
                     <form id="bannerForm">
                         <input type="hidden" id="bannerId">
                         <input type="hidden" id="bannerOldImageUrl">
-                        
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="bannerTitle" data-lang-key="banner-title">Judul Banner</label>
-                                    <input type="text" id="bannerTitle" class="form-control" placeholder="Judul banner" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="bannerType" data-lang-key="banner-type">Tipe</label>
-                                    <input type="text" id="bannerType" class="form-control" placeholder="Contoh: promo, utama">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="bannerDisplayOrder" data-lang-key="banner-order">Urutan Tampil</label>
-                                    <input type="number" id="bannerDisplayOrder" class="form-control" placeholder="Angka urutan" min="0">
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="bannerTitle" data-lang-key="banner-title">Judul Banner</label>
+                                <input type="text" id="bannerTitle" placeholder="Judul banner" required>
                             </div>
-                            
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" data-lang-key="banner-image">Gambar Banner</label>
-                                    <input type="file" id="bannerImageFile" class="form-control" accept="image/*">
-                                    <img id="bannerImagePreview" class="image-preview" alt="Preview">
-                                </div>
+                            <div class="form-group">
+                                <label for="bannerType" data-lang-key="banner-type">Tipe</label>
+                                <input type="text" id="bannerType" placeholder="Contoh: promo, utama" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bannerDisplayOrder" data-lang-key="banner-order">Urutan Tampil</label>
+                                <input type="number" id="bannerDisplayOrder" placeholder="Angka urutan">
                             </div>
                         </div>
-                        
-                        <button type="submit" class="btn btn-primary submit-btn" data-lang-key="save-banner">Simpan Banner</button>
-                        <button type="button" class="btn btn-secondary" id="cancelEditBanner" style="display: none;" data-lang-key="cancel-edit">Batal Edit</button>
+                        <div class="image-upload-container">
+                            <label for="bannerImageFile" data-lang-key="banner-image">Gambar Banner</label>
+                            <input type="file" id="bannerImageFile" accept="image/*">
+                            <img id="bannerImagePreview" class="image-preview" src="" alt="Preview Gambar" style="display:none;">
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn submit-btn" data-lang-key="save-banner">Simpan Banner</button>
+                            <button type="button" class="btn cancel-btn" id="cancelEditBanner" style="display:none;" data-lang-key="cancel-edit">Batal Edit</button>
+                        </div>
                     </form>
                 </div>
-                
-                <!-- Banners List -->
-                <div class="card">
-                    <h2 class="card-title" data-lang-key="banner-list">Daftar Banner</h2>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th data-lang-key="table-image">Gambar</th>
-                                    <th data-lang-key="table-title">Judul</th>
-                                    <th data-lang-key="table-type">Tipe</th>
-                                    <th data-lang-key="table-order">Urutan</th>
-                                    <th data-lang-key="table-actions">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bannersTableBody">
-                                <tr>
-                                    <td colspan="5" class="loading" id="loadingBanners" data-lang-key="loading-banners">Memuat data banner...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <h2 data-lang-key="banner-list">Daftar Banner</h2>
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th width="100" data-lang-key="table-image">Gambar</th>
+                                <th data-lang-key="table-title">Judul</th>
+                                <th width="120" data-lang-key="table-type">Tipe</th>
+                                <th width="100" data-lang-key="table-order">Urutan</th>
+                                <th width="120" data-lang-key="table-actions">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bannersTableBody"></tbody>
+                    </table>
+                    <p id="loadingBanners" data-lang-key="loading-banners">Memuat data banner...</p>
                 </div>
             </section>
 
-            <!-- Orders Section -->
             <section id="orders-section" class="content-section">
-                <h1 class="section-title" data-lang-key="menu-orders">Pesanan</h1>
-                
-                <!-- Orders List -->
-                <div class="card">
-                    <h2 class="card-title" data-lang-key="order-list">Daftar Pesanan</h2>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th data-lang-key="table-customer-name">Nama Pelanggan</th>
-                                    <th data-lang-key="table-book">Buku</th>
-                                    <th>Total (USD)</th>
-                                    <th data-lang-key="table-status">Status</th>
-                                    <th data-lang-key="table-date">Tanggal</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ordersTableBody">
-                                <tr>
-                                    <td colspan="5" class="loading" id="loadingOrders" data-lang-key="loading-orders">Memuat data pesanan...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <h2 data-lang-key="order-list">Daftar Pesanan</h2>
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th data-lang-key="table-customer-name">Nama Pelanggan</th>
+                                <th data-lang-key="table-book">Buku</th>
+                                <th width="120" data-lang-key="table-total-idr">Total (IDR)</th>
+                                <th width="100" data-lang-key="table-status">Status</th>
+                                <th width="150" data-lang-key="table-date">Tanggal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody"></tbody>
+                    </table>
+                    <p id="loadingOrders" data-lang-key="loading-orders">Memuat data pesanan...</p>
                 </div>
             </section>
 
-            <!-- Currency Section -->
             <section id="currency-section" class="content-section">
-                <h1 class="section-title" data-lang-key="menu-currency">Kurs</h1>
-                
-                <!-- Currency Settings -->
-                <div class="card">
-                    <h2 class="card-title" data-lang-key="currency-settings">Pengaturan Kurs Mata Uang</h2>
+                <div class="form-section">
+                    <h2 data-lang-key="currency-settings">Pengaturan Kurs Mata Uang</h2>
                     <p data-lang-key="currency-description">Harga dasar produk disimpan dalam USD. Atur kurs di sini untuk mengonversi harga saat ditampilkan.</p>
-                    
                     <form id="currencyForm">
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="usdToIdr" data-lang-key="usd-to-idr">USD ke IDR</label>
-                                    <input type="number" id="usdToIdr" class="form-control" placeholder="Kurs USD ke Rupiah" step="0.01" min="0" required>
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="usdToIdr" data-lang-key="usd-to-idr">USD ke IDR</label>
+                                <input type="number" id="usdToIdr" placeholder="Kurs USD ke Rupiah" required>
                             </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="usdToEgp" data-lang-key="usd-to-egp">USD ke EGP</label>
-                                    <input type="number" id="usdToEgp" class="form-control" placeholder="Kurs USD ke Pound Mesir" step="0.01" min="0" required>
-                                </div>
+                            <div class="form-group">
+                                <label for="usdToEgp" data-lang-key="usd-to-egp">USD ke EGP</label>
+                                <input type="number" id="usdToEgp" placeholder="Kurs USD ke Pound Mesir" required>
                             </div>
                         </div>
-                        
-                        <button type="submit" class="btn btn-primary submit-btn" data-lang-key="save-settings">Simpan Pengaturan</button>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn submit-btn" data-lang-key="save-settings">Simpan Pengaturan</button>
+                        </div>
                     </form>
                 </div>
             </section>
         </main>
     </div>
 
-    <!-- Edit Book Modal -->
+    <!-- Modal untuk Edit Buku -->
     <div id="editModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2 data-lang-key="edit-book-title">Edit Buku - Semua Data</h2>
+            <div class="modal-header">
+                <h2 data-lang-key="edit-book-title">Edit Buku - Semua Data</h2>
+                <button class="close-modal" data-modal="editModal">&times;</button>
+            </div>
             <form id="editBookForm">
                 <input type="hidden" id="editBookId">
                 <input type="hidden" id="editBookOldCoverUrl">
-                
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label" for="editBookTitle" data-lang-key="book-title">Judul Buku</label>
-                            <input type="text" id="editBookTitle" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="editBookAuthor" data-lang-key="book-author">Penulis</label>
-                            <input type="text" id="editBookAuthor" class="form-control" required>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="editBookOriginalPrice" data-lang-key="book-original-price">Harga Asli (USD)</label>
-                                    <input type="number" id="editBookOriginalPrice" class="form-control" step="0.01" min="0">
-                                </div>
-                            </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="editBookBasePrice" data-lang-key="book-base-price">Harga Dasar (USD)</label>
-                                    <input type="number" id="editBookBasePrice" class="form-control" step="0.01" min="0" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="editBookPublisherSelect" data-lang-key="book-publisher">Penerbit</label>
-                                    <select id="editBookPublisherSelect" class="form-control">
-                                        <option value="">-- Pilih Penerbit --</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="editBookCategorySelect" data-lang-key="book-category">Kategori</label>
-                                    <select id="editBookCategorySelect" class="form-control">
-                                        <option value="">-- Pilih Kategori --</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="editBookDiscount" data-lang-key="book-discount">Diskon</label>
-                            <input type="text" id="editBookDiscount" class="form-control">
-                        </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="editBookTitle" data-lang-key="book-title">Judul Buku</label>
+                        <input type="text" id="editBookTitle" placeholder="Masukkan judul buku" required>
                     </div>
-                    
-                    <div class="form-col">
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="editBookVolumes" data-lang-key="book-volumes">Jilid</label>
-                                    <input type="number" id="editBookVolumes" class="form-control" min="1">
-                                </div>
-                            </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="editBookPages" data-lang-key="book-pages">Halaman</label>
-                                    <input type="number" id="editBookPages" class="form-control" min="1">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="editBookYear" data-lang-key="book-year">Tahun Terbit</label>
-                            <input type="number" id="editBookYear" class="form-control" min="1000" max="2099">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="editBookWeightValue" data-lang-key="book-weight">Berat Buku</label>
-                                    <input type="number" id="editBookWeightValue" class="form-control" step="0.01" min="0">
-                                </div>
-                            </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label" for="editBookWeightUnit">Satuan</label>
-                                    <select id="editBookWeightUnit" class="form-control">
-                                        <option value="g">Gram</option>
-                                        <option value="kg">Kilogram</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="editBookAuthor" data-lang-key="book-author">Penulis</label>
+                        <input type="text" id="editBookAuthor" placeholder="Nama penulis" required>
                     </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label" data-lang-key="book-text-color">Warna Tulisan</label>
-                            <select id="editBookTextColorSelect" class="form-control">
-                                <option value="">-- Pilih Warna --</option>
-                                <option value="Hitam">Hitam</option>
-                                <option value="Putih">Putih</option>
-                                <option value="Emas">Emas</option>
-                                <option value="Perak">Perak</option>
+                    <div class="form-group">
+                        <label for="editBookOriginalPrice" data-lang-key="book-original-price">Harga Asli (USD)</label>
+                        <input type="number" step="0.01" id="editBookOriginalPrice" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookBasePrice" data-lang-key="book-base-price">Harga Dasar (USD)</label>
+                        <input type="number" step="0.01" id="editBookBasePrice" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookPublisherSelect" data-lang-key="book-publisher">Penerbit</label>
+                        <select id="editBookPublisherSelect">
+                            <option value="">-- Pilih Penerbit --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookCategorySelect" data-lang-key="book-category">Kategori</label>
+                        <select id="editBookCategorySelect">
+                            <option value="">-- Pilih Kategori --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookDiscount" data-lang-key="book-discount">Diskon</label>
+                        <input type="text" id="editBookDiscount" placeholder="Contoh: 10%">
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookVolumes" data-lang-key="book-volumes">Jilid</label>
+                        <input type="text" id="editBookVolumes" placeholder="Jumlah jilid">
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookPages" data-lang-key="book-pages">Halaman</label>
+                        <input type="text" id="editBookPages" placeholder="Jumlah halaman">
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookYear" data-lang-key="book-year">Tahun Terbit</label>
+                        <input type="text" id="editBookYear" placeholder="Tahun terbit">
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookWeight" data-lang-key="book-weight">Berat Buku</label>
+                        <div class="custom-input">
+                            <input type="number" step="0.01" id="editBookWeightValue" placeholder="Nilai berat">
+                            <select id="editBookWeightUnit">
+                                <option value="kg">kg</option>
+                                <option value="g">g</option>
+                                <option value="ons">ons</option>
+                                <option value="lb">lb</option>
                             </select>
-                            <input type="text" id="editBookTextColorInput" class="form-control" style="margin-top: 5px;" placeholder="Ketik manual">
                         </div>
                     </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label" data-lang-key="book-cover-type">Jenis Cover</label>
-                            <select id="editBookCoverTypeSelect" class="form-control">
-                                <option value="">-- Pilih Jenis --</option>
+                    <div class="form-group">
+                        <label data-lang-key="book-text-color">Warna Tulisan</label>
+                        <div class="custom-input">
+                            <select id="editBookTextColorSelect">
+                                <option value="">-- Pilih --</option>
+                                <option value="Hitam">Hitam</option>
+                                <option value="Biru">Biru</option>
+                                <option value="Hijau">Hijau</option>
+                                <option value="Merah">Merah</option>
+                                <option value="Coklat">Coklat</option>
+                                <option value="Ungu">Ungu</option>
+                            </select>
+                            <input type="text" id="editBookTextColorInput" placeholder="Ketik manual">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-lang-key="book-cover-type">Jenis Cover</label>
+                        <div class="custom-input">
+                            <select id="editBookCoverTypeSelect">
+                                <option value="">-- Pilih --</option>
                                 <option value="Hard Cover">Hard Cover</option>
                                 <option value="Soft Cover">Soft Cover</option>
+                                <option value="Flexi Cover">Flexi Cover</option>
                                 <option value="Spiral">Spiral</option>
                             </select>
-                            <input type="text" id="editBookCoverTypeInput" class="form-control" style="margin-top: 5px;" placeholder="Ketik manual">
+                            <input type="text" id="editBookCoverTypeInput" placeholder="Ketik manual">
                         </div>
                     </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label" data-lang-key="book-paper-type">Jenis Kertas</label>
-                            <select id="editBookPaperTypeSelect" class="form-control">
-                                <option value="">-- Pilih Jenis --</option>
+                    <div class="form-group">
+                        <label data-lang-key="book-paper-type">Jenis Kertas</label>
+                        <div class="custom-input">
+                            <select id="editBookPaperTypeSelect">
+                                <option value="">-- Pilih --</option>
                                 <option value="HVS">HVS</option>
                                 <option value="Art Paper">Art Paper</option>
                                 <option value="Book Paper">Book Paper</option>
+                                <option value="Matt Paper">Matt Paper</option>
+                                <option value="Glossy Paper">Glossy Paper</option>
                             </select>
-                            <input type="text" id="editBookPaperTypeInput" class="form-control" style="margin-top: 5px;" placeholder="Ketik manual">
+                            <input type="text" id="editBookPaperTypeInput" placeholder="Ketik manual">
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookPrintCount" data-lang-key="book-print-count">Cetakan Ke</label>
+                        <input type="number" id="editBookPrintCount" placeholder="Angka cetakan">
+                    </div>
+                    <div class="form-group">
+                        <label for="editBookEditor" data-lang-key="book-editor">Editor</label>
+                        <input type="text" id="editBookEditor" placeholder="Nama editor">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="editBookDescription" data-lang-key="book-description">Deskripsi Buku</label>
+                        <textarea id="editBookDescription" placeholder="Deskripsi lengkap buku" rows="4"></textarea>
                     </div>
                 </div>
                 
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label" for="editBookPrintCount" data-lang-key="book-print-count">Cetakan Ke</label>
-                            <input type="number" id="editBookPrintCount" class="form-control" min="1">
-                        </div>
-                    </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label" for="editBookEditor" data-lang-key="book-editor">Editor</label>
-                            <input type="text" id="editBookEditor" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="editBookDescription" data-lang-key="book-description">Deskripsi Buku</label>
-                    <textarea id="editBookDescription" class="form-control" rows="4"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" data-lang-key="book-cover">Sampul Buku</label>
-                    <div class="form-radio-group">
-                        <div class="form-radio">
-                            <input type="radio" id="editBookImageUpload" name="editBookImageSource" value="upload" checked>
-                            <label for="editBookImageUpload" data-lang-key="upload-file">Unggah File</label>
-                        </div>
-                        <div class="form-radio">
-                            <input type="radio" id="editBookImageUrl" name="editBookImageSource" value="url">
-                            <label for="editBookImageUrl" data-lang-key="use-url">Gunakan URL</label>
-                        </div>
-                    </div>
-                    
-                    <div id="editBookCoverImageFile">
-                        <input type="file" id="editBookCoverImageFileInput" class="form-control" accept="image/*">
-                    </div>
-                    <div id="editBookCoverImageUrl" style="display: none;">
-                        <input type="url" id="editBookCoverImageUrlInput" class="form-control" placeholder="Masukkan URL gambar">
-                    </div>
-                    
-                    <img id="editBookImagePreview" class="image-preview" alt="Preview">
-                </div>
-                
-                <!-- Price Calculator -->
                 <div class="price-calculator">
-                    <h3 data-lang-key="price-calculator">Kalkulator Harga Setelah Diskon</h3>
+                    <h4 data-lang-key="price-calculator">Kalkulator Harga Setelah Diskon</h4>
                     <div class="price-row">
                         <span class="price-label" data-lang-key="base-price-usd">Harga Dasar (USD):</span>
-                        <span class="price-value" id="editDisplayBasePriceUSD">$0.00</span>
+                        <span id="editDisplayBasePriceUSD">$0.00</span>
                     </div>
                     <div class="price-row">
                         <span class="price-label" data-lang-key="discount">Diskon:</span>
-                        <span class="price-value" id="editDisplayDiscountPercent">0%</span>
+                        <span id="editDisplayDiscountPercent">0%</span>
                     </div>
                     <div class="price-row">
                         <span class="price-label" data-lang-key="final-price-usd">Harga Setelah Diskon (USD):</span>
-                        <span class="price-value" id="editDisplayFinalPriceUSD">$0.00</span>
+                        <span id="editDisplayFinalPriceUSD" class="discounted-price">$0.00</span>
                     </div>
                     <div class="price-row">
                         <span class="price-label" data-lang-key="final-price-idr">Harga Setelah Diskon (IDR):</span>
-                        <span class="price-value" id="editDisplayFinalPriceIDR">Rp 0</span>
+                        <span id="editDisplayFinalPriceIDR" class="discounted-price">Rp 0</span>
                     </div>
                     <div class="price-row">
                         <span class="price-label" data-lang-key="final-price-egp">Harga Setelah Diskon (EGP):</span>
-                        <span class="price-value" id="editDisplayFinalPriceEGP">E£ 0</span>
+                        <span id="editDisplayFinalPriceEGP" class="discounted-price">E£ 0</span>
                     </div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary submit-btn" data-lang-key="update-book">Perbarui Buku</button>
-                <button type="button" class="btn btn-secondary" id="cancelEditModal" data-lang-key="cancel">Batal</button>
+                <div class="image-upload-container">
+                    <label data-lang-key="book-cover">Sampul Buku</label>
+                    <div class="image-source-selector">
+                        <label><input type="radio" name="editBookImageSource" value="upload" checked> <span data-lang-key="upload-file">Unggah File</span></label>
+                        <label><input type="radio" name="editBookImageSource" value="url"> <span data-lang-key="use-url">Gunakan URL</span></label>
+                    </div>
+                    <input type="file" id="editBookCoverImageFile" accept="image/*">
+                    <input type="url" id="editBookCoverImageUrl" placeholder="Masukkan URL gambar" style="display:none;">
+                    <img id="editBookImagePreview" class="image-preview" src="" alt="Preview Sampul" style="display:none;">
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn submit-btn" data-lang-key="update-book">Perbarui Buku</button>
+                    <button type="button" class="btn cancel-btn" data-modal="editModal" data-lang-key="cancel">Batal</button>
+                </div>
             </form>
         </div>
     </div>
 
+    <!-- Modal untuk Upload Excel -->
+    <div id="excelUploadModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2 data-lang-key="excel-upload-title">Upload Data Buku dari Excel</h2>
+                <button class="close-modal" data-modal="excelUploadModal">&times;</button>
+            </div>
+            <div class="form-section">
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 data-lang-key="download-template">Download Template Excel</h3>
+                    <p data-lang-key="template-description">Download template berikut dan isi data buku Anda:</p>
+                    <button class="btn submit-btn" id="downloadTemplateBtn" data-lang-key="download-template-btn">
+                        📥 Download Template Excel
+                    </button>
+                </div>
+
+                <div>
+                    <h3 data-lang-key="upload-excel-file">Upload File Excel</h3>
+                    <form id="excelUploadForm">
+                        <div class="form-group">
+                            <label for="excelFile" data-lang-key="select-excel-file">Pilih File Excel</label>
+                            <input type="file" id="excelFile" accept=".xlsx, .xls" required>
+                            <small style="color: #666; font-size: 0.875rem;" data-lang-key="excel-format-info">
+                                Format yang didukung: .xlsx, .xls
+                            </small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="skipEmptyRows" checked>
+                                <span data-lang-key="skip-empty-rows">Lewati baris kosong</span>
+                            </label>
+                        </div>
+
+                        <div id="uploadProgress" style="display: none; margin: 1rem 0;">
+                            <div style="background: #f0f0f0; border-radius: 10px; height: 20px;">
+                                <div id="progressBar" style="background: var(--success); height: 100%; border-radius: 10px; width: 0%; transition: width 0.3s;"></div>
+                            </div>
+                            <div id="progressText" style="text-align: center; margin-top: 0.5rem;"></div>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="submit" class="btn submit-btn" data-lang-key="upload-data">
+                                📤 Upload Data
+                            </button>
+                            <button type="button" class="btn cancel-btn" data-modal="excelUploadModal" data-lang-key="cancel">
+                                Batal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script>
-        // Language translations
+        // ==================== KONFIGURASI BAHASA ====================
         const translations = {
             id: {
                 "dashboard-title": "Panel Admin - Toko Buku Islam",
@@ -1589,7 +1600,9 @@
                 "order-list": "Daftar Pesanan",
                 "table-customer-name": "Nama Pelanggan",
                 "table-book": "Buku",
+                "table-total-usd": "Total (USD)",
                 "table-total-idr": "Total (IDR)",
+                "table-total-egp": "Total (EGP)",
                 "table-status": "Status",
                 "table-date": "Tanggal",
                 "loading-orders": "Memuat data pesanan...",
@@ -1600,7 +1613,17 @@
                 "save-settings": "Simpan Pengaturan",
                 "edit-book-title": "Edit Buku - Semua Data",
                 "update-book": "Perbarui Buku",
-                "cancel": "Batal"
+                "cancel": "Batal",
+                "upload-excel": "📊 Upload Excel",
+                "excel-upload-title": "Upload Data Buku dari Excel",
+                "download-template": "Download Template Excel",
+                "template-description": "Download template berikut dan isi data buku Anda:",
+                "download-template-btn": "📥 Download Template Excel",
+                "upload-excel-file": "Upload File Excel",
+                "select-excel-file": "Pilih File Excel",
+                "excel-format-info": "Format yang didukung: .xlsx, .xls",
+                "skip-empty-rows": "Lewati baris kosong",
+                "upload-data": "📤 Upload Data"
             },
             en: {
                 "dashboard-title": "Admin Panel - Islamic Book Store",
@@ -1703,7 +1726,9 @@
                 "order-list": "Order List",
                 "table-customer-name": "Customer Name",
                 "table-book": "Book",
+                "table-total-usd": "Total (USD)",
                 "table-total-idr": "Total (IDR)",
+                "table-total-egp": "Total (EGP)",
                 "table-status": "Status",
                 "table-date": "Date",
                 "loading-orders": "Loading order data...",
@@ -1714,7 +1739,17 @@
                 "save-settings": "Save Settings",
                 "edit-book-title": "Edit Book - All Data",
                 "update-book": "Update Book",
-                "cancel": "Cancel"
+                "cancel": "Cancel",
+                "upload-excel": "📊 Upload Excel",
+                "excel-upload-title": "Upload Book Data from Excel",
+                "download-template": "Download Excel Template",
+                "template-description": "Download the following template and fill in your book data:",
+                "download-template-btn": "📥 Download Excel Template",
+                "upload-excel-file": "Upload Excel File",
+                "select-excel-file": "Select Excel File",
+                "excel-format-info": "Supported formats: .xlsx, .xls",
+                "skip-empty-rows": "Skip empty rows",
+                "upload-data": "📤 Upload Data"
             },
             ar: {
                 "dashboard-title": "لوحة التحكم - مكتبة الكتب الإسلامية",
@@ -1817,7 +1852,9 @@
                 "order-list": "قائمة الطلبات",
                 "table-customer-name": "اسم العميل",
                 "table-book": "الكتاب",
+                "table-total-usd": "الإجمالي (دولار أمريكي)",
                 "table-total-idr": "الإجمالي (روبية إندونيسية)",
+                "table-total-egp": "الإجمالي (جنيه مصري)",
                 "table-status": "الحالة",
                 "table-date": "التاريخ",
                 "loading-orders": "جاري تحميل بيانات الطلبات...",
@@ -1828,7 +1865,17 @@
                 "save-settings": "حفظ الإعدادات",
                 "edit-book-title": "تعديل الكتاب - جميع البيانات",
                 "update-book": "تحديث الكتاب",
-                "cancel": "إلغاء"
+                "cancel": "إلغاء",
+                "upload-excel": "📊 رفع إكسل",
+                "excel-upload-title": "رفع بيانات الكتب من إكسل",
+                "download-template": "تحميل قالب إكسل",
+                "template-description": "قم بتحميل القالب التالي واملأ بيانات الكتاب الخاصة بك:",
+                "download-template-btn": "📥 تحميل قالب إكسل",
+                "upload-excel-file": "رفع ملف إكسل",
+                "select-excel-file": "اختر ملف إكسل",
+                "excel-format-info": "الصيغ المدعومة: .xlsx, .xls",
+                "skip-empty-rows": "تخطى الصفوف الفارغة",
+                "upload-data": "📤 رفع البيانات"
             }
         };
 
@@ -1887,137 +1934,6 @@
                     element.textContent = translations[lang][key];
                 }
             });
-            
-            // Update placeholders
-            updatePlaceholders(lang);
-            
-            // Update RTL for Arabic
-            if (lang === 'ar') {
-                document.body.style.direction = 'rtl';
-                document.querySelector('.main-content').style.marginLeft = '0';
-                document.querySelector('.main-content').style.marginRight = 'var(--sidebar-width)';
-                document.querySelector('.sidebar').style.left = 'auto';
-                document.querySelector('.sidebar').style.right = '0';
-            } else {
-                document.body.style.direction = 'ltr';
-                document.querySelector('.main-content').style.marginLeft = 'var(--sidebar-width)';
-                document.querySelector('.main-content').style.marginRight = '0';
-                document.querySelector('.sidebar').style.left = '0';
-                document.querySelector('.sidebar').style.right = 'auto';
-            }
-        }
-
-        // Update placeholders based on language
-        function updatePlaceholders(lang) {
-            const placeholders = {
-                id: {
-                    'bookTitle': 'Masukkan judul buku',
-                    'bookAuthor': 'Nama penulis',
-                    'bookOriginalPrice': '0.00',
-                    'bookBasePrice': '0.00',
-                    'bookDiscount': 'Contoh: 10%',
-                    'bookVolumes': 'Jumlah jilid',
-                    'bookPages': 'Jumlah halaman',
-                    'bookYear': 'Tahun terbit',
-                    'bookWeightValue': 'Nilai berat',
-                    'bookTextColorInput': 'Ketik manual',
-                    'bookCoverTypeInput': 'Ketik manual',
-                    'bookPaperTypeInput': 'Ketik manual',
-                    'bookPrintCount': 'Angka cetakan',
-                    'bookEditor': 'Nama editor',
-                    'bookDescription': 'Deskripsi lengkap buku',
-                    'bookCoverImageUrl': 'Masukkan URL gambar',
-                    'searchTitle': 'Kata kunci judul...',
-                    'searchAuthor': 'Nama penulis...',
-                    'filterCoverType': 'Jenis cover...',
-                    'filterPaperType': 'Jenis kertas...',
-                    'publisherName': 'Nama penerbit',
-                    'publisherLetter': 'Huruf penerbit',
-                    'publisherDiscount': 'Contoh: 10%',
-                    'categoryNameId': 'Nama dalam Bahasa Indonesia',
-                    'categoryNameEn': 'Nama dalam Bahasa Inggris',
-                    'categoryNameAr': 'Nama dalam Bahasa Arab',
-                    'bannerTitle': 'Judul banner',
-                    'bannerType': 'Contoh: promo, utama',
-                    'bannerDisplayOrder': 'Angka urutan',
-                    'usdToIdr': 'Kurs USD ke Rupiah',
-                    'usdToEgp': 'Kurs USD ke Pound Mesir'
-                },
-                en: {
-                    'bookTitle': 'Enter book title',
-                    'bookAuthor': 'Author name',
-                    'bookOriginalPrice': '0.00',
-                    'bookBasePrice': '0.00',
-                    'bookDiscount': 'Example: 10%',
-                    'bookVolumes': 'Number of volumes',
-                    'bookPages': 'Number of pages',
-                    'bookYear': 'Publication year',
-                    'bookWeightValue': 'Weight value',
-                    'bookTextColorInput': 'Type manually',
-                    'bookCoverTypeInput': 'Type manually',
-                    'bookPaperTypeInput': 'Type manually',
-                    'bookPrintCount': 'Print edition number',
-                    'bookEditor': 'Editor name',
-                    'bookDescription': 'Complete book description',
-                    'bookCoverImageUrl': 'Enter image URL',
-                    'searchTitle': 'Title keywords...',
-                    'searchAuthor': 'Author name...',
-                    'filterCoverType': 'Cover type...',
-                    'filterPaperType': 'Paper type...',
-                    'publisherName': 'Publisher name',
-                    'publisherLetter': 'Publisher letter',
-                    'publisherDiscount': 'Example: 10%',
-                    'categoryNameId': 'Name in Indonesian',
-                    'categoryNameEn': 'Name in English',
-                    'categoryNameAr': 'Name in Arabic',
-                    'bannerTitle': 'Banner title',
-                    'bannerType': 'Example: promo, main',
-                    'bannerDisplayOrder': 'Order number',
-                    'usdToIdr': 'USD to IDR rate',
-                    'usdToEgp': 'USD to EGP rate'
-                },
-                ar: {
-                    'bookTitle': 'أدخل عنوان الكتاب',
-                    'bookAuthor': 'اسم المؤلف',
-                    'bookOriginalPrice': '0.00',
-                    'bookBasePrice': '0.00',
-                    'bookDiscount': 'مثال: 10%',
-                    'bookVolumes': 'عدد المجلدات',
-                    'bookPages': 'عدد الصفحات',
-                    'bookYear': 'سنة النشر',
-                    'bookWeightValue': 'قيمة الوزن',
-                    'bookTextColorInput': 'اكتب يدوياً',
-                    'bookCoverTypeInput': 'اكتب يدوياً',
-                    'bookPaperTypeInput': 'اكتب يدوياً',
-                    'bookPrintCount': 'رقم الطبعة',
-                    'bookEditor': 'اسم المحرر',
-                    'bookDescription': 'وصف الكتاب الكامل',
-                    'bookCoverImageUrl': 'أدخل رابط الصورة',
-                    'searchTitle': 'كلمات مفتاحية للعنوان...',
-                    'searchAuthor': 'اسم المؤلف...',
-                    'filterCoverType': 'نوع الغلاف...',
-                    'filterPaperType': 'نوع الورق...',
-                    'publisherName': 'اسم الناشر',
-                    'publisherLetter': 'حرف الناشر',
-                    'publisherDiscount': 'مثال: 10%',
-                    'categoryNameId': 'الاسم بالإندونيسية',
-                    'categoryNameEn': 'الاسم بالإنجليزية',
-                    'categoryNameAr': 'الاسم بالعربية',
-                    'bannerTitle': 'عنوان اللافتة',
-                    'bannerType': 'مثال: ترويجي، رئيسي',
-                    'bannerDisplayOrder': 'رقم الترتيب',
-                    'usdToIdr': 'سعر صرف الدولار إلى الروبية الإندونيسية',
-                    'usdToEgp': 'سعر صرف الدولار إلى الجنيه المصري'
-                }
-            };
-            
-            // Update all input placeholders
-            for (const [id, placeholder] of Object.entries(placeholders[lang])) {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.placeholder = placeholder;
-                }
-            }
         }
 
         // Menu toggle for mobile
@@ -2069,208 +1985,26 @@
         // Initialize with Indonesian language
         changeLanguage('id');
 
-        // Supabase initialization and application logic
+        // ==================== SUPABASE & APLIKASI UTAMA ====================
+
         document.addEventListener('DOMContentLoaded', function() {
             const supabaseUrl = 'https://rfqpsuzmonfmnvthxinb.supabase.co';
             const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmcXBzdXptb25mbW52dGh4aW5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1OTQyMjUsImV4cCI6MjA3NjE3MDIyNX0.gJFzuE-KJrdSoIKMTIDszTdNLDl_sJkIhgo7wmXRGWA';
             const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
             const STORAGE_BUCKET = 'images';
 
+            // Inisialisasi variabel global
             let currencySettings = { usd_rate: 15000, egp_rate: 500 };
             let allPublishers = [];
             let allCategories = [];
             let selectedBooks = new Set();
             let currentFilters = {};
 
-            // Excel Upload Functionality
-            const uploadArea = document.getElementById('uploadArea');
-            const excelFileInput = document.getElementById('excelFileInput');
-            const browseFilesBtn = document.getElementById('browseFilesBtn');
-            const uploadStatus = document.getElementById('uploadStatus');
-            const downloadTemplateBtn = document.getElementById('downloadTemplateBtn');
+            // Jadikan variabel global tersedia di window object
+            window.allPublishers = allPublishers;
+            window.allCategories = allCategories;
 
-            // Handle drag and drop events
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, preventDefaults, false);
-            });
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            ['dragenter', 'dragover'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, highlight, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, unhighlight, false);
-            });
-
-            function highlight() {
-                uploadArea.classList.add('dragover');
-            }
-
-            function unhighlight() {
-                uploadArea.classList.remove('dragover');
-            }
-
-            // Handle file drop
-            uploadArea.addEventListener('drop', handleDrop, false);
-
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                handleFiles(files);
-            }
-
-            // Handle file selection via button
-            browseFilesBtn.addEventListener('click', () => {
-                excelFileInput.click();
-            });
-
-            excelFileInput.addEventListener('change', (e) => {
-                handleFiles(e.target.files);
-            });
-
-            // Download template
-            downloadTemplateBtn.addEventListener('click', downloadTemplate);
-
-            function downloadTemplate() {
-                // Create template data
-                const templateData = [
-                    {
-                        'Judul Buku': 'Contoh: Fiqih Islam',
-                        'Penulis': 'Contoh: Ahmad Sarwat',
-                        'Harga Asli (USD)': '20.00',
-                        'Harga Dasar (USD)': '15.00',
-                        'Penerbit ID': '1',
-                        'Kategori ID': '1',
-                        'Diskon': '10%',
-                        'Jilid': '1',
-                        'Halaman': '300',
-                        'Tahun Terbit': '2023',
-                        'Berat Nilai': '0.5',
-                        'Berat Satuan': 'kg',
-                        'Warna Tulisan': 'Hitam',
-                        'Jenis Cover': 'Hard Cover',
-                        'Jenis Kertas': 'HVS',
-                        'Cetakan Ke': '1',
-                        'Editor': 'Contoh: Editor Name',
-                        'Deskripsi': 'Deskripsi buku...',
-                        'URL Gambar Sampul': 'https://example.com/image.jpg'
-                    }
-                ];
-
-                // Create worksheet and workbook
-                const ws = XLSX.utils.json_to_sheet(templateData);
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, 'Template Buku');
-
-                // Generate and download file
-                XLSX.writeFile(wb, 'template_buku.xlsx');
-            }
-
-            function handleFiles(files) {
-                if (files.length === 0) return;
-                
-                const file = files[0];
-                const fileType = file.name.split('.').pop().toLowerCase();
-                
-                if (!['xlsx', 'xls', 'csv'].includes(fileType)) {
-                    uploadStatus.innerHTML = '<p style="color: red;">Format file tidak didukung. Harap unggah file Excel (.xlsx, .xls) atau CSV.</p>';
-                    return;
-                }
-                
-                uploadStatus.innerHTML = '<p>Memproses file...</p>';
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, { type: 'array' });
-                        
-                        // Get first worksheet
-                        const worksheetName = workbook.SheetNames[0];
-                        const worksheet = workbook.Sheets[worksheetName];
-                        
-                        // Convert to JSON
-                        const jsonData = XLSX.utils.sheet_to_json(worksheet);
-                        
-                        if (jsonData.length === 0) {
-                            uploadStatus.innerHTML = '<p style="color: red;">File Excel kosong atau tidak memiliki data.</p>';
-                            return;
-                        }
-                        
-                        // Process and upload data
-                        processExcelData(jsonData);
-                    } catch (error) {
-                        console.error('Error processing Excel file:', error);
-                        uploadStatus.innerHTML = '<p style="color: red;">Terjadi kesalahan saat memproses file Excel.</p>';
-                    }
-                };
-                
-                reader.readAsArrayBuffer(file);
-            }
-
-            async function processExcelData(data) {
-                uploadStatus.innerHTML = '<p>Mengunggah data ke database...</p>';
-                
-                let successCount = 0;
-                let errorCount = 0;
-                
-                for (const item of data) {
-                    try {
-                        // Map Excel columns to database fields
-                        const bookData = {
-                            title: item['Judul Buku'] || '',
-                            author: item['Penulis'] || '',
-                            original_price: parseFloat(item['Harga Asli (USD)']) || 0,
-                            base_price: parseFloat(item['Harga Dasar (USD)']) || 0,
-                            publisher_id: parseInt(item['Penerbit ID']) || null,
-                            category_id: parseInt(item['Kategori ID']) || null,
-                            discount: item['Diskon'] || '',
-                            volumes: parseInt(item['Jilid']) || null,
-                            pages: parseInt(item['Halaman']) || null,
-                            year: parseInt(item['Tahun Terbit']) || null,
-                            weight_value: parseFloat(item['Berat Nilai']) || null,
-                            weight_unit: item['Berat Satuan'] || 'g',
-                            text_color: item['Warna Tulisan'] || '',
-                            cover_type: item['Jenis Cover'] || '',
-                            paper_type: item['Jenis Kertas'] || '',
-                            print_count: parseInt(item['Cetakan Ke']) || null,
-                            editor: item['Editor'] || '',
-                            description: item['Deskripsi'] || '',
-                            cover_image_url: item['URL Gambar Sampul'] || ''
-                        };
-                        
-                        // Insert into database
-                        const { error } = await supabase.from('books').insert([bookData]);
-                        
-                        if (error) {
-                            console.error('Error inserting book:', error);
-                            errorCount++;
-                        } else {
-                            successCount++;
-                        }
-                    } catch (error) {
-                        console.error('Error processing book data:', error);
-                        errorCount++;
-                    }
-                }
-                
-                // Show upload results
-                uploadStatus.innerHTML = `
-                    <p style="color: green;">Upload selesai!</p>
-                    <p>Berhasil: ${successCount} buku</p>
-                    <p>Gagal: ${errorCount} buku</p>
-                `;
-                
-                // Refresh books list
-                if (successCount > 0) {
-                    window.fetchBooks();
-                }
-            }
+            // ==================== FUNGSI UMUM ====================
 
             function saveFormData(formId) {
                 const form = document.getElementById(formId);
@@ -2310,24 +2044,6 @@
                     }
                 });
             }
-
-            const sections = document.querySelectorAll('.content-section');
-            const navButtons = document.querySelectorAll('.nav-btn');
-            
-            function showSection(sectionId) {
-                sections.forEach(section => section.classList.remove('active'));
-                navButtons.forEach(btn => btn.classList.remove('active'));
-                document.getElementById(`${sectionId}-section`).classList.add('active');
-                document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
-                
-                if (window[`fetch${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)}`]) {
-                    window[`fetch${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)}`]();
-                }
-            }
-            
-            navButtons.forEach(button => {
-                button.addEventListener('click', () => showSection(button.dataset.section));
-            });
 
             function formatPrice(priceInUsd, currency) {
                 let rate = 1, symbol = '$';
@@ -2389,10 +2105,378 @@
                 }
             }
 
+            // ==================== FUNGSI UPLOAD EXCEL ====================
+
+            // Variabel untuk template Excel
+            const EXCEL_TEMPLATE_DATA = [
+                {
+                    'Judul Buku*': 'Contoh: Fiqih Islam',
+                    'Penulis*': 'Contoh: Ustadz Ahmad',
+                    'Harga Asli (USD)*': '50.00',
+                    'Harga Dasar (USD)*': '45.00',
+                    'Penerbit': 'Nama Penerbit (opsional)',
+                    'Kategori': 'Nama Kategori (opsional)',
+                    'Diskon': '10% (opsional)',
+                    'Jilid': '2 (opsional)',
+                    'Halaman': '300 (opsional)',
+                    'Tahun Terbit': '2024 (opsional)',
+                    'Berat Nilai': '0.5 (opsional)',
+                    'Berat Satuan': 'kg (opsional: kg/g/ons/lb)',
+                    'Warna Tulisan': 'Hitam (opsional)',
+                    'Jenis Cover': 'Hard Cover (opsional)',
+                    'Jenis Kertas': 'HVS (opsional)',
+                    'Cetakan Ke': '1 (opsional)',
+                    'Editor': 'Nama Editor (opsional)',
+                    'Deskripsi': 'Deskripsi buku... (opsional)',
+                    'URL Gambar Cover': 'https://example.com/image.jpg (opsional)'
+                }
+            ];
+
+            // Fungsi untuk download template Excel
+            function downloadExcelTemplate() {
+                const XLSX = window.XLSX;
+                if (!XLSX) {
+                    alert('Library Excel tidak tersedia. Pastikan script XLSX telah dimuat.');
+                    return;
+                }
+
+                // Buat worksheet dari data template
+                const ws = XLSX.utils.json_to_sheet(EXCEL_TEMPLATE_DATA);
+                
+                // Buat workbook dan tambahkan worksheet
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Template Buku");
+                
+                // Generate file Excel dan download
+                XLSX.writeFile(wb, "template_data_buku.xlsx");
+            }
+
+            // Fungsi untuk memuat data publishers dan categories
+            async function loadPublishersAndCategories() {
+                try {
+                    // Load publishers
+                    const { data: publishers, error: pubError } = await supabase.from('publishers').select('id, name');
+                    if (pubError) throw pubError;
+                    window.allPublishers = publishers || [];
+
+                    // Load categories
+                    const { data: categories, error: catError } = await supabase.from('categories').select('id, name_id');
+                    if (catError) throw catError;
+                    window.allCategories = categories || [];
+
+                    console.log('Loaded publishers:', window.allPublishers.length);
+                    console.log('Loaded categories:', window.allCategories.length);
+                    
+                    return { publishers: window.allPublishers, categories: window.allCategories };
+                } catch (error) {
+                    console.error('Error loading publishers and categories:', error);
+                    window.allPublishers = [];
+                    window.allCategories = [];
+                    return { publishers: [], categories: [] };
+                }
+            }
+
+            // Fungsi untuk memproses upload Excel
+            async function processExcelUpload(file, skipEmptyRows = true) {
+                const XLSX = window.XLSX;
+                if (!XLSX) {
+                    throw new Error('Library Excel tidak tersedia');
+                }
+
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        try {
+                            const data = new Uint8Array(e.target.result);
+                            const workbook = XLSX.read(data, { type: 'array' });
+                            
+                            // Ambil sheet pertama
+                            const firstSheetName = workbook.SheetNames[0];
+                            const worksheet = workbook.Sheets[firstSheetName];
+                            
+                            // Konversi ke JSON
+                            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                            
+                            // Filter baris kosong jika diperlukan
+                            const filteredData = skipEmptyRows ? 
+                                jsonData.filter(row => {
+                                    // Cek jika ada setidaknya satu kolom yang terisi
+                                    return Object.values(row).some(value => 
+                                        value !== null && value !== undefined && value !== ''
+                                    );
+                                }) : jsonData;
+                            
+                            resolve(filteredData);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    };
+                    
+                    reader.onerror = function() {
+                        reject(new Error('Gagal membaca file'));
+                    };
+                    
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+
+            // Fungsi untuk memetakan data Excel ke format database
+            async function mapExcelToBookData(excelData, publishers = [], categories = []) {
+                const booksData = [];
+                for (let i = 0; i < excelData.length; i++) {
+                    const row = excelData[i];
+                    try {
+                        // Handle penerbit
+                        let publisherId = null;
+                        const publisherName = row['Penerbit'] ? row['Penerbit'].toString().trim() : '';
+                        if (publisherName) {
+                            let publisher = publishers.find(p => p.name.toLowerCase() === publisherName.toLowerCase());
+                            if (!publisher) {
+                                // Insert new publisher if not exists
+                                const { data: newPublisher, error } = await supabase.from('publishers').insert([{ name: publisherName }]).select();
+                                if (error) {
+                                    console.error('Error inserting publisher:', error);
+                                } else {
+                                    publisher = newPublisher[0];
+                                    publishers.push(publisher);
+                                }
+                            }
+                            publisherId = publisher ? publisher.id : null;
+                        }
+
+                        // Handle kategori
+                        let categoryId = null;
+                        const categoryName = row['Kategori'] ? row['Kategori'].toString().trim() : '';
+                        if (categoryName) {
+                            let category = categories.find(c => c.name_id.toLowerCase() === categoryName.toLowerCase());
+                            if (!category) {
+                                // Insert new category if not exists
+                                const { data: newCategory, error } = await supabase.from('categories').insert([{ name_id: categoryName }]).select();
+                                if (error) {
+                                    console.error('Error inserting category:', error);
+                                } else {
+                                    category = newCategory[0];
+                                    categories.push(category);
+                                }
+                            }
+                            categoryId = category ? category.id : null;
+                        }
+
+                        // Handle nilai dengan aman
+                        const originalPrice = parseFloat(row['Harga Asli (USD)']) || parseFloat(row['Harga Asli (USD)']?.toString().replace(',', '.')) || 0;
+                        const basePrice = parseFloat(row['Harga Dasar (USD)']) || parseFloat(row['Harga Dasar (USD)']?.toString().replace(',', '.')) || 0;
+                        const weightValue = row['Berat Nilai'] ? parseFloat(row['Berat Nilai']) || parseFloat(row['Berat Nilai']?.toString().replace(',', '.')) : null;
+                        const printCount = row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null;
+
+                        booksData.push({
+                            title: row['Judul Buku']?.toString() || '',
+                            author: row['Penulis']?.toString() || '',
+                            original_price: originalPrice,
+                            base_price: basePrice,
+                            publisher_id: publisherId,
+                            category_id: categoryId,
+                            discount: row['Diskon']?.toString() || '',
+                            volumes: row['Jilid']?.toString() || '',
+                            pages: row['Halaman']?.toString() || '',
+                            year: row['Tahun Terbit']?.toString() || '',
+                            weight_value: weightValue,
+                            weight_unit: (row['Berat Satuan']?.toString() || 'kg').toLowerCase(),
+                            text_color: row['Warna Tulisan']?.toString() || '',
+                            cover_type: row['Jenis Cover']?.toString() || '',
+                            paper_type: row['Jenis Kertas']?.toString() || '',
+                            print_count: printCount,
+                            editor: row['Editor']?.toString() || '',
+                            description: row['Deskripsi']?.toString() || '',
+                            cover_image_url: row['URL Gambar Cover']?.toString() || ''
+                        });
+                    } catch (error) {
+                        console.error(`Error mapping row ${i + 1}:`, error);
+                    }
+                }
+                return booksData;
+            }
+
+            // Fungsi untuk validasi data buku
+            function validateBookData(bookData, index) {
+                const errors = [];
+                
+                if (!bookData.title || bookData.title.trim() === '') {
+                    errors.push(`Baris ${index + 1}: Judul buku harus diisi`);
+                }
+                
+                if (!bookData.author || bookData.author.trim() === '') {
+                    errors.push(`Baris ${index + 1}: Penulis harus diisi`);
+                }
+                
+                if (!bookData.base_price || bookData.base_price <= 0) {
+                    errors.push(`Baris ${index + 1}: Harga dasar harus lebih dari 0`);
+                }
+                
+                if (!bookData.original_price || bookData.original_price <= 0) {
+                    errors.push(`Baris ${index + 1}: Harga asli harus lebih dari 0`);
+                }
+                
+                // Validasi format harga
+                if (isNaN(bookData.base_price)) {
+                    errors.push(`Baris ${index + 1}: Harga dasar harus berupa angka`);
+                }
+                
+                if (isNaN(bookData.original_price)) {
+                    errors.push(`Baris ${index + 1}: Harga asli harus berupa angka`);
+                }
+                
+                // Validasi format diskon
+                if (bookData.discount && bookData.discount.trim() !== '') {
+                    const discountStr = bookData.discount.toString();
+                    if (!discountStr.includes('%') && isNaN(parseFloat(discountStr))) {
+                        errors.push(`Baris ${index + 1}: Format diskon tidak valid. Gunakan format seperti "10%" atau angka`);
+                    }
+                }
+                
+                return errors;
+            }
+
+            // Fungsi untuk upload data buku ke Supabase
+            async function uploadBooksToSupabase(booksData, progressCallback) {
+                const results = {
+                    success: 0,
+                    failed: 0,
+                    errors: [],
+                    totalProcessed: booksData.length
+                };
+
+                for (let i = 0; i < booksData.length; i++) {
+                    try {
+                        const bookData = booksData[i];
+                        
+                        // Skip jika data null atau undefined
+                        if (!bookData) {
+                            results.failed++;
+                            results.errors.push(`Baris ${i + 1}: Data tidak valid`);
+                            continue;
+                        }
+                        
+                        // Validasi data
+                        const validationErrors = validateBookData(bookData, i);
+                        if (validationErrors.length > 0) {
+                            results.failed++;
+                            results.errors.push(...validationErrors);
+                            continue;
+                        }
+
+                        // Upload ke Supabase
+                        const { error } = await supabase.from('books').insert([bookData]);
+                        
+                        if (error) {
+                            results.failed++;
+                            results.errors.push(`Baris ${i + 1}: ${error.message}`);
+                        } else {
+                            results.success++;
+                        }
+                        
+                        // Update progress
+                        if (progressCallback) {
+                            progressCallback(i + 1, booksData.length);
+                        }
+                        
+                    } catch (error) {
+                        results.failed++;
+                        results.errors.push(`Baris ${i + 1}: ${error.message}`);
+                    }
+                }
+
+                return results;
+            }
+
+            // Fungsi untuk menampilkan summary upload
+            function showUploadSummary(results, totalRows) {
+                const modalContent = document.querySelector('#excelUploadModal .modal-content');
+                
+                // Hapus summary sebelumnya jika ada
+                const existingSummary = modalContent.querySelector('.upload-summary');
+                if (existingSummary) {
+                    existingSummary.remove();
+                }
+                
+                const summaryDiv = document.createElement('div');
+                summaryDiv.className = 'upload-summary';
+                summaryDiv.innerHTML = `
+                    <h4>📊 Hasil Upload</h4>
+                    <div class="summary-item">
+                        <span>Total Data dalam Excel:</span>
+                        <span>${totalRows}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Data Valid Ditemukan:</span>
+                        <span>${results.totalProcessed}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Berhasil Diupload:</span>
+                        <span style="color: var(--success); font-weight: bold">${results.success}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Gagal Diupload:</span>
+                        <span style="color: var(--danger); font-weight: bold">${results.failed}</span>
+                    </div>
+                    ${results.errors.length > 0 ? `
+                        <div style="margin-top: 1rem;">
+                            <h5>Detail Error (${results.errors.length} error):</h5>
+                            <div style="max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border);">
+                                ${results.errors.slice(0, 20).map(error => `<div style="color: var(--danger); font-size: 0.875rem; margin-bottom: 0.25rem;">• ${error}</div>`).join('')}
+                                ${results.errors.length > 20 ? `<div style="color: var(--warning); font-size: 0.875rem;">• ... dan ${results.errors.length - 20} error lainnya</div>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+                    <div style="margin-top: 1rem; text-align: center;">
+                        <button class="btn submit-btn" onclick="closeExcelModal()">
+                            Tutup
+                        </button>
+                    </div>
+                `;
+                
+                modalContent.appendChild(summaryDiv);
+            }
+
+            function showUploadError(message) {
+                const modalContent = document.querySelector('#excelUploadModal .modal-content');
+                
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'upload-status error';
+                errorDiv.innerHTML = `
+                    <strong>❌ Error:</strong> ${message}
+                    <div style="margin-top: 1rem; text-align: center;">
+                        <button class="btn submit-btn" onclick="closeExcelModal()">
+                            Tutup
+                        </button>
+                    </div>
+                `;
+                
+                modalContent.appendChild(errorDiv);
+            }
+
+            function closeExcelModal() {
+                const modal = document.getElementById('excelUploadModal');
+                modal.style.display = 'none';
+                
+                // Reset form
+                document.getElementById('excelUploadForm').reset();
+                document.getElementById('uploadProgress').style.display = 'none';
+                
+                // Hapus summary/error yang ditambahkan
+                const modalContent = modal.querySelector('.modal-content');
+                const existingSummary = modalContent.querySelector('.upload-summary, .upload-status');
+                if (existingSummary) {
+                    existingSummary.remove();
+                }
+            }
+
+            // ==================== FUNGSI BUKU ====================
+
             const bookForm = document.getElementById('bookForm');
             const booksTableBody = document.getElementById('booksTableBody');
-            const bookFileInput = document.getElementById('bookCoverImageFileInput');
-            const bookUrlInput = document.getElementById('bookCoverImageUrlInput');
+            const bookFileInput = document.getElementById('bookCoverImageFile');
+            const bookUrlInput = document.getElementById('bookCoverImageUrl');
             const bookImagePreview = document.getElementById('bookImagePreview');
             const bookPublisherSelect = document.getElementById('bookPublisherSelect');
             const bookCategorySelect = document.getElementById('bookCategorySelect');
@@ -2405,7 +2489,7 @@
             const displayFinalPriceIDR = document.getElementById('displayFinalPriceIDR');
             const displayFinalPriceEGP = document.getElementById('displayFinalPriceEGP');
 
-            const selectAllCheckbox = document.getElementById('selectAllCheckboxHeader');
+            const selectAllCheckbox = document.getElementById('selectAll');
             const bulkActionSelect = document.getElementById('bulkAction');
             const applyBulkActionBtn = document.getElementById('applyBulkAction');
             const selectedCountSpan = document.getElementById('selectedCount');
@@ -2421,7 +2505,7 @@
 
             const editModal = document.getElementById('editModal');
             const editBookForm = document.getElementById('editBookForm');
-            const closeModalBtn = document.querySelector('.close-modal');
+            const closeModalBtn = document.querySelector('.close-modal[data-modal="editModal"]');
             const cancelEditModalBtn = document.getElementById('cancelEditModal');
 
             function updatePriceCalculator() {
@@ -2514,11 +2598,11 @@
             document.querySelectorAll('input[name="bookImageSource"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     if (e.target.value === 'upload') {
-                        document.getElementById('bookCoverImageFile').style.display = 'block';
-                        document.getElementById('bookCoverImageUrl').style.display = 'none';
+                        bookFileInput.style.display = 'block';
+                        bookUrlInput.style.display = 'none';
                     } else {
-                        document.getElementById('bookCoverImageFile').style.display = 'none';
-                        document.getElementById('bookCoverImageUrl').style.display = 'block';
+                        bookFileInput.style.display = 'none';
+                        bookUrlInput.style.display = 'block';
                     }
                     saveFormData('bookForm');
                 });
@@ -2553,14 +2637,14 @@
                 saveFormData('bookForm');
             });
 
-            document.getElementById('editBookCoverImageFileInput').addEventListener('change', (e) => {
+            document.getElementById('editBookCoverImageFile').addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (file) {
                     document.getElementById('editBookImagePreview').src = URL.createObjectURL(file);
                     document.getElementById('editBookImagePreview').style.display = 'block';
                 }
             });
-            document.getElementById('editBookCoverImageUrlInput').addEventListener('input', (e) => {
+            document.getElementById('editBookCoverImageUrl').addEventListener('input', (e) => {
                 if (e.target.value) {
                     document.getElementById('editBookImagePreview').src = e.target.value;
                     document.getElementById('editBookImagePreview').style.display = 'block';
@@ -2605,14 +2689,23 @@
                 if (action === 'delete') {
                     if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedBooks.size} buku?`)) return;
                     
-                    for (const bookId of selectedBooks) {
-                        await deleteItem('books', bookId, () => {});
+                    const idsToDelete = Array.from(selectedBooks);
+
+                    const { error } = await supabase
+                        .from('books')
+                        .delete()
+                        .in('id', idsToDelete);
+
+                    if (error) {
+                        console.error('Error bulk deleting books:', error);
+                        alert('Gagal menghapus buku.');
+                    } else {
+                        selectedBooks.clear();
+                        updateSelectedCount();
+                        selectAllCheckbox.checked = false;
+                        window.fetchBooks();
+                        alert(`${idsToDelete.length} buku berhasil dihapus`);
                     }
-                    selectedBooks.clear();
-                    updateSelectedCount();
-                    selectAllCheckbox.checked = false;
-                    window.fetchBooks();
-                    alert(`${selectedBooks.size} buku berhasil dihapus`);
                 }
             });
 
@@ -2892,8 +2985,8 @@
                 document.getElementById('booksFormTitle').textContent = 'Tambah Buku Baru';
                 document.querySelector('#bookForm .submit-btn').textContent = 'Tambah Buku';
                 document.getElementById('cancelEditBook').style.display = 'none';
-                document.getElementById('bookCoverImageFile').style.display = 'block';
-                document.getElementById('bookCoverImageUrl').style.display = 'none';
+                bookFileInput.style.display = 'block';
+                bookUrlInput.style.display = 'none';
                 updatePriceCalculator();
             }
             
@@ -2929,9 +3022,9 @@
                 
                 let imageUrl = null;
                 if (document.querySelector('input[name="editBookImageSource"]:checked').value === 'url') {
-                    imageUrl = document.getElementById('editBookCoverImageUrlInput').value;
+                    imageUrl = document.getElementById('editBookCoverImageUrl').value;
                 } else {
-                    const file = document.getElementById('editBookCoverImageFileInput').files[0];
+                    const file = document.getElementById('editBookCoverImageFile').files[0];
                     if (file) {
                         imageUrl = await uploadImage(file, 'books');
                         if (!imageUrl) {
@@ -2970,13 +3063,122 @@
             }
 
             closeModalBtn.addEventListener('click', closeEditModal);
-            cancelEditModalBtn.addEventListener('click', closeEditModal);
+            document.querySelector('.cancel-btn[data-modal="editModal"]').addEventListener('click', closeEditModal);
 
-            window.addEventListener('click', (e) => {
-                if (e.target === editModal) {
-                    closeEditModal();
+            // ==================== FUNGSI PENERBIT ====================
+
+            const publisherForm = document.getElementById('publisherForm');
+            const publishersTableBody = document.getElementById('publishersTableBody');
+            const publisherFileInput = document.getElementById('publisherLogoFile');
+            const publisherImagePreview = document.getElementById('publisherImagePreview');
+            
+            const renderPublishers = (publishers) => {
+                publishersTableBody.innerHTML = publishers.map(p => `
+                    <tr>
+                        <td><img src="${p.logo_url || 'https://via.placeholder.com/60x60.png?text=No+Logo'}" class="table-image" alt="Logo"></td>
+                        <td>${p.name}</td>
+                        <td>${p.letter}</td>
+                        <td>${p.discount || '-'}</td>
+                        <td class="action-buttons">
+                            <button class="btn edit-btn" data-id="${p.id}">✏️ Edit</button>
+                            <button class="btn delete-btn" data-id="${p.id}">🗑️ Hapus</button>
+                        </td>
+                    </tr>`).join('');
+            };
+            
+            window.fetchPublishers = () => fetchData('publishers', 'publishersTableBody', 'loadingPublishers', renderPublishers);
+            
+            publisherFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    publisherImagePreview.src = URL.createObjectURL(file);
+                    publisherImagePreview.style.display = 'block';
                 }
             });
+            
+            setupFormAutoSave('publisherForm');
+            loadFormData('publisherForm');
+            
+            publisherForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtn = document.querySelector('#publisherForm .submit-btn');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Menyimpan...';
+                const publisherId = document.getElementById('publisherId').value;
+                const publisherData = {
+                    name: document.getElementById('publisherName').value,
+                    letter: document.getElementById('publisherLetter').value,
+                    discount: document.getElementById('publisherDiscount').value
+                };
+                const file = publisherFileInput.files[0];
+                if (file) {
+                    publisherData.logo_url = await uploadImage(file, 'publishers');
+                    if (!publisherData.logo_url) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Tambah Penerbit';
+                        return;
+                    }
+                } else {
+                    publisherData.logo_url = document.getElementById('publisherOldLogoUrl').value;
+                }
+                const { error } = publisherId ? 
+                    await supabase.from('publishers').update(publisherData).eq('id', publisherId) : 
+                    await supabase.from('publishers').insert([publisherData]);
+                if (error) {
+                    alert('Gagal menyimpan penerbit.');
+                } else {
+                    if (!publisherId) {
+                        publisherForm.reset();
+                        localStorage.removeItem('formData_publisherForm');
+                    }
+                    resetPublisherForm();
+                }
+                submitBtn.disabled = false;
+                submitBtn.textContent = publisherId ? 'Perbarui Penerbit' : 'Tambah Penerbit';
+                window.fetchPublishers();
+            });
+            
+            publishersTableBody.addEventListener('click', async (e) => {
+                const id = e.target.dataset.id;
+                if (e.target.classList.contains('delete-btn')) {
+                    await deleteItem('publishers', id, window.fetchPublishers);
+                }
+                if (e.target.classList.contains('edit-btn')) {
+                    const { data } = await supabase.from('publishers').select('*').eq('id', id).single();
+                    if (data) {
+                        document.getElementById('publisherId').value = data.id;
+                        document.getElementById('publisherName').value = data.name;
+                        document.getElementById('publisherLetter').value = data.letter;
+                        document.getElementById('publisherDiscount').value = data.discount;
+                        document.getElementById('publisherOldLogoUrl').value = data.logo_url || '';
+                        if (data.logo_url) {
+                            publisherImagePreview.src = data.logo_url;
+                            publisherImagePreview.style.display = 'block';
+                        } else {
+                            publisherImagePreview.style.display = 'none';
+                        }
+                        document.getElementById('publishersFormTitle').textContent = 'Edit Penerbit';
+                        document.querySelector('#publisherForm .submit-btn').textContent = 'Perbarui Penerbit';
+                        document.getElementById('cancelEditPublisher').style.display = 'inline-block';
+                        publisherForm.scrollIntoView({ behavior: 'smooth' });
+                        saveFormData('publisherForm');
+                    }
+                }
+            });
+            
+            function resetPublisherForm() {
+                publisherForm.reset();
+                document.getElementById('publisherId').value = '';
+                document.getElementById('publisherOldLogoUrl').value = '';
+                publisherImagePreview.style.display = 'none';
+                document.getElementById('publishersFormTitle').textContent = 'Tambah Penerbit Baru';
+                document.querySelector('#publisherForm .submit-btn').textContent = 'Tambah Penerbit';
+                document.getElementById('cancelEditPublisher').style.display = 'none';
+            }
+            
+            document.getElementById('cancelEditPublisher').addEventListener('click', resetPublisherForm);
+
+            // ==================== FUNGSI KATEGORI ====================
 
             const categoryForm = document.getElementById('categoryForm');
             const categoriesTableBody = document.getElementById('categoriesTableBody');
@@ -3101,116 +3303,7 @@
             
             document.getElementById('cancelEditCategory').addEventListener('click', resetCategoryForm);
 
-            const publisherForm = document.getElementById('publisherForm');
-            const publishersTableBody = document.getElementById('publishersTableBody');
-            const publisherFileInput = document.getElementById('publisherLogoFile');
-            const publisherImagePreview = document.getElementById('publisherImagePreview');
-            
-            const renderPublishers = (publishers) => {
-                publishersTableBody.innerHTML = publishers.map(p => `
-                    <tr>
-                        <td><img src="${p.logo_url || 'https://via.placeholder.com/60x60.png?text=No+Logo'}" class="table-image" alt="Logo"></td>
-                        <td>${p.name}</td>
-                        <td>${p.letter}</td>
-                        <td>${p.discount || '-'}</td>
-                        <td class="action-buttons">
-                            <button class="btn edit-btn" data-id="${p.id}">✏️ Edit</button>
-                            <button class="btn delete-btn" data-id="${p.id}">🗑️ Hapus</button>
-                        </td>
-                    </tr>`).join('');
-            };
-            
-            window.fetchPublishers = () => fetchData('publishers', 'publishersTableBody', 'loadingPublishers', renderPublishers);
-            
-            publisherFileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    publisherImagePreview.src = URL.createObjectURL(file);
-                    publisherImagePreview.style.display = 'block';
-                }
-            });
-            
-            setupFormAutoSave('publisherForm');
-            loadFormData('publisherForm');
-            
-            publisherForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const submitBtn = document.querySelector('#publisherForm .submit-btn');
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Menyimpan...';
-                const publisherId = document.getElementById('publisherId').value;
-                const publisherData = {
-                    name: document.getElementById('publisherName').value,
-                    letter: document.getElementById('publisherLetter').value,
-                    discount: document.getElementById('publisherDiscount').value
-                };
-                const file = publisherFileInput.files[0];
-                if (file) {
-                    publisherData.logo_url = await uploadImage(file, 'publishers');
-                    if (!publisherData.logo_url) {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Tambah Penerbit';
-                        return;
-                    }
-                } else {
-                    publisherData.logo_url = document.getElementById('publisherOldLogoUrl').value;
-                }
-                const { error } = publisherId ? 
-                    await supabase.from('publishers').update(publisherData).eq('id', publisherId) : 
-                    await supabase.from('publishers').insert([publisherData]);
-                if (error) {
-                    alert('Gagal menyimpan penerbit.');
-                } else {
-                    if (!publisherId) {
-                        publisherForm.reset();
-                        localStorage.removeItem('formData_publisherForm');
-                    }
-                    resetPublisherForm();
-                }
-                submitBtn.disabled = false;
-                submitBtn.textContent = publisherId ? 'Perbarui Penerbit' : 'Tambah Penerbit';
-                window.fetchPublishers();
-            });
-            
-            publishersTableBody.addEventListener('click', async (e) => {
-                const id = e.target.dataset.id;
-                if (e.target.classList.contains('delete-btn')) {
-                    await deleteItem('publishers', id, window.fetchPublishers);
-                }
-                if (e.target.classList.contains('edit-btn')) {
-                    const { data } = await supabase.from('publishers').select('*').eq('id', id).single();
-                    if (data) {
-                        document.getElementById('publisherId').value = data.id;
-                        document.getElementById('publisherName').value = data.name;
-                        document.getElementById('publisherLetter').value = data.letter;
-                        document.getElementById('publisherDiscount').value = data.discount;
-                        document.getElementById('publisherOldLogoUrl').value = data.logo_url || '';
-                        if (data.logo_url) {
-                            publisherImagePreview.src = data.logo_url;
-                            publisherImagePreview.style.display = 'block';
-                        } else {
-                            publisherImagePreview.style.display = 'none';
-                        }
-                        document.getElementById('publishersFormTitle').textContent = 'Edit Penerbit';
-                        document.querySelector('#publisherForm .submit-btn').textContent = 'Perbarui Penerbit';
-                        document.getElementById('cancelEditPublisher').style.display = 'inline-block';
-                        publisherForm.scrollIntoView({ behavior: 'smooth' });
-                        saveFormData('publisherForm');
-                    }
-                }
-            });
-            
-            function resetPublisherForm() {
-                publisherForm.reset();
-                document.getElementById('publisherId').value = '';
-                document.getElementById('publisherOldLogoUrl').value = '';
-                publisherImagePreview.style.display = 'none';
-                document.getElementById('publishersFormTitle').textContent = 'Tambah Penerbit Baru';
-                document.querySelector('#publisherForm .submit-btn').textContent = 'Tambah Penerbit';
-                document.getElementById('cancelEditPublisher').style.display = 'none';
-            }
-            
-            document.getElementById('cancelEditPublisher').addEventListener('click', resetPublisherForm);
+            // ==================== FUNGSI BANNER ====================
 
             const bannerForm = document.getElementById('bannerForm');
             const bannersTableBody = document.getElementById('bannersTableBody');
@@ -3323,19 +3416,29 @@
             
             document.getElementById('cancelEditBanner').addEventListener('click', resetBannerForm);
 
+            // ==================== FUNGSI PESANAN ====================
+
             const ordersTableBody = document.getElementById('ordersTableBody');
             const renderOrders = (orders) => {
-                ordersTableBody.innerHTML = orders.map(o => `
+                ordersTableBody.innerHTML = orders.map(o => {
+                    const totalIdr = o.total_price || 0;
+                    const totalUsd = totalIdr / currencySettings.usd_rate;
+                    const totalEgp = totalUsd * currencySettings.egp_rate;
+                    return `
                     <tr>
                         <td>${o.name}</td>
                         <td>${o.book_title}</td>
-                        <td>$${(o.total_price || 0).toFixed(2)}</td>
+                        <td>$${totalUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td>Rp ${totalIdr.toLocaleString('id-ID')}</td>
+                        <td>E£ ${totalEgp.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td>${o.status}</td>
                         <td>${new Date(o.created_at).toLocaleString('id-ID')}</td>
-                    </tr>`).join('');
+                    </tr>`}).join('');
             };
             
             window.fetchOrders = () => fetchData('orders', 'ordersTableBody', 'loadingOrders', renderOrders);
+
+            // ==================== FUNGSI KURS MATA UANG ====================
 
             const currencyForm = document.getElementById('currencyForm');
             
@@ -3375,12 +3478,137 @@
                 }
             });
 
-            window.fetchCurrency().then(() => {
-                populatePublisherDropdown().then(() => {
-                    populateCategoryDropdown().then(() => {
-                        window.fetchBooks();
+            // ==================== EVENT LISTENERS UPLOAD EXCEL ====================
+
+            // Tombol download template
+            document.getElementById('downloadTemplateBtn').addEventListener('click', downloadExcelTemplate);
+            
+            // Tombol buka modal upload Excel
+            document.getElementById('uploadExcelBtn').addEventListener('click', function() {
+                document.getElementById('excelUploadModal').style.display = 'block';
+            });
+            
+            // Form upload Excel
+            document.getElementById('excelUploadForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const fileInput = document.getElementById('excelFile');
+                const skipEmptyRows = document.getElementById('skipEmptyRows').checked;
+                const progressDiv = document.getElementById('uploadProgress');
+                const progressBar = document.getElementById('progressBar');
+                const progressText = document.getElementById('progressText');
+                const submitBtn = this.querySelector('button[type="submit"]');
+                
+                if (!fileInput.files.length) {
+                    alert('Pilih file Excel terlebih dahulu');
+                    return;
+                }
+
+                const file = fileInput.files[0];
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Memproses...';
+
+                try {
+                    // Tampilkan progress
+                    progressDiv.style.display = 'block';
+                    progressBar.style.width = '10%';
+                    progressText.textContent = 'Memuat data referensi...';
+
+                    // Pastikan data publishers dan categories sudah dimuat
+                    const { publishers, categories } = await loadPublishersAndCategories();
+                    
+                    progressBar.style.width = '30%';
+                    progressText.textContent = 'Membaca file Excel...';
+
+                    // Baca file Excel
+                    const excelData = await processExcelUpload(file, skipEmptyRows);
+                    
+                    if (excelData.length === 0) {
+                        throw new Error('Tidak ada data yang ditemukan dalam file Excel');
+                    }
+
+                    progressBar.style.width = '50%';
+                    progressText.textContent = `Menemukan ${excelData.length} data buku. Memproses...`;
+
+                    // Map data Excel ke format database
+                    const booksData = await mapExcelToBookData(excelData, publishers, categories);
+                    
+                    if (booksData.length === 0) {
+                        throw new Error('Tidak ada data valid yang dapat diproses');
+                    }
+
+                    progressBar.style.width = '70%';
+                    progressText.textContent = `Memproses ${booksData.length} data valid...`;
+
+                    // Upload ke Supabase
+                    const uploadResults = await uploadBooksToSupabase(booksData, (current, total) => {
+                        const progress = 70 + (current / total) * 25;
+                        progressBar.style.width = `${progress}%`;
+                        progressText.textContent = `Mengupload data... ${current}/${total}`;
                     });
+
+                    // Tampilkan hasil
+                    progressBar.style.width = '100%';
+                    progressText.textContent = 'Selesai!';
+                    
+                    // Tampilkan summary
+                    showUploadSummary(uploadResults, excelData.length);
+                    
+                    // Refresh data buku
+                    setTimeout(() => {
+                        window.fetchBooks();
+                    }, 2000);
+
+                } catch (error) {
+                    console.error('Error processing Excel file:', error);
+                    showUploadError(error.message);
+                    
+                    // Reset progress bar pada error
+                    progressBar.style.width = '0%';
+                    progressText.textContent = '';
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '📤 Upload Data';
+                }
+            });
+
+            // Event listener untuk close modal
+            document.querySelectorAll('.close-modal, .cancel-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-modal') || 'excelUploadModal';
+                    document.getElementById(modalId).style.display = 'none';
+                    
+                    if (modalId === 'excelUploadModal') {
+                        closeExcelModal();
+                    }
                 });
+            });
+
+            // Close modal ketika klik di luar modal content
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                    if (e.target.id === 'excelUploadModal') {
+                        closeExcelModal();
+                    }
+                }
+            });
+
+            // ==================== INISIALISASI APLIKASI ====================
+
+            // Load data saat aplikasi dimulai
+            window.fetchCurrency().then(() => {
+                return loadPublishersAndCategories();
+            }).then(() => {
+                return populatePublisherDropdown();
+            }).then(() => {
+                return populateCategoryDropdown();
+            }).then(() => {
+                window.fetchBooks();
+                window.fetchPublishers();
+                window.fetchCategories();
+                window.fetchBanners();
+                window.fetchOrders();
             });
         });
     </script>
