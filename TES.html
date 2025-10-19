@@ -1041,6 +1041,8 @@
                     <select id="bulkAction">
                         <option value="" data-lang-key="select-action">Pilih Aksi</option>
                         <option value="delete" data-lang-key="delete-books">Hapus Buku</option>
+                        <option value="edit_discount">Edit Diskon</option>
+                        <option value="edit_category">Edit Kategori</option>
                     </select>
                     <button id="applyBulkAction" class="btn submit-btn" data-lang-key="apply">Terapkan</button>
                     <span id="selectedCount">0 buku terpilih</span>
@@ -1494,6 +1496,32 @@
         </div>
     </div>
 
+    <!-- Modal untuk Bulk Edit -->
+    <div id="bulkEditModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2 id="bulkEditTitle">Edit Massal</h2>
+                <button class="close-modal" data-modal="bulkEditModal">&times;</button>
+            </div>
+            <form id="bulkEditForm">
+                <div class="form-group" id="bulkDiscountGroup" style="display: none;">
+                    <label for="bulkDiscount">Diskon Baru</label>
+                    <input type="text" id="bulkDiscount" placeholder="Contoh: 10%">
+                </div>
+                <div class="form-group" id="bulkCategoryGroup" style="display: none;">
+                    <label for="bulkCategorySelect">Kategori Baru</label>
+                    <select id="bulkCategorySelect">
+                        <option value="">-- Pilih Kategori --</option>
+                    </select>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn submit-btn">Simpan Perubahan</button>
+                    <button type="button" class="btn cancel-btn" data-modal="bulkEditModal">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script>
@@ -1549,6 +1577,8 @@
                 "bulk-actions": "Aksi Massal:",
                 "select-action": "Pilih Aksi",
                 "delete-books": "Hapus Buku",
+                "edit-discount": "Edit Diskon",
+                "edit-category": "Edit Kategori",
                 "apply": "Terapkan",
                 "book-list": "Daftar Buku",
                 "table-image": "Gambar",
@@ -1623,7 +1653,9 @@
                 "select-excel-file": "Pilih File Excel",
                 "excel-format-info": "Format yang didukung: .xlsx, .xls",
                 "skip-empty-rows": "Lewati baris kosong",
-                "upload-data": "📤 Upload Data"
+                "upload-data": "📤 Upload Data",
+                "edit-discount-title": "Edit Diskon Massal",
+                "edit-category-title": "Edit Kategori Massal"
             },
             en: {
                 "dashboard-title": "Admin Panel - Islamic Book Store",
@@ -1675,6 +1707,8 @@
                 "bulk-actions": "Bulk Actions:",
                 "select-action": "Select Action",
                 "delete-books": "Delete Books",
+                "edit-discount": "Edit Discount",
+                "edit-category": "Edit Category",
                 "apply": "Apply",
                 "book-list": "Book List",
                 "table-image": "Image",
@@ -1749,7 +1783,9 @@
                 "select-excel-file": "Select Excel File",
                 "excel-format-info": "Supported formats: .xlsx, .xls",
                 "skip-empty-rows": "Skip empty rows",
-                "upload-data": "📤 Upload Data"
+                "upload-data": "📤 Upload Data",
+                "edit-discount-title": "Bulk Edit Discount",
+                "edit-category-title": "Bulk Edit Category"
             },
             ar: {
                 "dashboard-title": "لوحة التحكم - مكتبة الكتب الإسلامية",
@@ -1801,6 +1837,8 @@
                 "bulk-actions": "إجراءات جماعية:",
                 "select-action": "اختر الإجراء",
                 "delete-books": "حذف الكتب",
+                "edit-discount": "تعديل الخصم",
+                "edit-category": "تعديل الفئة",
                 "apply": "تطبيق",
                 "book-list": "قائمة الكتب",
                 "table-image": "الصورة",
@@ -1875,7 +1913,9 @@
                 "select-excel-file": "اختر ملف إكسل",
                 "excel-format-info": "الصيغ المدعومة: .xlsx, .xls",
                 "skip-empty-rows": "تخطى الصفوف الفارغة",
-                "upload-data": "📤 رفع البيانات"
+                "upload-data": "📤 رفع البيانات",
+                "edit-discount-title": "تعديل الخصم الجماعي",
+                "edit-category-title": "تعديل الفئة الجماعي"
             }
         };
 
@@ -2508,6 +2548,14 @@
             const closeModalBtn = document.querySelector('.close-modal[data-modal="editModal"]');
             const cancelEditModalBtn = document.getElementById('cancelEditModal');
 
+            const bulkEditModal = document.getElementById('bulkEditModal');
+            const bulkEditForm = document.getElementById('bulkEditForm');
+            const bulkEditTitle = document.getElementById('bulkEditTitle');
+            const bulkDiscountGroup = document.getElementById('bulkDiscountGroup');
+            const bulkCategoryGroup = document.getElementById('bulkCategoryGroup');
+            const bulkCategorySelect = document.getElementById('bulkCategorySelect');
+            const bulkDiscount = document.getElementById('bulkDiscount');
+
             function updatePriceCalculator() {
                 const basePrice = parseFloat(bookBasePriceInput.value) || 0;
                 const discount = bookDiscountInput.value || '0';
@@ -2567,6 +2615,9 @@
                     data.map(c => `<option value="${c.id}">${c.name_id}</option>`).join('');
                 
                 filterCategory.innerHTML = '<option value="">Semua Kategori</option>' + 
+                    data.map(c => `<option value="${c.id}">${c.name_id}</option>`).join('');
+                
+                bulkCategorySelect.innerHTML = '<option value="">-- Pilih Kategori --</option>' + 
                     data.map(c => `<option value="${c.id}">${c.name_id}</option>`).join('');
             }
 
@@ -2690,23 +2741,73 @@
                     if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedBooks.size} buku?`)) return;
                     
                     const idsToDelete = Array.from(selectedBooks);
+                    try {
+                        const { error } = await supabase
+                            .from('books')
+                            .delete()
+                            .in('id', idsToDelete);
 
-                    const { error } = await supabase
-                        .from('books')
-                        .delete()
-                        .in('id', idsToDelete);
+                        if (error) throw error;
 
-                    if (error) {
-                        console.error('Error bulk deleting books:', error);
-                        alert('Gagal menghapus buku.');
-                    } else {
                         selectedBooks.clear();
                         updateSelectedCount();
                         selectAllCheckbox.checked = false;
                         window.fetchBooks();
                         alert(`${idsToDelete.length} buku berhasil dihapus`);
+                    } catch (error) {
+                        console.error('Error bulk deleting books:', error);
+                        alert('Gagal menghapus buku. Error: ' + error.message);
                     }
+                } else if (action === 'edit_discount' || action === 'edit_category') {
+                    bulkEditTitle.textContent = action === 'edit_discount' ? translations[currentLanguage]['edit-discount-title'] : translations[currentLanguage]['edit-category-title'];
+                    bulkDiscountGroup.style.display = action === 'edit_discount' ? 'block' : 'none';
+                    bulkCategoryGroup.style.display = action === 'edit_category' ? 'block' : 'none';
+                    bulkEditModal.style.display = 'block';
+                    currentBulkAction = action;
                 }
+            });
+
+            let currentBulkAction = '';
+
+            bulkEditForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const idsToUpdate = Array.from(selectedBooks);
+                let updateData = {};
+                if (currentBulkAction === 'edit_discount') {
+                    updateData.discount = bulkDiscount.value;
+                } else if (currentBulkAction === 'edit_category') {
+                    updateData.category_id = bulkCategorySelect.value || null;
+                }
+
+                try {
+                    const { error } = await supabase
+                        .from('books')
+                        .update(updateData)
+                        .in('id', idsToUpdate);
+
+                    if (error) throw error;
+
+                    alert(`${idsToUpdate.length} buku berhasil diperbarui`);
+                    bulkEditModal.style.display = 'none';
+                    bulkEditForm.reset();
+                    selectedBooks.clear();
+                    updateSelectedCount();
+                    selectAllCheckbox.checked = false;
+                    window.fetchBooks();
+                } catch (error) {
+                    console.error('Error bulk editing books:', error);
+                    alert('Gagal memperbarui buku. Error: ' + error.message);
+                }
+            });
+
+            document.querySelector('.close-modal[data-modal="bulkEditModal"]').addEventListener('click', () => {
+                bulkEditModal.style.display = 'none';
+                bulkEditForm.reset();
+            });
+
+            document.querySelector('.cancel-btn[data-modal="bulkEditModal"]').addEventListener('click', () => {
+                bulkEditModal.style.display = 'none';
+                bulkEditForm.reset();
             });
 
             function getCustomInputValue(selectId, inputId) {
