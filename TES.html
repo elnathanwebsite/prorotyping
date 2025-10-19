@@ -1041,8 +1041,6 @@
                     <select id="bulkAction">
                         <option value="" data-lang-key="select-action">Pilih Aksi</option>
                         <option value="delete" data-lang-key="delete-books">Hapus Buku</option>
-                        <option value="edit_discount">Edit Diskon</option>
-                        <option value="edit_category">Edit Kategori</option>
                     </select>
                     <button id="applyBulkAction" class="btn submit-btn" data-lang-key="apply">Terapkan</button>
                     <span id="selectedCount">0 buku terpilih</span>
@@ -1107,24 +1105,11 @@
                         </div>
                     </form>
                 </div>
-
-                <div class="bulk-actions">
-                    <strong data-lang-key="bulk-actions">Aksi Massal:</strong>
-                    <select id="publisherBulkAction">
-                        <option value="" data-lang-key="select-action">Pilih Aksi</option>
-                        <option value="delete">Hapus Penerbit</option>
-                        <option value="edit_discount">Edit Diskon</option>
-                    </select>
-                    <button id="applyPublisherBulkAction" class="btn submit-btn" data-lang-key="apply">Terapkan</button>
-                    <span id="publisherSelectedCount">0 penerbit terpilih</span>
-                </div>
-
                 <h2 data-lang-key="publisher-list">Daftar Penerbit</h2>
                 <div class="table-wrapper">
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th width="40"><input type="checkbox" id="publisherSelectAll"></th>
                                 <th width="80" data-lang-key="table-logo">Logo</th>
                                 <th data-lang-key="table-name">Nama</th>
                                 <th width="80" data-lang-key="table-letter">Huruf</th>
@@ -1177,24 +1162,11 @@
                         </div>
                     </form>
                 </div>
-
-                <div class="bulk-actions">
-                    <strong data-lang-key="bulk-actions">Aksi Massal:</strong>
-                    <select id="categoryBulkAction">
-                        <option value="" data-lang-key="select-action">Pilih Aksi</option>
-                        <option value="delete">Hapus Kategori</option>
-                        <option value="edit_color">Edit Warna</option>
-                    </select>
-                    <button id="applyCategoryBulkAction" class="btn submit-btn" data-lang-key="apply">Terapkan</button>
-                    <span id="categorySelectedCount">0 kategori terpilih</span>
-                </div>
-
                 <h2 data-lang-key="category-list">Daftar Kategori</h2>
                 <div class="table-wrapper">
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th width="40"><input type="checkbox" id="categorySelectAll"></th>
                                 <th width="80" data-lang-key="table-image">Gambar</th>
                                 <th data-lang-key="table-name-id">Nama (ID)</th>
                                 <th data-lang-key="table-name-en">Nama (EN)</th>
@@ -1240,24 +1212,11 @@
                         </div>
                     </form>
                 </div>
-
-                <div class="bulk-actions">
-                    <strong data-lang-key="bulk-actions">Aksi Massal:</strong>
-                    <select id="bannerBulkAction">
-                        <option value="" data-lang-key="select-action">Pilih Aksi</option>
-                        <option value="delete">Hapus Banner</option>
-                        <option value="edit_type">Edit Tipe</option>
-                    </select>
-                    <button id="applyBannerBulkAction" class="btn submit-btn" data-lang-key="apply">Terapkan</button>
-                    <span id="bannerSelectedCount">0 banner terpilih</span>
-                </div>
-
                 <h2 data-lang-key="banner-list">Daftar Banner</h2>
                 <div class="table-wrapper">
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th width="40"><input type="checkbox" id="bannerSelectAll"></th>
                                 <th width="100" data-lang-key="table-image">Gambar</th>
                                 <th data-lang-key="table-title">Judul</th>
                                 <th width="120" data-lang-key="table-type">Tipe</th>
@@ -1279,7 +1238,9 @@
                             <tr>
                                 <th data-lang-key="table-customer-name">Nama Pelanggan</th>
                                 <th data-lang-key="table-book">Buku</th>
+                                <th width="120" data-lang-key="table-total-usd">Total (USD)</th>
                                 <th width="120" data-lang-key="table-total-idr">Total (IDR)</th>
+                                <th width="120" data-lang-key="table-total-egp">Total (EGP)</th>
                                 <th width="100" data-lang-key="table-status">Status</th>
                                 <th width="150" data-lang-key="table-date">Tanggal</th>
                             </tr>
@@ -1535,40 +1496,6 @@
         </div>
     </div>
 
-    <!-- Modal untuk Bulk Edit -->
-    <div id="bulkEditModal" class="modal">
-        <div class="modal-content" style="max-width: 600px;">
-            <div class="modal-header">
-                <h2 id="bulkEditTitle">Edit Massal</h2>
-                <button class="close-modal" data-modal="bulkEditModal">&times;</button>
-            </div>
-            <form id="bulkEditForm">
-                <div class="form-group" id="bulkDiscountGroup" style="display: none;">
-                    <label for="bulkDiscount">Diskon Baru</label>
-                    <input type="text" id="bulkDiscount" placeholder="Contoh: 10%">
-                </div>
-                <div class="form-group" id="bulkCategoryGroup" style="display: none;">
-                    <label for="bulkCategorySelect">Kategori Baru</label>
-                    <select id="bulkCategorySelect">
-                        <option value="">-- Pilih Kategori --</option>
-                    </select>
-                </div>
-                <div class="form-group" id="bulkColorGroup" style="display: none;">
-                    <label for="bulkColor">Warna Baru</label>
-                    <input type="color" id="bulkColor">
-                </div>
-                <div class="form-group" id="bulkTypeGroup" style="display: none;">
-                    <label for="bulkType">Tipe Baru</label>
-                    <input type="text" id="bulkType" placeholder="Masukkan tipe baru">
-                </div>
-                <div class="form-buttons">
-                    <button type="submit" class="btn submit-btn">Simpan Perubahan</button>
-                    <button type="button" class="btn cancel-btn" data-modal="bulkEditModal">Batal</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script>
@@ -1624,8 +1551,6 @@
                 "bulk-actions": "Aksi Massal:",
                 "select-action": "Pilih Aksi",
                 "delete-books": "Hapus Buku",
-                "edit-discount": "Edit Diskon",
-                "edit-category": "Edit Kategori",
                 "apply": "Terapkan",
                 "book-list": "Daftar Buku",
                 "table-image": "Gambar",
@@ -1700,9 +1625,7 @@
                 "select-excel-file": "Pilih File Excel",
                 "excel-format-info": "Format yang didukung: .xlsx, .xls",
                 "skip-empty-rows": "Lewati baris kosong",
-                "upload-data": "📤 Upload Data",
-                "edit-discount-title": "Edit Diskon Massal",
-                "edit-category-title": "Edit Kategori Massal"
+                "upload-data": "📤 Upload Data"
             },
             en: {
                 "dashboard-title": "Admin Panel - Islamic Book Store",
@@ -1754,8 +1677,6 @@
                 "bulk-actions": "Bulk Actions:",
                 "select-action": "Select Action",
                 "delete-books": "Delete Books",
-                "edit-discount": "Edit Discount",
-                "edit-category": "Edit Category",
                 "apply": "Apply",
                 "book-list": "Book List",
                 "table-image": "Image",
@@ -1830,9 +1751,7 @@
                 "select-excel-file": "Select Excel File",
                 "excel-format-info": "Supported formats: .xlsx, .xls",
                 "skip-empty-rows": "Skip empty rows",
-                "upload-data": "📤 Upload Data",
-                "edit-discount-title": "Bulk Edit Discount",
-                "edit-category-title": "Bulk Edit Category"
+                "upload-data": "📤 Upload Data"
             },
             ar: {
                 "dashboard-title": "لوحة التحكم - مكتبة الكتب الإسلامية",
@@ -1884,8 +1803,6 @@
                 "bulk-actions": "إجراءات جماعية:",
                 "select-action": "اختر الإجراء",
                 "delete-books": "حذف الكتب",
-                "edit-discount": "تعديل الخصم",
-                "edit-category": "تعديل الفئة",
                 "apply": "تطبيق",
                 "book-list": "قائمة الكتب",
                 "table-image": "الصورة",
@@ -1960,9 +1877,7 @@
                 "select-excel-file": "اختر ملف إكسل",
                 "excel-format-info": "الصيغ المدعومة: .xlsx, .xls",
                 "skip-empty-rows": "تخطى الصفوف الفارغة",
-                "upload-data": "📤 رفع البيانات",
-                "edit-discount-title": "تعديل الخصم الجماعي",
-                "edit-category-title": "تعديل الفئة الجماعي"
+                "upload-data": "📤 رفع البيانات"
             }
         };
 
@@ -2085,9 +2000,6 @@
             let allPublishers = [];
             let allCategories = [];
             let selectedBooks = new Set();
-            let selectedPublishers = new Set();
-            let selectedCategories = new Set();
-            let selectedBanners = new Set();
             let currentFilters = {};
 
             // Jadikan variabel global tersedia di window object
@@ -2195,123 +2107,6 @@
                 }
             }
 
-            // Fungsi Bulk Action General yang Diperkuat
-            async function performBulkDelete(tableName, idsToDelete, fetchFunction) {
-                if (idsToDelete.length === 0) return { success: 0, failed: 0, errors: [] };
-
-                const BATCH_SIZE = 50; // Lebih kecil untuk keamanan
-                const MAX_RETRIES = 3; // Sistem pemaksaan dengan retry
-                const results = { success: 0, failed: 0, errors: [] };
-
-                for (let i = 0; i < idsToDelete.length; i += BATCH_SIZE) {
-                    const batch = idsToDelete.slice(i, i + BATCH_SIZE);
-                    let retryCount = 0;
-                    let success = false;
-
-                    while (retryCount < MAX_RETRIES && !success) {
-                        try {
-                            // Validasi ID: convert ke number jika string, filter invalid
-                            const validatedBatch = batch.map(id => parseInt(id)).filter(id => !isNaN(id));
-                            if (validatedBatch.length === 0) {
-                                results.failed += batch.length;
-                                results.errors.push(`Batch ${i/BATCH_SIZE + 1}: Semua ID tidak valid`);
-                                break;
-                            }
-
-                            const { data, error } = await supabase
-                                .from(tableName)
-                                .delete()
-                                .in('id', validatedBatch)
-                                .select('id');
-
-                            if (error) {
-                                if (error.code === '42501' || error.message.includes('permission')) {
-                                    throw new Error('Permission denied - check Supabase RLS policies');
-                                }
-                                throw error;
-                            }
-
-                            results.success += data.length;
-                            results.failed += validatedBatch.length - data.length;
-                            if (validatedBatch.length - data.length > 0) {
-                                results.errors.push(`Batch ${i/BATCH_SIZE + 1}: ${validatedBatch.length - data.length} ID tidak ditemukan`);
-                            }
-                            success = true;
-                        } catch (err) {
-                            retryCount++;
-                            console.error(`Bulk delete error in batch ${i/BATCH_SIZE + 1}, retry ${retryCount}:`, err);
-                            results.errors.push(`Batch ${i/BATCH_SIZE + 1}, retry ${retryCount}: ${err.message}`);
-                            if (retryCount === MAX_RETRIES) {
-                                results.failed += batch.length;
-                            }
-                            // Wait exponential backoff
-                            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retryCount)));
-                        }
-                    }
-                }
-
-                // Force refresh setelah delete
-                if (results.success > 0) {
-                    fetchFunction();
-                }
-
-                return results;
-            }
-
-            async function performBulkEdit(tableName, idsToUpdate, updateData, fetchFunction) {
-                if (idsToUpdate.length === 0) return { success: 0, failed: 0, errors: [] };
-
-                const BATCH_SIZE = 50;
-                const MAX_RETRIES = 3;
-                const results = { success: 0, failed: 0, errors: [] };
-
-                for (let i = 0; i < idsToUpdate.length; i += BATCH_SIZE) {
-                    const batch = idsToUpdate.slice(i, i + BATCH_SIZE);
-                    let retryCount = 0;
-                    let success = false;
-
-                    while (retryCount < MAX_RETRIES && !success) {
-                        try {
-                            const validatedBatch = batch.map(id => parseInt(id)).filter(id => !isNaN(id));
-                            if (validatedBatch.length === 0) {
-                                results.failed += batch.length;
-                                results.errors.push(`Batch ${i/BATCH_SIZE + 1}: Semua ID tidak valid`);
-                                break;
-                            }
-
-                            const { data, error } = await supabase
-                                .from(tableName)
-                                .update(updateData)
-                                .in('id', validatedBatch)
-                                .select('id');
-
-                            if (error) throw error;
-
-                            results.success += data.length;
-                            results.failed += validatedBatch.length - data.length;
-                            if (validatedBatch.length - data.length > 0) {
-                                results.errors.push(`Batch ${i/BATCH_SIZE + 1}: ${validatedBatch.length - data.length} ID gagal diupdate`);
-                            }
-                            success = true;
-                        } catch (err) {
-                            retryCount++;
-                            console.error(`Bulk edit error in batch ${i/BATCH_SIZE + 1}, retry ${retryCount}:`, err);
-                            results.errors.push(`Batch ${i/BATCH_SIZE + 1}, retry ${retryCount}: ${err.message}`);
-                            if (retryCount === MAX_RETRIES) {
-                                results.failed += batch.length;
-                            }
-                            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, retryCount)));
-                        }
-                    }
-                }
-
-                if (results.success > 0) {
-                    fetchFunction();
-                }
-
-                return results;
-            }
-
             // ==================== FUNGSI UPLOAD EXCEL ====================
 
             // Variabel untuk template Excel
@@ -2321,9 +2116,9 @@
                     'Penulis*': 'Contoh: Ustadz Ahmad',
                     'Harga Asli (USD)*': '50.00',
                     'Harga Dasar (USD)*': '45.00',
-                    'Penerbit': 'Nama Penerbit (opsional)',
-                    'Kategori': 'Nama Kategori (opsional)',
-                    'Diskon': '10% (opsional)',
+                    'Penerbit': 'Nama Penerbit (opsional, jika baru akan dibuat otomatis)',
+                    'Kategori': 'Nama Kategori (opsional, jika baru akan dibuat otomatis)',
+                    'Diskon': '10% (opsional, untuk buku; jika penerbit baru, diskon ini digunakan sebagai default penerbit)',
                     'Jilid': '2 (opsional)',
                     'Halaman': '300 (opsional)',
                     'Tahun Terbit': '2024 (opsional)',
@@ -2403,14 +2198,14 @@
                             const worksheet = workbook.Sheets[firstSheetName];
                             
                             // Konversi ke JSON
-                            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
                             
                             // Filter baris kosong jika diperlukan
                             const filteredData = skipEmptyRows ? 
                                 jsonData.filter(row => {
                                     // Cek jika ada setidaknya satu kolom yang terisi
                                     return Object.values(row).some(value => 
-                                        value !== null && value !== undefined && value !== ''
+                                        value !== null && value !== undefined && value.toString().trim() !== ''
                                     );
                                 }) : jsonData;
                             
@@ -2428,80 +2223,133 @@
                 });
             }
 
+            // Fungsi untuk handle creation penerbit dan kategori baru
+            async function handleNewPublishersAndCategories(excelData) {
+                const publisherNames = new Set();
+                const categoryNames = new Set();
+
+                // Collect unique names
+                excelData.forEach(row => {
+                    if (row['Penerbit'] && row['Penerbit'].trim()) {
+                        publisherNames.add(row['Penerbit'].trim().toLowerCase());
+                    }
+                    if (row['Kategori'] && row['Kategori'].trim()) {
+                        categoryNames.add(row['Kategori'].trim().toLowerCase());
+                    }
+                });
+
+                // Fetch existing
+                const { data: existingPublishers } = await supabase.from('publishers').select('id, name');
+                const { data: existingCategories } = await supabase.from('categories').select('id, name_id');
+
+                const existingPubMap = new Map(existingPublishers.map(p => [p.name.toLowerCase(), p.id]));
+                const existingCatMap = new Map(existingCategories.map(c => [c.name_id.toLowerCase(), c.id]));
+
+                // New publishers
+                const newPublishers = [];
+                publisherNames.forEach(name => {
+                    if (!existingPubMap.has(name)) {
+                        newPublishers.push({
+                            name: name.charAt(0).toUpperCase() + name.slice(1),
+                            letter: name.charAt(0).toUpperCase(),
+                            discount: ''  // Default kosong, atau bisa ambil dari row pertama yang match jika ingin
+                        });
+                    }
+                });
+
+                // New categories
+                const newCategories = [];
+                categoryNames.forEach(name => {
+                    if (!existingCatMap.has(name)) {
+                        const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+                        newCategories.push({
+                            name_id: capitalizedName,
+                            name_en: capitalizedName,
+                            name_ar: '',
+                            color: '#3498db',
+                            link: `/kategori/${slugify(capitalizedName)}`
+                        });
+                    }
+                });
+
+                // Insert new publishers
+                if (newPublishers.length > 0) {
+                    const { data: insertedPubs, error: pubError } = await supabase.from('publishers').insert(newPublishers).select('id, name');
+                    if (pubError) throw pubError;
+                    insertedPubs.forEach(p => existingPubMap.set(p.name.toLowerCase(), p.id));
+                }
+
+                // Insert new categories
+                if (newCategories.length > 0) {
+                    const { data: insertedCats, error: catError } = await supabase.from('categories').insert(newCategories).select('id, name_id');
+                    if (catError) throw catError;
+                    insertedCats.forEach(c => existingCatMap.set(c.name_id.toLowerCase(), c.id));
+                }
+
+                // Refresh global lists
+                await loadPublishersAndCategories();
+
+                return { publisherMap: existingPubMap, categoryMap: existingCatMap };
+            }
+
             // Fungsi untuk memetakan data Excel ke format database
-            async function mapExcelToBookData(excelData, publishers = [], categories = []) {
-                const booksData = [];
-                for (let i = 0; i < excelData.length; i++) {
-                    const row = excelData[i];
+            function mapExcelToBookData(excelData, publisherMap, categoryMap) {
+                return excelData.map((row, index) => {
                     try {
-                        // Handle penerbit
+                        // Cari ID penerbit
                         let publisherId = null;
-                        const publisherName = row['Penerbit'] ? row['Penerbit'].toString().trim() : '';
-                        if (publisherName) {
-                            let publisher = publishers.find(p => p.name.toLowerCase() === publisherName.toLowerCase());
-                            if (!publisher) {
-                                // Insert new publisher if not exists
-                                const { data: newPublisher, error } = await supabase.from('publishers').insert([{ name: publisherName }]).select();
-                                if (error) {
-                                    console.error('Error inserting publisher:', error);
-                                } else {
-                                    publisher = newPublisher[0];
-                                    publishers.push(publisher);
-                                }
-                            }
-                            publisherId = publisher ? publisher.id : null;
+                        if (row['Penerbit'] && row['Penerbit'].trim()) {
+                            const lowerName = row['Penerbit'].trim().toLowerCase();
+                            publisherId = publisherMap.get(lowerName) || null;
                         }
 
-                        // Handle kategori
+                        // Cari ID kategori
                         let categoryId = null;
-                        const categoryName = row['Kategori'] ? row['Kategori'].toString().trim() : '';
-                        if (categoryName) {
-                            let category = categories.find(c => c.name_id.toLowerCase() === categoryName.toLowerCase());
-                            if (!category) {
-                                // Insert new category if not exists
-                                const { data: newCategory, error } = await supabase.from('categories').insert([{ name_id: categoryName }]).select();
-                                if (error) {
-                                    console.error('Error inserting category:', error);
-                                } else {
-                                    category = newCategory[0];
-                                    categories.push(category);
-                                }
-                            }
-                            categoryId = category ? category.id : null;
+                        if (row['Kategori'] && row['Kategori'].trim()) {
+                            const lowerName = row['Kategori'].trim().toLowerCase();
+                            categoryId = categoryMap.get(lowerName) || null;
                         }
 
                         // Handle nilai dengan aman
-                        const originalPrice = parseFloat(row['Harga Asli (USD)']) || parseFloat(row['Harga Asli (USD)']?.toString().replace(',', '.')) || 0;
-                        const basePrice = parseFloat(row['Harga Dasar (USD)']) || parseFloat(row['Harga Dasar (USD)']?.toString().replace(',', '.')) || 0;
-                        const weightValue = row['Berat Nilai'] ? parseFloat(row['Berat Nilai']) || parseFloat(row['Berat Nilai']?.toString().replace(',', '.')) : null;
-                        const printCount = row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null;
+                        let originalPrice = row['Harga Asli (USD)'] ? parseFloat(row['Harga Asli (USD)'].toString().replace(',', '.')) : 0;
+                        if (isNaN(originalPrice)) originalPrice = 0;
 
-                        booksData.push({
-                            title: row['Judul Buku']?.toString() || '',
-                            author: row['Penulis']?.toString() || '',
+                        let basePrice = row['Harga Dasar (USD)'] ? parseFloat(row['Harga Dasar (USD)'].toString().replace(',', '.')) : 0;
+                        if (isNaN(basePrice)) basePrice = 0;
+
+                        let weightValue = row['Berat Nilai'] ? parseFloat(row['Berat Nilai'].toString().replace(',', '.')) : null;
+                        if (isNaN(weightValue)) weightValue = null;
+
+                        let printCount = row['Cetakan Ke'] ? parseInt(row['Cetakan Ke']) : null;
+                        if (isNaN(printCount)) printCount = null;
+
+                        return {
+                            title: row['Judul Buku']?.toString().trim() || '',
+                            author: row['Penulis']?.toString().trim() || '',
                             original_price: originalPrice,
                             base_price: basePrice,
                             publisher_id: publisherId,
                             category_id: categoryId,
-                            discount: row['Diskon']?.toString() || '',
-                            volumes: row['Jilid']?.toString() || '',
-                            pages: row['Halaman']?.toString() || '',
-                            year: row['Tahun Terbit']?.toString() || '',
+                            discount: row['Diskon']?.toString().trim() || '',
+                            volumes: row['Jilid']?.toString().trim() || '',
+                            pages: row['Halaman']?.toString().trim() || '',
+                            year: row['Tahun Terbit']?.toString().trim() || '',
                             weight_value: weightValue,
-                            weight_unit: (row['Berat Satuan']?.toString() || 'kg').toLowerCase(),
-                            text_color: row['Warna Tulisan']?.toString() || '',
-                            cover_type: row['Jenis Cover']?.toString() || '',
-                            paper_type: row['Jenis Kertas']?.toString() || '',
+                            weight_unit: (row['Berat Satuan']?.toString().trim() || 'kg').toLowerCase(),
+                            text_color: row['Warna Tulisan']?.toString().trim() || '',
+                            cover_type: row['Jenis Cover']?.toString().trim() || '',
+                            paper_type: row['Jenis Kertas']?.toString().trim() || '',
                             print_count: printCount,
-                            editor: row['Editor']?.toString() || '',
-                            description: row['Deskripsi']?.toString() || '',
-                            cover_image_url: row['URL Gambar Cover']?.toString() || ''
-                        });
+                            editor: row['Editor']?.toString().trim() || '',
+                            description: row['Deskripsi']?.toString().trim() || '',
+                            cover_image_url: row['URL Gambar Cover']?.toString().trim() || ''
+                        };
                     } catch (error) {
-                        console.error(`Error mapping row ${i + 1}:`, error);
+                        console.error(`Error mapping row ${index + 1}:`, error);
+                        // Return object kosong untuk row ini, akan difilter nanti
+                        return null;
                     }
-                }
-                return booksData;
+                }).filter(row => row !== null); // Filter out rows yang error
             }
 
             // Fungsi untuk validasi data buku
@@ -2516,15 +2364,6 @@
                     errors.push(`Baris ${index + 1}: Penulis harus diisi`);
                 }
                 
-                if (!bookData.base_price || bookData.base_price <= 0) {
-                    errors.push(`Baris ${index + 1}: Harga dasar harus lebih dari 0`);
-                }
-                
-                if (!bookData.original_price || bookData.original_price <= 0) {
-                    errors.push(`Baris ${index + 1}: Harga asli harus lebih dari 0`);
-                }
-                
-                // Validasi format harga
                 if (isNaN(bookData.base_price)) {
                     errors.push(`Baris ${index + 1}: Harga dasar harus berupa angka`);
                 }
@@ -2715,18 +2554,6 @@
             const closeModalBtn = document.querySelector('.close-modal[data-modal="editModal"]');
             const cancelEditModalBtn = document.getElementById('cancelEditModal');
 
-            const bulkEditModal = document.getElementById('bulkEditModal');
-            const bulkEditForm = document.getElementById('bulkEditForm');
-            const bulkEditTitle = document.getElementById('bulkEditTitle');
-            const bulkDiscountGroup = document.getElementById('bulkDiscountGroup');
-            const bulkCategoryGroup = document.getElementById('bulkCategoryGroup');
-            const bulkColorGroup = document.getElementById('bulkColorGroup');
-            const bulkTypeGroup = document.getElementById('bulkTypeGroup');
-            const bulkCategorySelect = document.getElementById('bulkCategorySelect');
-            const bulkDiscount = document.getElementById('bulkDiscount');
-            const bulkColor = document.getElementById('bulkColor');
-            const bulkType = document.getElementById('bulkType');
-
             function updatePriceCalculator() {
                 const basePrice = parseFloat(bookBasePriceInput.value) || 0;
                 const discount = bookDiscountInput.value || '0';
@@ -2786,9 +2613,6 @@
                     data.map(c => `<option value="${c.id}">${c.name_id}</option>`).join('');
                 
                 filterCategory.innerHTML = '<option value="">Semua Kategori</option>' + 
-                    data.map(c => `<option value="${c.id}">${c.name_id}</option>`).join('');
-                
-                bulkCategorySelect.innerHTML = '<option value="">-- Pilih Kategori --</option>' + 
                     data.map(c => `<option value="${c.id}">${c.name_id}</option>`).join('');
             }
 
@@ -2912,298 +2736,23 @@
                     if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedBooks.size} buku?`)) return;
                     
                     const idsToDelete = Array.from(selectedBooks);
-                    const deleteResults = await performBulkDelete('books', idsToDelete, window.fetchBooks);
-                    
-                    selectedBooks.clear();
-                    updateSelectedCount();
-                    selectAllCheckbox.checked = false;
-                    
-                    alert(`Hasil penghapusan: Berhasil ${deleteResults.success}, Gagal ${deleteResults.failed}. Error: ${deleteResults.errors.join('\n') || 'Tidak ada'}`);
-                } else if (action === 'edit_discount' || action === 'edit_category') {
-                    bulkEditTitle.textContent = action === 'edit_discount' ? translations[currentLanguage]['edit-discount-title'] : translations[currentLanguage]['edit-category-title'];
-                    bulkDiscountGroup.style.display = action === 'edit_discount' ? 'block' : 'none';
-                    bulkCategoryGroup.style.display = action === 'edit_category' ? 'block' : 'none';
-                    bulkColorGroup.style.display = 'none';
-                    bulkTypeGroup.style.display = 'none';
-                    bulkEditModal.style.display = 'block';
-                    currentBulkAction = action;
-                    currentBulkTable = 'books';
-                }
-            });
 
-            // Bulk for Publishers
-            const publisherSelectAll = document.getElementById('publisherSelectAll');
-            const publisherBulkAction = document.getElementById('publisherBulkAction');
-            const applyPublisherBulkAction = document.getElementById('applyPublisherBulkAction');
-            const publisherSelectedCount = document.getElementById('publisherSelectedCount');
+                    const { error } = await supabase
+                        .from('books')
+                        .delete()
+                        .in('id', idsToDelete);
 
-            function updatePublisherSelectedCount() {
-                publisherSelectedCount.textContent = `${selectedPublishers.size} penerbit terpilih`;
-            }
-
-            function handlePublisherSelection(id, isChecked) {
-                if (isChecked) {
-                    selectedPublishers.add(id);
-                } else {
-                    selectedPublishers.delete(id);
-                }
-                updatePublisherSelectedCount();
-            }
-
-            publisherSelectAll.addEventListener('change', (e) => {
-                const checkboxes = publishersTableBody.querySelectorAll('.publisher-checkbox');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = e.target.checked;
-                    handlePublisherSelection(checkbox.dataset.id, e.target.checked);
-                });
-            });
-
-            applyPublisherBulkAction.addEventListener('click', async () => {
-                const action = publisherBulkAction.value;
-                if (!action) {
-                    alert('Pilih aksi terlebih dahulu');
-                    return;
-                }
-
-                if (selectedPublishers.size === 0) {
-                    alert('Pilih setidaknya satu penerbit');
-                    return;
-                }
-
-                if (action === 'delete') {
-                    if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedPublishers.size} penerbit?`)) return;
-                    
-                    const idsToDelete = Array.from(selectedPublishers);
-                    const deleteResults = await performBulkDelete('publishers', idsToDelete, window.fetchPublishers);
-                    
-                    selectedPublishers.clear();
-                    updatePublisherSelectedCount();
-                    publisherSelectAll.checked = false;
-                    
-                    alert(`Hasil penghapusan: Berhasil ${deleteResults.success}, Gagal ${deleteResults.failed}. Error: ${deleteResults.errors.join('\n') || 'Tidak ada'}`);
-                } else if (action === 'edit_discount') {
-                    bulkEditTitle.textContent = translations[currentLanguage]['edit-discount-title'];
-                    bulkDiscountGroup.style.display = 'block';
-                    bulkCategoryGroup.style.display = 'none';
-                    bulkColorGroup.style.display = 'none';
-                    bulkTypeGroup.style.display = 'none';
-                    bulkEditModal.style.display = 'block';
-                    currentBulkAction = action;
-                    currentBulkTable = 'publishers';
-                }
-            });
-
-            // Bulk for Categories
-            const categorySelectAll = document.getElementById('categorySelectAll');
-            const categoryBulkAction = document.getElementById('categoryBulkAction');
-            const applyCategoryBulkAction = document.getElementById('applyCategoryBulkAction');
-            const categorySelectedCount = document.getElementById('categorySelectedCount');
-
-            function updateCategorySelectedCount() {
-                categorySelectedCount.textContent = `${selectedCategories.size} kategori terpilih`;
-            }
-
-            function handleCategorySelection(id, isChecked) {
-                if (isChecked) {
-                    selectedCategories.add(id);
-                } else {
-                    selectedCategories.delete(id);
-                }
-                updateCategorySelectedCount();
-            }
-
-            categorySelectAll.addEventListener('change', (e) => {
-                const checkboxes = categoriesTableBody.querySelectorAll('.category-checkbox');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = e.target.checked;
-                    handleCategorySelection(checkbox.dataset.id, e.target.checked);
-                });
-            });
-
-            applyCategoryBulkAction.addEventListener('click', async () => {
-                const action = categoryBulkAction.value;
-                if (!action) {
-                    alert('Pilih aksi terlebih dahulu');
-                    return;
-                }
-
-                if (selectedCategories.size === 0) {
-                    alert('Pilih setidaknya satu kategori');
-                    return;
-                }
-
-                if (action === 'delete') {
-                    if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedCategories.size} kategori?`)) return;
-                    
-                    const idsToDelete = Array.from(selectedCategories);
-                    const deleteResults = await performBulkDelete('categories', idsToDelete, window.fetchCategories);
-                    
-                    selectedCategories.clear();
-                    updateCategorySelectedCount();
-                    categorySelectAll.checked = false;
-                    
-                    alert(`Hasil penghapusan: Berhasil ${deleteResults.success}, Gagal ${deleteResults.failed}. Error: ${deleteResults.errors.join('\n') || 'Tidak ada'}`);
-                } else if (action === 'edit_color') {
-                    bulkEditTitle.textContent = 'Edit Warna Massal';
-                    bulkDiscountGroup.style.display = 'none';
-                    bulkCategoryGroup.style.display = 'none';
-                    bulkColorGroup.style.display = 'block';
-                    bulkTypeGroup.style.display = 'none';
-                    bulkEditModal.style.display = 'block';
-                    currentBulkAction = action;
-                    currentBulkTable = 'categories';
-                }
-            });
-
-            // Bulk for Banners
-            const bannerSelectAll = document.getElementById('bannerSelectAll');
-            const bannerBulkAction = document.getElementById('bannerBulkAction');
-            const applyBannerBulkAction = document.getElementById('applyBannerBulkAction');
-            const bannerSelectedCount = document.getElementById('bannerSelectedCount');
-
-            function updateBannerSelectedCount() {
-                bannerSelectedCount.textContent = `${selectedBanners.size} banner terpilih`;
-            }
-
-            function handleBannerSelection(id, isChecked) {
-                if (isChecked) {
-                    selectedBanners.add(id);
-                } else {
-                    selectedBanners.delete(id);
-                }
-                updateBannerSelectedCount();
-            }
-
-            bannerSelectAll.addEventListener('change', (e) => {
-                const checkboxes = bannersTableBody.querySelectorAll('.banner-checkbox');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = e.target.checked;
-                    handleBannerSelection(checkbox.dataset.id, e.target.checked);
-                });
-            });
-
-            applyBannerBulkAction.addEventListener('click', async () => {
-                const action = bannerBulkAction.value;
-                if (!action) {
-                    alert('Pilih aksi terlebih dahulu');
-                    return;
-                }
-
-                if (selectedBanners.size === 0) {
-                    alert('Pilih setidaknya satu banner');
-                    return;
-                }
-
-                if (action === 'delete') {
-                    if (!confirm(`Apakah Anda yakin ingin menghapus ${selectedBanners.size} banner?`)) return;
-                    
-                    const idsToDelete = Array.from(selectedBanners);
-                    const deleteResults = await performBulkDelete('banners', idsToDelete, window.fetchBanners);
-                    
-                    selectedBanners.clear();
-                    updateBannerSelectedCount();
-                    bannerSelectAll.checked = false;
-                    
-                    alert(`Hasil penghapusan: Berhasil ${deleteResults.success}, Gagal ${deleteResults.failed}. Error: ${deleteResults.errors.join('\n') || 'Tidak ada'}`);
-                } else if (action === 'edit_type') {
-                    bulkEditTitle.textContent = 'Edit Tipe Massal';
-                    bulkDiscountGroup.style.display = 'none';
-                    bulkCategoryGroup.style.display = 'none';
-                    bulkColorGroup.style.display = 'none';
-                    bulkTypeGroup.style.display = 'block';
-                    bulkEditModal.style.display = 'block';
-                    currentBulkAction = action;
-                    currentBulkTable = 'banners';
-                }
-            });
-
-            let currentBulkAction = '';
-            let currentBulkTable = '';
-
-            bulkEditForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                let idsToUpdate;
-                let updateData = {};
-                switch (currentBulkTable) {
-                    case 'books':
-                        idsToUpdate = Array.from(selectedBooks);
-                        if (currentBulkAction === 'edit_discount') {
-                            updateData.discount = bulkDiscount.value;
-                        } else if (currentBulkAction === 'edit_category') {
-                            updateData.category_id = bulkCategorySelect.value || null;
-                        }
-                        break;
-                    case 'publishers':
-                        idsToUpdate = Array.from(selectedPublishers);
-                        if (currentBulkAction === 'edit_discount') {
-                            updateData.discount = bulkDiscount.value;
-                        }
-                        break;
-                    case 'categories':
-                        idsToUpdate = Array.from(selectedCategories);
-                        if (currentBulkAction === 'edit_color') {
-                            updateData.color = bulkColor.value;
-                        }
-                        break;
-                    case 'banners':
-                        idsToUpdate = Array.from(selectedBanners);
-                        if (currentBulkAction === 'edit_type') {
-                            updateData.type = bulkType.value;
-                        }
-                        break;
-                    default:
-                        return;
-                }
-
-                const editResults = await performBulkEdit(currentBulkTable, idsToUpdate, updateData, getFetchFunction(currentBulkTable));
-                
-                bulkEditModal.style.display = 'none';
-                bulkEditForm.reset();
-                
-                switch (currentBulkTable) {
-                    case 'books':
+                    if (error) {
+                        console.error('Error bulk deleting books:', error);
+                        alert('Gagal menghapus buku.');
+                    } else {
                         selectedBooks.clear();
                         updateSelectedCount();
                         selectAllCheckbox.checked = false;
-                        break;
-                    case 'publishers':
-                        selectedPublishers.clear();
-                        updatePublisherSelectedCount();
-                        publisherSelectAll.checked = false;
-                        break;
-                    case 'categories':
-                        selectedCategories.clear();
-                        updateCategorySelectedCount();
-                        categorySelectAll.checked = false;
-                        break;
-                    case 'banners':
-                        selectedBanners.clear();
-                        updateBannerSelectedCount();
-                        bannerSelectAll.checked = false;
-                        break;
+                        window.fetchBooks();
+                        alert(`${idsToDelete.length} buku berhasil dihapus`);
+                    }
                 }
-
-                alert(`Hasil edit: Berhasil ${editResults.success}, Gagal ${editResults.failed}. Error: ${editResults.errors.join('\n') || 'Tidak ada'}`);
-            });
-
-            function getFetchFunction(table) {
-                switch (table) {
-                    case 'books': return window.fetchBooks;
-                    case 'publishers': return window.fetchPublishers;
-                    case 'categories': return window.fetchCategories;
-                    case 'banners': return window.fetchBanners;
-                    default: return () => {};
-                }
-            }
-
-            document.querySelector('.close-modal[data-modal="bulkEditModal"]').addEventListener('click', () => {
-                bulkEditModal.style.display = 'none';
-                bulkEditForm.reset();
-            });
-
-            document.querySelector('.cancel-btn[data-modal="bulkEditModal"]').addEventListener('click', () => {
-                bulkEditModal.style.display = 'none';
-                bulkEditForm.reset();
             });
 
             function getCustomInputValue(selectId, inputId) {
@@ -3572,7 +3121,6 @@
             const renderPublishers = (publishers) => {
                 publishersTableBody.innerHTML = publishers.map(p => `
                     <tr>
-                        <td><input type="checkbox" class="publisher-checkbox" data-id="${p.id}" ${selectedPublishers.has(p.id) ? 'checked' : ''}></td>
                         <td><img src="${p.logo_url || 'https://via.placeholder.com/60x60.png?text=No+Logo'}" class="table-image" alt="Logo"></td>
                         <td>${p.name}</td>
                         <td>${p.letter}</td>
@@ -3582,12 +3130,6 @@
                             <button class="btn delete-btn" data-id="${p.id}">🗑️ Hapus</button>
                         </td>
                     </tr>`).join('');
-
-                publishersTableBody.querySelectorAll('.publisher-checkbox').forEach(checkbox => {
-                    checkbox.addEventListener('change', (e) => {
-                        handlePublisherSelection(e.target.dataset.id, e.target.checked);
-                    });
-                });
             };
             
             window.fetchPublishers = () => fetchData('publishers', 'publishersTableBody', 'loadingPublishers', renderPublishers);
@@ -3699,7 +3241,6 @@
             const renderCategories = (categories) => {
                 categoriesTableBody.innerHTML = categories.map(c => `
                     <tr>
-                        <td><input type="checkbox" class="category-checkbox" data-id="${c.id}" ${selectedCategories.has(c.id) ? 'checked' : ''}></td>
                         <td><img src="${c.image_url || 'https://via.placeholder.com/60x60.png?text=No+Image'}" class="table-image" alt="Category"></td>
                         <td>${c.name_id}</td>
                         <td>${c.name_en}</td>
@@ -3710,12 +3251,6 @@
                             <button class="btn delete-btn" data-id="${c.id}">🗑️ Hapus</button>
                         </td>
                     </tr>`).join('');
-
-                categoriesTableBody.querySelectorAll('.category-checkbox').forEach(checkbox => {
-                    checkbox.addEventListener('change', (e) => {
-                        handleCategorySelection(e.target.dataset.id, e.target.checked);
-                    });
-                });
             };
             
             window.fetchCategories = () => fetchData('categories', 'categoriesTableBody', 'loadingCategories', renderCategories);
@@ -3824,7 +3359,6 @@
             const renderBanners = (banners) => {
                 bannersTableBody.innerHTML = banners.map(b => `
                     <tr>
-                        <td><input type="checkbox" class="banner-checkbox" data-id="${b.id}" ${selectedBanners.has(b.id) ? 'checked' : ''}></td>
                         <td><img src="${b.image_url || 'https://via.placeholder.com/60x60.png?text=No+Image'}" class="table-image" alt="Banner"></td>
                         <td>${b.title}</td>
                         <td>${b.type}</td>
@@ -3834,12 +3368,6 @@
                             <button class="btn delete-btn" data-id="${b.id}">🗑️ Hapus</button>
                         </td>
                     </tr>`).join('');
-
-                bannersTableBody.querySelectorAll('.banner-checkbox').forEach(checkbox => {
-                    checkbox.addEventListener('change', (e) => {
-                        handleBannerSelection(e.target.dataset.id, e.target.checked);
-                    });
-                });
             };
             
             window.fetchBanners = () => fetchData('banners', 'bannersTableBody', 'loadingBanners', renderBanners);
@@ -4033,7 +3561,7 @@
                     progressText.textContent = 'Memuat data referensi...';
 
                     // Pastikan data publishers dan categories sudah dimuat
-                    const { publishers, categories } = await loadPublishersAndCategories();
+                    await loadPublishersAndCategories();
                     
                     progressBar.style.width = '30%';
                     progressText.textContent = 'Membaca file Excel...';
@@ -4046,17 +3574,20 @@
                     }
 
                     progressBar.style.width = '50%';
-                    progressText.textContent = `Menemukan ${excelData.length} data buku. Memproses...`;
+                    progressText.textContent = `Menemukan ${excelData.length} data buku. Memproses penerbit & kategori baru...`;
+
+                    // Handle creation penerbit dan kategori baru
+                    const { publisherMap, categoryMap } = await handleNewPublishersAndCategories(excelData);
+
+                    progressBar.style.width = '70%';
+                    progressText.textContent = `Memproses ${excelData.length} data valid...`;
 
                     // Map data Excel ke format database
-                    const booksData = await mapExcelToBookData(excelData, publishers, categories);
+                    const booksData = mapExcelToBookData(excelData, publisherMap, categoryMap);
                     
                     if (booksData.length === 0) {
                         throw new Error('Tidak ada data valid yang dapat diproses');
                     }
-
-                    progressBar.style.width = '70%';
-                    progressText.textContent = `Memproses ${booksData.length} data valid...`;
 
                     // Upload ke Supabase
                     const uploadResults = await uploadBooksToSupabase(booksData, (current, total) => {
@@ -4072,9 +3603,11 @@
                     // Tampilkan summary
                     showUploadSummary(uploadResults, excelData.length);
                     
-                    // Refresh data buku
+                    // Refresh data buku, penerbit, kategori
                     setTimeout(() => {
                         window.fetchBooks();
+                        window.fetchPublishers();
+                        window.fetchCategories();
                     }, 2000);
 
                 } catch (error) {
