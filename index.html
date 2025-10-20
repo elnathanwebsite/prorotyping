@@ -1378,15 +1378,15 @@
             const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmcXBzdXptb25mbW52dGh4aW5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1OTQyMjUsImV4cCI6MjA3NjE3MDIyNX0.gJFzuE-KJrdSoIKMTIDszTdNLDl_sJkIhgo7wmXRGWA';
             const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-            // Nomor WA - isi sendiri
-            const waIndonesia = ''; // Isi nomor WA Indonesia, misal '628123456789'
-            const waArab = ''; // Isi nomor WA Arab, misal '966512345678'
+            // Nomor WA - GANTI DENGAN NOMOR ANDA
+            const waIndonesia = '628123456789'; // Contoh: 628123456789 (tanpa +)
+            const waArab = '966512345678'; // Contoh: 966512345678 (tanpa +)
 
             // ==================== VARIABEL GLOBAL & STATE ====================
             let allBooks = [];
             let categories = [];
             let publishers = [];
-            let currencySettings = { usd_rate: 16000, egp_rate: 50 }; // Default, akan di-update
+            let currencySettings = { usd_rate: 16000, egp_rate: 50 };
             let currentBannerIndex = 0;
             let currentPublisherIndex = 0;
             let currentCurrency = 'IDR';
@@ -1394,11 +1394,11 @@
             let selectedCategory = null;
             let selectedPublisher = null;
             let currentPage = 1;
-            const booksPerPage = 8; // Tambahkan pagination dengan 8 buku per halaman
+            const booksPerPage = 8;
             let publisherInterval;
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             let orderItems = [];
-            let currentBook = null; // Untuk menyimpan buku yang sedang dilihat
+            let currentBook = null;
             let lastScrollTop = 0;
             let ticking = false;
 
@@ -1502,19 +1502,13 @@
             // ==================== FUNGSI MULTI-BAHASA ====================
             const translations = {
                 id: {
-                    // Header
                     searchPlaceholder: "Cari judul atau penulis buku...",
-                    // Penerbit
                     publishers: "Penerbit",
-                    // Kategori
                     exploreCategories: "Jelajahi Kategori",
-                    // Produk
                     newCollection: "Koleksi Buku Terbaru",
                     clearFilter: "Hapus Filter",
                     noBooksFound: "Tidak ada buku yang ditemukan.",
-                    // Footer
                     copyright: "Hak Cipta Dilindungi",
-                    // Modal
                     by: "oleh",
                     publisher: "Penerbit",
                     pages: "Halaman",
@@ -1534,29 +1528,21 @@
                     buyNow: "Beli",
                     addToCart: "Keranjang",
                     noDescription: "Tidak ada deskripsi tersedia.",
-                    // Cart
                     cart: "Keranjang Belanja",
                     checkout: "Checkout",
                     total: "Total",
                     remove: "Hapus",
-                    // Order
                     orderForm: "Form Pemesanan",
                     orderNow: "Pesan Sekarang"
                 },
                 en: {
-                    // Header
                     searchPlaceholder: "Search for book title or author...",
-                    // Penerbit
                     publishers: "Publishers",
-                    // Kategori
                     exploreCategories: "Explore Categories",
-                    // Produk
                     newCollection: "New Book Collection",
                     clearFilter: "Clear Filter",
                     noBooksFound: "No books found.",
-                    // Footer
                     copyright: "Copyright Protected",
-                    // Modal
                     by: "by",
                     publisher: "Publisher",
                     pages: "Pages",
@@ -1576,29 +1562,21 @@
                     buyNow: "Buy",
                     addToCart: "Cart",
                     noDescription: "No description available.",
-                    // Cart
                     cart: "Shopping Cart",
                     checkout: "Checkout",
                     total: "Total",
                     remove: "Remove",
-                    // Order
                     orderForm: "Order Form",
                     orderNow: "Order Now"
                 },
                 ar: {
-                    // Header
                     searchPlaceholder: "ابحث عن عنوان الكتاب أو المؤلف...",
-                    // Penerbit
                     publishers: "الناشرون",
-                    // Kategori
                     exploreCategories: "استكشف الفئات",
-                    // Produk
                     newCollection: "مجموعة الكتب الجديدة",
                     clearFilter: "مسح الفلتر",
                     noBooksFound: "لم يتم العثور على كتب.",
-                    // Footer
                     copyright: "جميع الحقوق محفوظة",
-                    // Modal
                     by: "بواسطة",
                     publisher: "الناشر",
                     pages: "الصفحات",
@@ -1618,12 +1596,10 @@
                     buyNow: "اشتري",
                     addToCart: "السلة",
                     noDescription: "لا يوجد وصف متاح.",
-                    // Cart
                     cart: "سلة التسوق",
                     checkout: "الدفع",
                     total: "الإجمالي",
                     remove: "إزالة",
-                    // Order
                     orderForm: "نموذج الطلب",
                     orderNow: "اطلب الآن"
                 }
@@ -1633,7 +1609,6 @@
                 const lang = currentLanguage;
                 const t = translations[lang];
                 
-                // Update semua elemen dengan atribut data-i18n
                 document.querySelectorAll('[data-i18n]').forEach(element => {
                     const key = element.getAttribute('data-i18n');
                     if (t[key]) {
@@ -1641,21 +1616,17 @@
                     }
                 });
                 
-                // Update placeholder pencarian
                 document.getElementById('searchInput').placeholder = t.searchPlaceholder;
                 document.getElementById('floatingSearchInput').placeholder = t.searchPlaceholder;
                 
-                // Update konten halaman detail produk jika terbuka
                 if (document.getElementById('productDetailPage').style.display !== 'none') {
                     renderProductDetail(currentBook);
                 }
                 
-                // Update konten halaman order jika terbuka
                 if (document.getElementById('orderPage').style.display !== 'none') {
                     renderOrderItems();
                 }
                 
-                // Update cart jika terbuka
                 if (document.getElementById('cartModal').classList.contains('active')) {
                     renderCart();
                 }
@@ -1689,7 +1660,7 @@
             }
 
             async function fetchPublishers() {
-                const { data, error } = await supabase.from('publishers').select('*, discount'); // Asumsi ada field discount di publishers
+                const { data, error } = await supabase.from('publishers').select('*, discount');
                 if (!error && data) {
                     publishers = data;
                     renderPublishers(data);
@@ -1700,7 +1671,6 @@
             }
 
             async function fetchBooks() {
-                // Mengambil data buku dan sekaligus data publisher terkait
                 const { data, error } = await supabase.from('books').select('*, publishers(name, discount)');
                 if (!error && data) {
                     allBooks = data;
@@ -1724,13 +1694,12 @@
                     </div>
                 `).join('');
                 
-                // Start the slider functionality
                 setInterval(() => {
                     const slides = document.querySelectorAll('.banner-slide');
                     slides[currentBannerIndex].classList.remove('active');
                     currentBannerIndex = (currentBannerIndex + 1) % slides.length;
                     slides[currentBannerIndex].classList.add('active');
-                }, 5000); // Ganti banner setiap 5 detik
+                }, 5000);
             }
             
             function renderCategories(cats) {
@@ -1748,7 +1717,6 @@
                     </div>
                 `).join('');
 
-                // Tambahkan event listener untuk navigasi kategori
                 document.querySelectorAll('.category-card').forEach(card => {
                     card.addEventListener('click', () => {
                         const catId = card.dataset.categoryId;
@@ -1775,7 +1743,6 @@
                     </div>
                 `).join('');
 
-                // Tambahkan event listener untuk navigasi penerbit
                 document.querySelectorAll('.publisher-card').forEach(card => {
                     card.addEventListener('click', () => {
                         const pubId = card.dataset.publisherId;
@@ -1785,7 +1752,6 @@
             }
 
             function startPublisherSlider() {
-                // Hentikan interval sebelumnya jika ada
                 if (publisherInterval) {
                     clearInterval(publisherInterval);
                 }
@@ -1794,15 +1760,13 @@
                 const slides = document.querySelectorAll('.publisher-slide');
                 const totalSlides = slides.length;
                 
-                // Reset posisi
                 currentPublisherIndex = 0;
                 updatePublisherSlider();
                 
-                // Mulai slider otomatis
                 publisherInterval = setInterval(() => {
                     currentPublisherIndex = (currentPublisherIndex + 1) % totalSlides;
                     updatePublisherSlider();
-                }, 3000); // Ganti setiap 3 detik
+                }, 3000);
             }
             
             function updatePublisherSlider() {
@@ -1829,6 +1793,9 @@
                 }
                 
                 if (isOrder === 'true') {
+                    if (orderItems.length === 0 && cart.length > 0) {
+                        orderItems = [...cart.map(item => ({ ...item, quantity: item.quantity || 1 }))];
+                    }
                     showOrderPage();
                     return;
                 }
@@ -1880,7 +1847,7 @@
                     const publisher = publishers.find(p => p.id === book.publisher_id);
                     const publisherDiscount = publisher ? publisher.discount : '';
                     const basePrice = book.base_price;
-                    const originalPrice = book.original_price || basePrice; // Use original if available
+                    const originalPrice = book.original_price || basePrice;
                     const finalPrice = calculateDiscountedPrice(basePrice, book.discount, publisherDiscount);
                     const discountPercent = parseFloat((book.discount || publisherDiscount || '0%').replace('%', '')) || 0;
 
@@ -1914,7 +1881,6 @@
                     `;
                 }).join('');
 
-                // Tambahkan event listener setelah card dirender
                 document.querySelectorAll('.product-card').forEach(card => {
                     card.addEventListener('click', (e) => {
                         if (!e.target.closest('.btn-buy-card, .btn-add-to-cart-card')) {
@@ -1991,7 +1957,6 @@
                     `;
                 }).join('');
 
-                // Event listener untuk item search
                 dropdown.querySelectorAll('.search-result-item').forEach(item => {
                     item.addEventListener('click', (e) => {
                         if (!e.target.closest('.mini-btn')) {
@@ -2027,15 +1992,12 @@
                 currentBook = book;
                 renderProductDetail(book);
                 
-                // Sembunyikan halaman lain dan tampilkan halaman detail
                 document.getElementById('homePage').style.display = 'none';
                 document.getElementById('productDetailPage').style.display = 'block';
                 document.getElementById('orderPage').style.display = 'none';
                 
-                // Update breadcrumb
                 updateBreadcrumb('product', book.title);
                 
-                // Scroll ke atas
                 window.scrollTo(0, 0);
             }
 
@@ -2079,7 +2041,6 @@
                     ${book.reviewer ? `<div class="detail-item"><strong>${t.reviewer}:</strong> ${book.reviewer}</div>` : ''}
                 `;
 
-                // Tambahkan event listener untuk tombol
                 document.getElementById('detailBuyBtn').onclick = (e) => {
                     e.preventDefault();
                     startOrder([book]);
@@ -2096,15 +2057,12 @@
                 renderOrderItems();
                 loadRecommendedProducts();
                 
-                // Sembunyikan halaman lain dan tampilkan halaman order
                 document.getElementById('homePage').style.display = 'none';
                 document.getElementById('productDetailPage').style.display = 'none';
                 document.getElementById('orderPage').style.display = 'block';
                 
-                // Update breadcrumb
                 updateBreadcrumb('order', 'Form Pemesanan');
                 
-                // Scroll ke atas
                 window.scrollTo(0, 0);
             }
 
@@ -2113,8 +2071,10 @@
                 const t = translations[currentLanguage];
                 let totalPrice = 0;
 
+                console.log('Order Items:', orderItems);
+
                 if (orderItems.length === 0) {
-                    orderItemsDiv.innerHTML = '<p>Tidak ada item.</p>';
+                    orderItemsDiv.innerHTML = '<p>Tidak ada item. Silakan tambah item terlebih dahulu.</p>';
                     return;
                 }
 
@@ -2135,11 +2095,10 @@
                             </div>
                         </div>
                     `;
-                }).join('') + `<p>Total: ${formatPrice(totalPrice, currentCurrency)}</p>`;
+                }).join('') + `<p><strong>Total: ${formatPrice(totalPrice, currentCurrency)}</strong></p>`;
             }
 
             function loadRecommendedProducts() {
-                // Ambil 4 produk acak sebagai rekomendasi
                 const shuffled = [...allBooks].sort(() => 0.5 - Math.random());
                 const recommended = shuffled.slice(0, 4);
                 
@@ -2160,7 +2119,6 @@
                     `;
                 }).join('');
                 
-                // Tambahkan event listener
                 document.querySelectorAll('.recommended-card').forEach(card => {
                     card.addEventListener('click', () => {
                         const bookId = card.dataset.bookId;
@@ -2234,7 +2192,6 @@
 
                 cartTotal.innerHTML = `${t.total}: ${formatPrice(totalPrice, currentCurrency)}`;
 
-                // Tambahkan event listener untuk remove
                 document.querySelectorAll('.cart-item-remove').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -2247,7 +2204,22 @@
 
             // ==================== FUNGSI ORDER ====================
             function startOrder(items) {
-                orderItems = items;
+                if (!items || items.length === 0) {
+                    if (cart.length > 0) {
+                        items = [...cart];
+                    } else {
+                        alert('Tidak ada item untuk dipesan.');
+                        return;
+                    }
+                }
+                
+                orderItems = items.map(item => ({
+                    ...item,
+                    quantity: item.quantity || 1
+                }));
+                
+                console.log('Order items:', orderItems);
+                
                 navigateToOrder();
             }
 
@@ -2263,60 +2235,96 @@
                     return;
                 }
 
-                const total = orderItems.reduce((sum, item) => {
+                if (orderItems.length === 0) {
+                    alert('Tidak ada item untuk dipesan.');
+                    return;
+                }
+
+                const totalPrice = orderItems.reduce((sum, item) => {
                     const publisher = publishers.find(p => p.id === item.publisher_id);
                     const publisherDiscount = publisher ? publisher.discount : '';
                     const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
                     return sum + finalPrice * (item.quantity || 1);
                 }, 0);
 
-                // Kirim ke Supabase
-                const { data, error } = await supabase.from('orders').insert({
-                    name: name,
-                    phone: phone,
-                    address: address,
-                    items: JSON.stringify(orderItems),
-                    total: total,
-                    currency: currentCurrency,
-                    language: paymentMethod
+                const firstBook = orderItems[0];
+
+                console.log('Data yang akan dikirim:', {
+                    name, phone, address, 
+                    items: orderItems, 
+                    total_price: totalPrice, 
+                    currency: currentCurrency, 
+                    language: paymentMethod,
+                    book_title: firstBook.title,
+                    book_author: firstBook.author,
+                    cover_image_url: firstBook.cover_image_url,
+                    quantity: orderItems.reduce((sum, item) => sum + (item.quantity || 1), 0),
+                    payment_method: paymentMethod
                 });
 
-                if (error) {
-                    alert('Gagal menyimpan order: ' + error.message);
-                    return;
-                }
+                try {
+                    const { data, error } = await supabase.from('orders').insert({
+                        name: name,
+                        phone: phone,
+                        address: address,
+                        items: orderItems,
+                        total_price: totalPrice,
+                        currency: currentCurrency.toLowerCase(),
+                        language: paymentMethod,
+                        book_title: firstBook.title,
+                        book_author: firstBook.author,
+                        cover_image_url: firstBook.cover_image_url,
+                        quantity: orderItems.reduce((sum, item) => sum + (item.quantity || 1), 0),
+                        payment_method: paymentMethod,
+                        status: 'pending'
+                    });
 
-                // Buat template WA
-                const isArab = paymentMethod === 'ar';
-                const lang = isArab ? 'ar' : 'id';
-                const t = translations[lang];
+                    if (error) {
+                        console.error('Error dari Supabase:', error);
+                        alert('Gagal menyimpan order: ' + error.message);
+                        return;
+                    }
 
-                let template = isArab ? 'الطلب:\n' : 'Pesanan:\n';
-                template += `Nama: ${name}\n`;
-                template += `Telepon: ${phone}\n`;
-                template += `Alamat: https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}\n\n`;
-                template += isArab ? 'العناصر:\n' : 'Item:\n';
-                orderItems.forEach(item => {
-                    const publisher = publishers.find(p => p.id === item.publisher_id);
-                    const publisherDiscount = publisher ? publisher.discount : '';
-                    const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
-                    template += `${item.title} x ${item.quantity || 1} - ${formatPrice(finalPrice, currentCurrency)}\n`;
-                });
-                template += `\nTotal: ${formatPrice(total, currentCurrency)}`;
+                    console.log('Order berhasil disimpan:', data);
 
-                // Redirect ke WA
-                const waNumber = isArab ? waArab : waIndonesia;
-                if (!waNumber) {
-                    alert('Nomor WA belum diisi.');
-                    return;
-                }
-                window.location.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(template)}`;
+                    const isArab = paymentMethod === 'ar';
+                    const lang = isArab ? 'ar' : 'id';
+                    const t = translations[lang];
 
-                // Clear cart jika dari cart
-                if (orderItems === cart) {
-                    cart = [];
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    updateCartBadge();
+                    let template = isArab ? 'الطلب:\n' : 'Pesanan:\n';
+                    template += `Nama: ${name}\n`;
+                    template += `Telepon: ${phone}\n`;
+                    template += `Alamat: https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}\n\n`;
+                    template += isArab ? 'العناصر:\n' : 'Item:\n';
+                    
+                    orderItems.forEach(item => {
+                        const publisher = publishers.find(p => p.id === item.publisher_id);
+                        const publisherDiscount = publisher ? publisher.discount : '';
+                        const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
+                        template += `${item.title} x ${item.quantity || 1} - ${formatPrice(finalPrice, currentCurrency)}\n`;
+                    });
+                    
+                    template += `\nTotal: ${formatPrice(totalPrice, currentCurrency)}`;
+
+                    const waNumber = isArab ? waArab : waIndonesia;
+                    if (!waNumber || waNumber === '628123456789') {
+                        alert('Nomor WA belum diisi. Silakan hubungi admin.');
+                        alert('Pesanan berhasil disimpan! ID: ' + (data?.[0]?.id || 'Unknown'));
+                        navigateToHome();
+                        return;
+                    }
+                    
+                    window.location.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(template)}`;
+
+                    if (orderItems === cart || JSON.stringify(orderItems) === JSON.stringify(cart)) {
+                        cart = [];
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        updateCartBadge();
+                    }
+
+                } catch (err) {
+                    console.error('Error:', err);
+                    alert('Terjadi kesalahan: ' + err.message);
                 }
             }
 
@@ -2327,11 +2335,9 @@
                 const floatingSearch = document.getElementById('floatingSearch');
                 
                 if (scrollTop > lastScrollTop && scrollTop > 100) {
-                    // Scrolling down
                     header.classList.add('hidden');
                     floatingSearch.classList.add('visible');
                 } else {
-                    // Scrolling up
                     header.classList.remove('hidden');
                     floatingSearch.classList.remove('visible');
                 }
@@ -2361,10 +2367,8 @@
             const searchDropdown = document.getElementById('searchDropdown');
             const floatingSearchDropdown = document.getElementById('floatingSearchDropdown');
 
-            // Event listener untuk scroll
             window.addEventListener('scroll', requestTick);
 
-            // Sync search inputs
             searchInput.addEventListener('input', (e) => {
                 floatingSearchInput.value = e.target.value;
                 handleSearchInput(e.target.value, 'searchDropdown');
@@ -2380,7 +2384,7 @@
                     const filtered = allBooks.filter(book => 
                         book.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                         book.author.toLowerCase().includes(searchTerm.toLowerCase())
-                    ).slice(0, 10); // Batasi 10 hasil
+                    ).slice(0, 10);
                     renderSearchDropdown(filtered, dropdownId);
                     document.getElementById(dropdownId).classList.add('active');
                 } else {
@@ -2388,7 +2392,6 @@
                 }
             }
 
-            // Tutup dropdown jika klik di luar
             document.addEventListener('click', (e) => {
                 if (!searchDropdown.contains(e.target) && e.target !== searchInput && !floatingSearchDropdown.contains(e.target) && e.target !== floatingSearchInput) {
                     searchDropdown.classList.remove('active');
@@ -2417,7 +2420,7 @@
                     alert('Keranjang kosong.');
                     return;
                 }
-                orderItems = [...cart]; // Buat salinan array cart
+                orderItems = [...cart];
                 cartModal.classList.remove('active');
                 navigateToOrder();
             });
@@ -2476,14 +2479,12 @@
                 navigateToHome();
             });
 
-            // Tombol kontrol slider penerbit
             document.getElementById('prevPublisher').addEventListener('click', () => {
                 const slides = document.querySelectorAll('.publisher-slide');
                 const totalSlides = slides.length;
                 currentPublisherIndex = (currentPublisherIndex - 1 + totalSlides) % totalSlides;
                 updatePublisherSlider();
                 
-                // Reset interval
                 if (publisherInterval) {
                     clearInterval(publisherInterval);
                     startPublisherSlider();
@@ -2496,7 +2497,6 @@
                 currentPublisherIndex = (currentPublisherIndex + 1) % totalSlides;
                 updatePublisherSlider();
                 
-                // Reset interval
                 if (publisherInterval) {
                     clearInterval(publisherInterval);
                     startPublisherSlider();
@@ -2505,13 +2505,13 @@
 
             // ==================== INISIALISASI APLIKASI ====================
             async function initializeApp() {
-                await fetchCurrency(); // Ambil kurs dulu
+                await fetchCurrency();
                 fetchBanners();
                 fetchCategories();
                 fetchPublishers();
                 fetchBooks();
-                updateLanguage(); // Inisialisasi bahasa
-                updateCartBadge(); // Inisialisasi badge keranjang
+                updateLanguage();
+                updateCartBadge();
             }
 
             initializeApp();
