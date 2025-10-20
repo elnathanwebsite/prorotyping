@@ -93,6 +93,11 @@
             z-index: 1000;
             width: 100%;
             color: var(--white);
+            transition: transform 0.3s ease;
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
         }
 
         .navbar {
@@ -279,6 +284,31 @@
 
         .cart-badge.active {
             display: block;
+        }
+
+        /* === FLOATING SEARCH BAR === */
+        .floating-search {
+            position: fixed;
+            top: -100px;
+            left: 0;
+            width: 100%;
+            padding: 1rem 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            z-index: 999;
+            transition: top 0.3s ease;
+            display: flex;
+            justify-content: center;
+        }
+
+        .floating-search.visible {
+            top: 0;
+        }
+
+        .floating-search .container {
+            width: 100%;
+            max-width: 600px;
         }
 
         /* === BREADCRUMB === */
@@ -737,6 +767,16 @@
         .cart-item-remove {
             color: var(--danger-red);
             cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .cart-item-remove:hover {
+            background-color: rgba(239, 68, 68, 0.1);
         }
 
         .cart-total {
@@ -907,6 +947,8 @@
             font-weight: bold;
             transition: var(--transition);
             margin-right: 1rem;
+            cursor: pointer;
+            border: none;
         }
 
         .btn-buy {
@@ -1067,6 +1109,13 @@
             }
             .category-grid {
                 grid-template-columns: repeat(4, 1fr); /* 4 kolom di mobile */
+                gap: 0.8rem; /* Mengurangi gap agar tidak terpotong */
+            }
+            .category-card {
+                padding: 1rem; /* Mengurangi padding agar tidak terpotong */
+            }
+            .category-card h3 {
+                font-size: 0.9rem; /* Mengurangi ukuran font agar tidak terpotong */
             }
             .header-controls {
                 flex-wrap: wrap;
@@ -1101,6 +1150,13 @@
             }
             .category-grid {
                 grid-template-columns: repeat(4, 1fr); /* Tetap 4 kolom */
+                gap: 0.5rem; /* Mengurangi gap lebih kecil */
+            }
+            .category-card {
+                padding: 0.8rem; /* Mengurangi padding lebih kecil */
+            }
+            .category-card h3 {
+                font-size: 0.8rem; /* Mengurangi ukuran font lebih kecil */
             }
             .banner-slider {
                 height: 150px;
@@ -1110,10 +1166,10 @@
 </head>
 <body>
 
-    <header>
+    <header id="header">
         <div class="container navbar">
             <a href="#" class="logo-link" id="homeLink">
-                <img src="https://via.placeholder.com/50?text=Logo" alt="Toko Buku Islam" class="logo">
+                <img src="https://i.pinimg.com/736x/ed/87/62/ed8762d621840ad5f62db3842825264e.jpg" alt="Toko Buku Islam" class="logo">
             </a>
             <div class="search-bar">
                 <span class="search-icon">🔍</span>
@@ -1144,6 +1200,17 @@
             </div>
         </div>
     </header>
+
+    <!-- Floating Search Bar -->
+    <div class="floating-search" id="floatingSearch">
+        <div class="container">
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="floatingSearchInput" placeholder="Cari judul atau penulis buku...">
+                <div id="floatingSearchDropdown" class="search-dropdown"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Breadcrumb Navigation -->
     <div class="breadcrumb" id="breadcrumb" style="display: none;">
@@ -1228,8 +1295,8 @@
                         <p class="description" id="detailDescription"></p>
                         <div class="details-grid" id="detailGrid"></div>
                         <div style="margin-top: 2rem;">
-                            <a href="#" class="btn-buy" id="detailBuyBtn">🛒 Beli Sekarang</a>
-                            <a href="#" class="btn-add-to-cart" id="detailAddToCartBtn">➕ Tambah ke Keranjang</a>
+                            <button class="btn-buy" id="detailBuyBtn">🛒 Beli Sekarang</button>
+                            <button class="btn-add-to-cart" id="detailAddToCartBtn">➕ Tambah ke Keranjang</button>
                         </div>
                     </div>
                 </div>
@@ -1313,6 +1380,8 @@
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             let orderItems = [];
             let currentBook = null; // Untuk menyimpan buku yang sedang dilihat
+            let lastScrollTop = 0;
+            let ticking = false;
 
             // ==================== FUNGSI HELPER ====================
             function formatPrice(price, currency = 'IDR') {
@@ -1555,6 +1624,7 @@
                 
                 // Update placeholder pencarian
                 document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+                document.getElementById('floatingSearchInput').placeholder = t.searchPlaceholder;
                 
                 // Update konten halaman detail produk jika terbuka
                 if (document.getElementById('productDetailPage').style.display !== 'none') {
@@ -1838,6 +1908,7 @@
                 document.querySelectorAll('.btn-add-to-cart-card').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
+                        e.stopPropagation();
                         const bookId = btn.dataset.bookId;
                         const book = allBooks.find(b => b.id == bookId);
                         addToCart(book);
@@ -1847,6 +1918,7 @@
                 document.querySelectorAll('.btn-buy-card').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
+                        e.stopPropagation();
                         const bookId = btn.dataset.bookId;
                         const book = allBooks.find(b => b.id == bookId);
                         startOrder([book]);
@@ -1869,8 +1941,8 @@
                 }
             }
 
-            function renderSearchDropdown(books) {
-                const dropdown = document.getElementById('searchDropdown');
+            function renderSearchDropdown(books, dropdownId) {
+                const dropdown = document.getElementById(dropdownId);
                 const t = translations[currentLanguage];
                 if (books.length === 0) {
                     dropdown.innerHTML = '<p style="padding: 1rem; text-align: center;">Tidak ada hasil.</p>';
@@ -2136,7 +2208,7 @@
                                 <p>${item.quantity} x ${formatPrice(finalPrice, currentCurrency)}</p>
                                 <p class="cart-item-price">${formatPrice(itemTotal, currentCurrency)}</p>
                             </div>
-                            <span class="cart-item-remove" data-book-id="${item.id}">${t.remove}</span>
+                            <button class="cart-item-remove" data-book-id="${item.id}">${t.remove}</button>
                         </div>
                     `;
                 }).join('');
@@ -2227,6 +2299,33 @@
                 }
             }
 
+            // ==================== SCROLL HANDLER ====================
+            function handleScroll() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const header = document.getElementById('header');
+                const floatingSearch = document.getElementById('floatingSearch');
+                
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    // Scrolling down
+                    header.classList.add('hidden');
+                    floatingSearch.classList.add('visible');
+                } else {
+                    // Scrolling up
+                    header.classList.remove('hidden');
+                    floatingSearch.classList.remove('visible');
+                }
+                
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                ticking = false;
+            }
+
+            function requestTick() {
+                if (!ticking) {
+                    window.requestAnimationFrame(handleScroll);
+                    ticking = true;
+                }
+            }
+
             // ==================== EVENT LISTENERS ====================
             const cartModal = document.getElementById('cartModal');
             const cartModalClose = document.getElementById('cartModalClose');
@@ -2237,7 +2336,44 @@
             const orderForm = document.getElementById('orderForm');
             const addressInput = document.getElementById('addressInput');
             const searchInput = document.getElementById('searchInput');
+            const floatingSearchInput = document.getElementById('floatingSearchInput');
             const searchDropdown = document.getElementById('searchDropdown');
+            const floatingSearchDropdown = document.getElementById('floatingSearchDropdown');
+
+            // Event listener untuk scroll
+            window.addEventListener('scroll', requestTick);
+
+            // Sync search inputs
+            searchInput.addEventListener('input', (e) => {
+                floatingSearchInput.value = e.target.value;
+                handleSearchInput(e.target.value, 'searchDropdown');
+            });
+
+            floatingSearchInput.addEventListener('input', (e) => {
+                searchInput.value = e.target.value;
+                handleSearchInput(e.target.value, 'floatingSearchDropdown');
+            });
+
+            function handleSearchInput(searchTerm, dropdownId) {
+                if (searchTerm.length > 0) {
+                    const filtered = allBooks.filter(book => 
+                        book.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                        book.author.toLowerCase().includes(searchTerm.toLowerCase())
+                    ).slice(0, 10); // Batasi 10 hasil
+                    renderSearchDropdown(filtered, dropdownId);
+                    document.getElementById(dropdownId).classList.add('active');
+                } else {
+                    document.getElementById(dropdownId).classList.remove('active');
+                }
+            }
+
+            // Tutup dropdown jika klik di luar
+            document.addEventListener('click', (e) => {
+                if (!searchDropdown.contains(e.target) && e.target !== searchInput && !floatingSearchDropdown.contains(e.target) && e.target !== floatingSearchInput) {
+                    searchDropdown.classList.remove('active');
+                    floatingSearchDropdown.classList.remove('active');
+                }
+            });
 
             cartModalClose.addEventListener('click', () => {
                 cartModal.classList.remove('active');
@@ -2260,7 +2396,7 @@
                     alert('Keranjang kosong.');
                     return;
                 }
-                orderItems = cart;
+                orderItems = [...cart]; // Buat salinan array cart
                 cartModal.classList.remove('active');
                 navigateToOrder();
             });
@@ -2284,27 +2420,6 @@
             });
 
             orderForm.addEventListener('submit', submitOrder);
-
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
-                if (searchTerm.length > 0) {
-                    const filtered = allBooks.filter(book => 
-                        book.title.toLowerCase().includes(searchTerm) || 
-                        book.author.toLowerCase().includes(searchTerm)
-                    ).slice(0, 10); // Batasi 10 hasil
-                    renderSearchDropdown(filtered);
-                    searchDropdown.classList.add('active');
-                } else {
-                    searchDropdown.classList.remove('active');
-                }
-            });
-
-            // Tutup dropdown jika klik di luar
-            document.addEventListener('click', (e) => {
-                if (!searchDropdown.contains(e.target) && e.target !== searchInput) {
-                    searchDropdown.classList.remove('active');
-                }
-            });
 
             document.getElementById('currencySelect').addEventListener('change', (e) => {
                 currentCurrency = e.target.value;
