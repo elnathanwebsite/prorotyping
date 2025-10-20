@@ -293,9 +293,6 @@
             left: 0;
             width: 100%;
             padding: 1rem 0;
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--shadow-md);
             z-index: 999;
             transition: top 0.3s ease;
             display: flex;
@@ -309,6 +306,16 @@
         .floating-search .container {
             width: 100%;
             max-width: 600px;
+        }
+
+        .floating-search .search-bar {
+            width: 100%;
+        }
+
+        .floating-search .search-bar input {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-lg);
         }
 
         /* === BREADCRUMB === */
@@ -1109,13 +1116,19 @@
             }
             .category-grid {
                 grid-template-columns: repeat(4, 1fr); /* 4 kolom di mobile */
-                gap: 0.8rem; /* Mengurangi gap agar tidak terpotong */
+                gap: 0.5rem; /* Mengurangi gap agar tidak terpotong */
             }
             .category-card {
-                padding: 1rem; /* Mengurangi padding agar tidak terpotong */
+                padding: 0.6rem; /* Mengurangi padding agar tidak terpotong */
+            }
+            .category-card-icon {
+                width: 40px;
+                height: 40px;
+                margin: 0 auto 0.5rem auto;
             }
             .category-card h3 {
-                font-size: 0.9rem; /* Mengurangi ukuran font agar tidak terpotong */
+                font-size: 0.75rem; /* Mengurangi ukuran font agar tidak terpotong */
+                line-height: 1.2;
             }
             .header-controls {
                 flex-wrap: wrap;
@@ -1150,13 +1163,19 @@
             }
             .category-grid {
                 grid-template-columns: repeat(4, 1fr); /* Tetap 4 kolom */
-                gap: 0.5rem; /* Mengurangi gap lebih kecil */
+                gap: 0.3rem; /* Mengurangi gap lebih kecil */
             }
             .category-card {
-                padding: 0.8rem; /* Mengurangi padding lebih kecil */
+                padding: 0.4rem; /* Mengurangi padding lebih kecil */
+            }
+            .category-card-icon {
+                width: 35px;
+                height: 35px;
+                margin: 0 auto 0.3rem auto;
             }
             .category-card h3 {
-                font-size: 0.8rem; /* Mengurangi ukuran font lebih kecil */
+                font-size: 0.7rem; /* Mengurangi ukuran font lebih kecil */
+                line-height: 1.1;
             }
             .banner-slider {
                 height: 150px;
@@ -2217,7 +2236,9 @@
 
                 // Tambahkan event listener untuk remove
                 document.querySelectorAll('.cart-item-remove').forEach(btn => {
-                    btn.addEventListener('click', () => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
                         const bookId = parseInt(btn.dataset.bookId);
                         removeFromCart(bookId);
                     });
