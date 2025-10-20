@@ -9,20 +9,25 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lato:wght@400;700&display=swap');
 
         :root {
-            --primary-blue: #3498db; /* Biru utama yang modern */
-            --secondary-blue: #2980b9; /* Biru yang lebih gelap untuk hover */
+            --primary-color: #4F46E5; /* Indigo modern */
+            --primary-dark: #4338CA; /* Indigo lebih gelap */
+            --secondary-color: #06B6D4; /* Cyan */
+            --accent-color: #F59E0B; /* Amber */
             --white: #ffffff;
-            --light-bg: #f8f9fa; /* Latar belakang yang sangat terang */
-            --border-color: #e9ecef;
-            --text-dark: #2c3e50; /* Abu-abu kebiruan gelap untuk teks */
-            --text-light: #7f8c8d;
-            --danger-red: #e74c3c;
-            --success-green: #27ae60;
+            --light-bg: #F9FAFB; /* Abu-abu sangat muda */
+            --card-bg: #ffffff;
+            --border-color: #E5E7EB;
+            --text-dark: #1F2937; /* Abu-abu gelap */
+            --text-light: #6B7280; /* Abu-abu sedang */
+            --danger-red: #EF4444;
+            --success-green: #10B981;
             --font-heading: 'Poppins', sans-serif;
             --font-body: 'Lato', sans-serif;
-            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 8px 15px rgba(0, 0, 0, 0.08);
-            --border-radius: 12px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* === GENERAL STYLES === */
@@ -36,17 +41,19 @@
             font-family: var(--font-body);
             background-color: var(--light-bg);
             color: var(--text-dark);
-            line-height: 1.7;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 1rem;
         }
 
         section {
-            padding: 4rem 0;
+            padding: 3rem 0;
         }
 
         h1, h2, h3 {
@@ -60,17 +67,32 @@
             margin-bottom: 2.5rem;
             font-size: 2.2rem;
             font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
         }
 
         /* === HEADER / NAVBAR === */
         header {
-            background-color: var(--white);
+            background-color: var(--primary-color);
             padding: 1rem 0;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
             position: sticky;
             top: 0;
             z-index: 1000;
             width: 100%;
+            color: var(--white);
         }
 
         .navbar {
@@ -79,12 +101,15 @@
             align-items: center;
         }
 
-        .logo {
-            font-family: var(--font-heading);
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-blue);
+        .logo-link {
+            display: flex;
+            align-items: center;
             text-decoration: none;
+        }
+
+        .logo {
+            width: 50px;
+            height: auto;
         }
 
         .search-bar {
@@ -94,17 +119,19 @@
 
         .search-bar input {
             width: 100%;
-            padding: 0.8rem 1.2rem 0.8rem 2.5rem; /* Padding untuk ikon */
+            padding: 0.8rem 1.2rem 0.8rem 2.5rem;
             border-radius: 50px;
             border: 1px solid var(--border-color);
             font-size: 1rem;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            background-color: var(--white);
+            color: var(--text-dark);
         }
         
         .search-bar input:focus {
             outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
         }
         
         .search-bar .search-icon {
@@ -113,6 +140,97 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-light);
+        }
+
+        .search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            z-index: 999;
+        }
+
+        .search-dropdown.active {
+            display: block;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        .search-result-item:hover {
+            background: var(--light-bg);
+        }
+
+        .search-result-image {
+            width: 50px;
+            height: 75px;
+            object-fit: cover;
+            margin-right: 1rem;
+            border-radius: 8px;
+        }
+
+        .search-result-info {
+            flex-grow: 1;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .search-result-price {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .search-result-discount {
+            color: var(--danger-red);
+            margin-left: 0.5rem;
+        }
+
+        .search-result-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .mini-btn {
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .mini-buy {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .mini-buy:hover {
+            background: var(--primary-dark);
+        }
+
+        .mini-cart {
+            background: var(--success-green);
+            color: var(--white);
+        }
+
+        .mini-cart:hover {
+            background: #059669;
         }
 
         .header-controls {
@@ -131,11 +249,41 @@
             border: 1px solid var(--border-color);
             background: var(--white);
             cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        /* Cart Icon */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .cart-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background-color: var(--danger-red);
+            color: var(--white);
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            display: none;
+        }
+
+        .cart-badge.active {
+            display: block;
         }
 
         /* === BREADCRUMB === */
         .breadcrumb {
-            background-color: var(--white);
+            background-color: var(--card-bg);
             padding: 1rem 0;
             border-bottom: 1px solid var(--border-color);
         }
@@ -159,10 +307,11 @@
         .breadcrumb-item a {
             color: var(--text-light);
             text-decoration: none;
+            transition: var(--transition);
         }
 
         .breadcrumb-item a:hover {
-            color: var(--primary-blue);
+            color: var(--primary-color);
         }
 
         .breadcrumb-item.active {
@@ -178,6 +327,7 @@
             overflow: hidden;
             border-radius: var(--border-radius);
             background: var(--border-color);
+            box-shadow: var(--shadow-md);
         }
 
         .banner-slide {
@@ -198,15 +348,15 @@
             object-fit: cover;
         }
 
-        /* === PUBLISHERS SECTION (DIPINDAHKAN DI BAWAH BANNER) === */
+        /* === PUBLISHERS SECTION === */
         .publishers-section {
             padding: 2rem 0;
         }
 
-        .publisher-slider {
+        .publisher-slider-container {
             position: relative;
             overflow: hidden;
-            padding: 1rem 0;
+            padding: 1rem 3rem;
         }
 
         .publisher-track {
@@ -221,12 +371,12 @@
         }
 
         .publisher-card {
-            background: var(--white);
+            background: var(--card-bg);
             border-radius: var(--border-radius);
             padding: 1.5rem;
             text-align: center;
             box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
+            transition: var(--transition);
             text-decoration: none;
             color: var(--text-dark);
             cursor: pointer;
@@ -234,11 +384,12 @@
             flex-direction: column;
             align-items: center;
             height: 100%;
+            position: relative;
         }
 
         .publisher-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-lg);
         }
 
         .publisher-card-icon {
@@ -249,7 +400,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--primary-blue);
+            background-color: var(--primary-color);
             overflow: hidden;
         }
         
@@ -264,6 +415,56 @@
             font-weight: 500;
         }
 
+        .discount-pin {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--danger-red);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            box-shadow: var(--shadow-md);
+            transform: rotate(15deg);
+            border: 2px solid var(--white);
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+        }
+
+        #prevPublisher {
+            left: 0;
+        }
+
+        #nextPublisher {
+            right: 0;
+        }
+
+        .slider-btn:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.1) translateY(-50%);
+        }
+
         /* === CATEGORIES SECTION === */
         .category-grid {
             display: grid;
@@ -272,12 +473,12 @@
         }
 
         .category-card {
-            background: var(--white);
+            background: var(--card-bg);
             border-radius: var(--border-radius);
             padding: 1.5rem;
             text-align: center;
             box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
+            transition: var(--transition);
             text-decoration: none;
             color: var(--text-dark);
             cursor: pointer;
@@ -285,11 +486,11 @@
 
         .category-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-lg);
         }
 
         .category-card.active {
-            border: 2px solid var(--primary-blue);
+            border: 2px solid var(--primary-color);
         }
 
         .category-card-icon {
@@ -300,7 +501,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--primary-blue);
+            background-color: var(--primary-color);
         }
         
         .category-card-icon img {
@@ -322,19 +523,19 @@
         }
 
         .product-card {
-            background: var(--white);
+            background: var(--card-bg);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-sm);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             cursor: pointer;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-lg);
         }
 
         .product-image {
@@ -359,7 +560,7 @@
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            height: 3.3em; /* Batas 2 baris */
+            height: 3.3em;
             overflow: hidden;
             text-overflow: ellipsis;
         }
@@ -377,7 +578,7 @@
         .final-price {
             font-size: 1.4rem;
             font-weight: 700;
-            color: var(--primary-blue);
+            color: var(--primary-color);
         }
 
         .original-price {
@@ -397,6 +598,43 @@
             margin-left: 0.5rem;
         }
 
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .btn-add-to-cart-card, .btn-buy-card {
+            padding: 0.5rem;
+            border-radius: 50%;
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .btn-add-to-cart-card {
+            background-color: var(--success-green);
+            color: var(--white);
+        }
+
+        .btn-add-to-cart-card:hover {
+            background-color: #059669;
+        }
+
+        .btn-buy-card {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-buy-card:hover {
+            background-color: var(--primary-dark);
+        }
+
         /* === PAGINATION === */
         .pagination {
             display: flex;
@@ -408,24 +646,25 @@
         .pagination button {
             padding: 0.5rem 1rem;
             border: 1px solid var(--border-color);
-            background: var(--white);
+            background: var(--card-bg);
             cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            transition: var(--transition);
+            color: var(--text-dark);
         }
 
         .pagination button.active {
-            background: var(--primary-blue);
+            background: var(--primary-color);
             color: var(--white);
-            border-color: var(--primary-blue);
+            border-color: var(--primary-color);
         }
 
         .pagination button:hover {
-            background: var(--secondary-blue);
+            background: var(--primary-dark);
             color: var(--white);
         }
 
-        /* === MODAL === */
+        /* === CART MODAL === */
         .modal {
             position: fixed;
             top: 0;
@@ -445,14 +684,15 @@
         }
 
         .modal-content {
-            background: var(--white);
+            background: var(--card-bg);
             padding: 2rem;
             border-radius: var(--border-radius);
-            max-width: 900px;
+            max-width: 600px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
+            box-shadow: var(--shadow-lg);
         }
 
         .modal-close {
@@ -466,31 +706,176 @@
             border: none;
         }
 
-        .modal-body {
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-price {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .cart-item-remove {
+            color: var(--danger-red);
+            cursor: pointer;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .btn-checkout {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .btn-checkout:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* === LOADER === */
+        .loader-container {
+            text-align: center;
+            padding: 4rem;
+        }
+        
+        .loader {
+            border: 5px solid var(--border-color);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* === FILTER INFO === */
+        .filter-info {
+            background-color: var(--card-bg);
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-info p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .clear-filter {
+            background-color: var(--danger-red);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .clear-filter:hover {
+            background-color: #DC2626;
+        }
+
+        /* === FOOTER === */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        /* === PRODUCT DETAIL PAGE === */
+        .product-detail-container {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 2rem;
+            margin-bottom: 3rem;
         }
 
-        .modal-image img {
-            width: 100%;
+        .product-detail-image {
             border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
         }
-        
-        .modal-info h2 {
+
+        .product-detail-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .product-detail-info {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-detail-info h1 {
             font-size: 2rem;
             margin-bottom: 0.5rem;
         }
-        .modal-info .author {
+
+        .product-detail-info .author {
             font-size: 1.1rem;
             color: var(--text-light);
             margin-bottom: 1rem;
         }
-        .modal-info .pricing {
+
+        .product-detail-info .publisher {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-detail-info .pricing {
             margin: 1.5rem 0;
         }
-        .modal-info .description {
+
+        .product-detail-info .description {
             margin: 1rem 0;
         }
 
@@ -520,17 +905,17 @@
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
-            transition: background-color 0.3s ease;
+            transition: var(--transition);
             margin-right: 1rem;
         }
 
         .btn-buy {
-            background-color: var(--primary-blue);
+            background-color: var(--primary-color);
             color: var(--white);
         }
 
         .btn-buy:hover {
-            background-color: var(--secondary-blue);
+            background-color: var(--primary-dark);
         }
 
         .btn-add-to-cart {
@@ -539,92 +924,122 @@
         }
 
         .btn-add-to-cart:hover {
-            background-color: #219d52;
+            background-color: #059669;
         }
 
-        /* === LOADER === */
-        .loader-container {
-            text-align: center;
-            padding: 4rem;
-        }
-        
-        .loader {
-            border: 5px solid var(--border-color);
-            border-top: 5px solid var(--primary-blue);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
+        /* === ORDER PAGE === */
+        .order-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* === FILTER INFO === */
-        .filter-info {
-            background-color: var(--white);
-            padding: 1rem 1.5rem;
+        .order-form-container {
+            background: var(--card-bg);
+            padding: 2rem;
             border-radius: var(--border-radius);
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
         }
 
-        .filter-info h3 {
-            font-size: 1.2rem;
+        .order-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .order-form input, .order-form select {
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--white);
+            color: var(--text-dark);
+        }
+
+        .order-form button {
+            padding: 0.8rem;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .order-form button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .order-items {
+            margin-bottom: 2rem;
+        }
+
+        .recommended-products {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .recommended-products h2 {
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .recommended-products h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .recommended-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .recommended-card {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: var(--light-bg);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .recommended-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .recommended-image {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .recommended-info {
+            flex-grow: 1;
+        }
+
+        .recommended-title {
+            font-weight: 600;
             margin-bottom: 0.5rem;
         }
 
-        .filter-info p {
-            color: var(--text-light);
-            font-size: 0.9rem;
+        .recommended-price {
+            color: var(--primary-color);
+            font-weight: bold;
         }
 
-        .clear-filter {
-            background-color: var(--danger-red);
-            color: var(--white);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-
-        .clear-filter:hover {
-            background-color: #c0392b;
-        }
-
-        /* === FOOTER === */
-        footer {
-            background-color: var(--text-dark);
-            color: var(--light-bg);
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        /* === RESPONSIVE DESIGN === */
-        @media (max-width: 992px) {
-            .product-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .modal-body {
-                grid-template-columns: 1fr;
-            }
-            .modal-image {
-                max-width: 300px;
-                margin: 0 auto;
-            }
-            .publisher-slide {
-                flex: 0 0 25%;
-            }
-        }
-
+        /* === RESPONSIVE DESIGN (Mobile App-like) === */
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
@@ -640,7 +1055,7 @@
                 font-size: 1.8rem;
             }
             .banner-slider {
-                height: 350px;
+                height: 200px;
             }
             .filter-info {
                 flex-direction: column;
@@ -648,23 +1063,47 @@
                 gap: 1rem;
             }
             .publisher-slide {
-                flex: 0 0 33.33%;
+                flex: 0 0 20%; /* 5 kolom di mobile */
+            }
+            .category-grid {
+                grid-template-columns: repeat(4, 1fr); /* 4 kolom di mobile */
             }
             .header-controls {
                 flex-wrap: wrap;
                 justify-content: center;
             }
+            .publisher-slider-container {
+                padding: 1rem 2rem;
+            }
+            body {
+                padding-bottom: 60px;
+            }
+            .product-detail-container {
+                grid-template-columns: 1fr;
+            }
+            .order-container {
+                grid-template-columns: 1fr;
+            }
+            .recommended-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 576px) {
             .product-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr); /* 2 kolom untuk mobile kecil */
             }
             .details-grid {
                 grid-template-columns: 1fr;
             }
             .publisher-slide {
-                flex: 0 0 50%;
+                flex: 0 0 20%; /* Tetap 5 kolom */
+            }
+            .category-grid {
+                grid-template-columns: repeat(4, 1fr); /* Tetap 4 kolom */
+            }
+            .banner-slider {
+                height: 150px;
             }
         }
     </style>
@@ -673,10 +1112,13 @@
 
     <header>
         <div class="container navbar">
-            <a href="#" class="logo" id="homeLink">TokoBuku Islam</a>
+            <a href="#" class="logo-link" id="homeLink">
+                <img src="https://via.placeholder.com/50?text=Logo" alt="Toko Buku Islam" class="logo">
+            </a>
             <div class="search-bar">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="searchInput" placeholder="Cari judul atau penulis buku...">
+                <div id="searchDropdown" class="search-dropdown"></div>
             </div>
             <div class="header-controls">
                 <div class="language-selector">
@@ -693,6 +1135,12 @@
                         <option value="EGP">EGP (E£)</option>
                     </select>
                 </div>
+                <div class="cart-icon" id="cartIcon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 2H3.74001C4.82001 2 5.67 2.93 5.58 4L4.75 13.96C4.61 15.59 5.89 16.99 7.53 17H18.08C19.72 17 21 15.6 20.86 13.97L21.24 9.01001C21.36 7.41001 20.08 6.01001 18.44 6.01001H5.82M16.25 22C16.9404 22 17.5 21.4404 17.5 20.75C17.5 20.0596 16.9404 19.5 16.25 19.5C15.5596 19.5 15 20.0596 15 20.75C15 21.4404 15.5596 22 16.25 22ZM7.25 22C7.94036 22 8.5 21.4404 8.5 20.75C8.5 20.0596 7.94036 19.5 7.25 19.5C6.55964 19.5 6 20.0596 6 20.75C6 21.4404 6.55964 22 7.25 22Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span id="cartBadge" class="cart-badge"></span>
+                </div>
             </div>
         </div>
     </header>
@@ -707,70 +1155,132 @@
         </div>
     </div>
 
-    <main>
-        <section id="banners-section" style="padding: 2rem 0 0 0;">
-            <div class="container">
-                <div id="bannerSlider" class="banner-slider">
-                    <div class="loader-container">
-                        <div class="loader"></div>
+    <main id="mainContent">
+        <!-- Home Page Content -->
+        <div id="homePage">
+            <section id="banners-section" style="padding: 2rem 0 0 0;">
+                <div class="container">
+                    <div id="bannerSlider" class="banner-slider">
+                        <div class="loader-container">
+                            <div class="loader"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Penerbit dipindahkan ke bawah banner -->
-        <section id="publishers-section" class="publishers-section">
-            <div class="container">
-                <h2 class="section-title">Penerbit</h2>
-                <div id="publisherSlider" class="publisher-slider">
-                    <div id="publisherTrack" class="publisher-track">
-                        <!-- Penerbit akan dimuat di sini -->
+            <!-- Penerbit dipindahkan ke bawah banner -->
+            <section id="publishers-section" class="publishers-section">
+                <div class="container">
+                    <h2 class="section-title" data-i18n="publishers">Penerbit</h2>
+                    <div class="publisher-slider-container">
+                        <div id="publisherTrack" class="publisher-track">
+                            <!-- Penerbit akan dimuat di sini -->
+                        </div>
+                        <button class="slider-btn" id="prevPublisher">&#10094;</button>
+                        <button class="slider-btn" id="nextPublisher">&#10095;</button>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="categories-section">
-            <div class="container">
-                <h2 class="section-title">Jelajahi Kategori</h2>
-                <div id="categoryGrid" class="category-grid">
-                    <div class="loader-container" style="grid-column: 1 / -1;">
-                        <div class="loader"></div>
+            <section id="categories-section">
+                <div class="container">
+                    <h2 class="section-title" data-i18n="exploreCategories">Jelajahi Kategori</h2>
+                    <div id="categoryGrid" class="category-grid">
+                        <div class="loader-container" style="grid-column: 1 / -1;">
+                            <div class="loader"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="products-section" style="background-color: var(--white);">
+            <section id="products-section" style="background-color: var(--white);">
+                <div class="container">
+                    <div id="filterInfo" class="filter-info" style="display: none;">
+                        <div>
+                            <h3 id="filterTitle"></h3>
+                            <p id="filterDescription"></p>
+                        </div>
+                        <button class="clear-filter" id="clearFilter" data-i18n="clearFilter">Hapus Filter</button>
+                    </div>
+                    <h2 class="section-title" id="productsTitle" data-i18n="newCollection">Koleksi Buku Terbaru</h2>
+                    <div id="productGrid" class="product-grid">
+                        <div class="loader-container" style="grid-column: 1 / -1;">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                    <div id="pagination" class="pagination"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Product Detail Page (Hidden by default) -->
+        <div id="productDetailPage" style="display: none;">
             <div class="container">
-                <div id="filterInfo" class="filter-info" style="display: none;">
-                    <div>
-                        <h3 id="filterTitle"></h3>
-                        <p id="filterDescription"></p>
+                <div class="product-detail-container">
+                    <div class="product-detail-image">
+                        <img id="detailImage" src="" alt="">
                     </div>
-                    <button class="clear-filter" id="clearFilter">Hapus Filter</button>
-                </div>
-                <h2 class="section-title" id="productsTitle">Koleksi Buku Terbaru</h2>
-                <div id="productGrid" class="product-grid">
-                    <div class="loader-container" style="grid-column: 1 / -1;">
-                        <div class="loader"></div>
+                    <div class="product-detail-info">
+                        <h1 id="detailTitle"></h1>
+                        <p class="author" id="detailAuthor"></p>
+                        <p class="publisher" id="detailPublisher"></p>
+                        <div class="pricing" id="detailPricing"></div>
+                        <p class="description" id="detailDescription"></p>
+                        <div class="details-grid" id="detailGrid"></div>
+                        <div style="margin-top: 2rem;">
+                            <a href="#" class="btn-buy" id="detailBuyBtn">🛒 Beli Sekarang</a>
+                            <a href="#" class="btn-add-to-cart" id="detailAddToCartBtn">➕ Tambah ke Keranjang</a>
+                        </div>
                     </div>
                 </div>
-                <div id="pagination" class="pagination"></div>
             </div>
-        </section>
+        </div>
+
+        <!-- Order Page (Hidden by default) -->
+        <div id="orderPage" style="display: none;">
+            <div class="container">
+                <div class="order-container">
+                    <div class="order-form-container">
+                        <h2 data-i18n="orderForm">Form Pemesanan</h2>
+                        <div id="orderItems" class="order-items"></div>
+                        <form id="orderForm" class="order-form">
+                            <input type="text" id="nameInput" placeholder="Nama Lengkap" required>
+                            <input type="tel" id="phoneInput" placeholder="Nomor Telepon" required>
+                            <input type="text" id="addressInput" placeholder="Alamat" required>
+                            <button type="button" id="detectLocationBtn">Deteksi Lokasi Otomatis</button>
+                            <button type="button" id="viewMapBtn" style="display: none;">Lihat di Google Maps</button>
+                            <select id="paymentMethod" required>
+                                <option value="">Pilih Metode Pembayaran</option>
+                                <option value="id">WA Indonesia</option>
+                                <option value="ar">WA Arab</option>
+                            </select>
+                            <button type="submit" data-i18n="orderNow">Pesan Sekarang</button>
+                        </form>
+                    </div>
+                    <div class="recommended-products">
+                        <h2>Produk Rekomendasi</h2>
+                        <div id="recommendedGrid" class="recommended-grid">
+                            <!-- Produk rekomendasi akan dimuat di sini -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     
     <footer>
         <div class="container">
-            <p>&copy; 2025 Toko Buku Islam. Hak Cipta Dilindungi.</p>
+            <p>&copy; 2025 Toko Buku Islam. <span data-i18n="copyright">Hak Cipta Dilindungi</span>.</p>
         </div>
     </footer>
 
-    <div id="productModal" class="modal">
+    <div id="cartModal" class="modal">
         <div class="modal-content">
-            <button id="modalClose" class="modal-close">&times;</button>
-            <div id="modalBody" class="modal-body"></div>
+            <button id="cartModalClose" class="modal-close">&times;</button>
+            <h2 data-i18n="cart">Keranjang Belanja</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal"></div>
+            <a href="#" class="btn-checkout" id="checkoutBtn" data-i18n="checkout">Checkout</a>
         </div>
     </div>
 
@@ -781,6 +1291,10 @@
             const supabaseUrl = 'https://rfqpsuzmonfmnvthxinb.supabase.co';
             const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmcXBzdXptb25mbW52dGh4aW5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1OTQyMjUsImV4cCI6MjA3NjE3MDIyNX0.gJFzuE-KJrdSoIKMTIDszTdNLDl_sJkIhgo7wmXRGWA';
             const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+            // Nomor WA - isi sendiri
+            const waIndonesia = ''; // Isi nomor WA Indonesia, misal '628123456789'
+            const waArab = ''; // Isi nomor WA Arab, misal '966512345678'
 
             // ==================== VARIABEL GLOBAL & STATE ====================
             let allBooks = [];
@@ -796,6 +1310,9 @@
             let currentPage = 1;
             const booksPerPage = 8; // Tambahkan pagination dengan 8 buku per halaman
             let publisherInterval;
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let orderItems = [];
+            let currentBook = null; // Untuk menyimpan buku yang sedang dilihat
 
             // ==================== FUNGSI HELPER ====================
             function formatPrice(price, currency = 'IDR') {
@@ -822,10 +1339,11 @@
                 }).format(price * rate).replace('IDR', 'Rp').replace('USD', '$').replace('EGP', 'E£');
             }
 
-            function calculateDiscountedPrice(basePrice, discount) {
+            function calculateDiscountedPrice(basePrice, discount, publisherDiscount = '') {
                 if (!basePrice) return 0;
-                if (!discount) return basePrice;
-                const discountPercent = parseFloat(discount.replace('%', '')) || 0;
+                let effectiveDiscount = discount || publisherDiscount;
+                if (!effectiveDiscount) return basePrice;
+                const discountPercent = parseFloat(effectiveDiscount.replace('%', '')) || 0;
                 return basePrice * (1 - discountPercent / 100);
             }
 
@@ -847,6 +1365,20 @@
                 const url = new URL(window.location);
                 url.searchParams.delete('category');
                 url.searchParams.delete('publisher');
+                url.searchParams.delete('product');
+                url.searchParams.delete('order');
+                window.location.href = url.toString();
+            }
+
+            function navigateToProductDetail(bookId) {
+                const url = new URL(window.location);
+                url.searchParams.set('product', bookId);
+                window.location.href = url.toString();
+            }
+
+            function navigateToOrder() {
+                const url = new URL(window.location);
+                url.searchParams.set('order', 'true');
                 window.location.href = url.toString();
             }
 
@@ -879,6 +1411,167 @@
                 }
             }
 
+            // ==================== FUNGSI MULTI-BAHASA ====================
+            const translations = {
+                id: {
+                    // Header
+                    searchPlaceholder: "Cari judul atau penulis buku...",
+                    // Penerbit
+                    publishers: "Penerbit",
+                    // Kategori
+                    exploreCategories: "Jelajahi Kategori",
+                    // Produk
+                    newCollection: "Koleksi Buku Terbaru",
+                    clearFilter: "Hapus Filter",
+                    noBooksFound: "Tidak ada buku yang ditemukan.",
+                    // Footer
+                    copyright: "Hak Cipta Dilindungi",
+                    // Modal
+                    by: "oleh",
+                    publisher: "Penerbit",
+                    pages: "Halaman",
+                    year: "Tahun Terbit",
+                    weight: "Berat",
+                    coverType: "Jenis Cover",
+                    paperType: "Jenis Kertas",
+                    volumes: "Jumlah Jilid",
+                    textColor: "Warna Tulisan",
+                    printCount: "Cetakan Ke",
+                    editor: "Editor",
+                    isbn: "ISBN",
+                    dimensions: "Dimensi",
+                    language: "Bahasa",
+                    translator: "Penerjemah",
+                    reviewer: "Peninjau",
+                    buyNow: "Beli",
+                    addToCart: "Keranjang",
+                    noDescription: "Tidak ada deskripsi tersedia.",
+                    // Cart
+                    cart: "Keranjang Belanja",
+                    checkout: "Checkout",
+                    total: "Total",
+                    remove: "Hapus",
+                    // Order
+                    orderForm: "Form Pemesanan",
+                    orderNow: "Pesan Sekarang"
+                },
+                en: {
+                    // Header
+                    searchPlaceholder: "Search for book title or author...",
+                    // Penerbit
+                    publishers: "Publishers",
+                    // Kategori
+                    exploreCategories: "Explore Categories",
+                    // Produk
+                    newCollection: "New Book Collection",
+                    clearFilter: "Clear Filter",
+                    noBooksFound: "No books found.",
+                    // Footer
+                    copyright: "Copyright Protected",
+                    // Modal
+                    by: "by",
+                    publisher: "Publisher",
+                    pages: "Pages",
+                    year: "Publication Year",
+                    weight: "Weight",
+                    coverType: "Cover Type",
+                    paperType: "Paper Type",
+                    volumes: "Number of Volumes",
+                    textColor: "Text Color",
+                    printCount: "Print Count",
+                    editor: "Editor",
+                    isbn: "ISBN",
+                    dimensions: "Dimensions",
+                    language: "Language",
+                    translator: "Translator",
+                    reviewer: "Reviewer",
+                    buyNow: "Buy",
+                    addToCart: "Cart",
+                    noDescription: "No description available.",
+                    // Cart
+                    cart: "Shopping Cart",
+                    checkout: "Checkout",
+                    total: "Total",
+                    remove: "Remove",
+                    // Order
+                    orderForm: "Order Form",
+                    orderNow: "Order Now"
+                },
+                ar: {
+                    // Header
+                    searchPlaceholder: "ابحث عن عنوان الكتاب أو المؤلف...",
+                    // Penerbit
+                    publishers: "الناشرون",
+                    // Kategori
+                    exploreCategories: "استكشف الفئات",
+                    // Produk
+                    newCollection: "مجموعة الكتب الجديدة",
+                    clearFilter: "مسح الفلتر",
+                    noBooksFound: "لم يتم العثور على كتب.",
+                    // Footer
+                    copyright: "جميع الحقوق محفوظة",
+                    // Modal
+                    by: "بواسطة",
+                    publisher: "الناشر",
+                    pages: "الصفحات",
+                    year: "سنة النشر",
+                    weight: "الوزن",
+                    coverType: "نوع الغلاف",
+                    paperType: "نوع الورق",
+                    volumes: "عدد المجلدات",
+                    textColor: "لون النص",
+                    printCount: "رقم الطبعة",
+                    editor: "المحرر",
+                    isbn: "الرقم الدولي",
+                    dimensions: "الأبعاد",
+                    language: "اللغة",
+                    translator: "المترجم",
+                    reviewer: "المُراجع",
+                    buyNow: "اشتري",
+                    addToCart: "السلة",
+                    noDescription: "لا يوجد وصف متاح.",
+                    // Cart
+                    cart: "سلة التسوق",
+                    checkout: "الدفع",
+                    total: "الإجمالي",
+                    remove: "إزالة",
+                    // Order
+                    orderForm: "نموذج الطلب",
+                    orderNow: "اطلب الآن"
+                }
+            };
+
+            function updateLanguage() {
+                const lang = currentLanguage;
+                const t = translations[lang];
+                
+                // Update semua elemen dengan atribut data-i18n
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (t[key]) {
+                        element.textContent = t[key];
+                    }
+                });
+                
+                // Update placeholder pencarian
+                document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+                
+                // Update konten halaman detail produk jika terbuka
+                if (document.getElementById('productDetailPage').style.display !== 'none') {
+                    renderProductDetail(currentBook);
+                }
+                
+                // Update konten halaman order jika terbuka
+                if (document.getElementById('orderPage').style.display !== 'none') {
+                    renderOrderItems();
+                }
+                
+                // Update cart jika terbuka
+                if (document.getElementById('cartModal').classList.contains('active')) {
+                    renderCart();
+                }
+            }
+
             // ==================== FUNGSI FETCH DATA ====================
             async function fetchCurrency() {
                 const { data, error } = await supabase.from('site_settings').select('usd_rate, egp_rate').single();
@@ -907,7 +1600,7 @@
             }
 
             async function fetchPublishers() {
-                const { data, error } = await supabase.from('publishers').select('*');
+                const { data, error } = await supabase.from('publishers').select('*, discount'); // Asumsi ada field discount di publishers
                 if (!error && data) {
                     publishers = data;
                     renderPublishers(data);
@@ -919,7 +1612,7 @@
 
             async function fetchBooks() {
                 // Mengambil data buku dan sekaligus data publisher terkait
-                const { data, error } = await supabase.from('books').select('*, publishers(name)');
+                const { data, error } = await supabase.from('books').select('*, publishers(name, discount)');
                 if (!error && data) {
                     allBooks = data;
                     checkUrlParams();
@@ -988,6 +1681,7 @@
                                 <img src="${pub.logo_url || 'https://via.placeholder.com/80'}" alt="${pub.name}">
                             </div>
                             <h3>${pub.name}</h3>
+                            ${pub.discount ? `<div class="discount-pin">${pub.discount}</div>` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -1010,7 +1704,6 @@
                 const track = document.getElementById('publisherTrack');
                 const slides = document.querySelectorAll('.publisher-slide');
                 const totalSlides = slides.length;
-                const slidesPerView = 5; // Jumlah slide yang terlihat sekaligus
                 
                 // Reset posisi
                 currentPublisherIndex = 0;
@@ -1026,9 +1719,7 @@
             function updatePublisherSlider() {
                 const track = document.getElementById('publisherTrack');
                 const slides = document.querySelectorAll('.publisher-slide');
-                const slideWidth = slides[0].offsetWidth;
-                
-                // Geser track ke posisi yang sesuai
+                const slideWidth = slides[0]?.offsetWidth || 0;
                 track.style.transform = `translateX(-${currentPublisherIndex * slideWidth}px)`;
             }
 
@@ -1036,6 +1727,22 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const categoryId = urlParams.get('category');
                 const publisherId = urlParams.get('publisher');
+                const productId = urlParams.get('product');
+                const isOrder = urlParams.get('order');
+                
+                if (productId) {
+                    const book = allBooks.find(b => b.id == productId);
+                    if (book) {
+                        currentBook = book;
+                        showProductDetail(book);
+                        return;
+                    }
+                }
+                
+                if (isOrder === 'true') {
+                    showOrderPage();
+                    return;
+                }
                 
                 if (categoryId) {
                     const category = categories.find(c => c.id == categoryId);
@@ -1061,8 +1768,8 @@
                 let filteredBooks = allBooks.filter(book => 
                     (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     book.author.toLowerCase().includes(searchTerm.toLowerCase())) &&
-                    (!selectedCategory || book.category_id === parseInt(selectedCategory)) &&
-                    (!selectedPublisher || book.publisher_id === parseInt(selectedPublisher))
+                    (!selectedCategory || book.category_id == selectedCategory) &&
+                    (!selectedPublisher || book.publisher_id == selectedPublisher)
                 );
 
                 const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
@@ -1074,15 +1781,19 @@
 
             function renderBooks(books) {
                 const grid = document.getElementById('productGrid');
+                const t = translations[currentLanguage];
+                
                 if (!books || books.length === 0) {
-                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Tidak ada buku yang ditemukan.</p>';
+                    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">${t.noBooksFound}</p>`;
                     return;
                 }
                 grid.innerHTML = books.map(book => {
+                    const publisher = publishers.find(p => p.id === book.publisher_id);
+                    const publisherDiscount = publisher ? publisher.discount : '';
                     const basePrice = book.base_price;
                     const originalPrice = book.original_price || basePrice; // Use original if available
-                    const finalPrice = calculateDiscountedPrice(basePrice, book.discount);
-                    const discountPercent = parseFloat(book.discount?.replace('%', '')) || 0;
+                    const finalPrice = calculateDiscountedPrice(basePrice, book.discount, publisherDiscount);
+                    const discountPercent = parseFloat((book.discount || publisherDiscount || '0%').replace('%', '')) || 0;
 
                     return `
                         <div class="product-card" data-book-id="${book.id}">
@@ -1091,11 +1802,23 @@
                             </div>
                             <div class="product-info">
                                 <h3 class="product-title">${book.title}</h3>
-                                <p class="product-author">oleh ${book.author}</p>
+                                <p class="product-author">${t.by} ${book.author}</p>
                                 <div class="product-pricing">
                                     <span class="final-price">${formatPrice(finalPrice, currentCurrency)}</span>
                                     ${discountPercent > 0 || originalPrice > basePrice ? `<span class="original-price">${formatPrice(originalPrice, currentCurrency)}</span>` : ''}
                                     ${discountPercent > 0 ? `<span class="discount-badge">-${discountPercent}%</span>` : ''}
+                                </div>
+                                <div class="product-actions">
+                                    <a href="#" class="btn-buy-card" data-book-id="${book.id}">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 4V20M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </a>
+                                    <a href="#" class="btn-add-to-cart-card" data-book-id="${book.id}">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M2 2H3.74001C4.82001 2 5.67 2.93 5.58 4L4.75 13.96C4.61 15.59 5.89 16.99 7.53 17H18.08C19.72 17 21 15.6 20.86 13.97L21.24 9.01001C21.36 7.41001 20.08 6.01001 18.44 6.01001H5.82M16.25 22C16.9404 22 17.5 21.4404 17.5 20.75C17.5 20.0596 16.9404 19.5 16.25 19.5C15.5596 19.5 15 20.0596 15 20.75C15 21.4404 15.5596 22 16.25 22ZM7.25 22C7.94036 22 8.5 21.4404 8.5 20.75C8.5 20.0596 7.94036 19.5 7.25 19.5C6.55964 19.5 6 20.0596 6 20.75C6 21.4404 6.55964 22 7.25 22Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -1104,9 +1827,29 @@
 
                 // Tambahkan event listener setelah card dirender
                 document.querySelectorAll('.product-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const bookId = card.dataset.bookId;
-                        openProductModal(bookId);
+                    card.addEventListener('click', (e) => {
+                        if (!e.target.closest('.btn-buy-card, .btn-add-to-cart-card')) {
+                            const bookId = card.dataset.bookId;
+                            navigateToProductDetail(bookId);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.btn-add-to-cart-card').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const bookId = btn.dataset.bookId;
+                        const book = allBooks.find(b => b.id == bookId);
+                        addToCart(book);
+                    });
+                });
+
+                document.querySelectorAll('.btn-buy-card').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const bookId = btn.dataset.bookId;
+                        const book = allBooks.find(b => b.id == bookId);
+                        startOrder([book]);
                     });
                 });
             }
@@ -1126,96 +1869,461 @@
                 }
             }
 
-            function renderModalContent(book) {
-                const modalBody = document.getElementById('modalBody');
-                const basePrice = book.base_price;
-                const originalPrice = book.original_price || basePrice;
-                const finalPrice = calculateDiscountedPrice(basePrice, book.discount);
-                const discountPercent = parseFloat(book.discount?.replace('%', '')) || 0;
+            function renderSearchDropdown(books) {
+                const dropdown = document.getElementById('searchDropdown');
+                const t = translations[currentLanguage];
+                if (books.length === 0) {
+                    dropdown.innerHTML = '<p style="padding: 1rem; text-align: center;">Tidak ada hasil.</p>';
+                    return;
+                }
+                dropdown.innerHTML = books.map(book => {
+                    const publisher = publishers.find(p => p.id === book.publisher_id);
+                    const publisherDiscount = publisher ? publisher.discount : '';
+                    const basePrice = book.base_price;
+                    const finalPrice = calculateDiscountedPrice(basePrice, book.discount, publisherDiscount);
+                    const discountPercent = parseFloat((book.discount || publisherDiscount || '0%').replace('%', '')) || 0;
 
-                modalBody.innerHTML = `
-                    <div class="modal-image">
-                        <img src="${book.cover_image_url || 'https://via.placeholder.com/300x400.png?text=No+Image'}" alt="${book.title}">
-                    </div>
-                    <div class="modal-info">
-                        <h2>${book.title}</h2>
-                        <p class="author">oleh <strong>${book.author}</strong></p>
-                        <p class="publisher">Penerbit: <strong>${book.publishers ? book.publishers.name : 'N/A'}</strong></p>
-                        
-                        <div class="pricing">
-                            <span class="final-price">${formatPrice(finalPrice, currentCurrency)}</span>
-                            ${discountPercent > 0 || originalPrice > basePrice ? `<span class="original-price">${formatPrice(originalPrice, currentCurrency)}</span>` : ''}
-                            ${discountPercent > 0 ? `<span class="discount-badge">-${discountPercent}%</span>` : ''}
+                    return `
+                        <div class="search-result-item" data-book-id="${book.id}">
+                            <img src="${book.cover_image_url || 'https://via.placeholder.com/50x75'}" alt="${book.title}" class="search-result-image">
+                            <div class="search-result-info">
+                                <h4 class="search-result-title">${book.title}</h4>
+                                <p class="search-result-price">${formatPrice(finalPrice, currentCurrency)}
+                                    ${discountPercent > 0 ? `<span class="search-result-discount">-${discountPercent}%</span>` : ''}
+                                </p>
+                            </div>
+                            <div class="search-result-actions">
+                                <a href="#" class="mini-btn mini-buy" data-book-id="${book.id}">🛒</a>
+                                <a href="#" class="mini-btn mini-cart" data-book-id="${book.id}">➕</a>
+                            </div>
                         </div>
-                        
-                        <p class="description">${book.description || 'Tidak ada deskripsi tersedia.'}</p>
-                        
-                        <div class="details-grid">
-                            ${book.pages ? `<div class="detail-item"><strong>Halaman:</strong> ${book.pages}</div>` : ''}
-                            ${book.year ? `<div class="detail-item"><strong>Tahun Terbit:</strong> ${book.year}</div>` : ''}
-                            ${book.weight_value ? `<div class="detail-item"><strong>Berat:</strong> ${book.weight_value} ${book.weight_unit}</div>` : ''}
-                            ${book.cover_type ? `<div class="detail-item"><strong>Jenis Cover:</strong> ${book.cover_type}</div>` : ''}
-                            ${book.paper_type ? `<div class="detail-item"><strong>Jenis Kertas:</strong> ${book.paper_type}</div>` : ''}
-                            ${book.volumes ? `<div class="detail-item"><strong>Jumlah Jilid:</strong> ${book.volumes}</div>` : ''}
-                            ${book.text_color ? `<div class="detail-item"><strong>Warna Tulisan:</strong> ${book.text_color}</div>` : ''}
-                            ${book.print_count ? `<div class="detail-item"><strong>Cetakan Ke:</strong> ${book.print_count}</div>` : ''}
-                            ${book.editor ? `<div class="detail-item"><strong>Editor:</strong> ${book.editor}</div>` : ''}
-                            ${book.isbn ? `<div class="detail-item"><strong>ISBN:</strong> ${book.isbn}</div>` : ''}
-                            ${book.dimensions ? `<div class="detail-item"><strong>Dimensi:</strong> ${book.dimensions}</div>` : ''}
-                            ${book.language ? `<div class="detail-item"><strong>Bahasa:</strong> ${book.language}</div>` : ''}
-                            ${book.translator ? `<div class="detail-item"><strong>Penerjemah:</strong> ${book.translator}</div>` : ''}
-                            ${book.reviewer ? `<div class="detail-item"><strong>Peninjau:</strong> ${book.reviewer}</div>` : ''}
-                        </div>
+                    `;
+                }).join('');
 
-                        <div style="margin-top: 2rem;">
-                            <a href="#" class="btn-buy">🛒 Beli Sekarang</a>
-                            <a href="#" class="btn-add-to-cart">➕ Tambah ke Keranjang</a>
-                        </div>
-                    </div>
-                `;
+                // Event listener untuk item search
+                dropdown.querySelectorAll('.search-result-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        if (!e.target.closest('.mini-btn')) {
+                            const bookId = item.dataset.bookId;
+                            navigateToProductDetail(bookId);
+                        }
+                    });
+                });
+
+                dropdown.querySelectorAll('.mini-cart').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const bookId = btn.dataset.bookId;
+                        const book = allBooks.find(b => b.id == bookId);
+                        addToCart(book);
+                    });
+                });
+
+                dropdown.querySelectorAll('.mini-buy').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const bookId = btn.dataset.bookId;
+                        const book = allBooks.find(b => b.id == bookId);
+                        startOrder([book]);
+                    });
+                });
             }
 
-            // ==================== FUNGSI MODAL & PENCARIAN ====================
-            const productModal = document.getElementById('productModal');
-            const modalCloseBtn = document.getElementById('modalClose');
+            // ==================== FUNGSI HALAMAN DETAIL PRODUK ====================
+            function showProductDetail(book) {
+                currentBook = book;
+                renderProductDetail(book);
+                
+                // Sembunyikan halaman lain dan tampilkan halaman detail
+                document.getElementById('homePage').style.display = 'none';
+                document.getElementById('productDetailPage').style.display = 'block';
+                document.getElementById('orderPage').style.display = 'none';
+                
+                // Update breadcrumb
+                updateBreadcrumb('product', book.title);
+                
+                // Scroll ke atas
+                window.scrollTo(0, 0);
+            }
 
-            async function openProductModal(bookId) {
-                const book = allBooks.find(b => b.id == bookId);
-                if (book) {
-                    renderModalContent(book);
-                    productModal.classList.add('active');
+            function renderProductDetail(book) {
+                const publisher = publishers.find(p => p.id === book.publisher_id);
+                const publisherDiscount = publisher ? publisher.discount : '';
+                const basePrice = book.base_price;
+                const originalPrice = book.original_price || basePrice;
+                const finalPrice = calculateDiscountedPrice(basePrice, book.discount, publisherDiscount);
+                const discountPercent = parseFloat((book.discount || publisherDiscount || '0%').replace('%', '')) || 0;
+                const t = translations[currentLanguage];
+
+                document.getElementById('detailImage').src = book.cover_image_url || 'https://via.placeholder.com/300x400.png?text=No+Image';
+                document.getElementById('detailTitle').textContent = book.title;
+                document.getElementById('detailAuthor').textContent = `${t.by} ${book.author}`;
+                document.getElementById('detailPublisher').textContent = `${t.publisher}: ${book.publishers ? book.publishers.name : 'N/A'}`;
+                
+                document.getElementById('detailPricing').innerHTML = `
+                    <span class="final-price">${formatPrice(finalPrice, currentCurrency)}</span>
+                    ${discountPercent > 0 || originalPrice > basePrice ? `<span class="original-price">${formatPrice(originalPrice, currentCurrency)}</span>` : ''}
+                    ${discountPercent > 0 ? `<span class="discount-badge">-${discountPercent}%</span>` : ''}
+                `;
+                
+                document.getElementById('detailDescription').textContent = book.description || t.noDescription;
+                
+                const detailsGrid = document.getElementById('detailGrid');
+                detailsGrid.innerHTML = `
+                    ${book.pages ? `<div class="detail-item"><strong>${t.pages}:</strong> ${book.pages}</div>` : ''}
+                    ${book.year ? `<div class="detail-item"><strong>${t.year}:</strong> ${book.year}</div>` : ''}
+                    ${book.weight_value ? `<div class="detail-item"><strong>${t.weight}:</strong> ${book.weight_value} ${book.weight_unit}</div>` : ''}
+                    ${book.cover_type ? `<div class="detail-item"><strong>${t.coverType}:</strong> ${book.cover_type}</div>` : ''}
+                    ${book.paper_type ? `<div class="detail-item"><strong>${t.paperType}:</strong> ${book.paper_type}</div>` : ''}
+                    ${book.volumes ? `<div class="detail-item"><strong>${t.volumes}:</strong> ${book.volumes}</div>` : ''}
+                    ${book.text_color ? `<div class="detail-item"><strong>${t.textColor}:</strong> ${book.text_color}</div>` : ''}
+                    ${book.print_count ? `<div class="detail-item"><strong>${t.printCount}:</strong> ${book.print_count}</div>` : ''}
+                    ${book.editor ? `<div class="detail-item"><strong>${t.editor}:</strong> ${book.editor}</div>` : ''}
+                    ${book.isbn ? `<div class="detail-item"><strong>${t.isbn}:</strong> ${book.isbn}</div>` : ''}
+                    ${book.dimensions ? `<div class="detail-item"><strong>${t.dimensions}:</strong> ${book.dimensions}</div>` : ''}
+                    ${book.language ? `<div class="detail-item"><strong>${t.language}:</strong> ${book.language}</div>` : ''}
+                    ${book.translator ? `<div class="detail-item"><strong>${t.translator}:</strong> ${book.translator}</div>` : ''}
+                    ${book.reviewer ? `<div class="detail-item"><strong>${t.reviewer}:</strong> ${book.reviewer}</div>` : ''}
+                `;
+
+                // Tambahkan event listener untuk tombol
+                document.getElementById('detailBuyBtn').onclick = (e) => {
+                    e.preventDefault();
+                    startOrder([book]);
+                };
+
+                document.getElementById('detailAddToCartBtn').onclick = (e) => {
+                    e.preventDefault();
+                    addToCart(book);
+                };
+            }
+
+            // ==================== FUNGSI HALAMAN ORDER ====================
+            function showOrderPage() {
+                renderOrderItems();
+                loadRecommendedProducts();
+                
+                // Sembunyikan halaman lain dan tampilkan halaman order
+                document.getElementById('homePage').style.display = 'none';
+                document.getElementById('productDetailPage').style.display = 'none';
+                document.getElementById('orderPage').style.display = 'block';
+                
+                // Update breadcrumb
+                updateBreadcrumb('order', 'Form Pemesanan');
+                
+                // Scroll ke atas
+                window.scrollTo(0, 0);
+            }
+
+            function renderOrderItems() {
+                const orderItemsDiv = document.getElementById('orderItems');
+                const t = translations[currentLanguage];
+                let totalPrice = 0;
+
+                if (orderItems.length === 0) {
+                    orderItemsDiv.innerHTML = '<p>Tidak ada item.</p>';
+                    return;
+                }
+
+                orderItemsDiv.innerHTML = '<h3>Item Pemesanan:</h3>' + orderItems.map(item => {
+                    const publisher = publishers.find(p => p.id === item.publisher_id);
+                    const publisherDiscount = publisher ? publisher.discount : '';
+                    const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
+                    const itemTotal = finalPrice * (item.quantity || 1);
+                    totalPrice += itemTotal;
+
+                    return `
+                        <div class="cart-item">
+                            <img src="${item.cover_image_url || 'https://via.placeholder.com/80x120.png?text=No+Image'}" alt="${item.title}">
+                            <div class="cart-item-info">
+                                <h3 class="cart-item-title">${item.title}</h3>
+                                <p>${item.quantity || 1} x ${formatPrice(finalPrice, currentCurrency)}</p>
+                                <p class="cart-item-price">${formatPrice(itemTotal, currentCurrency)}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('') + `<p>Total: ${formatPrice(totalPrice, currentCurrency)}</p>`;
+            }
+
+            function loadRecommendedProducts() {
+                // Ambil 4 produk acak sebagai rekomendasi
+                const shuffled = [...allBooks].sort(() => 0.5 - Math.random());
+                const recommended = shuffled.slice(0, 4);
+                
+                const recommendedGrid = document.getElementById('recommendedGrid');
+                recommendedGrid.innerHTML = recommended.map(book => {
+                    const publisher = publishers.find(p => p.id === book.publisher_id);
+                    const publisherDiscount = publisher ? publisher.discount : '';
+                    const finalPrice = calculateDiscountedPrice(book.base_price, book.discount, publisherDiscount);
+                    
+                    return `
+                        <div class="recommended-card" data-book-id="${book.id}">
+                            <img src="${book.cover_image_url || 'https://via.placeholder.com/80x120.png?text=No+Image'}" alt="${book.title}" class="recommended-image">
+                            <div class="recommended-info">
+                                <h4 class="recommended-title">${book.title}</h4>
+                                <p class="recommended-price">${formatPrice(finalPrice, currentCurrency)}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                // Tambahkan event listener
+                document.querySelectorAll('.recommended-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const bookId = card.dataset.bookId;
+                        navigateToProductDetail(bookId);
+                    });
+                });
+            }
+
+            // ==================== FUNGSI KERANJANG ====================
+            function addToCart(book) {
+                const existingItem = cart.find(item => item.id === book.id);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ ...book, quantity: 1 });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartBadge();
+                alert('Buku ditambahkan ke keranjang!');
+            }
+
+            function removeFromCart(bookId) {
+                cart = cart.filter(item => item.id !== bookId);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartBadge();
+                renderCart();
+            }
+
+            function updateCartBadge() {
+                const badge = document.getElementById('cartBadge');
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                if (totalItems > 0) {
+                    badge.textContent = totalItems;
+                    badge.classList.add('active');
+                } else {
+                    badge.classList.remove('active');
                 }
             }
 
-            function closeProductModal() {
-                productModal.classList.remove('active');
+            function renderCart() {
+                const cartItems = document.getElementById('cartItems');
+                const cartTotal = document.getElementById('cartTotal');
+                const t = translations[currentLanguage];
+                let totalPrice = 0;
+
+                if (cart.length === 0) {
+                    cartItems.innerHTML = '<p>Keranjang kosong.</p>';
+                    cartTotal.innerHTML = '';
+                    return;
+                }
+
+                cartItems.innerHTML = cart.map(item => {
+                    const publisher = publishers.find(p => p.id === item.publisher_id);
+                    const publisherDiscount = publisher ? publisher.discount : '';
+                    const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
+                    const itemTotal = finalPrice * item.quantity;
+                    totalPrice += itemTotal;
+
+                    return `
+                        <div class="cart-item">
+                            <img src="${item.cover_image_url || 'https://via.placeholder.com/80x120.png?text=No+Image'}" alt="${item.title}">
+                            <div class="cart-item-info">
+                                <h3 class="cart-item-title">${item.title}</h3>
+                                <p>${item.quantity} x ${formatPrice(finalPrice, currentCurrency)}</p>
+                                <p class="cart-item-price">${formatPrice(itemTotal, currentCurrency)}</p>
+                            </div>
+                            <span class="cart-item-remove" data-book-id="${item.id}">${t.remove}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                cartTotal.innerHTML = `${t.total}: ${formatPrice(totalPrice, currentCurrency)}`;
+
+                // Tambahkan event listener untuk remove
+                document.querySelectorAll('.cart-item-remove').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const bookId = parseInt(btn.dataset.bookId);
+                        removeFromCart(bookId);
+                    });
+                });
             }
 
-            modalCloseBtn.addEventListener('click', closeProductModal);
-            productModal.addEventListener('click', (e) => {
-                if (e.target === productModal) {
-                    closeProductModal();
+            // ==================== FUNGSI ORDER ====================
+            function startOrder(items) {
+                orderItems = items;
+                navigateToOrder();
+            }
+
+            async function submitOrder(e) {
+                e.preventDefault();
+                const name = document.getElementById('nameInput').value;
+                const phone = document.getElementById('phoneInput').value;
+                const address = document.getElementById('addressInput').value;
+                const paymentMethod = document.getElementById('paymentMethod').value;
+
+                if (!name || !phone || !address || !paymentMethod) {
+                    alert('Mohon isi semua field.');
+                    return;
+                }
+
+                const total = orderItems.reduce((sum, item) => {
+                    const publisher = publishers.find(p => p.id === item.publisher_id);
+                    const publisherDiscount = publisher ? publisher.discount : '';
+                    const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
+                    return sum + finalPrice * (item.quantity || 1);
+                }, 0);
+
+                // Kirim ke Supabase
+                const { data, error } = await supabase.from('orders').insert({
+                    name: name,
+                    phone: phone,
+                    address: address,
+                    items: JSON.stringify(orderItems),
+                    total: total,
+                    currency: currentCurrency,
+                    language: paymentMethod
+                });
+
+                if (error) {
+                    alert('Gagal menyimpan order: ' + error.message);
+                    return;
+                }
+
+                // Buat template WA
+                const isArab = paymentMethod === 'ar';
+                const lang = isArab ? 'ar' : 'id';
+                const t = translations[lang];
+
+                let template = isArab ? 'الطلب:\n' : 'Pesanan:\n';
+                template += `Nama: ${name}\n`;
+                template += `Telepon: ${phone}\n`;
+                template += `Alamat: https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}\n\n`;
+                template += isArab ? 'العناصر:\n' : 'Item:\n';
+                orderItems.forEach(item => {
+                    const publisher = publishers.find(p => p.id === item.publisher_id);
+                    const publisherDiscount = publisher ? publisher.discount : '';
+                    const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
+                    template += `${item.title} x ${item.quantity || 1} - ${formatPrice(finalPrice, currentCurrency)}\n`;
+                });
+                template += `\nTotal: ${formatPrice(total, currentCurrency)}`;
+
+                // Redirect ke WA
+                const waNumber = isArab ? waArab : waIndonesia;
+                if (!waNumber) {
+                    alert('Nomor WA belum diisi.');
+                    return;
+                }
+                window.location.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(template)}`;
+
+                // Clear cart jika dari cart
+                if (orderItems === cart) {
+                    cart = [];
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartBadge();
+                }
+            }
+
+            // ==================== EVENT LISTENERS ====================
+            const cartModal = document.getElementById('cartModal');
+            const cartModalClose = document.getElementById('cartModalClose');
+            const cartIcon = document.getElementById('cartIcon');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const detectLocationBtn = document.getElementById('detectLocationBtn');
+            const viewMapBtn = document.getElementById('viewMapBtn');
+            const orderForm = document.getElementById('orderForm');
+            const addressInput = document.getElementById('addressInput');
+            const searchInput = document.getElementById('searchInput');
+            const searchDropdown = document.getElementById('searchDropdown');
+
+            cartModalClose.addEventListener('click', () => {
+                cartModal.classList.remove('active');
+            });
+
+            cartModal.addEventListener('click', (e) => {
+                if (e.target === cartModal) {
+                    cartModal.classList.remove('active');
                 }
             });
 
-            document.getElementById('searchInput').addEventListener('keyup', (e) => {
-                currentPage = 1;
-                filterAndRenderBooks(e.target.value);
+            cartIcon.addEventListener('click', () => {
+                renderCart();
+                cartModal.classList.add('active');
+            });
+
+            checkoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (cart.length === 0) {
+                    alert('Keranjang kosong.');
+                    return;
+                }
+                orderItems = cart;
+                cartModal.classList.remove('active');
+                navigateToOrder();
+            });
+
+            detectLocationBtn.addEventListener('click', () => {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        const lat = position.coords.latitude;
+                        const long = position.coords.longitude;
+                        addressInput.value = `Lat: ${lat}, Long: ${long}`;
+                        viewMapBtn.style.display = 'block';
+                        viewMapBtn.onclick = () => {
+                            window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${long}`, '_blank');
+                        };
+                    }, error => {
+                        alert('Gagal mendeteksi lokasi: ' + error.message);
+                    });
+                } else {
+                    alert('Geolocation tidak didukung oleh browser ini.');
+                }
+            });
+
+            orderForm.addEventListener('submit', submitOrder);
+
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                if (searchTerm.length > 0) {
+                    const filtered = allBooks.filter(book => 
+                        book.title.toLowerCase().includes(searchTerm) || 
+                        book.author.toLowerCase().includes(searchTerm)
+                    ).slice(0, 10); // Batasi 10 hasil
+                    renderSearchDropdown(filtered);
+                    searchDropdown.classList.add('active');
+                } else {
+                    searchDropdown.classList.remove('active');
+                }
+            });
+
+            // Tutup dropdown jika klik di luar
+            document.addEventListener('click', (e) => {
+                if (!searchDropdown.contains(e.target) && e.target !== searchInput) {
+                    searchDropdown.classList.remove('active');
+                }
             });
 
             document.getElementById('currencySelect').addEventListener('change', (e) => {
                 currentCurrency = e.target.value;
-                filterAndRenderBooks(document.getElementById('searchInput').value);
-                if (productModal.classList.contains('active')) {
-                    const openBookId = document.querySelector('.product-card[data-book-id]')?.dataset.bookId;
-                    if (openBookId) openProductModal(openBookId);
+                filterAndRenderBooks(searchInput.value);
+                if (document.getElementById('productDetailPage').style.display !== 'none') {
+                    renderProductDetail(currentBook);
+                }
+                if (cartModal.classList.contains('active')) {
+                    renderCart();
+                }
+                if (document.getElementById('orderPage').style.display !== 'none') {
+                    renderOrderItems();
                 }
             });
 
             document.getElementById('languageSelect').addEventListener('change', (e) => {
                 currentLanguage = e.target.value;
-                // Di sini bisa ditambahkan logika untuk mengubah bahasa seluruh konten website
-                alert(`Bahasa diubah ke: ${e.target.options[e.target.selectedIndex].text}`);
+                updateLanguage();
+                filterAndRenderBooks(searchInput.value);
             });
 
             document.getElementById('homeLink').addEventListener('click', (e) => {
@@ -1232,6 +2340,33 @@
                 navigateToHome();
             });
 
+            // Tombol kontrol slider penerbit
+            document.getElementById('prevPublisher').addEventListener('click', () => {
+                const slides = document.querySelectorAll('.publisher-slide');
+                const totalSlides = slides.length;
+                currentPublisherIndex = (currentPublisherIndex - 1 + totalSlides) % totalSlides;
+                updatePublisherSlider();
+                
+                // Reset interval
+                if (publisherInterval) {
+                    clearInterval(publisherInterval);
+                    startPublisherSlider();
+                }
+            });
+
+            document.getElementById('nextPublisher').addEventListener('click', () => {
+                const slides = document.querySelectorAll('.publisher-slide');
+                const totalSlides = slides.length;
+                currentPublisherIndex = (currentPublisherIndex + 1) % totalSlides;
+                updatePublisherSlider();
+                
+                // Reset interval
+                if (publisherInterval) {
+                    clearInterval(publisherInterval);
+                    startPublisherSlider();
+                }
+            });
+
             // ==================== INISIALISASI APLIKASI ====================
             async function initializeApp() {
                 await fetchCurrency(); // Ambil kurs dulu
@@ -1239,6 +2374,8 @@
                 fetchCategories();
                 fetchPublishers();
                 fetchBooks();
+                updateLanguage(); // Inisialisasi bahasa
+                updateCartBadge(); // Inisialisasi badge keranjang
             }
 
             initializeApp();
