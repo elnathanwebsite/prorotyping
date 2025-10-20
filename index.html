@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toko Buku Islam - Temukan Buku Berkualitas untuk Kehidupan Islami</title>
+    <title>Toko Buku Islam - Beranda</title>
     <style>
+        /* === FONT & ROOT VARIABLES === */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lato:wght@400;700&display=swap');
+
         :root {
-            --primary: #1e88e5;
-            --primary-light: #e3f2fd;
-            --primary-dark: #1565c0;
-            --secondary: #42a5f5;
-            --light: #ffffff;
-            --dark: #333333;
-            --border: #e0e0e0;
-            --success: #43a047;
-            --danger: #e53935;
-            --warning: #ffb300;
-            --accent: #0d47a1;
-            --font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            --heading-font: 'Poppins', 'Inter', 'Segoe UI', Roboto, sans-serif;
+            --primary-blue: #3498db; /* Biru utama yang modern */
+            --secondary-blue: #2980b9; /* Biru yang lebih gelap untuk hover */
+            --white: #ffffff;
+            --light-bg: #f8f9fa; /* Latar belakang yang sangat terang */
+            --border-color: #e9ecef;
+            --text-dark: #2c3e50; /* Abu-abu kebiruan gelap untuk teks */
+            --text-light: #7f8c8d;
+            --danger-red: #e74c3c;
+            --success-green: #27ae60;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Lato', sans-serif;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 8px 15px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
-
+        /* === GENERAL STYLES === */
         * {
             margin: 0;
             padding: 0;
@@ -30,2555 +33,1215 @@
         }
 
         body {
-            font-family: var(--font-family);
-            background-color: #f5f9ff;
-            color: var(--dark);
-            line-height: 1.6;
-            font-weight: 400;
+            font-family: var(--font-body);
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.7;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
         }
 
-        /* Top Banner Styles */
-        .top-banner {
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            color: var(--light);
-            padding: 0.5rem 0;
-            text-align: center;
-            font-size: 0.9rem;
-            position: relative;
-        }
-
-        .top-banner-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .top-banner .close-banner {
-            background: none;
-            border: none;
-            color: var(--light);
-            font-size: 1.2rem;
-            cursor: pointer;
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        /* Header Styles */
-        header {
-            background-color: var(--light);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo img {
-            height: 40px;
-        }
-
-        .logo h1 {
-            font-family: var(--heading-font);
-            font-size: 1.5rem;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .language-selector, .currency-selector {
-            position: relative;
-        }
-
-        .language-btn, .currency-btn {
-            background: var(--light);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-
-        .language-btn:hover, .currency-btn:hover {
-            border-color: var(--primary);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .language-dropdown, .currency-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: var(--light);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            z-index: 1000;
-            min-width: 150px;
-            display: none;
-            margin-top: 0.5rem;
-        }
-
-        .language-dropdown.show, .currency-dropdown.show {
-            display: block;
-        }
-
-        .language-option, .currency-option {
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .language-option:hover, .currency-option:hover {
-            background: var(--primary-light);
-        }
-
-        .language-option.active, .currency-option.active {
-            background: var(--primary-light);
-            color: var(--primary);
-            font-weight: 500;
-        }
-
-        .nav-main {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: color 0.2s;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--primary);
-        }
-
-        .nav-link.active {
-            color: var(--primary);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--primary);
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            background: var(--light);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            width: 300px;
-        }
-
-        .search-bar input {
-            border: none;
-            outline: none;
-            flex: 1;
-            padding: 0.25rem 0;
-            font-size: 0.9rem;
-        }
-
-        .search-bar button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--dark);
-        }
-
-        /* Contact Info Bar */
-        .contact-bar {
-            background: var(--primary-light);
-            padding: 0.75rem 0;
-            border-top: 1px solid var(--border);
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--dark);
-        }
-
-        .contact-item strong {
-            color: var(--primary);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: var(--light);
+        section {
             padding: 4rem 0;
-            text-align: center;
-            margin-bottom: 3rem;
-            border-radius: 0 0 20px 20px;
         }
 
-        .hero h1 {
-            font-family: var(--heading-font);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            opacity: 0.9;
+        /* === HEADER / NAVBAR === */
+        header {
+            background-color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
         }
 
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-family: var(--font-family);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .btn-primary {
-            background: var(--light);
-            color: var(--primary);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--light);
-            border: 2px solid var(--light);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: var(--light);
-        }
-
-        .btn-warning {
-            background: var(--warning);
-            color: var(--light);
-        }
-
-        /* Categories Section */
-        .section {
-            margin-bottom: 3rem;
-        }
-
-        .section-header {
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
         }
 
-        .section-title {
-            font-family: var(--heading-font);
+        .logo {
+            font-family: var(--font-heading);
             font-size: 1.8rem;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .view-all {
-            color: var(--accent);
+            font-weight: 700;
+            color: var(--primary-blue);
             text-decoration: none;
-            font-weight: 500;
+        }
+
+        .search-bar {
+            width: 40%;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 1.2rem 0.8rem 2.5rem; /* Padding untuk ikon */
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .search-bar .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .header-controls {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
         }
 
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
+        .currency-selector, .language-selector {
+            margin-left: 0.5rem;
         }
 
-        .category-card {
-            background: var(--light);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
-            transition: transform 0.3s, box-shadow 0.3s;
+        .currency-selector select, .language-selector select {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            background: var(--white);
             cursor: pointer;
-            border: 1px solid var(--border);
         }
 
-        .category-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        /* === BREADCRUMB === */
+        .breadcrumb {
+            background-color: var(--white);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .category-image {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-
-        .category-content {
-            padding: 1.25rem;
-        }
-
-        .category-name {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-
-        .category-count {
-            font-size: 0.875rem;
-            color: #6c757d;
-        }
-
-        /* Books Section */
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .book-card {
-            background: var(--light);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid var(--border);
-        }
-
-        .book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        .book-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-
-        .book-content {
-            padding: 1.5rem;
-        }
-
-        .book-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-            line-height: 1.3;
-        }
-
-        .book-author {
-            color: #6c757d;
-            margin-bottom: 0.75rem;
+        .breadcrumb-list {
+            display: flex;
+            list-style: none;
             font-size: 0.9rem;
         }
 
-        .book-meta {
-            display: flex;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
+        .breadcrumb-item {
+            margin-right: 0.5rem;
         }
 
-        .book-meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.8rem;
-            color: #6c757d;
+        .breadcrumb-item:not(:last-child)::after {
+            content: "›";
+            margin-left: 0.5rem;
+            color: var(--text-light);
         }
 
-        .book-price {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+        .breadcrumb-item a {
+            color: var(--text-light);
+            text-decoration: none;
         }
 
-        .price-original {
-            text-decoration: line-through;
-            color: #6c757d;
-            font-size: 0.9rem;
+        .breadcrumb-item a:hover {
+            color: var(--primary-blue);
         }
 
-        .price-final {
-            font-weight: 600;
-            color: var(--danger);
-            font-size: 1.1rem;
+        .breadcrumb-item.active {
+            color: var(--text-dark);
+            font-weight: 500;
         }
 
-        .discount-badge {
-            background: var(--danger);
-            color: var(--light);
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .book-actions {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        .btn-order {
-            background: var(--primary);
-            color: var(--light);
-            flex: 1;
-            justify-content: center;
-        }
-
-        .btn-detail {
-            background: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            justify-content: center;
-        }
-
-        /* Banner Section */
-        .banner-section {
-            margin-bottom: 3rem;
-        }
-
+        /* === HERO BANNERS === */
         .banner-slider {
+            width: 100%;
+            height: 450px;
             position: relative;
             overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: var(--border-radius);
+            background: var(--border-color);
         }
 
         .banner-slide {
-            display: none;
-            position: relative;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
 
         .banner-slide.active {
-            display: block;
+            opacity: 1;
         }
 
-        .banner-image {
+        .banner-slide img {
             width: 100%;
-            height: 400px;
+            height: 100%;
             object-fit: cover;
         }
 
-        .banner-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            color: var(--light);
-            padding: 2rem;
+        /* === PUBLISHERS SECTION (DIPINDAHKAN DI BAWAH BANNER) === */
+        .publishers-section {
+            padding: 2rem 0;
         }
 
-        .banner-title {
-            font-family: var(--heading-font);
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+        .publisher-slider {
+            position: relative;
+            overflow: hidden;
+            padding: 1rem 0;
         }
 
-        .banner-description {
-            font-size: 1rem;
-            max-width: 600px;
-        }
-
-        .banner-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.2);
-            color: var(--light);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        .publisher-track {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.3s;
-            backdrop-filter: blur(5px);
+            transition: transform 0.5s ease;
         }
 
-        .banner-nav:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .banner-prev {
-            left: 1rem;
-        }
-
-        .banner-next {
-            right: 1rem;
-        }
-
-        .banner-dots {
-            position: absolute;
-            bottom: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .banner-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.5);
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .banner-dot.active {
-            background: var(--light);
-        }
-
-        /* Publishers Section */
-        .publishers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1.5rem;
+        .publisher-slide {
+            flex: 0 0 20%;
+            padding: 0 0.5rem;
+            box-sizing: border-box;
         }
 
         .publisher-card {
-            background: var(--light);
-            border-radius: 12px;
+            background: var(--white);
+            border-radius: var(--border-radius);
             padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-dark);
+            cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-            border: 1px solid var(--border);
+            height: 100%;
         }
 
         .publisher-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-md);
         }
 
-        .publisher-logo {
+        .publisher-card-icon {
             width: 80px;
             height: 80px;
-            object-fit: contain;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            background: var(--primary-light);
-            padding: 0.5rem;
+            margin: 0 auto 1rem auto;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-blue);
+            overflow: hidden;
+        }
+        
+        .publisher-card-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .publisher-name {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
+        .publisher-card h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
         }
 
-        .publisher-discount {
-            font-size: 0.875rem;
-            color: var(--success);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary-dark);
-            color: var(--light);
-            padding: 3rem 0 1.5rem;
-        }
-
-        .footer-content {
+        /* === CATEGORIES SECTION === */
+        .category-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
         }
 
-        .footer-column h3 {
-            font-family: var(--heading-font);
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-links a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: var(--light);
-        }
-
-        .footer-bottom {
+        .category-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
             text-align: center;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.7);
-            font-size: 0.9rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-dark);
+            cursor: pointer;
         }
 
-        /* Modal Styles */
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .category-card.active {
+            border: 2px solid var(--primary-blue);
+        }
+
+        .category-card-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem auto;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-blue);
+        }
+        
+        .category-card-icon img {
+            width: 50%;
+            height: 50%;
+            object-fit: contain;
+        }
+
+        .category-card h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* === PRODUCTS SECTION === */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-image {
+            height: 250px;
+            background-color: var(--light-bg);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            height: 3.3em; /* Batas 2 baris */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-author {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-pricing {
+            margin-top: auto;
+        }
+
+        .final-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .original-price {
+            font-size: 1rem;
+            color: var(--text-light);
+            text-decoration: line-through;
+            margin-left: 0.5rem;
+        }
+        
+        .discount-badge {
+            background-color: var(--danger-red);
+            color: var(--white);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        /* === PAGINATION === */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 0.5rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--white);
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .pagination button.active {
+            background: var(--primary-blue);
+            color: var(--white);
+            border-color: var(--primary-blue);
+        }
+
+        .pagination button:hover {
+            background: var(--secondary-blue);
+            color: var(--white);
+        }
+
+        /* === MODAL === */
         .modal {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(5px);
-            overflow-y: auto;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
         }
 
         .modal-content {
-            background: var(--light);
-            margin: 2% auto;
+            background: var(--white);
             padding: 2rem;
-            border-radius: 12px;
-            width: 95%;
-            max-width: 1000px;
+            border-radius: var(--border-radius);
+            max-width: 900px;
+            width: 90%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            animation: modalSlideIn 0.3s ease;
+            position: relative;
         }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .modal-header h2 {
-            font-family: var(--heading-font);
-            font-weight: 600;
-            border: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .close-modal {
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-light);
             background: none;
             border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #6c757d;
-            padding: 0.5rem;
-            border-radius: 6px;
-            transition: all 0.2s ease;
         }
 
-        .close-modal:hover {
-            background: var(--primary-light);
-            color: var(--dark);
-        }
-
-        .book-detail-grid {
+        .modal-body {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 2fr;
             gap: 2rem;
         }
 
-        .book-detail-image {
+        .modal-image img {
             width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
         }
-
-        .book-detail-info h3 {
-            font-family: var(--heading-font);
-            font-size: 1.5rem;
+        
+        .modal-info h2 {
+            font-size: 2rem;
             margin-bottom: 0.5rem;
-            color: var(--primary);
+        }
+        .modal-info .author {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        .modal-info .pricing {
+            margin: 1.5rem 0;
+        }
+        .modal-info .description {
+            margin: 1rem 0;
         }
 
-        .book-detail-meta {
+        .details-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-top: 1rem;
+            background: var(--light-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
         }
 
-        .book-detail-meta-item {
-            display: flex;
-            flex-direction: column;
+        .detail-item {
+            font-size: 0.9rem;
         }
 
-        .meta-label {
-            font-size: 0.875rem;
-            color: #6c757d;
-            margin-bottom: 0.25rem;
+        .detail-item strong {
+            color: var(--text-dark);
+            margin-right: 0.5rem;
+        }
+        
+        .btn-buy, .btn-add-to-cart {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin-right: 1rem;
         }
 
-        .meta-value {
-            font-weight: 500;
+        .btn-buy {
+            background-color: var(--primary-blue);
+            color: var(--white);
         }
 
-        .book-detail-price {
-            background: var(--primary-light);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin: 1.5rem 0;
-            border: 1px solid var(--border);
+        .btn-buy:hover {
+            background-color: var(--secondary-blue);
         }
 
-        .price-row {
+        .btn-add-to-cart {
+            background-color: var(--success-green);
+            color: var(--white);
+        }
+
+        .btn-add-to-cart:hover {
+            background-color: #219d52;
+        }
+
+        /* === LOADER === */
+        .loader-container {
+            text-align: center;
+            padding: 4rem;
+        }
+        
+        .loader {
+            border: 5px solid var(--border-color);
+            border-top: 5px solid var(--primary-blue);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* === FILTER INFO === */
+        .filter-info {
+            background-color: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.75rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            align-items: center;
+            box-shadow: var(--shadow-sm);
         }
 
-        .price-label {
-            font-weight: 500;
-        }
-
-        .price-value {
-            font-weight: 600;
-        }
-
-        .discounted-price {
-            color: var(--danger);
+        .filter-info h3 {
             font-size: 1.2rem;
-        }
-
-        .order-form {
-            margin-top: 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--dark);
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            font-family: var(--font-family);
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .location-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .btn-location {
-            background: var(--primary-light);
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-location:hover {
-            background: var(--primary);
-            color: var(--light);
-        }
-
-        .whatsapp-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .whatsapp-option {
-            background: var(--primary-light);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .whatsapp-option:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .whatsapp-option.selected {
-            border-color: var(--success);
-            background: rgba(67, 160, 71, 0.1);
-        }
-
-        .whatsapp-option h4 {
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .whatsapp-option p {
+        .filter-info p {
+            color: var(--text-light);
             font-size: 0.9rem;
-            margin-bottom: 1rem;
-            color: #6c757d;
         }
 
-        .whatsapp-number {
-            font-weight: 600;
-            color: var(--success);
-            margin-bottom: 1rem;
+        .clear-filter {
+            background-color: var(--danger-red);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
         }
 
-        .location-permission {
-            background: var(--warning);
-            color: var(--light);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+        .clear-filter:hover {
+            background-color: #c0392b;
+        }
+
+        /* === FOOTER === */
+        footer {
+            background-color: var(--text-dark);
+            color: var(--light-bg);
+            padding: 2rem 0;
             text-align: center;
         }
 
-        /* Responsive Styles */
-        @media (max-width: 1024px) {
-            .book-detail-grid {
+        /* === RESPONSIVE DESIGN === */
+        @media (max-width: 992px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .modal-body {
                 grid-template-columns: 1fr;
             }
-            
-            .nav-links {
-                gap: 1.5rem;
+            .modal-image {
+                max-width: 300px;
+                margin: 0 auto;
             }
-            
-            .search-bar {
-                width: 250px;
-            }
-            
-            .whatsapp-options {
-                grid-template-columns: 1fr;
+            .publisher-slide {
+                flex: 0 0 25%;
             }
         }
 
         @media (max-width: 768px) {
-            .top-banner-content {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .top-banner .close-banner {
-                position: static;
-                transform: none;
-                margin-top: 0.5rem;
-            }
-            
-            .header-top {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-            
-            .nav-main {
+            .navbar {
                 flex-direction: column;
                 gap: 1rem;
             }
-            
-            .nav-links {
+            .search-bar {
+                width: 100%;
+            }
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .banner-slider {
+                height: 350px;
+            }
+            .filter-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .publisher-slide {
+                flex: 0 0 33.33%;
+            }
+            .header-controls {
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
-            .search-bar {
-                width: 100%;
-                max-width: 400px;
-            }
-            
-            .contact-info {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .banner-image {
-                height: 300px;
-            }
-            
-            .banner-content {
-                padding: 1.5rem;
-            }
-            
-            .banner-title {
-                font-size: 1.5rem;
-            }
-            
-            .form-row {
+        }
+
+        @media (max-width: 576px) {
+            .product-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .form-actions {
-                flex-direction: column;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero {
-                padding: 2.5rem 0;
-            }
-            
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
-            
-            .categories-grid,
-            .books-grid,
-            .publishers-grid {
+            .details-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .modal-content {
-                padding: 1.5rem;
-                margin: 5% auto;
-                width: 98%;
+            .publisher-slide {
+                flex: 0 0 50%;
             }
-        }
-
-        @keyframes modalSlideIn {
-            from { opacity: 0; transform: translateY(-50px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #6c757d;
-            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <!-- Top Banner -->
-    <div class="top-banner" id="topBanner">
-        <div class="container">
-            <div class="top-banner-content">
-                <span data-lang-key="top-banner-text">🚀 Diskon spesial hingga 30% untuk semua buku! Penawaran terbatas.</span>
-                <button class="close-banner" id="closeBanner">&times;</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Header -->
     <header>
-        <div class="container">
-            <div class="header-top">
-                <div class="logo">
-                    <img src="https://via.placeholder.com/40x40?text=TB" alt="Toko Buku Islam">
-                    <h1 data-lang-key="site-title">Toko Buku Islam</h1>
-                </div>
-                <div class="header-actions">
-                    <div class="language-selector">
-                        <button class="language-btn" id="languageBtn">
-                            <span id="currentLangFlag">🇮🇩</span>
-                            <span id="currentLangText">Indonesia</span>
-                            <span>▼</span>
-                        </button>
-                        <div class="language-dropdown" id="languageDropdown">
-                            <div class="language-option active" data-lang="id">
-                                <span>🇮🇩</span>
-                                <span>Indonesia</span>
-                            </div>
-                            <div class="language-option" data-lang="en">
-                                <span>🇬🇧</span>
-                                <span>English</span>
-                            </div>
-                            <div class="language-option" data-lang="ar">
-                                <span>🇸🇦</span>
-                                <span>العربية</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="currency-selector">
-                        <button class="currency-btn" id="currencyBtn">
-                            <span id="currentCurrencySymbol">IDR</span>
-                            <span>▼</span>
-                        </button>
-                        <div class="currency-dropdown" id="currencyDropdown">
-                            <div class="currency-option active" data-currency="IDR">
-                                <span>IDR</span>
-                                <span>Rupiah Indonesia</span>
-                            </div>
-                            <div class="currency-option" data-currency="USD">
-                                <span>USD</span>
-                                <span>US Dollar</span>
-                            </div>
-                            <div class="currency-option" data-currency="EGP">
-                                <span>EGP</span>
-                                <span>Egyptian Pound</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="container navbar">
+            <a href="#" class="logo" id="homeLink">TokoBuku Islam</a>
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari judul atau penulis buku...">
             </div>
-            <div class="nav-main">
-                <nav class="nav-links">
-                    <a href="#" class="nav-link active" data-lang-key="nav-home">Beranda</a>
-                    <a href="#" class="nav-link" data-lang-key="nav-books">Buku</a>
-                    <a href="#" class="nav-link" data-lang-key="nav-categories">Kategori</a>
-                    <a href="#" class="nav-link" data-lang-key="nav-publishers">Penerbit</a>
-                    <a href="#" class="nav-link" data-lang-key="nav-about">Tentang Kami</a>
-                    <a href="#" class="nav-link" data-lang-key="nav-contact">Kontak</a>
-                </nav>
-                <div class="search-bar">
-                    <input type="text" placeholder="Cari buku..." data-lang-key="search-placeholder">
-                    <button data-lang-key="search-button">🔍</button>
+            <div class="header-controls">
+                <div class="language-selector">
+                    <select id="languageSelect">
+                        <option value="id">Bahasa Indonesia</option>
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                    </select>
                 </div>
-            </div>
-        </div>
-        
-        <!-- Contact Info Bar -->
-        <div class="contact-bar">
-            <div class="container">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <span>📞</span>
-                        <span data-lang-key="contact-phone">Telepon: <strong id="contactPhone">+62 812 3456 7890</strong></span>
-                    </div>
-                    <div class="contact-item">
-                        <span>📧</span>
-                        <span data-lang-key="contact-email">Email: <strong id="contactEmail">info@tokobukuislam.com</strong></span>
-                    </div>
-                    <div class="contact-item">
-                        <span>📍</span>
-                        <span data-lang-key="contact-address">Alamat: <strong id="contactAddress">Jl. Contoh No. 123, Jakarta, Indonesia</strong></span>
-                    </div>
+                <div class="currency-selector">
+                    <select id="currencySelect">
+                        <option value="IDR">IDR (Rp)</option>
+                        <option value="USD">USD ($)</option>
+                        <option value="EGP">EGP (E£)</option>
+                    </select>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb" id="breadcrumb" style="display: none;">
         <div class="container">
-            <h1 data-lang-key="hero-title">Temukan Buku Berkualitas untuk Kehidupan Islami</h1>
-            <p data-lang-key="hero-description">Jelajahi koleksi buku Islam terbaik dari berbagai penerbit ternama. Dapatkan pengetahuan dan inspirasi untuk memperkaya kehidupan spiritual Anda.</p>
-            <div class="hero-buttons">
-                <button class="btn btn-primary" data-lang-key="hero-btn-books">Jelajahi Buku</button>
-                <button class="btn btn-secondary" data-lang-key="hero-btn-categories">Lihat Kategori</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Content -->
-    <main class="container">
-        <!-- Banner Section -->
-        <section class="section banner-section">
-            <div class="banner-slider" id="bannerSlider">
-                <div class="banner-slide active">
-                    <img src="https://via.placeholder.com/1200x400?text=Banner+1" alt="Banner 1" class="banner-image">
-                    <div class="banner-content">
-                        <h2 class="banner-title" data-lang-key="banner1-title">Diskon Spesial Ramadan</h2>
-                        <p class="banner-description" data-lang-key="banner1-description">Dapatkan diskon hingga 30% untuk semua buku selama bulan Ramadan. Penawaran terbatas!</p>
-                    </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="https://via.placeholder.com/1200x400?text=Banner+2" alt="Banner 2" class="banner-image">
-                    <div class="banner-content">
-                        <h2 class="banner-title" data-lang-key="banner2-title">Buku Baru Tersedia</h2>
-                        <p class="banner-description" data-lang-key="banner2-description">Temukan koleksi buku terbaru dari penerbit ternama. Update pengetahuan Anda dengan bacaan berkualitas.</p>
-                    </div>
-                </div>
-                <div class="banner-slide">
-                    <img src="https://via.placeholder.com/1200x400?text=Banner+3" alt="Banner 3" class="banner-image">
-                    <div class="banner-content">
-                        <h2 class="banner-title" data-lang-key="banner3-title">Gratis Ongkir</h2>
-                        <p class="banner-description" data-lang-key="banner3-description">Gratis ongkos kirim untuk pembelian di atas Rp 500.000. Berlaku untuk seluruh Indonesia.</p>
-                    </div>
-                </div>
-                <button class="banner-nav banner-prev">❮</button>
-                <button class="banner-nav banner-next">❯</button>
-                <div class="banner-dots">
-                    <span class="banner-dot active"></span>
-                    <span class="banner-dot"></span>
-                    <span class="banner-dot"></span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Categories Section -->
-        <section class="section">
-            <div class="section-header">
-                <h2 class="section-title" data-lang-key="categories-title">Kategori Buku</h2>
-                <a href="#" class="view-all" data-lang-key="view-all">Lihat Semua</a>
-            </div>
-            <div class="categories-grid" id="categoriesGrid">
-                <div class="loading" data-lang-key="loading-categories">Memuat kategori...</div>
-            </div>
-        </section>
-
-        <!-- Featured Books Section -->
-        <section class="section">
-            <div class="section-header">
-                <h2 class="section-title" data-lang-key="featured-books-title">Buku Unggulan</h2>
-                <a href="#" class="view-all" data-lang-key="view-all">Lihat Semua</a>
-            </div>
-            <div class="books-grid" id="featuredBooksGrid">
-                <div class="loading" data-lang-key="loading-books">Memuat buku...</div>
-            </div>
-        </section>
-
-        <!-- All Books Section -->
-        <section class="section">
-            <div class="section-header">
-                <h2 class="section-title" data-lang-key="all-books-title">Semua Buku</h2>
-            </div>
-            <div class="books-grid" id="allBooksGrid">
-                <div class="loading" data-lang-key="loading-books">Memuat buku...</div>
-            </div>
-        </section>
-
-        <!-- Publishers Section -->
-        <section class="section">
-            <div class="section-header">
-                <h2 class="section-title" data-lang-key="publishers-title">Penerbit Kami</h2>
-                <a href="#" class="view-all" data-lang-key="view-all">Lihat Semua</a>
-            </div>
-            <div class="publishers-grid" id="publishersGrid">
-                <div class="loading" data-lang-key="loading-publishers">Memuat penerbit...</div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3 data-lang-key="footer-about">Tentang Kami</h3>
-                    <p data-lang-key="footer-about-text">Toko Buku Islam adalah platform terpercaya untuk mendapatkan buku-buku Islam berkualitas dari berbagai penerbit ternama. Kami berkomitmen untuk menyediakan literatur Islami yang dapat memperkaya pengetahuan spiritual Anda.</p>
-                </div>
-                <div class="footer-column">
-                    <h3 data-lang-key="footer-links">Tautan Cepat</h3>
-                    <ul class="footer-links">
-                        <li><a href="#" data-lang-key="nav-home">Beranda</a></li>
-                        <li><a href="#" data-lang-key="nav-books">Buku</a></li>
-                        <li><a href="#" data-lang-key="nav-categories">Kategori</a></li>
-                        <li><a href="#" data-lang-key="nav-publishers">Penerbit</a></li>
-                        <li><a href="#" data-lang-key="nav-about">Tentang Kami</a></li>
-                        <li><a href="#" data-lang-key="nav-contact">Kontak</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3 data-lang-key="footer-contact">Kontak Kami</h3>
-                    <ul class="footer-links">
-                        <li data-lang-key="footer-address">Jl. Contoh No. 123, Jakarta, Indonesia</li>
-                        <li data-lang-key="footer-phone">+62 812 3456 7890</li>
-                        <li data-lang-key="footer-email">info@tokobukuislam.com</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p data-lang-key="footer-copyright">&copy; 2023 Toko Buku Islam. Semua hak dilindungi.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Book Detail Modal -->
-    <div id="bookDetailModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 data-lang-key="book-detail-title">Detail Buku</h2>
-                <button class="close-modal" data-modal="bookDetailModal">&times;</button>
-            </div>
-            <div class="book-detail-grid">
-                <div>
-                    <img id="detailBookImage" src="" alt="Book Cover" class="book-detail-image">
-                </div>
-                <div class="book-detail-info">
-                    <h3 id="detailBookTitle">Judul Buku</h3>
-                    <p id="detailBookAuthor" class="book-author">Penulis</p>
-                    
-                    <div class="book-detail-meta">
-                        <div class="book-detail-meta-item">
-                            <span class="meta-label" data-lang-key="book-publisher">Penerbit</span>
-                            <span class="meta-value" id="detailBookPublisher">-</span>
-                        </div>
-                        <div class="book-detail-meta-item">
-                            <span class="meta-label" data-lang-key="book-category">Kategori</span>
-                            <span class="meta-value" id="detailBookCategory">-</span>
-                        </div>
-                        <div class="book-detail-meta-item">
-                            <span class="meta-label" data-lang-key="book-year">Tahun Terbit</span>
-                            <span class="meta-value" id="detailBookYear">-</span>
-                        </div>
-                        <div class="book-detail-meta-item">
-                            <span class="meta-label" data-lang-key="book-pages">Halaman</span>
-                            <span class="meta-value" id="detailBookPages">-</span>
-                        </div>
-                        <div class="book-detail-meta-item">
-                            <span class="meta-label" data-lang-key="book-cover-type">Jenis Cover</span>
-                            <span class="meta-value" id="detailBookCoverType">-</span>
-                        </div>
-                        <div class="book-detail-meta-item">
-                            <span class="meta-label" data-lang-key="book-paper-type">Jenis Kertas</span>
-                            <span class="meta-value" id="detailBookPaperType">-</span>
-                        </div>
-                        <div class="book-detail-meta-item">
-                            <span class="meta-label" data-lang-key="book-weight">Berat</span>
-                            <span class="meta-value" id="detailBookWeight">-</span>
-                        </div>
-                        <div class="book-detail-meta-item">
-                            <span class="meta-label" data-lang-key="book-volumes">Jilid</span>
-                            <span class="meta-value" id="detailBookVolumes">-</span>
-                        </div>
-                    </div>
-                    
-                    <div class="book-detail-price">
-                        <div class="price-row">
-                            <span class="price-label" data-lang-key="price-base">Harga Dasar</span>
-                            <span class="price-value" id="detailBasePrice">-</span>
-                        </div>
-                        <div class="price-row">
-                            <span class="price-label" data-lang-key="price-discount">Diskon</span>
-                            <span class="price-value" id="detailDiscount">-</span>
-                        </div>
-                        <div class="price-row">
-                            <span class="price-label" data-lang-key="price-final">Harga Akhir</span>
-                            <span class="price-value discounted-price" id="detailFinalPrice">-</span>
-                        </div>
-                    </div>
-                    
-                    <p id="detailBookDescription" class="book-description">Deskripsi buku akan ditampilkan di sini.</p>
-                    
-                    <div class="form-actions">
-                        <button class="btn btn-primary" id="orderBookBtn" data-lang-key="order-book-btn">Pesan Buku Ini</button>
-                        <button class="btn btn-secondary" data-modal="bookDetailModal" data-lang-key="close-btn">Tutup</button>
-                    </div>
-                </div>
-            </div>
+            <ul class="breadcrumb-list">
+                <li class="breadcrumb-item"><a href="#" id="breadcrumbHome">Beranda</a></li>
+                <li class="breadcrumb-item active" id="breadcrumbCurrent"></li>
+            </ul>
         </div>
     </div>
 
-    <!-- Order Form Modal -->
-    <div id="orderFormModal" class="modal">
-        <div class="modal-content" style="max-width: 800px;">
-            <div class="modal-header">
-                <h2 data-lang-key="order-form-title">Form Pemesanan Buku</h2>
-                <button class="close-modal" data-modal="orderFormModal">&times;</button>
+    <main>
+        <section id="banners-section" style="padding: 2rem 0 0 0;">
+            <div class="container">
+                <div id="bannerSlider" class="banner-slider">
+                    <div class="loader-container">
+                        <div class="loader"></div>
+                    </div>
+                </div>
             </div>
-            <form id="orderForm">
-                <input type="hidden" id="orderBookId">
-                <input type="hidden" id="orderBookTitle">
-                
-                <div class="order-book-info" style="display: flex; gap: 1.5rem; margin-bottom: 2rem; padding: 1rem; background: var(--primary-light); border-radius: 8px;">
-                    <img id="orderBookImage" src="" alt="Book Cover" style="width: 100px; height: 120px; object-fit: cover; border-radius: 8px;">
+        </section>
+
+        <!-- Penerbit dipindahkan ke bawah banner -->
+        <section id="publishers-section" class="publishers-section">
+            <div class="container">
+                <h2 class="section-title">Penerbit</h2>
+                <div id="publisherSlider" class="publisher-slider">
+                    <div id="publisherTrack" class="publisher-track">
+                        <!-- Penerbit akan dimuat di sini -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="categories-section">
+            <div class="container">
+                <h2 class="section-title">Jelajahi Kategori</h2>
+                <div id="categoryGrid" class="category-grid">
+                    <div class="loader-container" style="grid-column: 1 / -1;">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products-section" style="background-color: var(--white);">
+            <div class="container">
+                <div id="filterInfo" class="filter-info" style="display: none;">
                     <div>
-                        <h3 id="orderBookTitleText" style="margin-bottom: 0.5rem;"></h3>
-                        <p id="orderBookAuthorText" style="color: #6c757d; margin-bottom: 0.5rem;"></p>
-                        <p id="orderBookPriceText" class="discounted-price" style="font-weight: 600; font-size: 1.1rem;"></p>
+                        <h3 id="filterTitle"></h3>
+                        <p id="filterDescription"></p>
+                    </div>
+                    <button class="clear-filter" id="clearFilter">Hapus Filter</button>
+                </div>
+                <h2 class="section-title" id="productsTitle">Koleksi Buku Terbaru</h2>
+                <div id="productGrid" class="product-grid">
+                    <div class="loader-container" style="grid-column: 1 / -1;">
+                        <div class="loader"></div>
                     </div>
                 </div>
-                
-                <div class="location-permission" id="locationPermission" style="display: none;">
-                    <p data-lang-key="location-permission-text">Izinkan akses lokasi untuk mengisi alamat otomatis</p>
-                    <button type="button" class="btn btn-warning" id="allowLocation" data-lang-key="allow-location">Izinkan Lokasi</button>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="customerName" data-lang-key="order-form-name">Nama Lengkap</label>
-                        <input type="text" id="customerName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="customerEmail" data-lang-key="order-form-email">Email</label>
-                        <input type="email" id="customerEmail" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="customerPhone" data-lang-key="order-form-phone">Nomor Telepon</label>
-                        <input type="tel" id="customerPhone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="orderQuantity" data-lang-key="order-form-quantity">Jumlah</label>
-                        <input type="number" id="orderQuantity" min="1" value="1" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="customerAddress" data-lang-key="order-form-address">Alamat Lengkap</label>
-                    <textarea id="customerAddress" rows="3" required></textarea>
-                    <div class="location-actions">
-                        <button type="button" class="btn-location" id="detectLocation" data-lang-key="detect-location">
-                            📍 Deteksi Lokasi Otomatis
-                        </button>
-                        <button type="button" class="btn-location" id="viewOnMap" data-lang-key="view-on-map" style="display: none;">
-                            🗺️ Lihat di Google Maps
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="orderNotes" data-lang-key="order-form-notes">Catatan (opsional)</label>
-                    <textarea id="orderNotes" rows="2"></textarea>
-                </div>
-                
-                <div class="order-summary" style="background: var(--primary-light); padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0;">
-                    <h3 style="margin-bottom: 1rem;" data-lang-key="order-summary-title">Ringkasan Pesanan</h3>
-                    <div class="price-row">
-                        <span class="price-label" data-lang-key="order-summary-item">Item</span>
-                        <span class="price-value" id="summaryItem">-</span>
-                    </div>
-                    <div class="price-row">
-                        <span class="price-label" data-lang-key="order-summary-quantity">Jumlah</span>
-                        <span class="price-value" id="summaryQuantity">1</span>
-                    </div>
-                    <div class="price-row">
-                        <span class="price-label" data-lang-key="order-summary-price">Harga Satuan</span>
-                        <span class="price-value" id="summaryUnitPrice">-</span>
-                    </div>
-                    <div class="price-row" style="border-top: 2px solid var(--border); padding-top: 1rem;">
-                        <span class="price-label" style="font-weight: 600;" data-lang-key="order-summary-total">Total</span>
-                        <span class="price-value discounted-price" style="font-size: 1.2rem;" id="summaryTotalPrice">-</span>
-                    </div>
-                </div>
-                
-                <div class="whatsapp-options" id="whatsappOptions">
-                    <div class="whatsapp-option" data-option="indonesia">
-                        <h4 data-lang-key="whatsapp-indonesia">WhatsApp Indonesia</h4>
-                        <p data-lang-key="whatsapp-indonesia-desc">Kirim pesan ke nomor WhatsApp Indonesia untuk pemesanan dalam negeri</p>
-                        <div class="whatsapp-number" id="whatsappIndonesiaNumber">+62 812 3456 7890</div>
-                        <button type="button" class="btn btn-success" data-lang-key="confirm-order">Konfirmasi via WhatsApp</button>
-                    </div>
-                    <div class="whatsapp-option" data-option="arab">
-                        <h4 data-lang-key="whatsapp-arab">WhatsApp Arab</h4>
-                        <p data-lang-key="whatsapp-arab-desc">Kirim pesan ke nomor WhatsApp Arab untuk pemesanan internasional</p>
-                        <div class="whatsapp-number" id="whatsappArabNumber">+966 123 456 789</div>
-                        <button type="button" class="btn btn-success" data-lang-key="confirm-order">Konfirmasi via WhatsApp</button>
-                    </div>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" data-modal="orderFormModal" data-lang-key="cancel-btn">Batal</button>
-                </div>
-            </form>
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Toko Buku Islam. Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <button id="modalClose" class="modal-close">&times;</button>
+            <div id="modalBody" class="modal-body"></div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ==================== KONFIGURASI BAHASA ====================
-        const translations = {
-            id: {
-                "top-banner-text": "🚀 Diskon spesial hingga 30% untuk semua buku! Penawaran terbatas.",
-                "site-title": "Toko Buku Islam",
-                "nav-home": "Beranda",
-                "nav-books": "Buku",
-                "nav-categories": "Kategori",
-                "nav-publishers": "Penerbit",
-                "nav-about": "Tentang Kami",
-                "nav-contact": "Kontak",
-                "search-placeholder": "Cari buku...",
-                "search-button": "Cari",
-                "contact-phone": "Telepon:",
-                "contact-email": "Email:",
-                "contact-address": "Alamat:",
-                "hero-title": "Temukan Buku Berkualitas untuk Kehidupan Islami",
-                "hero-description": "Jelajahi koleksi buku Islam terbaik dari berbagai penerbit ternama. Dapatkan pengetahuan dan inspirasi untuk memperkaya kehidupan spiritual Anda.",
-                "hero-btn-books": "Jelajahi Buku",
-                "hero-btn-categories": "Lihat Kategori",
-                "banner1-title": "Diskon Spesial Ramadan",
-                "banner1-description": "Dapatkan diskon hingga 30% untuk semua buku selama bulan Ramadan. Penawaran terbatas!",
-                "banner2-title": "Buku Baru Tersedia",
-                "banner2-description": "Temukan koleksi buku terbaru dari penerbit ternama. Update pengetahuan Anda dengan bacaan berkualitas.",
-                "banner3-title": "Gratis Ongkir",
-                "banner3-description": "Gratis ongkos kirim untuk pembelian di atas Rp 500.000. Berlaku untuk seluruh Indonesia.",
-                "categories-title": "Kategori Buku",
-                "view-all": "Lihat Semua",
-                "featured-books-title": "Buku Unggulan",
-                "all-books-title": "Semua Buku",
-                "publishers-title": "Penerbit Kami",
-                "loading-categories": "Memuat kategori...",
-                "loading-books": "Memuat buku...",
-                "loading-publishers": "Memuat penerbit...",
-                "book-title": "Judul",
-                "book-author": "Penulis",
-                "book-publisher": "Penerbit",
-                "book-category": "Kategori",
-                "book-year": "Tahun Terbit",
-                "book-pages": "Halaman",
-                "book-cover-type": "Jenis Cover",
-                "book-paper-type": "Jenis Kertas",
-                "book-weight": "Berat",
-                "book-volumes": "Jilid",
-                "price-base": "Harga Dasar",
-                "price-discount": "Diskon",
-                "price-final": "Harga Akhir",
-                "order-book-btn": "Pesan Buku Ini",
-                "close-btn": "Tutup",
-                "book-detail-title": "Detail Buku",
-                "order-form-title": "Form Pemesanan Buku",
-                "order-form-name": "Nama Lengkap",
-                "order-form-email": "Email",
-                "order-form-phone": "Nomor Telepon",
-                "order-form-address": "Alamat Lengkap",
-                "order-form-quantity": "Jumlah",
-                "order-form-notes": "Catatan (opsional)",
-                "order-form-submit": "Konfirmasi Pesanan",
-                "cancel-btn": "Batal",
-                "order-summary-title": "Ringkasan Pesanan",
-                "order-summary-item": "Item",
-                "order-summary-quantity": "Jumlah",
-                "order-summary-price": "Harga Satuan",
-                "order-summary-total": "Total",
-                "detect-location": "📍 Deteksi Lokasi Otomatis",
-                "view-on-map": "🗺️ Lihat di Google Maps",
-                "location-permission-text": "Izinkan akses lokasi untuk mengisi alamat otomatis",
-                "allow-location": "Izinkan Lokasi",
-                "whatsapp-indonesia": "WhatsApp Indonesia",
-                "whatsapp-indonesia-desc": "Kirim pesan ke nomor WhatsApp Indonesia untuk pemesanan dalam negeri",
-                "whatsapp-arab": "WhatsApp Arab",
-                "whatsapp-arab-desc": "Kirim pesan ke nomor WhatsApp Arab untuk pemesanan internasional",
-                "confirm-order": "Konfirmasi via WhatsApp",
-                "footer-about": "Tentang Kami",
-                "footer-about-text": "Toko Buku Islam adalah platform terpercaya untuk mendapatkan buku-buku Islam berkualitas dari berbagai penerbit ternama. Kami berkomitmen untuk menyediakan literatur Islami yang dapat memperkaya pengetahuan spiritual Anda.",
-                "footer-links": "Tautan Cepat",
-                "footer-contact": "Kontak Kami",
-                "footer-address": "Jl. Contoh No. 123, Jakarta, Indonesia",
-                "footer-phone": "+62 812 3456 7890",
-                "footer-email": "info@tokobukuislam.com",
-                "footer-copyright": "© 2023 Toko Buku Islam. Semua hak dilindungi."
-            },
-            en: {
-                "top-banner-text": "🚀 Special discount up to 30% on all books! Limited offer.",
-                "site-title": "Islamic Book Store",
-                "nav-home": "Home",
-                "nav-books": "Books",
-                "nav-categories": "Categories",
-                "nav-publishers": "Publishers",
-                "nav-about": "About Us",
-                "nav-contact": "Contact",
-                "search-placeholder": "Search books...",
-                "search-button": "Search",
-                "contact-phone": "Phone:",
-                "contact-email": "Email:",
-                "contact-address": "Address:",
-                "hero-title": "Find Quality Books for Islamic Life",
-                "hero-description": "Explore the best collection of Islamic books from various reputable publishers. Gain knowledge and inspiration to enrich your spiritual life.",
-                "hero-btn-books": "Explore Books",
-                "hero-btn-categories": "View Categories",
-                "banner1-title": "Special Ramadan Discount",
-                "banner1-description": "Get up to 30% discount on all books during Ramadan. Limited offer!",
-                "banner2-title": "New Books Available",
-                "banner2-description": "Discover the latest collection from leading publishers. Update your knowledge with quality reading.",
-                "banner3-title": "Free Shipping",
-                "banner3-description": "Free shipping for purchases above Rp 500,000. Applies to all of Indonesia.",
-                "categories-title": "Book Categories",
-                "view-all": "View All",
-                "featured-books-title": "Featured Books",
-                "all-books-title": "All Books",
-                "publishers-title": "Our Publishers",
-                "loading-categories": "Loading categories...",
-                "loading-books": "Loading books...",
-                "loading-publishers": "Loading publishers...",
-                "book-title": "Title",
-                "book-author": "Author",
-                "book-publisher": "Publisher",
-                "book-category": "Category",
-                "book-year": "Publication Year",
-                "book-pages": "Pages",
-                "book-cover-type": "Cover Type",
-                "book-paper-type": "Paper Type",
-                "book-weight": "Weight",
-                "book-volumes": "Volumes",
-                "price-base": "Base Price",
-                "price-discount": "Discount",
-                "price-final": "Final Price",
-                "order-book-btn": "Order This Book",
-                "close-btn": "Close",
-                "book-detail-title": "Book Details",
-                "order-form-title": "Book Order Form",
-                "order-form-name": "Full Name",
-                "order-form-email": "Email",
-                "order-form-phone": "Phone Number",
-                "order-form-address": "Full Address",
-                "order-form-quantity": "Quantity",
-                "order-form-notes": "Notes (optional)",
-                "order-form-submit": "Confirm Order",
-                "cancel-btn": "Cancel",
-                "order-summary-title": "Order Summary",
-                "order-summary-item": "Item",
-                "order-summary-quantity": "Quantity",
-                "order-summary-price": "Unit Price",
-                "order-summary-total": "Total",
-                "detect-location": "📍 Auto Detect Location",
-                "view-on-map": "🗺️ View on Google Maps",
-                "location-permission-text": "Allow location access to auto-fill address",
-                "allow-location": "Allow Location",
-                "whatsapp-indonesia": "WhatsApp Indonesia",
-                "whatsapp-indonesia-desc": "Send message to Indonesian WhatsApp number for domestic orders",
-                "whatsapp-arab": "WhatsApp Arab",
-                "whatsapp-arab-desc": "Send message to Arab WhatsApp number for international orders",
-                "confirm-order": "Confirm via WhatsApp",
-                "footer-about": "About Us",
-                "footer-about-text": "Islamic Book Store is a trusted platform to get quality Islamic books from various reputable publishers. We are committed to providing Islamic literature that can enrich your spiritual knowledge.",
-                "footer-links": "Quick Links",
-                "footer-contact": "Contact Us",
-                "footer-address": "Example St. No. 123, Jakarta, Indonesia",
-                "footer-phone": "+62 812 3456 7890",
-                "footer-email": "info@islamicbookstore.com",
-                "footer-copyright": "© 2023 Islamic Book Store. All rights reserved."
-            },
-            ar: {
-                "top-banner-text": "🚀 خصم خاص يصل إلى 30٪ على جميع الكتب! عرض محدود.",
-                "site-title": "متجر الكتب الإسلامية",
-                "nav-home": "الرئيسية",
-                "nav-books": "الكتب",
-                "nav-categories": "الفئات",
-                "nav-publishers": "الناشرون",
-                "nav-about": "من نحن",
-                "nav-contact": "اتصل بنا",
-                "search-placeholder": "ابحث عن كتب...",
-                "search-button": "بحث",
-                "contact-phone": "هاتف:",
-                "contact-email": "بريد إلكتروني:",
-                "contact-address": "عنوان:",
-                "hero-title": "ابحث عن كتب عالية الجودة للحياة الإسلامية",
-                "hero-description": "استكشف أفضل مجموعة من الكتب الإسلامية من مختلف الناشرين الموثوقين. اكتسب المعرفة والإلهام لإثراء حياتك الروحية.",
-                "hero-btn-books": "استكشف الكتب",
-                "hero-btn-categories": "عرض الفئات",
-                "banner1-title": "خصم خاص لرمضان",
-                "banner1-description": "احصل على خصم يصل إلى 30٪ على جميع الكتب خلال شهر رمضان. عرض محدود!",
-                "banner2-title": "كتب جديدة متاحة",
-                "banner2-description": "اكتشف أحدث مجموعة من الناشرين الرائدين. قم بتحديث معرفتك بالقراءة عالية الجودة.",
-                "banner3-title": "شحن مجاني",
-                "banner3-description": "شحن مجاني للطلبات التي تزيد عن 500,000 روبية. ينطبق على جميع أنحاء إندونيسيا.",
-                "categories-title": "فئات الكتب",
-                "view-all": "عرض الكل",
-                "featured-books-title": "كتب مميزة",
-                "all-books-title": "جميع الكتب",
-                "publishers-title": "ناشرونا",
-                "loading-categories": "جاري تحميل الفئات...",
-                "loading-books": "جاري تحميل الكتب...",
-                "loading-publishers": "جاري تحميل الناشرين...",
-                "book-title": "العنوان",
-                "book-author": "المؤلف",
-                "book-publisher": "الناشر",
-                "book-category": "الفئة",
-                "book-year": "سنة النشر",
-                "book-pages": "الصفحات",
-                "book-cover-type": "نوع الغلاف",
-                "book-paper-type": "نوع الورق",
-                "book-weight": "الوزن",
-                "book-volumes": "المجلدات",
-                "price-base": "السعر الأساسي",
-                "price-discount": "الخصم",
-                "price-final": "السعر النهائي",
-                "order-book-btn": "اطلب هذا الكتاب",
-                "close-btn": "إغلاق",
-                "book-detail-title": "تفاصيل الكتاب",
-                "order-form-title": "نموذج طلب الكتاب",
-                "order-form-name": "الاسم الكامل",
-                "order-form-email": "البريد الإلكتروني",
-                "order-form-phone": "رقم الهاتف",
-                "order-form-address": "العنوان الكامل",
-                "order-form-quantity": "الكمية",
-                "order-form-notes": "ملاحظات (اختياري)",
-                "order-form-submit": "تأكيد الطلب",
-                "cancel-btn": "إلغاء",
-                "order-summary-title": "ملخص الطلب",
-                "order-summary-item": "العنصر",
-                "order-summary-quantity": "الكمية",
-                "order-summary-price": "سعر الوحدة",
-                "order-summary-total": "المجموع",
-                "detect-location": "📍 الكشف التلقائي عن الموقع",
-                "view-on-map": "🗺️ عرض على خرائط جوجل",
-                "location-permission-text": "اسمح بالوصول إلى الموقع لملء العنوان تلقائيًا",
-                "allow-location": "السماح بالموقع",
-                "whatsapp-indonesia": "واتساب إندونيسيا",
-                "whatsapp-indonesia-desc": "أرسل رسالة إلى رقم واتساب إندونيسيا للطلبات المحلية",
-                "whatsapp-arab": "واتساب العرب",
-                "whatsapp-arab-desc": "أرسل رسالة إلى رقم واتساب العرب للطلبات الدولية",
-                "confirm-order": "تأكيد عبر واتساب",
-                "footer-about": "من نحن",
-                "footer-about-text": "متجر الكتب الإسلامية هو منصة موثوقة للحصول على كتب إسلامية عالية الجودة من مختلف الناشرين الموثوقين. نحن ملتزمون بتوفير الأدب الإسلامي الذي يمكن أن يثري معرفتك الروحية.",
-                "footer-links": "روابط سريعة",
-                "footer-contact": "اتصل بنا",
-                "footer-address": "شارع المثال رقم 123، جاكرتا، إندونيسيا",
-                "footer-phone": "+62 812 3456 7890",
-                "footer-email": "info@islamicbookstore.com",
-                "footer-copyright": "© 2023 متجر الكتب الإسلامية. جميع الحقوق محفوظة."
-            }
-        };
-
-        // ==================== KONFIGURASI MATA UANG ====================
-        const currencySettings = {
-            IDR: { symbol: 'Rp', rate: 1, name: 'Rupiah Indonesia' },
-            USD: { symbol: '$', rate: 0.000067, name: 'US Dollar' },
-            EGP: { symbol: 'E£', rate: 0.0011, name: 'Egyptian Pound' }
-        };
-
-        // ==================== INISIALISASI APLIKASI ====================
         document.addEventListener('DOMContentLoaded', function() {
-            // Konfigurasi Supabase
+            // ==================== KONFIGURASI SUPABASE ====================
             const supabaseUrl = 'https://rfqpsuzmonfmnvthxinb.supabase.co';
             const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmcXBzdXptb25mbW52dGh4aW5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1OTQyMjUsImV4cCI6MjA3NjE3MDIyNX0.gJFzuE-KJrdSoIKMTIDszTdNLDl_sJkIhgo7wmXRGWA';
             const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-            // Variabel global
-            let currentLanguage = 'id';
-            let currentCurrency = 'IDR';
-            let books = [];
+            // ==================== VARIABEL GLOBAL & STATE ====================
+            let allBooks = [];
             let categories = [];
             let publishers = [];
-            let banners = [];
-            let currencyRates = { usd_rate: 15000, egp_rate: 500 };
-            let userLocation = null;
-            let selectedWhatsAppOption = null;
+            let currencySettings = { usd_rate: 16000, egp_rate: 50 }; // Default, akan di-update
+            let currentBannerIndex = 0;
+            let currentPublisherIndex = 0;
+            let currentCurrency = 'IDR';
+            let currentLanguage = 'id';
+            let selectedCategory = null;
+            let selectedPublisher = null;
+            let currentPage = 1;
+            const booksPerPage = 8; // Tambahkan pagination dengan 8 buku per halaman
+            let publisherInterval;
 
-            // ==================== FUNGSI UMUM ====================
-
-            // Fungsi untuk mengubah bahasa
-            function changeLanguage(lang) {
-                currentLanguage = lang;
-                document.documentElement.lang = lang;
+            // ==================== FUNGSI HELPER ====================
+            function formatPrice(price, currency = 'IDR') {
+                let rate = 1, symbol = 'Rp ', locale = 'id-ID';
+                if (currency === 'USD') {
+                    symbol = '$';
+                    locale = 'en-US';
+                    currency = 'USD';
+                    rate = 1;
+                } else if (currency === 'EGP') {
+                    rate = currencySettings.egp_rate;
+                    symbol = 'E£ ';
+                    locale = 'en-EG';
+                    currency = 'EGP';
+                } else { // IDR
+                    rate = currencySettings.usd_rate;
+                    currency = 'IDR';
+                }
                 
-                // Update semua elemen dengan data-lang-key
-                const elements = document.querySelectorAll('[data-lang-key]');
-                elements.forEach(element => {
-                    const key = element.getAttribute('data-lang-key');
-                    if (translations[lang] && translations[lang][key]) {
-                        element.textContent = translations[lang][key];
-                    }
-                });
-                
-                // Refresh tampilan data dengan bahasa baru
-                if (books.length > 0) displayBooks();
-                if (categories.length > 0) displayCategories();
-                if (publishers.length > 0) displayPublishers();
+                return new Intl.NumberFormat(locale, {
+                    style: 'currency',
+                    currency: currency,
+                    minimumFractionDigits: 0
+                }).format(price * rate).replace('IDR', 'Rp').replace('USD', '$').replace('EGP', 'E£');
             }
 
-            // Fungsi untuk mengubah mata uang
-            function changeCurrency(currency) {
-                currentCurrency = currency;
-                
-                // Update tombol mata uang
-                document.getElementById('currentCurrencySymbol').textContent = currency;
-                
-                // Refresh tampilan data dengan mata uang baru
-                if (books.length > 0) displayBooks();
-                if (document.getElementById('bookDetailModal').style.display === 'block') {
-                    updateBookDetailModal();
-                }
-                if (document.getElementById('orderFormModal').style.display === 'block') {
-                    updateOrderSummary();
-                }
-            }
-
-            // Fungsi untuk memformat harga
-            function formatPrice(priceInUSD) {
-                const currency = currencySettings[currentCurrency];
-                
-                let convertedPrice;
-                if (currentCurrency === 'IDR') {
-                    convertedPrice = priceInUSD * currencyRates.usd_rate;
-                } else if (currentCurrency === 'EGP') {
-                    convertedPrice = priceInUSD * currencyRates.egp_rate;
-                } else {
-                    convertedPrice = priceInUSD;
-                }
-                
-                if (currentCurrency === 'IDR') {
-                    return `${currency.symbol} ${Math.round(convertedPrice).toLocaleString('id-ID')}`;
-                } else {
-                    return `${currency.symbol} ${convertedPrice.toFixed(2)}`;
-                }
-            }
-
-            // Fungsi untuk menghitung harga setelah diskon
             function calculateDiscountedPrice(basePrice, discount) {
+                if (!basePrice) return 0;
                 if (!discount) return basePrice;
                 const discountPercent = parseFloat(discount.replace('%', '')) || 0;
                 return basePrice * (1 - discountPercent / 100);
             }
 
-            // ==================== FUNGSI BANNER ====================
-
-            // Inisialisasi slider banner
-            function initBannerSlider() {
-                const slides = document.querySelectorAll('.banner-slide');
-                const dots = document.querySelectorAll('.banner-dot');
-                const prevBtn = document.querySelector('.banner-prev');
-                const nextBtn = document.querySelector('.banner-next');
-                let currentSlide = 0;
-
-                function showSlide(index) {
-                    slides.forEach(slide => slide.classList.remove('active'));
-                    dots.forEach(dot => dot.classList.remove('active'));
-                    
-                    slides[index].classList.add('active');
-                    dots[index].classList.add('active');
-                    currentSlide = index;
-                }
-
-                function nextSlide() {
-                    let nextIndex = (currentSlide + 1) % slides.length;
-                    showSlide(nextIndex);
-                }
-
-                function prevSlide() {
-                    let prevIndex = (currentSlide - 1 + slides.length) % slides.length;
-                    showSlide(prevIndex);
-                }
-
-                // Event listeners
-                nextBtn.addEventListener('click', nextSlide);
-                prevBtn.addEventListener('click', prevSlide);
-                
-                dots.forEach((dot, index) => {
-                    dot.addEventListener('click', () => showSlide(index));
-                });
-
-                // Auto slide setiap 5 detik
-                setInterval(nextSlide, 5000);
+            function navigateToCategory(categoryId) {
+                const url = new URL(window.location);
+                url.searchParams.set('category', categoryId);
+                url.searchParams.delete('publisher');
+                window.location.href = url.toString();
             }
 
-            // ==================== FUNGSI DATA ====================
+            function navigateToPublisher(publisherId) {
+                const url = new URL(window.location);
+                url.searchParams.set('publisher', publisherId);
+                url.searchParams.delete('category');
+                window.location.href = url.toString();
+            }
 
-            // Fungsi untuk memuat data dari Supabase
-            async function loadData() {
-                try {
-                    // Load buku
-                    const { data: booksData, error: booksError } = await supabase
-                        .from('books')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-                    
-                    if (booksError) throw booksError;
-                    books = booksData || [];
-                    
-                    // Load kategori
-                    const { data: categoriesData, error: categoriesError } = await supabase
-                        .from('categories')
-                        .select('*');
-                    
-                    if (categoriesError) throw categoriesError;
-                    categories = categoriesData || [];
-                    
-                    // Load penerbit
-                    const { data: publishersData, error: publishersError } = await supabase
-                        .from('publishers')
-                        .select('*');
-                    
-                    if (publishersError) throw publishersError;
-                    publishers = publishersData || [];
-                    
-                    // Load banner
-                    const { data: bannersData, error: bannersError } = await supabase
-                        .from('banners')
-                        .select('*')
-                        .order('display_order', { ascending: true });
-                    
-                    if (bannersError) throw bannersError;
-                    banners = bannersData || [];
-                    
-                    // Load kurs mata uang
-                    const { data: settingsData, error: settingsError } = await supabase
-                        .from('site_settings')
-                        .select('usd_rate, egp_rate, contact_phone, contact_email, contact_address, whatsapp_indonesia, whatsapp_arab')
-                        .single();
-                    
-                    if (!settingsError && settingsData) {
-                        currencyRates = settingsData;
-                        
-                        // Update informasi kontak
-                        document.getElementById('contactPhone').textContent = settingsData.contact_phone || '+62 812 3456 7890';
-                        document.getElementById('contactEmail').textContent = settingsData.contact_email || 'info@tokobukuislam.com';
-                        document.getElementById('contactAddress').textContent = settingsData.contact_address || 'Jl. Contoh No. 123, Jakarta, Indonesia';
-                        
-                        // Update nomor WhatsApp
-                        document.getElementById('whatsappIndonesiaNumber').textContent = settingsData.whatsapp_indonesia || '+62 812 3456 7890';
-                        document.getElementById('whatsappArabNumber').textContent = settingsData.whatsapp_arab || '+966 123 456 789';
-                    }
-                    
-                    // Tampilkan data
-                    displayCategories();
-                    displayBooks();
-                    displayPublishers();
-                    
-                } catch (error) {
-                    console.error('Error loading data:', error);
+            function navigateToHome() {
+                const url = new URL(window.location);
+                url.searchParams.delete('category');
+                url.searchParams.delete('publisher');
+                window.location.href = url.toString();
+            }
+
+            function updateBreadcrumb(filterType, filterName) {
+                const breadcrumb = document.getElementById('breadcrumb');
+                const breadcrumbCurrent = document.getElementById('breadcrumbCurrent');
+                
+                if (filterType) {
+                    breadcrumb.style.display = 'block';
+                    breadcrumbCurrent.textContent = filterName;
+                } else {
+                    breadcrumb.style.display = 'none';
                 }
             }
 
-            // Fungsi untuk menampilkan kategori
-            function displayCategories() {
-                const categoriesGrid = document.getElementById('categoriesGrid');
+            function updateFilterInfo(filterType, filterName, description) {
+                const filterInfo = document.getElementById('filterInfo');
+                const filterTitle = document.getElementById('filterTitle');
+                const filterDescription = document.getElementById('filterDescription');
+                const productsTitle = document.getElementById('productsTitle');
                 
-                if (categories.length === 0) {
-                    categoriesGrid.innerHTML = '<div class="loading" data-lang-key="loading-categories">Memuat kategori...</div>';
+                if (filterType) {
+                    filterInfo.style.display = 'flex';
+                    filterTitle.textContent = filterName;
+                    filterDescription.textContent = description;
+                    productsTitle.textContent = `Buku ${filterName}`;
+                } else {
+                    filterInfo.style.display = 'none';
+                    productsTitle.textContent = 'Koleksi Buku Terbaru';
+                }
+            }
+
+            // ==================== FUNGSI FETCH DATA ====================
+            async function fetchCurrency() {
+                const { data, error } = await supabase.from('site_settings').select('usd_rate, egp_rate').single();
+                if (!error && data) {
+                    currencySettings = { usd_rate: data.usd_rate, egp_rate: data.egp_rate };
+                }
+            }
+            
+            async function fetchBanners() {
+                const { data, error } = await supabase.from('banners').select('*').order('display_order', { ascending: true });
+                if (!error && data) {
+                    renderBanners(data);
+                } else {
+                    document.getElementById('bannerSlider').innerHTML = '<p>Gagal memuat banner.</p>';
+                }
+            }
+            
+            async function fetchCategories() {
+                const { data, error } = await supabase.from('categories').select('*');
+                if (!error && data) {
+                    categories = data;
+                    renderCategories(data);
+                } else {
+                    document.getElementById('categoryGrid').innerHTML = '<p>Gagal memuat kategori.</p>';
+                }
+            }
+
+            async function fetchPublishers() {
+                const { data, error } = await supabase.from('publishers').select('*');
+                if (!error && data) {
+                    publishers = data;
+                    renderPublishers(data);
+                    startPublisherSlider();
+                } else {
+                    document.getElementById('publisherTrack').innerHTML = '<p>Gagal memuat penerbit.</p>';
+                }
+            }
+
+            async function fetchBooks() {
+                // Mengambil data buku dan sekaligus data publisher terkait
+                const { data, error } = await supabase.from('books').select('*, publishers(name)');
+                if (!error && data) {
+                    allBooks = data;
+                    checkUrlParams();
+                } else {
+                    document.getElementById('productGrid').innerHTML = '<p>Gagal memuat data buku.</p>';
+                }
+            }
+            
+            // ==================== FUNGSI RENDER TAMPILAN ====================
+            function renderBanners(banners) {
+                const slider = document.getElementById('bannerSlider');
+                if (!banners || banners.length === 0) {
+                    slider.innerHTML = '<p>Tidak ada banner tersedia.</p>';
                     return;
                 }
                 
-                categoriesGrid.innerHTML = categories.map(category => `
-                    <div class="category-card" data-category-id="${category.id}">
-                        <img src="${category.image_url || 'https://via.placeholder.com/200x150?text=Kategori'}" alt="${category.name_id}" class="category-image">
-                        <div class="category-content">
-                            <h3 class="category-name">${currentLanguage === 'id' ? category.name_id : currentLanguage === 'en' ? category.name_en : category.name_ar}</h3>
-                            <p class="category-count">${books.filter(book => book.category_id === category.id).length} buku</p>
-                        </div>
+                slider.innerHTML = banners.map((banner, index) => `
+                    <div class="banner-slide ${index === 0 ? 'active' : ''}">
+                        <img src="${banner.image_url}" alt="${banner.title}">
                     </div>
                 `).join('');
                 
-                // Event listener untuk filter berdasarkan kategori
-                document.querySelectorAll('.category-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const categoryId = card.getAttribute('data-category-id');
-                        filterBooksByCategory(categoryId);
-                    });
-                });
+                // Start the slider functionality
+                setInterval(() => {
+                    const slides = document.querySelectorAll('.banner-slide');
+                    slides[currentBannerIndex].classList.remove('active');
+                    currentBannerIndex = (currentBannerIndex + 1) % slides.length;
+                    slides[currentBannerIndex].classList.add('active');
+                }, 5000); // Ganti banner setiap 5 detik
             }
-
-            // Fungsi untuk menampilkan buku
-            function displayBooks() {
-                const featuredBooksGrid = document.getElementById('featuredBooksGrid');
-                const allBooksGrid = document.getElementById('allBooksGrid');
-                
-                if (books.length === 0) {
-                    featuredBooksGrid.innerHTML = '<div class="loading" data-lang-key="loading-books">Memuat buku...</div>';
-                    allBooksGrid.innerHTML = '<div class="loading" data-lang-key="loading-books">Memuat buku...</div>';
+            
+            function renderCategories(cats) {
+                const grid = document.getElementById('categoryGrid');
+                if (!cats || cats.length === 0) {
+                    grid.innerHTML = '<p>Tidak ada kategori tersedia.</p>';
                     return;
                 }
-                
-                // Tampilkan buku unggulan (6 buku pertama)
-                const featuredBooks = books.slice(0, 6);
-                featuredBooksGrid.innerHTML = featuredBooks.map(book => createBookCard(book)).join('');
-                
-                // Tampilkan semua buku
-                allBooksGrid.innerHTML = books.map(book => createBookCard(book)).join('');
-                
-                // Tambahkan event listener untuk tombol detail dan pesan
-                document.querySelectorAll('.btn-detail').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const bookId = btn.closest('.book-card').getAttribute('data-book-id');
-                        showBookDetail(bookId);
-                    });
-                });
-                
-                document.querySelectorAll('.btn-order').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const bookId = btn.closest('.book-card').getAttribute('data-book-id');
-                        showOrderForm(bookId);
+                grid.innerHTML = cats.map(cat => `
+                    <div class="category-card" data-category-id="${cat.id}" style="border-top: 5px solid ${cat.color};">
+                        <div class="category-card-icon" style="background-color: ${cat.color};">
+                            <img src="${cat.image_url || 'https://via.placeholder.com/40'}" alt="${cat.name_id}">
+                        </div>
+                        <h3>${cat.name_id}</h3>
+                    </div>
+                `).join('');
+
+                // Tambahkan event listener untuk navigasi kategori
+                document.querySelectorAll('.category-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const catId = card.dataset.categoryId;
+                        navigateToCategory(catId);
                     });
                 });
             }
 
-            // Fungsi untuk membuat kartu buku
-            function createBookCard(book) {
-                const publisher = publishers.find(p => p.id === book.publisher_id);
-                const category = categories.find(c => c.id === book.category_id);
+            function renderPublishers(pubs) {
+                const track = document.getElementById('publisherTrack');
+                if (!pubs || pubs.length === 0) {
+                    track.innerHTML = '<p>Tidak ada penerbit tersedia.</p>';
+                    return;
+                }
+                track.innerHTML = pubs.map(pub => `
+                    <div class="publisher-slide">
+                        <div class="publisher-card" data-publisher-id="${pub.id}">
+                            <div class="publisher-card-icon">
+                                <img src="${pub.logo_url || 'https://via.placeholder.com/80'}" alt="${pub.name}">
+                            </div>
+                            <h3>${pub.name}</h3>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Tambahkan event listener untuk navigasi penerbit
+                document.querySelectorAll('.publisher-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const pubId = card.dataset.publisherId;
+                        navigateToPublisher(pubId);
+                    });
+                });
+            }
+
+            function startPublisherSlider() {
+                // Hentikan interval sebelumnya jika ada
+                if (publisherInterval) {
+                    clearInterval(publisherInterval);
+                }
                 
-                const basePrice = book.base_price || 0;
-                const discount = book.discount || '0';
-                const discountPercent = parseFloat(discount.replace('%', '')) || 0;
-                const finalPrice = calculateDiscountedPrice(basePrice, discount);
+                const track = document.getElementById('publisherTrack');
+                const slides = document.querySelectorAll('.publisher-slide');
+                const totalSlides = slides.length;
+                const slidesPerView = 5; // Jumlah slide yang terlihat sekaligus
                 
-                return `
-                    <div class="book-card" data-book-id="${book.id}">
-                        <img src="${book.cover_image_url || 'https://via.placeholder.com/280x250?text=Buku'}" alt="${book.title}" class="book-image">
-                        <div class="book-content">
-                            <h3 class="book-title">${book.title}</h3>
-                            <p class="book-author">${book.author}</p>
-                            <div class="book-meta">
-                                <div class="book-meta-item">
-                                    <span>📚</span>
-                                    <span>${publisher ? publisher.name : '-'}</span>
+                // Reset posisi
+                currentPublisherIndex = 0;
+                updatePublisherSlider();
+                
+                // Mulai slider otomatis
+                publisherInterval = setInterval(() => {
+                    currentPublisherIndex = (currentPublisherIndex + 1) % totalSlides;
+                    updatePublisherSlider();
+                }, 3000); // Ganti setiap 3 detik
+            }
+            
+            function updatePublisherSlider() {
+                const track = document.getElementById('publisherTrack');
+                const slides = document.querySelectorAll('.publisher-slide');
+                const slideWidth = slides[0].offsetWidth;
+                
+                // Geser track ke posisi yang sesuai
+                track.style.transform = `translateX(-${currentPublisherIndex * slideWidth}px)`;
+            }
+
+            function checkUrlParams() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const categoryId = urlParams.get('category');
+                const publisherId = urlParams.get('publisher');
+                
+                if (categoryId) {
+                    const category = categories.find(c => c.id == categoryId);
+                    if (category) {
+                        selectedCategory = categoryId;
+                        updateBreadcrumb('category', category.name_id);
+                        updateFilterInfo('category', category.name_id, `Menampilkan buku dari kategori ${category.name_id}`);
+                    }
+                } else if (publisherId) {
+                    const publisher = publishers.find(p => p.id == publisherId);
+                    if (publisher) {
+                        selectedPublisher = publisherId;
+                        updateBreadcrumb('publisher', publisher.name);
+                        updateFilterInfo('publisher', publisher.name, `Menampilkan buku dari penerbit ${publisher.name}`);
+                    }
+                }
+                
+                currentPage = 1;
+                filterAndRenderBooks();
+            }
+
+            function filterAndRenderBooks(searchTerm = '') {
+                let filteredBooks = allBooks.filter(book => 
+                    (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    book.author.toLowerCase().includes(searchTerm.toLowerCase())) &&
+                    (!selectedCategory || book.category_id === parseInt(selectedCategory)) &&
+                    (!selectedPublisher || book.publisher_id === parseInt(selectedPublisher))
+                );
+
+                const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+                const paginatedBooks = filteredBooks.slice((currentPage - 1) * booksPerPage, currentPage * booksPerPage);
+
+                renderBooks(paginatedBooks);
+                renderPagination(totalPages);
+            }
+
+            function renderBooks(books) {
+                const grid = document.getElementById('productGrid');
+                if (!books || books.length === 0) {
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Tidak ada buku yang ditemukan.</p>';
+                    return;
+                }
+                grid.innerHTML = books.map(book => {
+                    const basePrice = book.base_price;
+                    const originalPrice = book.original_price || basePrice; // Use original if available
+                    const finalPrice = calculateDiscountedPrice(basePrice, book.discount);
+                    const discountPercent = parseFloat(book.discount?.replace('%', '')) || 0;
+
+                    return `
+                        <div class="product-card" data-book-id="${book.id}">
+                            <div class="product-image">
+                                <img src="${book.cover_image_url || 'https://via.placeholder.com/300x400.png?text=No+Image'}" alt="${book.title}">
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">${book.title}</h3>
+                                <p class="product-author">oleh ${book.author}</p>
+                                <div class="product-pricing">
+                                    <span class="final-price">${formatPrice(finalPrice, currentCurrency)}</span>
+                                    ${discountPercent > 0 || originalPrice > basePrice ? `<span class="original-price">${formatPrice(originalPrice, currentCurrency)}</span>` : ''}
+                                    ${discountPercent > 0 ? `<span class="discount-badge">-${discountPercent}%</span>` : ''}
                                 </div>
-                                <div class="book-meta-item">
-                                    <span>🏷️</span>
-                                    <span>${category ? (currentLanguage === 'id' ? category.name_id : currentLanguage === 'en' ? category.name_en : category.name_ar) : '-'}</span>
-                                </div>
                             </div>
-                            <div class="book-price">
-                                ${discountPercent > 0 ? `
-                                    <span class="price-original">${formatPrice(basePrice)}</span>
-                                    <span class="discount-badge">-${discountPercent}%</span>
-                                ` : ''}
-                                <span class="price-final">${formatPrice(finalPrice)}</span>
-                            </div>
-                            <div class="book-actions">
-                                <button class="btn btn-order" data-lang-key="order-book-btn">Pesan</button>
-                                <button class="btn btn-detail" data-lang-key="detail-btn">Detail</button>
-                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Tambahkan event listener setelah card dirender
+                document.querySelectorAll('.product-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const bookId = card.dataset.bookId;
+                        openProductModal(bookId);
+                    });
+                });
+            }
+
+            function renderPagination(totalPages) {
+                const pagination = document.getElementById('pagination');
+                pagination.innerHTML = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.textContent = i;
+                    if (i === currentPage) btn.classList.add('active');
+                    btn.addEventListener('click', () => {
+                        currentPage = i;
+                        filterAndRenderBooks(document.getElementById('searchInput').value);
+                    });
+                    pagination.appendChild(btn);
+                }
+            }
+
+            function renderModalContent(book) {
+                const modalBody = document.getElementById('modalBody');
+                const basePrice = book.base_price;
+                const originalPrice = book.original_price || basePrice;
+                const finalPrice = calculateDiscountedPrice(basePrice, book.discount);
+                const discountPercent = parseFloat(book.discount?.replace('%', '')) || 0;
+
+                modalBody.innerHTML = `
+                    <div class="modal-image">
+                        <img src="${book.cover_image_url || 'https://via.placeholder.com/300x400.png?text=No+Image'}" alt="${book.title}">
+                    </div>
+                    <div class="modal-info">
+                        <h2>${book.title}</h2>
+                        <p class="author">oleh <strong>${book.author}</strong></p>
+                        <p class="publisher">Penerbit: <strong>${book.publishers ? book.publishers.name : 'N/A'}</strong></p>
+                        
+                        <div class="pricing">
+                            <span class="final-price">${formatPrice(finalPrice, currentCurrency)}</span>
+                            ${discountPercent > 0 || originalPrice > basePrice ? `<span class="original-price">${formatPrice(originalPrice, currentCurrency)}</span>` : ''}
+                            ${discountPercent > 0 ? `<span class="discount-badge">-${discountPercent}%</span>` : ''}
+                        </div>
+                        
+                        <p class="description">${book.description || 'Tidak ada deskripsi tersedia.'}</p>
+                        
+                        <div class="details-grid">
+                            ${book.pages ? `<div class="detail-item"><strong>Halaman:</strong> ${book.pages}</div>` : ''}
+                            ${book.year ? `<div class="detail-item"><strong>Tahun Terbit:</strong> ${book.year}</div>` : ''}
+                            ${book.weight_value ? `<div class="detail-item"><strong>Berat:</strong> ${book.weight_value} ${book.weight_unit}</div>` : ''}
+                            ${book.cover_type ? `<div class="detail-item"><strong>Jenis Cover:</strong> ${book.cover_type}</div>` : ''}
+                            ${book.paper_type ? `<div class="detail-item"><strong>Jenis Kertas:</strong> ${book.paper_type}</div>` : ''}
+                            ${book.volumes ? `<div class="detail-item"><strong>Jumlah Jilid:</strong> ${book.volumes}</div>` : ''}
+                            ${book.text_color ? `<div class="detail-item"><strong>Warna Tulisan:</strong> ${book.text_color}</div>` : ''}
+                            ${book.print_count ? `<div class="detail-item"><strong>Cetakan Ke:</strong> ${book.print_count}</div>` : ''}
+                            ${book.editor ? `<div class="detail-item"><strong>Editor:</strong> ${book.editor}</div>` : ''}
+                            ${book.isbn ? `<div class="detail-item"><strong>ISBN:</strong> ${book.isbn}</div>` : ''}
+                            ${book.dimensions ? `<div class="detail-item"><strong>Dimensi:</strong> ${book.dimensions}</div>` : ''}
+                            ${book.language ? `<div class="detail-item"><strong>Bahasa:</strong> ${book.language}</div>` : ''}
+                            ${book.translator ? `<div class="detail-item"><strong>Penerjemah:</strong> ${book.translator}</div>` : ''}
+                            ${book.reviewer ? `<div class="detail-item"><strong>Peninjau:</strong> ${book.reviewer}</div>` : ''}
+                        </div>
+
+                        <div style="margin-top: 2rem;">
+                            <a href="#" class="btn-buy">🛒 Beli Sekarang</a>
+                            <a href="#" class="btn-add-to-cart">➕ Tambah ke Keranjang</a>
                         </div>
                     </div>
                 `;
             }
 
-            // Fungsi untuk menampilkan penerbit
-            function displayPublishers() {
-                const publishersGrid = document.getElementById('publishersGrid');
-                
-                if (publishers.length === 0) {
-                    publishersGrid.innerHTML = '<div class="loading" data-lang-key="loading-publishers">Memuat penerbit...</div>';
-                    return;
-                }
-                
-                publishersGrid.innerHTML = publishers.map(publisher => `
-                    <div class="publisher-card" data-publisher-id="${publisher.id}">
-                        <img src="${publisher.logo_url || 'https://via.placeholder.com/80x80?text=Logo'}" alt="${publisher.name}" class="publisher-logo">
-                        <h3 class="publisher-name">${publisher.name}</h3>
-                        ${publisher.discount ? `<p class="publisher-discount">${publisher.discount}</p>` : ''}
-                    </div>
-                `).join('');
-                
-                // Event listener untuk filter berdasarkan penerbit
-                document.querySelectorAll('.publisher-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const publisherId = card.getAttribute('data-publisher-id');
-                        filterBooksByPublisher(publisherId);
-                    });
-                });
-            }
+            // ==================== FUNGSI MODAL & PENCARIAN ====================
+            const productModal = document.getElementById('productModal');
+            const modalCloseBtn = document.getElementById('modalClose');
 
-            // Fungsi untuk filter buku berdasarkan kategori
-            function filterBooksByCategory(categoryId) {
-                const filteredBooks = books.filter(book => book.category_id === categoryId);
-                const allBooksGrid = document.getElementById('allBooksGrid');
-                
-                if (filteredBooks.length === 0) {
-                    allBooksGrid.innerHTML = '<div class="loading">Tidak ada buku dalam kategori ini.</div>';
-                } else {
-                    allBooksGrid.innerHTML = filteredBooks.map(book => createBookCard(book)).join('');
-                    
-                    // Tambahkan event listener untuk tombol detail dan pesan
-                    document.querySelectorAll('.btn-detail').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            const bookId = btn.closest('.book-card').getAttribute('data-book-id');
-                            showBookDetail(bookId);
-                        });
-                    });
-                    
-                    document.querySelectorAll('.btn-order').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            const bookId = btn.closest('.book-card').getAttribute('data-book-id');
-                            showOrderForm(bookId);
-                        });
-                    });
-                }
-                
-                // Scroll ke bagian buku
-                document.getElementById('allBooksGrid').scrollIntoView({ behavior: 'smooth' });
-            }
-
-            // Fungsi untuk filter buku berdasarkan penerbit
-            function filterBooksByPublisher(publisherId) {
-                const filteredBooks = books.filter(book => book.publisher_id === publisherId);
-                const allBooksGrid = document.getElementById('allBooksGrid');
-                
-                if (filteredBooks.length === 0) {
-                    allBooksGrid.innerHTML = '<div class="loading">Tidak ada buku dari penerbit ini.</div>';
-                } else {
-                    allBooksGrid.innerHTML = filteredBooks.map(book => createBookCard(book)).join('');
-                    
-                    // Tambahkan event listener untuk tombol detail dan pesan
-                    document.querySelectorAll('.btn-detail').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            const bookId = btn.closest('.book-card').getAttribute('data-book-id');
-                            showBookDetail(bookId);
-                        });
-                    });
-                    
-                    document.querySelectorAll('.btn-order').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            const bookId = btn.closest('.book-card').getAttribute('data-book-id');
-                            showOrderForm(bookId);
-                        });
-                    });
-                }
-                
-                // Scroll ke bagian buku
-                document.getElementById('allBooksGrid').scrollIntoView({ behavior: 'smooth' });
-            }
-
-            // ==================== FUNGSI LOKASI ====================
-
-            // Fungsi untuk meminta izin lokasi
-            function requestLocationPermission() {
-                if (!navigator.geolocation) {
-                    alert('Browser Anda tidak mendukung geolocation.');
-                    return;
-                }
-                
-                document.getElementById('locationPermission').style.display = 'block';
-            }
-
-            // Fungsi untuk mendapatkan lokasi pengguna
-            function getUserLocation() {
-                return new Promise((resolve, reject) => {
-                    if (!navigator.geolocation) {
-                        reject(new Error('Browser tidak mendukung geolocation'));
-                        return;
-                    }
-                    
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const { latitude, longitude } = position.coords;
-                            resolve({ latitude, longitude });
-                        },
-                        (error) => {
-                            reject(error);
-                        },
-                        {
-                            enableHighAccuracy: true,
-                            timeout: 10000,
-                            maximumAge: 60000
-                        }
-                    );
-                });
-            }
-
-            // Fungsi untuk mendapatkan alamat dari koordinat
-            async function getAddressFromCoordinates(lat, lng) {
-                try {
-                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
-                    const data = await response.json();
-                    
-                    if (data && data.display_name) {
-                        return data.display_name;
-                    } else {
-                        throw new Error('Tidak dapat menemukan alamat');
-                    }
-                } catch (error) {
-                    console.error('Error getting address:', error);
-                    throw error;
+            async function openProductModal(bookId) {
+                const book = allBooks.find(b => b.id == bookId);
+                if (book) {
+                    renderModalContent(book);
+                    productModal.classList.add('active');
                 }
             }
 
-            // Fungsi untuk mendeteksi lokasi otomatis
-            async function detectLocation() {
-                try {
-                    document.getElementById('detectLocation').textContent = 'Mendeteksi lokasi...';
-                    document.getElementById('detectLocation').disabled = true;
-                    
-                    const position = await getUserLocation();
-                    const address = await getAddressFromCoordinates(position.latitude, position.longitude);
-                    
-                    document.getElementById('customerAddress').value = address;
-                    userLocation = {
-                        latitude: position.latitude,
-                        longitude: position.longitude,
-                        address: address
-                    };
-                    
-                    // Tampilkan tombol lihat di Google Maps
-                    document.getElementById('viewOnMap').style.display = 'inline-block';
-                    
-                    // Sembunyikan permintaan izin lokasi
-                    document.getElementById('locationPermission').style.display = 'none';
-                    
-                    alert('Lokasi berhasil dideteksi!');
-                } catch (error) {
-                    console.error('Error detecting location:', error);
-                    alert('Gagal mendeteksi lokasi. Silakan izinkan akses lokasi atau isi alamat manual.');
-                } finally {
-                    document.getElementById('detectLocation').textContent = '📍 Deteksi Lokasi Otomatis';
-                    document.getElementById('detectLocation').disabled = false;
-                }
+            function closeProductModal() {
+                productModal.classList.remove('active');
             }
 
-            // Fungsi untuk membuka Google Maps
-            function openGoogleMaps() {
-                if (!userLocation) {
-                    alert('Silakan deteksi lokasi terlebih dahulu.');
-                    return;
-                }
-                
-                const { latitude, longitude } = userLocation;
-                const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
-                window.open(mapsUrl, '_blank');
-            }
-
-            // ==================== FUNGSI WHATSAPP ====================
-
-            // Fungsi untuk memilih opsi WhatsApp
-            function selectWhatsAppOption(option) {
-                selectedWhatsAppOption = option;
-                
-                // Hapus kelas selected dari semua opsi
-                document.querySelectorAll('.whatsapp-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                
-                // Tambahkan kelas selected ke opsi yang dipilih
-                document.querySelector(`.whatsapp-option[data-option="${option}"]`).classList.add('selected');
-            }
-
-            // Fungsi untuk mengirim pesan WhatsApp
-            function sendWhatsAppMessage() {
-                if (!selectedWhatsAppOption) {
-                    alert('Silakan pilih opsi WhatsApp terlebih dahulu.');
-                    return;
-                }
-                
-                const bookId = document.getElementById('orderBookId').value;
-                const book = books.find(b => b.id === bookId);
-                if (!book) return;
-                
-                const basePrice = book.base_price || 0;
-                const discount = book.discount || '0';
-                const finalPrice = calculateDiscountedPrice(basePrice, discount);
-                const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
-                const totalPrice = finalPrice * quantity;
-                
-                const customerName = document.getElementById('customerName').value;
-                const customerPhone = document.getElementById('customerPhone').value;
-                const customerEmail = document.getElementById('customerEmail').value;
-                const customerAddress = document.getElementById('customerAddress').value;
-                const orderNotes = document.getElementById('orderNotes').value;
-                
-                // Tentukan nomor WhatsApp berdasarkan pilihan
-                let phoneNumber;
-                if (selectedWhatsAppOption === 'indonesia') {
-                    phoneNumber = document.getElementById('whatsappIndonesiaNumber').textContent.replace(/\s/g, '');
-                } else {
-                    phoneNumber = document.getElementById('whatsappArabNumber').textContent.replace(/\s/g, '');
-                }
-                
-                // Buat pesan
-                let message = '';
-                
-                if (currentLanguage === 'id') {
-                    message = `Halo, saya ingin memesan buku:\n\n` +
-                             `*Judul Buku:* ${book.title}\n` +
-                             `*Penulis:* ${book.author}\n` +
-                             `*Jumlah:* ${quantity}\n` +
-                             `*Harga Satuan:* ${formatPrice(finalPrice)}\n` +
-                             `*Total Harga:* ${formatPrice(totalPrice)}\n\n` +
-                             `*Data Pemesan:*\n` +
-                             `Nama: ${customerName}\n` +
-                             `Telepon: ${customerPhone}\n` +
-                             `Email: ${customerEmail}\n` +
-                             `Alamat: ${customerAddress}\n` +
-                             `Catatan: ${orderNotes || '-'}\n\n`;
-                             
-                    if (userLocation) {
-                        message += `Lokasi: https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}\n\n`;
-                    }
-                    
-                    message += `Terima kasih!`;
-                } else if (currentLanguage === 'en') {
-                    message = `Hello, I would like to order a book:\n\n` +
-                             `*Book Title:* ${book.title}\n` +
-                             `*Author:* ${book.author}\n` +
-                             `*Quantity:* ${quantity}\n` +
-                             `*Unit Price:* ${formatPrice(finalPrice)}\n` +
-                             `*Total Price:* ${formatPrice(totalPrice)}\n\n` +
-                             `*Customer Data:*\n` +
-                             `Name: ${customerName}\n` +
-                             `Phone: ${customerPhone}\n` +
-                             `Email: ${customerEmail}\n` +
-                             `Address: ${customerAddress}\n` +
-                             `Notes: ${orderNotes || '-'}\n\n`;
-                             
-                    if (userLocation) {
-                        message += `Location: https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}\n\n`;
-                    }
-                    
-                    message += `Thank you!`;
-                } else if (currentLanguage === 'ar') {
-                    message = `مرحباً، أود طلب كتاب:\n\n` +
-                             `*عنوان الكتاب:* ${book.title}\n` +
-                             `*المؤلف:* ${book.author}\n` +
-                             `*الكمية:* ${quantity}\n` +
-                             `*سعر الوحدة:* ${formatPrice(finalPrice)}\n` +
-                             `*السعر الإجمالي:* ${formatPrice(totalPrice)}\n\n` +
-                             `*بيانات العميل:*\n` +
-                             `الاسم: ${customerName}\n` +
-                             `الهاتف: ${customerPhone}\n` +
-                             `البريد الإلكتروني: ${customerEmail}\n` +
-                             `العنوان: ${customerAddress}\n` +
-                             `ملاحظات: ${orderNotes || '-'}\n\n`;
-                             
-                    if (userLocation) {
-                        message += `الموقع: https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}\n\n`;
-                    }
-                    
-                    message += `شكراً!`;
-                }
-                
-                // Encode pesan untuk URL
-                const encodedMessage = encodeURIComponent(message);
-                
-                // Buat URL WhatsApp
-                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-                
-                // Buka WhatsApp
-                window.open(whatsappUrl, '_blank');
-                
-                // Tutup modal
-                document.getElementById('orderFormModal').style.display = 'none';
-            }
-
-            // ==================== FUNGSI MODAL ====================
-
-            // Fungsi untuk menampilkan modal detail buku
-            function showBookDetail(bookId) {
-                const book = books.find(b => b.id === bookId);
-                if (!book) return;
-                
-                const publisher = publishers.find(p => p.id === book.publisher_id);
-                const category = categories.find(c => c.id === book.category_id);
-                
-                const basePrice = book.base_price || 0;
-                const discount = book.discount || '0';
-                const discountPercent = parseFloat(discount.replace('%', '')) || 0;
-                const finalPrice = calculateDiscountedPrice(basePrice, discount);
-                
-                // Isi data ke modal
-                document.getElementById('detailBookImage').src = book.cover_image_url || 'https://via.placeholder.com/400x500?text=Buku';
-                document.getElementById('detailBookTitle').textContent = book.title;
-                document.getElementById('detailBookAuthor').textContent = book.author;
-                document.getElementById('detailBookPublisher').textContent = publisher ? publisher.name : '-';
-                document.getElementById('detailBookCategory').textContent = category ? (currentLanguage === 'id' ? category.name_id : currentLanguage === 'en' ? category.name_en : category.name_ar) : '-';
-                document.getElementById('detailBookYear').textContent = book.year || '-';
-                document.getElementById('detailBookPages').textContent = book.pages || '-';
-                document.getElementById('detailBookCoverType').textContent = book.cover_type || '-';
-                document.getElementById('detailBookPaperType').textContent = book.paper_type || '-';
-                document.getElementById('detailBookWeight').textContent = book.weight_value && book.weight_unit ? `${book.weight_value} ${book.weight_unit}` : '-';
-                document.getElementById('detailBookVolumes').textContent = book.volumes || '-';
-                document.getElementById('detailBookDescription').textContent = book.description || 'Tidak ada deskripsi tersedia.';
-                
-                // Update harga
-                updateBookDetailModal();
-                
-                // Set data untuk tombol pesan
-                document.getElementById('orderBookBtn').setAttribute('data-book-id', book.id);
-                
-                // Tampilkan modal
-                document.getElementById('bookDetailModal').style.display = 'block';
-            }
-
-            // Fungsi untuk memperbarui harga di modal detail buku
-            function updateBookDetailModal() {
-                const bookId = document.getElementById('orderBookBtn').getAttribute('data-book-id');
-                const book = books.find(b => b.id === bookId);
-                if (!book) return;
-                
-                const basePrice = book.base_price || 0;
-                const discount = book.discount || '0';
-                const discountPercent = parseFloat(discount.replace('%', '')) || 0;
-                const finalPrice = calculateDiscountedPrice(basePrice, discount);
-                
-                document.getElementById('detailBasePrice').textContent = formatPrice(basePrice);
-                document.getElementById('detailDiscount').textContent = discountPercent > 0 ? `${discountPercent}%` : '-';
-                document.getElementById('detailFinalPrice').textContent = formatPrice(finalPrice);
-            }
-
-            // Fungsi untuk menampilkan form pemesanan
-            function showOrderForm(bookId) {
-                const book = books.find(b => b.id === bookId);
-                if (!book) return;
-                
-                const publisher = publishers.find(p => p.id === book.publisher_id);
-                const basePrice = book.base_price || 0;
-                const discount = book.discount || '0';
-                const finalPrice = calculateDiscountedPrice(basePrice, discount);
-                
-                // Reset form
-                document.getElementById('orderForm').reset();
-                userLocation = null;
-                selectedWhatsAppOption = null;
-                document.getElementById('viewOnMap').style.display = 'none';
-                document.querySelectorAll('.whatsapp-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                
-                // Isi data buku ke form
-                document.getElementById('orderBookId').value = book.id;
-                document.getElementById('orderBookTitle').value = book.title;
-                document.getElementById('orderBookImage').src = book.cover_image_url || 'https://via.placeholder.com/100x120?text=Buku';
-                document.getElementById('orderBookTitleText').textContent = book.title;
-                document.getElementById('orderBookAuthorText').textContent = book.author;
-                document.getElementById('orderBookPriceText').textContent = formatPrice(finalPrice);
-                
-                // Update ringkasan pesanan
-                updateOrderSummary();
-                
-                // Tampilkan permintaan izin lokasi
-                requestLocationPermission();
-                
-                // Tampilkan modal
-                document.getElementById('orderFormModal').style.display = 'block';
-            }
-
-            // Fungsi untuk memperbarui ringkasan pesanan
-            function updateOrderSummary() {
-                const bookId = document.getElementById('orderBookId').value;
-                const book = books.find(b => b.id === bookId);
-                if (!book) return;
-                
-                const basePrice = book.base_price || 0;
-                const discount = book.discount || '0';
-                const finalPrice = calculateDiscountedPrice(basePrice, discount);
-                const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
-                const totalPrice = finalPrice * quantity;
-                
-                document.getElementById('summaryItem').textContent = book.title;
-                document.getElementById('summaryQuantity').textContent = quantity;
-                document.getElementById('summaryUnitPrice').textContent = formatPrice(finalPrice);
-                document.getElementById('summaryTotalPrice').textContent = formatPrice(totalPrice);
-            }
-
-            // ==================== EVENT LISTENERS ====================
-
-            // Event listener untuk tombol tutup banner
-            document.getElementById('closeBanner').addEventListener('click', function() {
-                document.getElementById('topBanner').style.display = 'none';
-            });
-
-            // Event listener untuk pemilih bahasa
-            const languageBtn = document.getElementById('languageBtn');
-            const languageDropdown = document.getElementById('languageDropdown');
-            
-            languageBtn.addEventListener('click', () => {
-                languageDropdown.classList.toggle('show');
-            });
-            
-            document.querySelectorAll('.language-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    
-                    // Update tombol bahasa
-                    document.querySelectorAll('.language-option').forEach(opt => opt.classList.remove('active'));
-                    option.classList.add('active');
-                    
-                    const flag = option.querySelector('span:first-child').textContent;
-                    const text = option.querySelector('span:last-child').textContent;
-                    document.getElementById('currentLangFlag').textContent = flag;
-                    document.getElementById('currentLangText').textContent = text;
-                    
-                    languageDropdown.classList.remove('show');
-                });
-            });
-
-            // Event listener untuk pemilih mata uang
-            const currencyBtn = document.getElementById('currencyBtn');
-            const currencyDropdown = document.getElementById('currencyDropdown');
-            
-            currencyBtn.addEventListener('click', () => {
-                currencyDropdown.classList.toggle('show');
-            });
-            
-            document.querySelectorAll('.currency-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const currency = option.getAttribute('data-currency');
-                    changeCurrency(currency);
-                    
-                    // Update tombol mata uang
-                    document.querySelectorAll('.currency-option').forEach(opt => opt.classList.remove('active'));
-                    option.classList.add('active');
-                    
-                    currencyDropdown.classList.remove('show');
-                });
-            });
-
-            // Event listener untuk deteksi lokasi
-            document.getElementById('detectLocation').addEventListener('click', detectLocation);
-            
-            // Event listener untuk izin lokasi
-            document.getElementById('allowLocation').addEventListener('click', detectLocation);
-            
-            // Event listener untuk lihat di Google Maps
-            document.getElementById('viewOnMap').addEventListener('click', openGoogleMaps);
-            
-            // Event listener untuk pilihan WhatsApp
-            document.querySelectorAll('.whatsapp-option .btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const option = this.closest('.whatsapp-option').getAttribute('data-option');
-                    selectWhatsAppOption(option);
-                    sendWhatsAppMessage();
-                });
-            });
-
-            // Event listener untuk perubahan jumlah pesanan
-            document.getElementById('orderQuantity').addEventListener('change', updateOrderSummary);
-            document.getElementById('orderQuantity').addEventListener('input', updateOrderSummary);
-
-            // Event listener untuk menutup modal
-            document.querySelectorAll('.close-modal, .btn-secondary').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const modalId = this.getAttribute('data-modal');
-                    if (modalId) {
-                        document.getElementById(modalId).style.display = 'none';
-                    }
-                });
-            });
-
-            // Event listener untuk tombol pesan di modal detail
-            document.getElementById('orderBookBtn').addEventListener('click', function() {
-                const bookId = this.getAttribute('data-book-id');
-                document.getElementById('bookDetailModal').style.display = 'none';
-                showOrderForm(bookId);
-            });
-
-            // Event listener untuk menutup modal saat klik di luar
-            window.addEventListener('click', (e) => {
-                if (e.target.classList.contains('modal')) {
-                    e.target.style.display = 'none';
-                }
-                
-                // Tutup dropdown bahasa dan mata uang saat klik di luar
-                if (!languageBtn.contains(e.target) && !languageDropdown.contains(e.target)) {
-                    languageDropdown.classList.remove('show');
-                }
-                
-                if (!currencyBtn.contains(e.target) && !currencyDropdown.contains(e.target)) {
-                    currencyDropdown.classList.remove('show');
+            modalCloseBtn.addEventListener('click', closeProductModal);
+            productModal.addEventListener('click', (e) => {
+                if (e.target === productModal) {
+                    closeProductModal();
                 }
             });
 
-            // ==================== INISIALISASI ====================
+            document.getElementById('searchInput').addEventListener('keyup', (e) => {
+                currentPage = 1;
+                filterAndRenderBooks(e.target.value);
+            });
 
-            // Inisialisasi aplikasi
-            initBannerSlider();
-            loadData();
-            
-            // Set bahasa default
-            changeLanguage('id');
-            
-            // Set mata uang default
-            changeCurrency('IDR');
+            document.getElementById('currencySelect').addEventListener('change', (e) => {
+                currentCurrency = e.target.value;
+                filterAndRenderBooks(document.getElementById('searchInput').value);
+                if (productModal.classList.contains('active')) {
+                    const openBookId = document.querySelector('.product-card[data-book-id]')?.dataset.bookId;
+                    if (openBookId) openProductModal(openBookId);
+                }
+            });
+
+            document.getElementById('languageSelect').addEventListener('change', (e) => {
+                currentLanguage = e.target.value;
+                // Di sini bisa ditambahkan logika untuk mengubah bahasa seluruh konten website
+                alert(`Bahasa diubah ke: ${e.target.options[e.target.selectedIndex].text}`);
+            });
+
+            document.getElementById('homeLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateToHome();
+            });
+
+            document.getElementById('breadcrumbHome').addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateToHome();
+            });
+
+            document.getElementById('clearFilter').addEventListener('click', () => {
+                navigateToHome();
+            });
+
+            // ==================== INISIALISASI APLIKASI ====================
+            async function initializeApp() {
+                await fetchCurrency(); // Ambil kurs dulu
+                fetchBanners();
+                fetchCategories();
+                fetchPublishers();
+                fetchBooks();
+            }
+
+            initializeApp();
         });
     </script>
 </body>
