@@ -452,6 +452,12 @@
             font-weight: 500;
         }
 
+        .publisher-book-count {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.3rem;
+        }
+
         .discount-pin {
             position: absolute;
             top: -10px;
@@ -780,18 +786,18 @@
         }
 
         .cart-item-remove {
-            color: var(--danger-red);
+            color: var(--white);
             cursor: pointer;
-            background: none;
+            background: var(--danger-red); /* PERBAIKAN: Tombol merah sederhana */
             border: none;
             font-size: 1rem;
-            padding: 0.5rem;
+            padding: 0.5rem 1rem;
             border-radius: 4px;
             transition: var(--transition);
         }
 
         .cart-item-remove:hover {
-            background-color: rgba(239, 68, 68, 0.1);
+            background-color: #DC2626;
         }
 
         .cart-total {
@@ -1395,7 +1401,7 @@
                         <p class="description" id="detailDescription"></p>
                         <div class="details-grid" id="detailGrid"></div>
                         <div style="margin-top: 2rem;">
-                            <button class="btn-buy" id="detailBuyBtn">🛒 Beli Sekarang</button>
+                            <button class="btn-buy" id="detailBackBtn">🔙 Kembali ke Beranda</button> <!-- PERBAIKAN: Ubah tombol beli jadi kembali -->
                             <button class="btn-add-to-cart" id="detailAddToCartBtn">➕ Tambah ke Keranjang</button>
                         </div>
                     </div>
@@ -1599,7 +1605,7 @@
                 const url = new URL(window.location);
                 url.searchParams.set('order', 'true');
                 if (singleBook) {
-                    url.searchParams.set('single', singleBook.id); // Param untuk identifikasi single
+                    url.searchParams.set('single', singleBook.id);
                 } else {
                     url.searchParams.delete('single');
                 }
@@ -1614,7 +1620,7 @@
                     breadcrumb.style.display = 'block';
                     if (filterType === 'order') {
                         if (currentBook && orderItems.length === 1) {
-                            breadcrumbCurrent.textContent = `${currentBook.title} > Form Pesanan`; // PERBAIKAN: Breadcrumb khusus single order
+                            breadcrumbCurrent.textContent = `${currentBook.title} > Form Pesanan`;
                         } else {
                             breadcrumbCurrent.textContent = 'Form Pemesanan';
                         }
@@ -1910,7 +1916,12 @@
                 const { data, error } = await supabase.from('publishers').select('*, discount');
                 if (!error && data) {
                     publishers = data;
-                    renderPublishers(data);
+                    // PERBAIKAN: Hitung jumlah buku per penerbit
+                    for (let pub of publishers) {
+                        const { count } = await supabase.from('books').select('id', { count: 'exact' }).eq('publisher_id', pub.id);
+                        pub.bookCount = count || 0;
+                    }
+                    renderPublishers(publishers);
                     startPublisherSlider();
                 } else {
                     document.getElementById('publisherTrack').innerHTML = '<p>Gagal memuat penerbit.</p>';
@@ -1961,7 +1972,7 @@
                             <img src="${cat.image_url || 'https://via.placeholder.com/40'}" alt="${cat.name_id}">
                         </div>
                         <h3>${cat.name_id}</h3>
-                        <p class="category-book-count">(${cat.bookCount} buku)</p> <!-- PERBAIKAN: Tambah jumlah buku -->
+                        <p class="category-book-count">(${cat.bookCount} buku)</p>
                     </div>
                 `).join('');
 
@@ -1986,6 +1997,7 @@
                                 <img src="${pub.logo_url || 'https://via.placeholder.com/80'}" alt="${pub.name}">
                             </div>
                             <h3>${pub.name}</h3>
+                            <p class="publisher-book-count">(${pub.bookCount} buku)</p> <!-- PERBAIKAN: Tambah jumlah buku per penerbit -->
                             ${pub.discount ? `<div class="discount-pin">${pub.discount}</div>` : ''}
                         </div>
                     </div>
@@ -2046,7 +2058,7 @@
                         const singleBook = allBooks.find(b => b.id == singleBookId);
                         if (singleBook) {
                             orderItems = [{ ...singleBook, quantity: 1 }];
-                            currentBook = singleBook; // PERBAIKAN: Set currentBook untuk breadcrumb di order
+                            currentBook = singleBook;
                         }
                     } else if (orderItems.length === 0 && cart.length > 0) {
                         orderItems = [...cart.map(item => ({ ...item, quantity: item.quantity || 1 }))];
@@ -2126,7 +2138,7 @@
                                             <path d="M12 4V20M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </a>
-                                    <a href="#" class="btn-add-to-cart-card" data-book-id="${book.id}">
+                                    <a href="#" class="btn-buy-card" data-book-id="${book.id}"> <!-- PERBAIKAN: Ubah icon + jadi icon beli, fungsi beli sekarang -->
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M2 2H3.74001C4.82001 2 5.67 2.93 5.58 4L4.75 13.96C4.61 15.59 5.89 16.99 7.53 17H18.08C19.72 17 21 15.6 20.86 13.97L21.24 9.01001C21.36 7.41001 20.08 6.01001 18.44 6.01001H5.82M16.25 22C16.9404 22 17.5 21.4404 17.5 20.75C17.5 20.0596 16.9404 19.5 16.25 19.5C15.5596 19.5 15 20.0596 15 20.75C15 21.4404 15.5596 22 16.25 22ZM7.25 22C7.94036 22 8.5 21.4404 8.5 20.75C8.5 20.0596 7.94036 19.5 7.25 19.5C6.55964 19.5 6 20.0596 6 20.75C6 21.4404 6.55964 22 7.25 22Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
@@ -2139,20 +2151,10 @@
 
                 document.querySelectorAll('.product-card').forEach(card => {
                     card.addEventListener('click', (e) => {
-                        if (!e.target.closest('.btn-buy-card, .btn-add-to-cart-card')) {
+                        if (!e.target.closest('.btn-buy-card')) {
                             const bookId = card.dataset.bookId;
                             navigateToProductDetail(bookId);
                         }
-                    });
-                });
-
-                document.querySelectorAll('.btn-add-to-cart-card').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        const bookId = btn.dataset.bookId;
-                        const book = allBooks.find(b => b.id == bookId);
-                        addToCart(book);
                     });
                 });
 
@@ -2162,7 +2164,7 @@
                         e.stopPropagation();
                         const bookId = btn.dataset.bookId;
                         const book = allBooks.find(b => b.id == bookId);
-                        startOrder([book]); // PERBAIKAN: Langsung order satuan
+                        startOrder([book]); // PERBAIKAN: Fungsi beli sekarang untuk icon beli di card
                     });
                 });
             }
@@ -2238,7 +2240,7 @@
                         e.stopPropagation();
                         const bookId = btn.dataset.bookId;
                         const book = allBooks.find(b => b.id == bookId);
-                        startOrder([book]); // PERBAIKAN: Langsung order satuan dari search
+                        startOrder([book]);
                     });
                 });
             }
@@ -2258,7 +2260,7 @@
             }
 
             function renderProductDetail(book) {
-                currentBook = book; // PERBAIKAN: Pastikan currentBook selalu set di detail
+                currentBook = book;
                 const publisher = publishers.find(p => p.id === book.publisher_id);
                 const publisherDiscount = publisher ? publisher.discount : '';
                 const basePrice = book.base_price;
@@ -2298,18 +2300,18 @@
                     ${book.reviewer ? `<div class="detail-item"><strong>${t.reviewer}:</strong> ${book.reviewer}</div>` : ''}
                 `;
 
-                // PERBAIKAN: Event listener yang benar untuk tombol di halaman detail
-                const detailBuyBtn = document.getElementById('detailBuyBtn');
+                // PERBAIKAN: Event listener untuk tombol di halaman detail
+                const detailBackBtn = document.getElementById('detailBackBtn');
                 const detailAddToCartBtn = document.getElementById('detailAddToCartBtn');
 
                 // Hapus event listener lama jika ada
-                detailBuyBtn.replaceWith(detailBuyBtn.cloneNode(true));
+                detailBackBtn.replaceWith(detailBackBtn.cloneNode(true));
                 detailAddToCartBtn.replaceWith(detailAddToCartBtn.cloneNode(true));
 
                 // Tambah event listener baru
-                document.getElementById('detailBuyBtn').addEventListener('click', (e) => {
+                document.getElementById('detailBackBtn').addEventListener('click', (e) => {
                     e.preventDefault();
-                    startOrder([book]); // PERBAIKAN: Langsung ke form pesanan satuan dari detail
+                    navigateToHome(); // PERBAIKAN: Ubah fungsi jadi kembali ke beranda
                 });
 
                 document.getElementById('detailAddToCartBtn').addEventListener('click', (e) => {
@@ -2327,7 +2329,7 @@
                 document.getElementById('productDetailPage').style.display = 'none';
                 document.getElementById('orderPage').style.display = 'block';
                 
-                updateBreadcrumb('order', 'Form Pemesanan'); // PERBAIKAN: Call updateBreadcrumb dengan logic single
+                updateBreadcrumb('order', 'Form Pemesanan');
                 
                 window.scrollTo(0, 0);
             }
@@ -2336,8 +2338,6 @@
                 const orderItemsDiv = document.getElementById('orderItems');
                 const t = translations[currentLanguage];
                 let totalPrice = 0;
-
-                console.log('Order Items:', orderItems);
 
                 if (orderItems.length === 0) {
                     orderItemsDiv.innerHTML = '<p>Tidak ada item. Silakan tambah item terlebih dahulu.</p>';
@@ -2487,20 +2487,19 @@
                 }));
                 
                 if (items.length === 1) {
-                    currentBook = items[0]; // PERBAIKAN: Set currentBook untuk single order (breadcrumb)
+                    currentBook = items[0];
                 } else {
-                    currentBook = null; // Reset jika multiple
+                    currentBook = null;
                 }
                 
                 console.log('Order items:', orderItems);
                 
-                navigateToOrder(items.length === 1 ? items[0] : null); // Kirim single book jika satuan
+                navigateToOrder(items.length === 1 ? items[0] : null);
             }
 
             async function submitOrder(e) {
                 e.preventDefault();
                 
-                // Validasi form sebelum submit
                 if (!validateForm()) {
                     alert('Mohon lengkapi semua field yang wajib diisi!');
                     return;
@@ -2818,7 +2817,7 @@
                 fetchBooks();
                 updateLanguage();
                 updateCartBadge();
-                checkUrlParams(); // PERBAIKAN: Call di akhir untuk pastikan state benar
+                checkUrlParams();
             }
 
             initializeApp();
