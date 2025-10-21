@@ -1509,8 +1509,8 @@
                                 <label for="paymentMethod">Metode Pembayaran *</label>
                                 <select id="paymentMethod" required>
                                     <option value="">Pilih Metode Pembayaran</option>
-                                    <option value="id">WA Indonesia (+6285163682122)</option>
-                                    <option value="ar">WA Arab (+201014006053)</option>
+                                    <option value="id">WA Indonesia (85163682122)</option>
+                                    <option value="ar">WA Arab (1014006053)</option>
                                 </select>
                                 <div class="error-message" id="paymentError">Pilih metode pembayaran</div>
                             </div>
@@ -1554,8 +1554,8 @@
             const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
             // Nomor WA - SESUAI PERMINTAAN
-            const waIndonesia = '6285163682122'; // Nomor Indonesia
-            const waArab = '201014006053'; // Nomor Arab
+            const waIndonesia = '85163682122'; // Nomor Indonesia
+            const waArab = '1014006053'; // Nomor Arab
 
             // ==================== VARIABEL GLOBAL & STATE ====================
             let allBooks = [];
@@ -2507,10 +2507,16 @@
 
                 cartTotal.innerHTML = `${t.total}: ${formatPrice(totalPrice, currentCurrency)}`;
 
-                // PERBAIKAN: Gunakan event delegation untuk hapus item agar selalu berfungsi
+                // PERBAIKAN: Event delegation untuk tombol hapus
+                document.querySelectorAll('.cart-item-remove').forEach(button => {
+                    // Hapus event listener lama
+                    button.replaceWith(button.cloneNode(true));
+                });
+
+                // Tambah event listener baru
                 document.querySelectorAll('.cart-item-remove').forEach(button => {
                     button.addEventListener('click', function() {
-                        const bookId = parseInt(this.dataset.bookId);
+                        const bookId = parseInt(this.getAttribute('data-book-id'));
                         removeFromCart(bookId);
                     });
                 });
