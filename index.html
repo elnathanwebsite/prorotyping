@@ -1859,7 +1859,9 @@
                     dimensions: "Ukuran",
                     language: "Bahasa",
                     translator: "Penerjemah",
-                    reviewer: "Penelaah"
+                    reviewer: "Penelaah",
+                    orderItems: "Item Pemesanan",
+                    noItems: "Tidak ada item. Silakan tambah item terlebih dahulu."
                 },
                 en: {
                     searchPlaceholder: "Search for book title or author...",
@@ -1918,7 +1920,9 @@
                     dimensions: "Dimensions",
                     language: "Language",
                     translator: "Translator",
-                    reviewer: "Reviewer"
+                    reviewer: "Reviewer",
+                    orderItems: "Order Items",
+                    noItems: "No items. Please add items first."
                 },
                 ar: {
                     searchPlaceholder: "ابحث عن عنوان الكتاب أو المؤلف...",
@@ -1977,7 +1981,9 @@
                     dimensions: "الأبعاد",
                     language: "اللغة",
                     translator: "المترجم",
-                    reviewer: "المراجع"
+                    reviewer: "المراجع",
+                    orderItems: "عناصر الطلب",
+                    noItems: "لا توجد عناصر. يرجى إضافة عناصر أولاً."
                 }
             };
 
@@ -2661,11 +2667,11 @@
                 let totalPrice = 0;
 
                 if (orderItems.length === 0) {
-                    orderItemsDiv.innerHTML = '<p>' + t.noItems || 'Tidak ada item. Silakan tambah item terlebih dahulu.' + '</p>';
+                    orderItemsDiv.innerHTML = '<p>' + (t.noItems || 'Tidak ada item. Silakan tambah item terlebih dahulu.') + '</p>';
                     return;
                 }
 
-                orderItemsDiv.innerHTML = '<h3>' + t.orderItems || 'Item Pemesanan:' + '</h3>' + orderItems.map(item => {
+                orderItemsDiv.innerHTML = '<h3>' + (t.orderItems || 'Item Pemesanan:') + '</h3>' + orderItems.map(item => {
                     const publisher = publishers.find(p => p.id === item.publisher_id);
                     const publisherDiscount = publisher ? publisher.discount : '';
                     const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
@@ -2752,7 +2758,7 @@
                 let totalPrice = 0;
 
                 if (cart.length === 0) {
-                    cartItems.innerHTML = '<p>' + t.emptyCart || 'Keranjang kosong.' + '</p>';
+                    cartItems.innerHTML = '<p>' + (t.emptyCart || 'Keranjang kosong.') + '</p>';
                     cartTotal.innerHTML = '';
                     return;
                 }
