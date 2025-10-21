@@ -286,6 +286,69 @@
             display: block;
         }
 
+        /* User Profile */
+        .user-profile {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--white);
+        }
+
+        .user-name {
+            color: var(--white);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            min-width: 180px;
+            display: none;
+            z-index: 1000;
+            margin-top: 0.5rem;
+        }
+
+        .user-profile:hover .user-dropdown {
+            display: block;
+        }
+
+        .user-dropdown-item {
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: var(--transition);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .user-dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-dropdown-item:hover {
+            background: var(--light-bg);
+        }
+
+        .user-dropdown-item.logout {
+            color: var(--danger-red);
+        }
+
         /* User Icon */
         .user-icon {
             position: relative;
@@ -465,6 +528,16 @@
             font-weight: 500;
         }
 
+        .publisher-book-count {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 20px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
         .discount-pin {
             position: absolute;
             top: -10px;
@@ -532,6 +605,7 @@
             text-decoration: none;
             color: var(--text-dark);
             cursor: pointer;
+            position: relative;
         }
 
         .category-card:hover {
@@ -562,6 +636,16 @@
 
         .category-card h3 {
             font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .category-book-count {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 20px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
             font-weight: 500;
         }
 
@@ -1225,6 +1309,35 @@
             text-decoration: underline;
         }
 
+        .profile-picture-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
+
+        .profile-upload-btn {
+            background-color: var(--light-bg);
+            border: 1px dashed var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .profile-upload-btn:hover {
+            background-color: var(--border-color);
+        }
+
         /* === PAYMENT METHODS === */
         .payment-methods {
             display: flex;
@@ -1339,6 +1452,11 @@
                 justify-content: flex-end;
                 gap: 0.5rem;
             }
+
+            /* PERBAIKAN: Tampilan user profile di mobile */
+            .user-name {
+                display: none;
+            }
         }
 
         @media (max-width: 576px) {
@@ -1411,6 +1529,27 @@
                         <option value="USD">USD</option>
                         <option value="EGP">EGP</option>
                     </select>
+                </div>
+                <div class="user-profile" id="userProfile" style="display: none;">
+                    <img src="https://via.placeholder.com/36" alt="Profile" class="user-avatar" id="userAvatar">
+                    <span class="user-name" id="userName">User</span>
+                    <div class="user-dropdown">
+                        <a href="#" class="user-dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 21C20 19.6044 20 18.9067 19.8278 18.3389C19.44 17.0605 18.4395 16.06 17.1611 15.6722C16.5933 15.5 15.8956 15.5 14.5 15.5H9.5C8.10444 15.5 7.40665 15.5 6.83886 15.6722C5.56045 16.06 4.56004 17.0605 4.17224 18.3389C4 18.9067 4 19.6044 4 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Profil Saya
+                        </a>
+                        <a href="#" class="user-dropdown-item logout" id="logoutBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Keluar
+                        </a>
+                    </div>
                 </div>
                 <div class="user-icon" id="userIcon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1632,6 +1771,13 @@
         <div class="user-modal-content">
             <button id="userModalClose" class="user-modal-close">&times;</button>
             <h2 id="userModalTitle">Login</h2>
+            
+            <div class="profile-picture-upload" id="profilePictureUpload" style="display: none;">
+                <img src="https://via.placeholder.com/100" alt="Profile Preview" class="profile-preview" id="profilePreview">
+                <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
+                <label for="profilePictureInput" class="profile-upload-btn">Pilih Foto Profil</label>
+            </div>
+            
             <form id="userForm" class="user-form">
                 <div id="registerFields" style="display: none;">
                     <input type="text" id="registerName" placeholder="Nama Lengkap">
@@ -1680,6 +1826,8 @@
             let ticking = false;
             let detectedLocation = null;
             let isLoginMode = true; // true untuk login, false untuk daftar
+            let currentUser = null;
+            let profilePictureFile = null;
 
             // ==================== FUNGSI HELPER ====================
             function formatPrice(price, currency = 'IDR') {
@@ -2083,14 +2231,27 @@
                     grid.innerHTML = '<p>Tidak ada kategori tersedia.</p>';
                     return;
                 }
-                grid.innerHTML = cats.map(cat => `
-                    <div class="category-card" data-category-id="${cat.id}" style="border-top: 5px solid ${cat.color};">
-                        <div class="category-card-icon" style="background-color: ${cat.color};">
-                            <img src="${cat.image_url || 'https://via.placeholder.com/40'}" alt="${cat.name_id}">
+                
+                // Hitung jumlah buku per kategori
+                const categoryBookCounts = {};
+                allBooks.forEach(book => {
+                    if (book.category_id) {
+                        categoryBookCounts[book.category_id] = (categoryBookCounts[book.category_id] || 0) + 1;
+                    }
+                });
+                
+                grid.innerHTML = cats.map(cat => {
+                    const bookCount = categoryBookCounts[cat.id] || 0;
+                    return `
+                        <div class="category-card" data-category-id="${cat.id}" style="border-top: 5px solid ${cat.color};">
+                            <div class="category-card-icon" style="background-color: ${cat.color};">
+                                <img src="${cat.image_url || 'https://via.placeholder.com/40'}" alt="${cat.name_id}">
+                            </div>
+                            <h3>${cat.name_id}</h3>
+                            ${bookCount > 0 ? `<div class="category-book-count">${bookCount} buku</div>` : ''}
                         </div>
-                        <h3>${cat.name_id}</h3>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
 
                 document.querySelectorAll('.category-card').forEach(card => {
                     card.addEventListener('click', () => {
@@ -2106,17 +2267,30 @@
                     track.innerHTML = '<p>Tidak ada penerbit tersedia.</p>';
                     return;
                 }
-                track.innerHTML = pubs.map(pub => `
-                    <div class="publisher-slide">
-                        <div class="publisher-card" data-publisher-id="${pub.id}">
-                            <div class="publisher-card-icon">
-                                <img src="${pub.logo_url || 'https://via.placeholder.com/80'}" alt="${pub.name}">
+                
+                // Hitung jumlah buku per penerbit
+                const publisherBookCounts = {};
+                allBooks.forEach(book => {
+                    if (book.publisher_id) {
+                        publisherBookCounts[book.publisher_id] = (publisherBookCounts[book.publisher_id] || 0) + 1;
+                    }
+                });
+                
+                track.innerHTML = pubs.map(pub => {
+                    const bookCount = publisherBookCounts[pub.id] || 0;
+                    return `
+                        <div class="publisher-slide">
+                            <div class="publisher-card" data-publisher-id="${pub.id}">
+                                <div class="publisher-card-icon">
+                                    <img src="${pub.logo_url || 'https://via.placeholder.com/80'}" alt="${pub.name}">
+                                </div>
+                                <h3>${pub.name}</h3>
+                                ${bookCount > 0 ? `<div class="publisher-book-count">${bookCount} buku</div>` : ''}
+                                ${pub.discount ? `<div class="discount-pin">${pub.discount}</div>` : ''}
                             </div>
-                            <h3>${pub.name}</h3>
-                            ${pub.discount ? `<div class="discount-pin">${pub.discount}</div>` : ''}
                         </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
 
                 document.querySelectorAll('.publisher-card').forEach(card => {
                     card.addEventListener('click', () => {
@@ -2762,6 +2936,7 @@
                 const userToggleText = document.getElementById('userToggleText');
                 const userToggleLink = document.getElementById('userToggleLink');
                 const registerFields = document.getElementById('registerFields');
+                const profilePictureUpload = document.getElementById('profilePictureUpload');
 
                 if (isLoginMode) {
                     userModalTitle.textContent = 'Login';
@@ -2769,12 +2944,14 @@
                     userToggleText.textContent = 'Belum punya akun? ';
                     userToggleLink.textContent = 'Daftar di sini';
                     registerFields.style.display = 'none';
+                    profilePictureUpload.style.display = 'none';
                 } else {
                     userModalTitle.textContent = 'Daftar';
                     userSubmitBtn.textContent = 'Daftar';
                     userToggleText.textContent = 'Sudah punya akun? ';
                     userToggleLink.textContent = 'Login di sini';
                     registerFields.style.display = 'block';
+                    profilePictureUpload.style.display = 'flex';
                 }
             }
 
@@ -2794,8 +2971,11 @@
                     if (error) {
                         alert('Login gagal: ' + error.message);
                     } else {
+                        currentUser = data.user;
+                        await updateUserProfile();
                         alert('Login berhasil!');
                         toggleUserModal();
+                        updateUserInterface();
                     }
                 } else {
                     // Daftar
@@ -2814,9 +2994,103 @@
                     if (error) {
                         alert('Pendaftaran gagal: ' + error.message);
                     } else {
+                        currentUser = data.user;
+                        
+                        // Upload foto profil jika ada
+                        if (profilePictureFile) {
+                            await uploadProfilePicture();
+                        }
+                        
                         alert('Pendaftaran berhasil! Silakan cek email untuk verifikasi.');
                         toggleUserModal();
+                        updateUserInterface();
                     }
+                }
+            }
+
+            async function updateUserProfile() {
+                if (!currentUser) return;
+                
+                // Ambil data user dari database
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', currentUser.id)
+                    .single();
+                
+                if (!error && data) {
+                    currentUser.profile = data;
+                }
+            }
+
+            async function uploadProfilePicture() {
+                if (!profilePictureFile || !currentUser) return;
+                
+                const fileExt = profilePictureFile.name.split('.').pop();
+                const fileName = `${currentUser.id}-${Math.random()}.${fileExt}`;
+                const filePath = `profile-pictures/${fileName}`;
+                
+                const { error: uploadError } = await supabase.storage
+                    .from('avatars')
+                    .upload(filePath, profilePictureFile);
+                
+                if (uploadError) {
+                    console.error('Error uploading profile picture:', uploadError);
+                    return;
+                }
+                
+                // Dapatkan URL publik
+                const { data } = supabase.storage
+                    .from('avatars')
+                    .getPublicUrl(filePath);
+                
+                // Update profil user dengan URL foto
+                const { error: updateError } = await supabase
+                    .from('profiles')
+                    .update({ avatar_url: data.publicUrl })
+                    .eq('id', currentUser.id);
+                
+                if (updateError) {
+                    console.error('Error updating profile:', updateError);
+                } else {
+                    currentUser.profile.avatar_url = data.publicUrl;
+                    updateUserInterface();
+                }
+            }
+
+            function updateUserInterface() {
+                const userProfile = document.getElementById('userProfile');
+                const userIcon = document.getElementById('userIcon');
+                
+                if (currentUser) {
+                    userProfile.style.display = 'flex';
+                    userIcon.style.display = 'none';
+                    
+                    // Update nama dan foto profil
+                    const userName = document.getElementById('userName');
+                    const userAvatar = document.getElementById('userAvatar');
+                    
+                    userName.textContent = currentUser.user_metadata?.full_name || currentUser.email;
+                    
+                    if (currentUser.profile?.avatar_url) {
+                        userAvatar.src = currentUser.profile.avatar_url;
+                    } else {
+                        userAvatar.src = 'https://via.placeholder.com/36';
+                    }
+                } else {
+                    userProfile.style.display = 'none';
+                    userIcon.style.display = 'block';
+                }
+            }
+
+            async function logout() {
+                const { error } = await supabase.auth.signOut();
+                if (error) {
+                    alert('Error saat logout: ' + error.message);
+                } else {
+                    currentUser = null;
+                    updateUserInterface();
+                    alert('Logout berhasil!');
                 }
             }
 
@@ -2861,6 +3135,9 @@
             const userModalClose = document.getElementById('userModalClose');
             const userForm = document.getElementById('userForm');
             const userToggleLink = document.getElementById('userToggleLink');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const profilePictureInput = document.getElementById('profilePictureInput');
+            const profilePreview = document.getElementById('profilePreview');
 
             window.addEventListener('scroll', requestTick);
 
@@ -2937,6 +3214,23 @@
                 toggleUserFormMode();
             });
             userForm.addEventListener('submit', handleUserForm);
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                logout();
+            });
+
+            // Profile picture upload
+            profilePictureInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    profilePictureFile = file;
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        profilePreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
 
             // Validasi real-time
             document.getElementById('nameInput').addEventListener('input', function() {
@@ -3030,6 +3324,14 @@
                 fetchBooks();
                 updateLanguage();
                 updateCartBadge();
+                
+                // Cek status login saat aplikasi dimulai
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    currentUser = user;
+                    await updateUserProfile();
+                    updateUserInterface();
+                }
             }
 
             initializeApp();
