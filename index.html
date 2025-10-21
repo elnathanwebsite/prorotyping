@@ -7,7 +7,6 @@
     <style>
         /* === FONT & ROOT VARIABLES === */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lato:wght@400;700&display=swap');
-
         :root {
             --primary-color: #004ed6ff; /* Indigo modern */
             --primary-dark: #385ccaff; /* Indigo lebih gelap */
@@ -29,14 +28,12 @@
             --border-radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         /* === GENERAL STYLES === */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: var(--font-body);
             background-color: var(--light-bg);
@@ -45,23 +42,19 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1rem;
         }
-
         section {
             padding: 3rem 0;
         }
-
         h1, h2, h3 {
             font-family: var(--font-heading);
             font-weight: 600;
             color: var(--text-dark);
         }
-        
         .section-title {
             text-align: center;
             margin-bottom: 2.5rem;
@@ -70,7 +63,6 @@
             position: relative;
             display: inline-block;
         }
-
         .section-title::after {
             content: '';
             position: absolute;
@@ -82,7 +74,6 @@
             background-color: var(--primary-color);
             border-radius: 2px;
         }
-
         /* === HEADER / NAVBAR === */
         header {
             background-color: var(--primary-color);
@@ -95,33 +86,27 @@
             color: var(--white);
             transition: transform 0.3s ease;
         }
-
         header.hidden {
             transform: translateY(-100%);
         }
-
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .logo-link {
             display: flex;
             align-items: center;
             text-decoration: none;
         }
-
         .logo {
             width: 90px;
             height: auto;
         }
-
         .search-bar {
             width: 40%;
             position: relative;
         }
-
         .search-bar input {
             width: 100%;
             padding: 0.8rem 1.2rem 0.8rem 2.5rem;
@@ -132,13 +117,11 @@
             background-color: var(--white);
             color: var(--text-dark);
         }
-        
         .search-bar input:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
         }
-        
         .search-bar .search-icon {
             position: absolute;
             left: 1rem;
@@ -146,7 +129,6 @@
             transform: translateY(-50%);
             color: var(--text-light);
         }
-
         .search-dropdown {
             position: absolute;
             top: 100%;
@@ -161,11 +143,9 @@
             display: none;
             z-index: 999;
         }
-
         .search-dropdown.active {
             display: block;
         }
-
         .search-result-item {
             display: flex;
             align-items: center;
@@ -175,11 +155,9 @@
             color: var(--text-dark);
             transition: var(--transition);
         }
-
         .search-result-item:hover {
             background: var(--light-bg);
         }
-
         .search-result-image {
             width: 50px;
             height: 75px;
@@ -187,31 +165,25 @@
             margin-right: 1rem;
             border-radius: 8px;
         }
-
         .search-result-info {
             flex-grow: 1;
         }
-
         .search-result-title {
             font-weight: 600;
             margin-bottom: 0.3rem;
         }
-
         .search-result-price {
             color: var(--primary-color);
             font-weight: bold;
         }
-
         .search-result-discount {
             color: var(--danger-red);
             margin-left: 0.5rem;
         }
-
         .search-result-actions {
             display: flex;
             gap: 0.5rem;
         }
-
         .mini-btn {
             padding: 0.3rem 0.6rem;
             border-radius: 20px;
@@ -219,35 +191,28 @@
             font-size: 0.8rem;
             transition: var(--transition);
         }
-
         .mini-buy {
             background: var(--primary-color);
             color: var(--white);
         }
-
         .mini-buy:hover {
             background: var(--primary-dark);
         }
-
         .mini-cart {
             background: var(--success-green);
             color: var(--white);
         }
-
         .mini-cart:hover {
             background: #059669;
         }
-
         .header-controls {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
-
         .currency-selector, .language-selector {
             margin-left: 0.5rem;
         }
-
         .currency-selector select, .language-selector select {
             padding: 0.5rem 1rem;
             border-radius: 50px;
@@ -256,7 +221,6 @@
             cursor: pointer;
             color: var(--text-dark);
         }
-
         /* Cart Icon */
         .cart-icon {
             position: relative;
@@ -264,12 +228,10 @@
             font-size: 1.5rem;
             color: var(--white);
         }
-
         .cart-icon svg {
             width: 24px;
             height: 24px;
         }
-
         .cart-badge {
             position: absolute;
             top: -0.5rem;
@@ -281,11 +243,9 @@
             font-size: 0.8rem;
             display: none;
         }
-
         .cart-badge.active {
             display: block;
         }
-
         /* User Profile */
         .user-profile {
             position: relative;
@@ -294,7 +254,6 @@
             align-items: center;
             gap: 0.5rem;
         }
-
         .user-avatar {
             width: 36px;
             height: 36px;
@@ -302,13 +261,11 @@
             object-fit: cover;
             border: 2px solid var(--white);
         }
-
         .user-name {
             color: var(--white);
             font-weight: 500;
             font-size: 0.9rem;
         }
-
         .user-dropdown {
             position: absolute;
             top: 100%;
@@ -321,11 +278,9 @@
             z-index: 1000;
             margin-top: 0.5rem;
         }
-
         .user-profile:hover .user-dropdown {
             display: block;
         }
-
         .user-dropdown-item {
             padding: 0.8rem 1rem;
             display: flex;
@@ -336,19 +291,15 @@
             transition: var(--transition);
             border-bottom: 1px solid var(--border-color);
         }
-
         .user-dropdown-item:last-child {
             border-bottom: none;
         }
-
         .user-dropdown-item:hover {
             background: var(--light-bg);
         }
-
         .user-dropdown-item.logout {
             color: var(--danger-red);
         }
-
         /* User Icon */
         .user-icon {
             position: relative;
@@ -356,12 +307,10 @@
             font-size: 1.5rem;
             color: var(--white);
         }
-
         .user-icon svg {
             width: 24px;
             height: 24px;
         }
-
         /* === FLOATING SEARCH BAR === */
         .floating-search {
             position: fixed;
@@ -374,64 +323,52 @@
             display: flex;
             justify-content: center;
         }
-
         .floating-search.visible {
             top: 0;
         }
-
         .floating-search .container {
             width: 100%;
             max-width: 600px;
         }
-
         .floating-search .search-bar {
             width: 100%;
         }
-
         .floating-search .search-bar input {
             background-color: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             box-shadow: var(--shadow-lg);
         }
-
         /* === BREADCRUMB === */
         .breadcrumb {
             background-color: var(--card-bg);
             padding: 1rem 0;
             border-bottom: 1px solid var(--border-color);
         }
-
         .breadcrumb-list {
             display: flex;
             list-style: none;
             font-size: 0.9rem;
         }
-
         .breadcrumb-item {
             margin-right: 0.5rem;
         }
-
         .breadcrumb-item:not(:last-child)::after {
             content: "›";
             margin-left: 0.5rem;
             color: var(--text-light);
         }
-
         .breadcrumb-item a {
             color: var(--text-light);
             text-decoration: none;
             transition: var(--transition);
         }
-
         .breadcrumb-item a:hover {
             color: var(--primary-color);
         }
-
         .breadcrumb-item.active {
             color: var(--text-dark);
             font-weight: 500;
         }
-
         /* === HERO BANNERS === */
         .banner-slider {
             width: 100%;
@@ -442,7 +379,6 @@
             background: var(--border-color);
             box-shadow: var(--shadow-md);
         }
-
         .banner-slide {
             position: absolute;
             width: 100%;
@@ -450,39 +386,32 @@
             opacity: 0;
             transition: opacity 1s ease-in-out;
         }
-
         .banner-slide.active {
             opacity: 1;
         }
-
         .banner-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         /* === PUBLISHERS SECTION === */
         .publishers-section {
             padding: 2rem 0;
         }
-
         .publisher-slider-container {
             position: relative;
             overflow: hidden;
             padding: 1rem 3rem;
         }
-
         .publisher-track {
             display: flex;
             transition: transform 0.5s ease;
         }
-
         .publisher-slide {
             flex: 0 0 20%;
             padding: 0 0.5rem;
             box-sizing: border-box;
         }
-
         .publisher-card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
@@ -499,12 +428,10 @@
             height: 100%;
             position: relative;
         }
-
         .publisher-card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
         }
-
         .publisher-card-icon {
             width: 80px;
             height: 80px;
@@ -516,18 +443,15 @@
             background-color: var(--primary-color);
             overflow: hidden;
         }
-        
         .publisher-card-icon img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .publisher-card h3 {
             font-size: 1.1rem;
             font-weight: 500;
         }
-
         .publisher-book-count {
             background-color: var(--primary-color);
             color: var(--white);
@@ -537,7 +461,6 @@
             margin-top: 0.5rem;
             font-weight: 500;
         }
-
         .discount-pin {
             position: absolute;
             top: -10px;
@@ -556,7 +479,6 @@
             transform: rotate(15deg);
             border: 2px solid var(--white);
         }
-
         .slider-btn {
             position: absolute;
             top: 50%;
@@ -574,27 +496,22 @@
             transition: var(--transition);
             box-shadow: var(--shadow-md);
         }
-
         #prevPublisher {
             left: 0;
         }
-
         #nextPublisher {
             right: 0;
         }
-
         .slider-btn:hover {
             background-color: var(--primary-dark);
             transform: scale(1.1) translateY(-50%);
         }
-
         /* === CATEGORIES SECTION === */
         .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1.5rem;
         }
-
         .category-card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
@@ -607,16 +524,13 @@
             cursor: pointer;
             position: relative;
         }
-
         .category-card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
         }
-
         .category-card.active {
             border: 2px solid var(--primary-color);
         }
-
         .category-card-icon {
             width: 60px;
             height: 60px;
@@ -627,18 +541,15 @@
             justify-content: center;
             background-color: var(--primary-color);
         }
-        
         .category-card-icon img {
             width: 50%;
             height: 50%;
             object-fit: contain;
         }
-
         .category-card h3 {
             font-size: 1.1rem;
             font-weight: 500;
         }
-
         .category-book-count {
             background-color: var(--primary-color);
             color: var(--white);
@@ -648,14 +559,12 @@
             margin-top: 0.5rem;
             font-weight: 500;
         }
-
         /* === PRODUCTS SECTION === */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
         }
-
         .product-card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
@@ -666,30 +575,25 @@
             transition: var(--transition);
             cursor: pointer;
         }
-
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
         }
-
         .product-image {
             height: 250px;
             background-color: var(--light-bg);
         }
-
         .product-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .product-info {
             padding: 1.2rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
-
         .product-title {
             font-size: 1.1rem;
             font-weight: 600;
@@ -698,30 +602,25 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
         .product-author {
             color: var(--text-light);
             font-size: 0.9rem;
             margin-bottom: 1rem;
         }
-
         .product-pricing {
             margin-top: auto;
         }
-
         .final-price {
             font-size: 1.4rem;
             font-weight: 700;
             color: var(--primary-color);
         }
-
         .original-price {
             font-size: 1rem;
             color: var(--text-light);
             text-decoration: line-through;
             margin-left: 0.5rem;
         }
-        
         .discount-badge {
             background-color: var(--danger-red);
             color: var(--white);
@@ -731,13 +630,11 @@
             font-weight: bold;
             margin-left: 0.5rem;
         }
-
         .product-actions {
             display: flex;
             justify-content: space-between;
             margin-top: 1rem;
         }
-
         .btn-add-to-cart-card, .btn-buy-card {
             padding: 0.5rem;
             border-radius: 50%;
@@ -750,25 +647,20 @@
             width: 40px;
             height: 40px;
         }
-
         .btn-add-to-cart-card {
             background-color: var(--success-green);
             color: var(--white);
         }
-
         .btn-add-to-cart-card:hover {
             background-color: #059669;
         }
-
         .btn-buy-card {
             background-color: var(--primary-color);
             color: var(--white);
         }
-
         .btn-buy-card:hover {
             background-color: var(--primary-dark);
         }
-
         /* === PAGINATION === */
         .pagination {
             display: flex;
@@ -776,7 +668,6 @@
             margin-top: 2rem;
             gap: 0.5rem;
         }
-
         .pagination button {
             padding: 0.5rem 1rem;
             border: 1px solid var(--border-color);
@@ -786,18 +677,15 @@
             transition: var(--transition);
             color: var(--text-dark);
         }
-
         .pagination button.active {
             background: var(--primary-color);
             color: var(--white);
             border-color: var(--primary-color);
         }
-
         .pagination button:hover {
             background: var(--primary-dark);
             color: var(--white);
         }
-
         /* === CART MODAL === */
         .modal {
             position: fixed;
@@ -812,11 +700,9 @@
             justify-content: center;
             z-index: 2000;
         }
-
         .modal.active {
             display: flex;
         }
-
         .modal-content {
             background: var(--card-bg);
             padding: 2rem;
@@ -828,7 +714,6 @@
             position: relative;
             box-shadow: var(--shadow-lg);
         }
-
         .modal-close {
             position: absolute;
             top: 1rem;
@@ -839,35 +724,29 @@
             background: none;
             border: none;
         }
-
         .cart-item {
             display: flex;
             gap: 1rem;
             padding: 1rem 0;
             border-bottom: 1px solid var(--border-color);
         }
-
         .cart-item img {
             width: 80px;
             height: 120px;
             object-fit: cover;
             border-radius: 8px;
         }
-
         .cart-item-info {
             flex-grow: 1;
         }
-
         .cart-item-title {
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
-
         .cart-item-price {
             color: var(--primary-color);
             font-weight: bold;
         }
-
         .cart-item-remove {
             color: var(--danger-red);
             cursor: pointer;
@@ -878,17 +757,14 @@
             border-radius: 4px;
             transition: var(--transition);
         }
-
         .cart-item-remove:hover {
             background-color: rgba(239, 68, 68, 0.1);
         }
-
         .cart-total {
             text-align: right;
             font-weight: bold;
             margin-top: 1rem;
         }
-
         .btn-checkout {
             display: block;
             width: 100%;
@@ -901,17 +777,14 @@
             margin-top: 1rem;
             transition: var(--transition);
         }
-
         .btn-checkout:hover {
             background-color: var(--primary-dark);
         }
-
         /* === LOADER === */
         .loader-container {
             text-align: center;
             padding: 4rem;
         }
-        
         .loader {
             border: 5px solid var(--border-color);
             border-top: 5px solid var(--primary-color);
@@ -921,12 +794,10 @@
             animation: spin 1s linear infinite;
             margin: 0 auto;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         /* === FILTER INFO === */
         .filter-info {
             background-color: var(--card-bg);
@@ -938,17 +809,14 @@
             align-items: center;
             box-shadow: var(--shadow-sm);
         }
-
         .filter-info h3 {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
         }
-
         .filter-info p {
             color: var(--text-light);
             font-size: 0.9rem;
         }
-
         .clear-filter {
             background-color: var(--danger-red);
             color: var(--white);
@@ -959,11 +827,9 @@
             font-weight: 500;
             transition: var(--transition);
         }
-
         .clear-filter:hover {
             background-color: #DC2626;
         }
-
         /* === FOOTER === */
         footer {
             background-color: var(--primary-color);
@@ -971,7 +837,6 @@
             padding: 2rem 0;
             text-align: center;
         }
-
         /* === PRODUCT DETAIL PAGE === */
         .product-detail-container {
             display: grid;
@@ -979,50 +844,41 @@
             gap: 2rem;
             margin-bottom: 3rem;
         }
-
         .product-detail-image {
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow-md);
         }
-
         .product-detail-image img {
             width: 100%;
             height: auto;
             object-fit: cover;
         }
-
         .product-detail-info {
             background: var(--card-bg);
             padding: 2rem;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-md);
         }
-
         .product-detail-info h1 {
             font-size: 2rem;
             margin-bottom: 0.5rem;
         }
-
         .product-detail-info .author {
             font-size: 1.1rem;
             color: var(--text-light);
             margin-bottom: 1rem;
         }
-
         .product-detail-info .publisher {
             font-size: 1rem;
             margin-bottom: 1rem;
         }
-
         .product-detail-info .pricing {
             margin: 1.5rem 0;
         }
-
         .product-detail-info .description {
             margin: 1rem 0;
         }
-
         .details-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -1033,17 +889,14 @@
             border-radius: var(--border-radius);
             border: 1px solid var(--border-color);
         }
-
         .detail-item {
             font-size: 0.9rem;
         }
-
         .detail-item strong {
             color: var(--text-dark);
             margin-right: 0.5rem;
         }
-        
-        .btn-buy, .btn-add-to-cart {
+        .btn-add-to-cart {
             display: inline-block;
             padding: 0.8rem 2rem;
             border-radius: 50px;
@@ -1053,46 +906,29 @@
             margin-right: 1rem;
             cursor: pointer;
             border: none;
-        }
-
-        .btn-buy {
-            background-color: var(--primary-color);
-            color: var(--white);
-        }
-
-        .btn-buy:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-add-to-cart {
             background-color: var(--success-green);
             color: var(--white);
         }
-
         .btn-add-to-cart:hover {
             background-color: #059669;
         }
-
         /* === ORDER PAGE === */
         .order-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
         }
-
         .order-form-container {
             background: var(--card-bg);
             padding: 2rem;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-md);
         }
-
         .order-form {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
-
         .order-form input, .order-form select {
             padding: 0.8rem;
             border: 1px solid var(--border-color);
@@ -1100,7 +936,6 @@
             background: var(--white);
             color: var(--text-dark);
         }
-
         .order-form button {
             padding: 0.8rem;
             background-color: var(--primary-color);
@@ -1110,28 +945,23 @@
             cursor: pointer;
             transition: var(--transition);
         }
-
         .order-form button:hover {
             background-color: var(--primary-dark);
         }
-
         .order-items {
             margin-bottom: 2rem;
         }
-
         .recommended-products {
             background: var(--card-bg);
             padding: 2rem;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-md);
         }
-
         .recommended-products h2 {
             margin-bottom: 1.5rem;
             position: relative;
             display: inline-block;
         }
-
         .recommended-products h2::after {
             content: '';
             position: absolute;
@@ -1142,13 +972,11 @@
             background-color: var(--primary-color);
             border-radius: 2px;
         }
-
         .recommended-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
         }
-
         .recommended-card {
             display: flex;
             gap: 1rem;
@@ -1158,72 +986,58 @@
             transition: var(--transition);
             cursor: pointer;
         }
-
         .recommended-card:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow-md);
         }
-
         .recommended-image {
             width: 80px;
             height: 120px;
             object-fit: cover;
             border-radius: 8px;
         }
-
         .recommended-info {
             flex-grow: 1;
         }
-
         .recommended-title {
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
-
         .recommended-price {
             color: var(--primary-color);
             font-weight: bold;
         }
-
         /* === FORM VALIDATION STYLES === */
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
         }
-
         .form-group label {
             font-weight: 500;
             color: var(--text-dark);
         }
-
         .form-group input:invalid {
             border-color: var(--danger-red);
         }
-
         .form-group input:valid {
             border-color: var(--success-green);
         }
-
         .error-message {
             color: var(--danger-red);
             font-size: 0.8rem;
             display: none;
         }
-
         .phone-input-group {
             display: flex;
             gap: 0.5rem;
         }
-
         .phone-country {
             flex: 0 0 100px;
         }
-
         .phone-number {
             flex: 1;
         }
-
         /* === USER MODAL === */
         .user-modal {
             position: fixed;
@@ -1238,11 +1052,9 @@
             justify-content: center;
             z-index: 2000;
         }
-
         .user-modal.active {
             display: flex;
         }
-
         .user-modal-content {
             background: var(--card-bg);
             padding: 2rem;
@@ -1254,7 +1066,6 @@
             position: relative;
             box-shadow: var(--shadow-lg);
         }
-
         .user-modal-close {
             position: absolute;
             top: 1rem;
@@ -1265,13 +1076,11 @@
             background: none;
             border: none;
         }
-
         .user-form {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
-
         .user-form input {
             padding: 0.8rem;
             border: 1px solid var(--border-color);
@@ -1279,7 +1088,6 @@
             background: var(--white);
             color: var(--text-dark);
         }
-
         .user-form button {
             padding: 0.8rem;
             background-color: var(--primary-color);
@@ -1289,26 +1097,21 @@
             cursor: pointer;
             transition: var(--transition);
         }
-
         .user-form button:hover {
             background-color: var(--primary-dark);
         }
-
         .user-form-toggle {
             text-align: center;
             margin-top: 1rem;
         }
-
         .user-form-toggle a {
             color: var(--primary-color);
             text-decoration: none;
             cursor: pointer;
         }
-
         .user-form-toggle a:hover {
             text-decoration: underline;
         }
-
         .profile-picture-upload {
             display: flex;
             flex-direction: column;
@@ -1316,7 +1119,6 @@
             gap: 1rem;
             margin-bottom: 1rem;
         }
-
         .profile-preview {
             width: 100px;
             height: 100px;
@@ -1324,7 +1126,6 @@
             object-fit: cover;
             border: 3px solid var(--primary-color);
         }
-
         .profile-upload-btn {
             background-color: var(--light-bg);
             border: 1px dashed var(--border-color);
@@ -1333,11 +1134,9 @@
             cursor: pointer;
             transition: var(--transition);
         }
-
         .profile-upload-btn:hover {
             background-color: var(--border-color);
         }
-
         /* === PROFILE MODAL === */
         .profile-modal {
             position: fixed;
@@ -1352,11 +1151,9 @@
             justify-content: center;
             z-index: 2000;
         }
-
         .profile-modal.active {
             display: flex;
         }
-
         .profile-modal-content {
             background: var(--card-bg);
             padding: 2rem;
@@ -1368,7 +1165,6 @@
             position: relative;
             box-shadow: var(--shadow-lg);
         }
-
         .profile-modal-close {
             position: absolute;
             top: 1rem;
@@ -1379,7 +1175,6 @@
             background: none;
             border: none;
         }
-
         .profile-info {
             display: flex;
             flex-direction: column;
@@ -1387,7 +1182,6 @@
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
-
         .profile-avatar {
             width: 100px;
             height: 100px;
@@ -1395,22 +1189,18 @@
             object-fit: cover;
             border: 3px solid var(--primary-color);
         }
-
         .profile-details {
             text-align: center;
         }
-
         .profile-name {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
-
         .profile-email {
             color: var(--text-light);
             font-size: 1rem;
         }
-
         /* === PAYMENT METHODS === */
         .payment-methods {
             display: flex;
@@ -1418,13 +1208,11 @@
             gap: 1rem;
             margin: 2rem 0;
         }
-
         .payment-method {
             width: 60px;
             height: 40px;
             object-fit: contain;
         }
-
         /* === RESPONSIVE DESIGN (Mobile App-like) === */
         @media (max-width: 768px) {
             .navbar {
@@ -1492,46 +1280,38 @@
             .phone-country {
                 flex: 1;
             }
-            
             /* PERBAIKAN: Tampilan mobile untuk bahasa dan mata uang */
             .currency-selector, .language-selector {
                 margin-left: 0;
             }
-            
             .currency-selector select, .language-selector select {
                 padding: 0.3rem 0.6rem;
                 font-size: 0.8rem;
                 width: 80px;
             }
-            
             /* PERBAIKAN: Form pencarian di header mobile */
             .navbar {
                 flex-direction: row;
                 flex-wrap: wrap;
             }
-            
             .logo-link {
                 flex: 0 0 auto;
             }
-            
             .search-bar {
                 order: 3;
                 width: 100%;
                 margin-top: 0.5rem;
             }
-            
             .header-controls {
                 flex: 1;
                 justify-content: flex-end;
                 gap: 0.5rem;
             }
-
             /* PERBAIKAN: Tampilan user profile di mobile */
             .user-name {
                 display: none;
             }
         }
-
         @media (max-width: 576px) {
             .product-grid {
                 grid-template-columns: repeat(2, 1fr); /* 2 kolom untuk mobile kecil */
@@ -1561,13 +1341,11 @@
             .banner-slider {
                 height: 150px;
             }
-            
             /* PERBAIKAN: Tampilan mobile untuk bahasa dan mata uang */
             .currency-selector, .language-selector {
                 display: flex;
                 align-items: center;
             }
-            
             .currency-selector select, .language-selector select {
                 padding: 0.2rem 0.4rem;
                 font-size: 0.7rem;
@@ -1577,7 +1355,6 @@
     </style>
 </head>
 <body>
-
     <header id="header">
         <div class="container navbar">
             <a href="#" class="logo-link" id="homeLink">
@@ -1639,7 +1416,6 @@
             </div>
         </div>
     </header>
-
     <!-- Floating Search Bar -->
     <div class="floating-search" id="floatingSearch">
         <div class="container">
@@ -1650,7 +1426,6 @@
             </div>
         </div>
     </div>
-
     <!-- Breadcrumb Navigation -->
     <div class="breadcrumb" id="breadcrumb" style="display: none;">
         <div class="container">
@@ -1660,7 +1435,6 @@
             </ul>
         </div>
     </div>
-
     <main id="mainContent">
         <!-- Home Page Content -->
         <div id="homePage">
@@ -1673,7 +1447,6 @@
                     </div>
                 </div>
             </section>
-
             <!-- Penerbit dipindahkan ke bawah banner -->
             <section id="publishers-section" class="publishers-section">
                 <div class="container">
@@ -1687,7 +1460,6 @@
                     </div>
                 </div>
             </section>
-
             <section id="categories-section">
                 <div class="container">
                     <h2 class="section-title" data-i18n="exploreCategories">Jelajahi Kategori</h2>
@@ -1698,7 +1470,6 @@
                     </div>
                 </div>
             </section>
-
             <section id="products-section" style="background-color: var(--white);">
                 <div class="container">
                     <div id="filterInfo" class="filter-info" style="display: none;">
@@ -1718,7 +1489,6 @@
                 </div>
             </section>
         </div>
-
         <!-- Product Detail Page (Hidden by default) -->
         <div id="productDetailPage" style="display: none;">
             <div class="container">
@@ -1734,14 +1504,13 @@
                         <p class="description" id="detailDescription"></p>
                         <div class="details-grid" id="detailGrid"></div>
                         <div style="margin-top: 2rem;">
-                            
+                            <!-- Tombol Beli Sekarang dihapus -->
                             <button class="btn-add-to-cart" id="detailAddToCartBtn">➕ Tambah ke Keranjang</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Order Page (Hidden by default) -->
         <div id="orderPage" style="display: none;">
             <div class="container">
@@ -1755,7 +1524,6 @@
                                 <input type="text" id="nameInput" placeholder="Nama Lengkap" required>
                                 <div class="error-message" id="nameError">Nama harus diisi</div>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="phoneInput">Nomor Telepon *</label>
                                 <div class="phone-input-group">
@@ -1783,22 +1551,18 @@
                                 </div>
                                 <div class="error-message" id="phoneError">Nomor telepon harus diisi</div>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="addressInput">Alamat Lengkap *</label>
                                 <input type="text" id="addressInput" placeholder="Alamat lengkap (jalan, kota, provinsi)" required>
                                 <div class="error-message" id="addressError">Alamat harus diisi</div>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="locationInput">Koordinat Lokasi (Opsional)</label>
                                 <input type="text" id="locationInput" placeholder="Koordinat lokasi akan terisi otomatis" readonly>
                                 <div class="error-message" id="locationError"></div>
                             </div>
-                            
                             <button type="button" id="detectLocationBtn">📍 Deteksi Lokasi Otomatis</button>
                             <button type="button" id="viewMapBtn" style="display: none;">🗺️ Lihat di Google Maps</button>
-                            
                             <div class="form-group">
                                 <label for="paymentMethod">Metode Pembayaran *</label>
                                 <select id="paymentMethod" required>
@@ -1808,7 +1572,6 @@
                                 </select>
                                 <div class="error-message" id="paymentError">Pilih metode pembayaran</div>
                             </div>
-                            
                             <button type="submit" data-i18n="orderNow">📦 Pesan Sekarang</button>
                         </form>
                     </div>
@@ -1822,13 +1585,11 @@
             </div>
         </div>
     </main>
-    
     <footer>
         <div class="container">
             <p>&copy; 2025 Toko Buku Islam. <span data-i18n="copyright">Hak Cipta Dilindungi</span>.</p>
         </div>
     </footer>
-
     <div id="cartModal" class="modal">
         <div class="modal-content">
             <button id="cartModalClose" class="modal-close">&times;</button>
@@ -1838,19 +1599,16 @@
             <a href="#" class="btn-checkout" id="checkoutBtn" data-i18n="checkout">Checkout</a>
         </div>
     </div>
-
     <!-- User Modal untuk Login/Daftar -->
     <div id="userModal" class="user-modal">
         <div class="user-modal-content">
             <button id="userModalClose" class="user-modal-close">&times;</button>
             <h2 id="userModalTitle">Login</h2>
-            
             <div class="profile-picture-upload" id="profilePictureUpload" style="display: none;">
                 <img src="https://via.placeholder.com/100" alt="Profile Preview" class="profile-preview" id="profilePreview">
                 <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
                 <label for="profilePictureInput" class="profile-upload-btn">Pilih Foto Profil</label>
             </div>
-            
             <form id="userForm" class="user-form">
                 <div id="registerFields" style="display: none;">
                     <input type="text" id="registerName" placeholder="Nama Lengkap">
@@ -1865,7 +1623,6 @@
             </form>
         </div>
     </div>
-
     <!-- Profile Modal -->
     <div id="profileModal" class="profile-modal">
         <div class="profile-modal-content">
@@ -1882,7 +1639,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1890,11 +1646,9 @@
             const supabaseUrl = 'https://rfqpsuzmonfmnvthxinb.supabase.co';
             const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmcXBzdXptb25mbW52dGh4aW5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1OTQyMjUsImV4cCI6MjA3NjE3MDIyNX0.gJFzuE-KJrdSoIKMTIDszTdNLDl_sJkIhgo7wmXRGWA';
             const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-
             // Nomor WA - SESUAI PERMINTAAN
             const waIndonesia = '6285163682122'; // Nomor Indonesia
             const waArab = '201014006053'; // Nomor Arab
-
             // ==================== VARIABEL GLOBAL & STATE ====================
             let allBooks = [];
             let categories = [];
@@ -1918,7 +1672,6 @@
             let isLoginMode = true; // true untuk login, false untuk daftar
             let currentUser = null;
             let profilePictureFile = null;
-
             // ==================== FUNGSI HELPER ====================
             function formatPrice(price, currency = 'IDR') {
                 let rate = 1, symbol = 'Rp ', locale = 'id-ID';
@@ -1936,14 +1689,12 @@
                     rate = currencySettings.usd_rate;
                     currency = 'IDR';
                 }
-                
                 return new Intl.NumberFormat(locale, {
                     style: 'currency',
                     currency: currency,
                     minimumFractionDigits: 0
                 }).format(price * rate).replace('IDR', 'Rp').replace('USD', '$').replace('EGP', 'E£');
             }
-
             function calculateDiscountedPrice(basePrice, discount, publisherDiscount = '') {
                 if (!basePrice) return 0;
                 let effectiveDiscount = discount || publisherDiscount;
@@ -1951,21 +1702,18 @@
                 const discountPercent = parseFloat(effectiveDiscount.replace('%', '')) || 0;
                 return basePrice * (1 - discountPercent / 100);
             }
-
             function navigateToCategory(categoryId) {
                 const url = new URL(window.location);
                 url.searchParams.set('category', categoryId);
                 url.searchParams.delete('publisher');
                 window.location.href = url.toString();
             }
-
             function navigateToPublisher(publisherId) {
                 const url = new URL(window.location);
                 url.searchParams.set('publisher', publisherId);
                 url.searchParams.delete('category');
                 window.location.href = url.toString();
             }
-
             function navigateToHome() {
                 const url = new URL(window.location);
                 url.searchParams.delete('category');
@@ -1974,23 +1722,19 @@
                 url.searchParams.delete('order');
                 window.location.href = url.toString();
             }
-
             function navigateToProductDetail(bookId) {
                 const url = new URL(window.location);
                 url.searchParams.set('product', bookId);
                 window.location.href = url.toString();
             }
-
             function navigateToOrder() {
                 const url = new URL(window.location);
                 url.searchParams.set('order', 'true');
                 window.location.href = url.toString();
             }
-
             function updateBreadcrumb(filterType, filterName) {
                 const breadcrumb = document.getElementById('breadcrumb');
                 const breadcrumbCurrent = document.getElementById('breadcrumbCurrent');
-                
                 if (filterType) {
                     breadcrumb.style.display = 'block';
                     breadcrumbCurrent.textContent = filterName;
@@ -1998,13 +1742,11 @@
                     breadcrumb.style.display = 'none';
                 }
             }
-
             function updateFilterInfo(filterType, filterName, description) {
                 const filterInfo = document.getElementById('filterInfo');
                 const filterTitle = document.getElementById('filterTitle');
                 const filterDescription = document.getElementById('filterDescription');
                 const productsTitle = document.getElementById('productsTitle');
-                
                 if (filterType) {
                     filterInfo.style.display = 'flex';
                     filterTitle.textContent = filterName;
@@ -2015,7 +1757,6 @@
                     productsTitle.textContent = 'Koleksi Buku Terbaru';
                 }
             }
-
             // ==================== FUNGSI MULTI-BAHASA ====================
             const translations = {
                 id: {
@@ -2163,40 +1904,31 @@
                     chooseProfilePicture: "اختر صورة الملف الشخصي"
                 }
             };
-
             function updateLanguage() {
                 const lang = currentLanguage;
                 const t = translations[lang];
-                
                 document.querySelectorAll('[data-i18n]').forEach(element => {
                     const key = element.getAttribute('data-i18n');
                     if (t[key]) {
                         element.textContent = t[key];
                     }
                 });
-                
                 document.getElementById('searchInput').placeholder = t.searchPlaceholder;
                 document.getElementById('floatingSearchInput').placeholder = t.searchPlaceholder;
-                
                 if (document.getElementById('productDetailPage').style.display !== 'none') {
                     renderProductDetail(currentBook);
                 }
-                
                 if (document.getElementById('orderPage').style.display !== 'none') {
                     renderOrderItems();
                 }
-                
                 if (document.getElementById('cartModal').classList.contains('active')) {
                     renderCart();
                 }
-                
                 // Update user modal language
                 updateUserModalLanguage();
             }
-            
             function updateUserModalLanguage() {
                 const t = translations[currentLanguage];
-                
                 if (isLoginMode) {
                     document.getElementById('userModalTitle').textContent = t.loginTitle;
                     document.getElementById('userSubmitBtn').textContent = t.loginButton;
@@ -2208,80 +1940,66 @@
                     document.getElementById('userToggleText').textContent = t.haveAccount + ' ';
                     document.getElementById('userToggleLink').textContent = t.loginHere;
                 }
-                
                 document.getElementById('registerName').placeholder = t.fullName;
                 document.getElementById('userEmail').placeholder = t.email;
                 document.getElementById('userPassword').placeholder = t.password;
                 document.querySelector('.profile-upload-btn').textContent = t.chooseProfilePicture;
             }
-
             // ==================== FUNGSI VALIDASI FORM ====================
             function validateForm() {
                 let isValid = true;
-                
                 // Reset error messages
                 document.querySelectorAll('.error-message').forEach(error => {
                     error.style.display = 'none';
                 });
-                
                 // Validate name
                 const nameInput = document.getElementById('nameInput');
                 if (!nameInput.value.trim()) {
                     document.getElementById('nameError').style.display = 'block';
                     isValid = false;
                 }
-                
                 // Validate phone
                 const phoneInput = document.getElementById('phoneInput');
                 if (!phoneInput.value.trim()) {
                     document.getElementById('phoneError').style.display = 'block';
                     isValid = false;
                 }
-                
                 // Validate address
                 const addressInput = document.getElementById('addressInput');
                 if (!addressInput.value.trim()) {
                     document.getElementById('addressError').style.display = 'block';
                     isValid = false;
                 }
-                
                 // Validate payment method
                 const paymentMethod = document.getElementById('paymentMethod');
                 if (!paymentMethod.value) {
                     document.getElementById('paymentError').style.display = 'block';
                     isValid = false;
                 }
-                
                 return isValid;
             }
-
             // ==================== FUNGSI DETEKSI LOKASI ====================
             function detectLocation() {
                 if (navigator.geolocation) {
                     document.getElementById('detectLocationBtn').textContent = 'Mendeteksi lokasi...';
                     document.getElementById('detectLocationBtn').disabled = true;
-                    
                     navigator.geolocation.getCurrentPosition(
                         async (position) => {
                             const lat = position.coords.latitude;
                             const long = position.coords.longitude;
                             detectedLocation = { lat, long };
-                            
                             // Update location input
                             document.getElementById('locationInput').value = `Lat: ${lat.toFixed(6)}, Long: ${long.toFixed(6)}`;
-                            
                             // Show view map button
                             const viewMapBtn = document.getElementById('viewMapBtn');
                             viewMapBtn.style.display = 'block';
                             viewMapBtn.onclick = () => {
                                 window.open(`https://www.google.com/maps?q=${lat},${long}`, '_blank');
                             };
-                            
                             // Try to get address from coordinates
                             try {
                                 const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}`);
                                 const data = await response.json();
-                                
                                 if (data && data.display_name) {
                                     const addressInput = document.getElementById('addressInput');
                                     if (!addressInput.value.trim()) {
@@ -2291,7 +2009,6 @@
                             } catch (error) {
                                 console.log('Tidak bisa mendapatkan alamat dari koordinat');
                             }
-                            
                             document.getElementById('detectLocationBtn').textContent = '📍 Deteksi Lokasi Otomatis';
                             document.getElementById('detectLocationBtn').disabled = false;
                         },
@@ -2310,7 +2027,6 @@
                     alert('Geolocation tidak didukung oleh browser ini.');
                 }
             }
-
             // ==================== FUNGSI FETCH DATA ====================
             async function fetchCurrency() {
                 const { data, error } = await supabase.from('site_settings').select('usd_rate, egp_rate').single();
@@ -2318,7 +2034,6 @@
                     currencySettings = { usd_rate: data.usd_rate, egp_rate: data.egp_rate };
                 }
             }
-            
             async function fetchBanners() {
                 const { data, error } = await supabase.from('banners').select('*').order('display_order', { ascending: true });
                 if (!error && data) {
@@ -2327,7 +2042,6 @@
                     document.getElementById('bannerSlider').innerHTML = '<p>Gagal memuat banner.</p>';
                 }
             }
-            
             async function fetchCategories() {
                 const { data, error } = await supabase.from('categories').select('*');
                 if (!error && data) {
@@ -2337,7 +2051,6 @@
                     document.getElementById('categoryGrid').innerHTML = '<p>Gagal memuat kategori.</p>';
                 }
             }
-
             async function fetchPublishers() {
                 const { data, error } = await supabase.from('publishers').select('*, discount');
                 if (!error && data) {
@@ -2348,7 +2061,6 @@
                     document.getElementById('publisherTrack').innerHTML = '<p>Gagal memuat penerbit.</p>';
                 }
             }
-
             async function fetchBooks() {
                 const { data, error } = await supabase.from('books').select('*, publishers(name, discount)');
                 if (!error && data) {
@@ -2358,7 +2070,6 @@
                     document.getElementById('productGrid').innerHTML = '<p>Gagal memuat data buku.</p>';
                 }
             }
-            
             // ==================== FUNGSI RENDER TAMPILAN ====================
             function renderBanners(banners) {
                 const slider = document.getElementById('bannerSlider');
@@ -2366,13 +2077,11 @@
                     slider.innerHTML = '<p>Tidak ada banner tersedia.</p>';
                     return;
                 }
-                
                 slider.innerHTML = banners.map((banner, index) => `
                     <div class="banner-slide ${index === 0 ? 'active' : ''}">
                         <img src="${banner.image_url}" alt="${banner.title}">
                     </div>
                 `).join('');
-                
                 setInterval(() => {
                     const slides = document.querySelectorAll('.banner-slide');
                     slides[currentBannerIndex].classList.remove('active');
@@ -2380,14 +2089,12 @@
                     slides[currentBannerIndex].classList.add('active');
                 }, 5000);
             }
-            
             function renderCategories(cats) {
                 const grid = document.getElementById('categoryGrid');
                 if (!cats || cats.length === 0) {
                     grid.innerHTML = '<p>Tidak ada kategori tersedia.</p>';
                     return;
                 }
-                
                 // Hitung jumlah buku per kategori
                 const categoryBookCounts = {};
                 allBooks.forEach(book => {
@@ -2395,7 +2102,6 @@
                         categoryBookCounts[book.category_id] = (categoryBookCounts[book.category_id] || 0) + 1;
                     }
                 });
-                
                 grid.innerHTML = cats.map(cat => {
                     const bookCount = categoryBookCounts[cat.id] || 0;
                     return `
@@ -2408,7 +2114,6 @@
                         </div>
                     `;
                 }).join('');
-
                 document.querySelectorAll('.category-card').forEach(card => {
                     card.addEventListener('click', () => {
                         const catId = card.dataset.categoryId;
@@ -2416,14 +2121,12 @@
                     });
                 });
             }
-
             function renderPublishers(pubs) {
                 const track = document.getElementById('publisherTrack');
                 if (!pubs || pubs.length === 0) {
                     track.innerHTML = '<p>Tidak ada penerbit tersedia.</p>';
                     return;
                 }
-                
                 // Hitung jumlah buku per penerbit
                 const publisherBookCounts = {};
                 allBooks.forEach(book => {
@@ -2431,7 +2134,6 @@
                         publisherBookCounts[book.publisher_id] = (publisherBookCounts[book.publisher_id] || 0) + 1;
                     }
                 });
-                
                 track.innerHTML = pubs.map(pub => {
                     const bookCount = publisherBookCounts[pub.id] || 0;
                     return `
@@ -2447,7 +2149,6 @@
                         </div>
                     `;
                 }).join('');
-
                 document.querySelectorAll('.publisher-card').forEach(card => {
                     card.addEventListener('click', () => {
                         const pubId = card.dataset.publisherId;
@@ -2455,39 +2156,32 @@
                     });
                 });
             }
-
             function startPublisherSlider() {
                 if (publisherInterval) {
                     clearInterval(publisherInterval);
                 }
-                
                 const track = document.getElementById('publisherTrack');
                 const slides = document.querySelectorAll('.publisher-slide');
                 const totalSlides = slides.length;
-                
                 currentPublisherIndex = 0;
                 updatePublisherSlider();
-                
                 publisherInterval = setInterval(() => {
                     currentPublisherIndex = (currentPublisherIndex + 1) % totalSlides;
                     updatePublisherSlider();
                 }, 3000);
             }
-            
             function updatePublisherSlider() {
                 const track = document.getElementById('publisherTrack');
                 const slides = document.querySelectorAll('.publisher-slide');
                 const slideWidth = slides[0]?.offsetWidth || 0;
                 track.style.transform = `translateX(-${currentPublisherIndex * slideWidth}px)`;
             }
-
             function checkUrlParams() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const categoryId = urlParams.get('category');
                 const publisherId = urlParams.get('publisher');
                 const productId = urlParams.get('product');
                 const isOrder = urlParams.get('order');
-                
                 if (productId) {
                     const book = allBooks.find(b => b.id == productId);
                     if (book) {
@@ -2496,7 +2190,6 @@
                         return;
                     }
                 }
-                
                 if (isOrder === 'true') {
                     if (orderItems.length === 0 && cart.length > 0) {
                         orderItems = [...cart.map(item => ({ ...item, quantity: item.quantity || 1 }))];
@@ -2504,7 +2197,6 @@
                     showOrderPage();
                     return;
                 }
-                
                 if (categoryId) {
                     const category = categories.find(c => c.id == categoryId);
                     if (category) {
@@ -2520,11 +2212,9 @@
                         updateFilterInfo('publisher', publisher.name, `Menampilkan buku dari penerbit ${publisher.name}`);
                     }
                 }
-                
                 currentPage = 1;
                 filterAndRenderBooks();
             }
-
             function filterAndRenderBooks(searchTerm = '') {
                 let filteredBooks = allBooks.filter(book => 
                     (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -2532,18 +2222,14 @@
                     (!selectedCategory || book.category_id == selectedCategory) &&
                     (!selectedPublisher || book.publisher_id == selectedPublisher)
                 );
-
                 const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
                 const paginatedBooks = filteredBooks.slice((currentPage - 1) * booksPerPage, currentPage * booksPerPage);
-
                 renderBooks(paginatedBooks);
                 renderPagination(totalPages);
             }
-
             function renderBooks(books) {
                 const grid = document.getElementById('productGrid');
                 const t = translations[currentLanguage];
-                
                 if (!books || books.length === 0) {
                     grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">${t.noBooksFound}</p>`;
                     return;
@@ -2555,7 +2241,6 @@
                     const originalPrice = book.original_price || basePrice;
                     const finalPrice = calculateDiscountedPrice(basePrice, book.discount, publisherDiscount);
                     const discountPercent = parseFloat((book.discount || publisherDiscount || '0%').replace('%', '')) || 0;
-
                     return `
                         <div class="product-card" data-book-id="${book.id}">
                             <div class="product-image">
@@ -2585,7 +2270,6 @@
                         </div>
                     `;
                 }).join('');
-
                 document.querySelectorAll('.product-card').forEach(card => {
                     card.addEventListener('click', (e) => {
                         if (!e.target.closest('.btn-buy-card, .btn-add-to-cart-card')) {
@@ -2594,7 +2278,6 @@
                         }
                     });
                 });
-
                 document.querySelectorAll('.btn-add-to-cart-card').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -2604,7 +2287,6 @@
                         addToCart(book);
                     });
                 });
-
                 document.querySelectorAll('.btn-buy-card').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -2615,7 +2297,6 @@
                     });
                 });
             }
-
             function renderPagination(totalPages) {
                 const pagination = document.getElementById('pagination');
                 pagination.innerHTML = '';
@@ -2630,7 +2311,6 @@
                     pagination.appendChild(btn);
                 }
             }
-
             function renderSearchDropdown(books, dropdownId) {
                 const dropdown = document.getElementById(dropdownId);
                 const t = translations[currentLanguage];
@@ -2644,7 +2324,6 @@
                     const basePrice = book.base_price;
                     const finalPrice = calculateDiscountedPrice(basePrice, book.discount, publisherDiscount);
                     const discountPercent = parseFloat((book.discount || publisherDiscount || '0%').replace('%', '')) || 0;
-
                     return `
                         <div class="search-result-item" data-book-id="${book.id}">
                             <img src="${book.cover_image_url || 'https://via.placeholder.com/50x75'}" alt="${book.title}" class="search-result-image">
@@ -2661,7 +2340,6 @@
                         </div>
                     `;
                 }).join('');
-
                 dropdown.querySelectorAll('.search-result-item').forEach(item => {
                     item.addEventListener('click', (e) => {
                         if (!e.target.closest('.mini-btn')) {
@@ -2670,7 +2348,6 @@
                         }
                     });
                 });
-
                 dropdown.querySelectorAll('.mini-cart').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -2680,7 +2357,6 @@
                         addToCart(book);
                     });
                 });
-
                 dropdown.querySelectorAll('.mini-buy').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -2691,21 +2367,16 @@
                     });
                 });
             }
-
             // ==================== FUNGSI HALAMAN DETAIL PRODUK ====================
             function showProductDetail(book) {
                 currentBook = book;
                 renderProductDetail(book);
-                
                 document.getElementById('homePage').style.display = 'none';
                 document.getElementById('productDetailPage').style.display = 'block';
                 document.getElementById('orderPage').style.display = 'none';
-                
                 updateBreadcrumb('product', book.title);
-                
                 window.scrollTo(0, 0);
             }
-
             function renderProductDetail(book) {
                 const publisher = publishers.find(p => p.id === book.publisher_id);
                 const publisherDiscount = publisher ? publisher.discount : '';
@@ -2714,20 +2385,16 @@
                 const finalPrice = calculateDiscountedPrice(basePrice, book.discount, publisherDiscount);
                 const discountPercent = parseFloat((book.discount || publisherDiscount || '0%').replace('%', '')) || 0;
                 const t = translations[currentLanguage];
-
                 document.getElementById('detailImage').src = book.cover_image_url || 'https://via.placeholder.com/300x400.png?text=No+Image';
                 document.getElementById('detailTitle').textContent = book.title;
                 document.getElementById('detailAuthor').textContent = `${t.by} ${book.author}`;
                 document.getElementById('detailPublisher').textContent = `${t.publisher}: ${book.publishers ? book.publishers.name : 'N/A'}`;
-                
                 document.getElementById('detailPricing').innerHTML = `
                     <span class="final-price">${formatPrice(finalPrice, currentCurrency)}</span>
                     ${discountPercent > 0 || originalPrice > basePrice ? `<span class="original-price">${formatPrice(originalPrice, currentCurrency)}</span>` : ''}
                     ${discountPercent > 0 ? `<span class="discount-badge">-${discountPercent}%</span>` : ''}
                 `;
-                
                 document.getElementById('detailDescription').textContent = book.description || t.noDescription;
-                
                 const detailsGrid = document.getElementById('detailGrid');
                 detailsGrid.innerHTML = `
                     ${book.pages ? `<div class="detail-item"><strong>${t.pages}:</strong> ${book.pages}</div>` : ''}
@@ -2745,57 +2412,41 @@
                     ${book.translator ? `<div class="detail-item"><strong>${t.translator}:</strong> ${book.translator}</div>` : ''}
                     ${book.reviewer ? `<div class="detail-item"><strong>${t.reviewer}:</strong> ${book.reviewer}</div>` : ''}
                 `;
-
                 // PERBAIKAN: Event listener yang benar untuk tombol di halaman detail
-              
                 const detailAddToCartBtn = document.getElementById('detailAddToCartBtn');
-
                 // Hapus event listener lama jika ada
-                detailBuyBtn.replaceWith(detailBuyBtn.cloneNode(true));
                 detailAddToCartBtn.replaceWith(detailAddToCartBtn.cloneNode(true));
-
                 // Tambah event listener baru
-            
-
                 document.getElementById('detailAddToCartBtn').addEventListener('click', (e) => {
                     e.preventDefault();
                     addToCart(book);
                 });
             }
-
             // ==================== FUNGSI HALAMAN ORDER ====================
             function showOrderPage() {
                 renderOrderItems();
                 loadRecommendedProducts();
-                
                 document.getElementById('homePage').style.display = 'none';
                 document.getElementById('productDetailPage').style.display = 'none';
                 document.getElementById('orderPage').style.display = 'block';
-                
                 updateBreadcrumb('order', 'Form Pemesanan');
-                
                 window.scrollTo(0, 0);
             }
-
             function renderOrderItems() {
                 const orderItemsDiv = document.getElementById('orderItems');
                 const t = translations[currentLanguage];
                 let totalPrice = 0;
-
                 console.log('Order Items:', orderItems);
-
                 if (orderItems.length === 0) {
                     orderItemsDiv.innerHTML = '<p>Tidak ada item. Silakan tambah item terlebih dahulu.</p>';
                     return;
                 }
-
                 orderItemsDiv.innerHTML = '<h3>Item Pemesanan:</h3>' + orderItems.map(item => {
                     const publisher = publishers.find(p => p.id === item.publisher_id);
                     const publisherDiscount = publisher ? publisher.discount : '';
                     const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
                     const itemTotal = finalPrice * (item.quantity || 1);
                     totalPrice += itemTotal;
-
                     return `
                         <div class="cart-item">
                             <img src="${item.cover_image_url || 'https://via.placeholder.com/80x120.png?text=No+Image'}" alt="${item.title}">
@@ -2808,17 +2459,14 @@
                     `;
                 }).join('') + `<p><strong>Total: ${formatPrice(totalPrice, currentCurrency)}</strong></p>`;
             }
-
             function loadRecommendedProducts() {
                 const shuffled = [...allBooks].sort(() => 0.5 - Math.random());
                 const recommended = shuffled.slice(0, 4);
-                
                 const recommendedGrid = document.getElementById('recommendedGrid');
                 recommendedGrid.innerHTML = recommended.map(book => {
                     const publisher = publishers.find(p => p.id === book.publisher_id);
                     const publisherDiscount = publisher ? publisher.discount : '';
                     const finalPrice = calculateDiscountedPrice(book.base_price, book.discount, publisherDiscount);
-                    
                     return `
                         <div class="recommended-card" data-book-id="${book.id}">
                             <img src="${book.cover_image_url || 'https://via.placeholder.com/80x120.png?text=No+Image'}" alt="${book.title}" class="recommended-image">
@@ -2829,7 +2477,6 @@
                         </div>
                     `;
                 }).join('');
-                
                 document.querySelectorAll('.recommended-card').forEach(card => {
                     card.addEventListener('click', () => {
                         const bookId = card.dataset.bookId;
@@ -2837,14 +2484,12 @@
                     });
                 });
             }
-
             // ==================== FUNGSI KERANJANG ====================
             function addToCart(book) {
                 // PERBAIKAN: Buat copyan buku, bukan referensi ke data asli
                 const bookCopy = JSON.parse(JSON.stringify(book));
                 bookCopy.isCartCopy = true; // Tandai sebagai copyan
                 bookCopy.cartId = Date.now(); // ID unik untuk item di keranjang
-                
                 const existingItem = cart.find(item => item.id === book.id && item.isCartCopy);
                 if (existingItem) {
                     existingItem.quantity += 1;
@@ -2855,7 +2500,6 @@
                 updateCartBadge();
                 alert('Buku ditambahkan ke keranjang!');
             }
-
             function removeFromCart(cartId) {
                 // PERBAIKAN: Hapus paksa berdasarkan cartId
                 cart = cart.filter(item => item.cartId !== cartId);
@@ -2863,7 +2507,6 @@
                 updateCartBadge();
                 renderCart();
             }
-
             function updateCartBadge() {
                 const badge = document.getElementById('cartBadge');
                 const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -2874,26 +2517,22 @@
                     badge.classList.remove('active');
                 }
             }
-
             function renderCart() {
                 const cartItems = document.getElementById('cartItems');
                 const cartTotal = document.getElementById('cartTotal');
                 const t = translations[currentLanguage];
                 let totalPrice = 0;
-
                 if (cart.length === 0) {
                     cartItems.innerHTML = '<p>Keranjang kosong.</p>';
                     cartTotal.innerHTML = '';
                     return;
                 }
-
                 cartItems.innerHTML = cart.map(item => {
                     const publisher = publishers.find(p => p.id === item.publisher_id);
                     const publisherDiscount = publisher ? publisher.discount : '';
                     const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
                     const itemTotal = finalPrice * item.quantity;
                     totalPrice += itemTotal;
-
                     return `
                         <div class="cart-item">
                             <img src="${item.cover_image_url || 'https://via.placeholder.com/80x120.png?text=No+Image'}" alt="${item.title}">
@@ -2906,15 +2545,12 @@
                         </div>
                     `;
                 }).join('');
-
                 cartTotal.innerHTML = `${t.total}: ${formatPrice(totalPrice, currentCurrency)}`;
-
                 // PERBAIKAN: Event listener untuk hapus item di keranjang
                 document.querySelectorAll('.cart-item-remove').forEach(btn => {
                     // Hapus event listener lama
                     btn.replaceWith(btn.cloneNode(true));
                 });
-
                 // Tambah event listener baru
                 document.querySelectorAll('.cart-item-remove').forEach(btn => {
                     btn.addEventListener('click', (e) => {
@@ -2925,7 +2561,6 @@
                     });
                 });
             }
-
             // ==================== FUNGSI ORDER ====================
             function startOrder(items) {
                 if (!items || items.length === 0) {
@@ -2936,26 +2571,20 @@
                         return;
                     }
                 }
-                
                 orderItems = items.map(item => ({
                     ...item,
                     quantity: item.quantity || 1
                 }));
-                
                 console.log('Order items:', orderItems);
-                
                 navigateToOrder();
             }
-
             async function submitOrder(e) {
                 e.preventDefault();
-                
                 // Validasi form sebelum submit
                 if (!validateForm()) {
                     alert('Mohon lengkapi semua field yang wajib diisi!');
                     return;
                 }
-
                 const name = document.getElementById('nameInput').value;
                 const phoneCountry = document.getElementById('phoneCountry').value;
                 const phoneNumber = document.getElementById('phoneInput').value;
@@ -2963,21 +2592,17 @@
                 const address = document.getElementById('addressInput').value;
                 const location = document.getElementById('locationInput').value;
                 const paymentMethod = document.getElementById('paymentMethod').value;
-
                 if (orderItems.length === 0) {
                     alert('Tidak ada item untuk dipesan.');
                     return;
                 }
-
                 const totalPrice = orderItems.reduce((sum, item) => {
                     const publisher = publishers.find(p => p.id === item.publisher_id);
                     const publisherDiscount = publisher ? publisher.discount : '';
                     const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
                     return sum + finalPrice * (item.quantity || 1);
                 }, 0);
-
                 const firstBook = orderItems[0];
-
                 console.log('Data yang akan dikirim:', {
                     name, 
                     phone: fullPhone, 
@@ -2993,7 +2618,6 @@
                     quantity: orderItems.reduce((sum, item) => sum + (item.quantity || 1), 0),
                     payment_method: paymentMethod
                 });
-
                 try {
                     const { data, error } = await supabase.from('orders').insert({
                         name: name,
@@ -3010,84 +2634,91 @@
                         payment_method: paymentMethod,
                         status: 'pending'
                     });
-
                     if (error) {
                         console.error('Error dari Supabase:', error);
                         alert('Gagal menyimpan order: ' + error.message);
                         return;
                     }
-
                     console.log('Order berhasil disimpan:', data);
-
                     // Buat template WA berdasarkan pilihan user
                     const isArab = paymentMethod === 'ar';
                     const waNumber = isArab ? waArab : waIndonesia;
-                    
                     let template = '';
-                    
                     if (isArab) {
-                        template = `الطلب الجديد 📦\n\n`;
-                        template += `الاسم: ${name}\n`;
-                        template += `الهاتف: ${fullPhone}\n`;
-                        template += `العنوان: ${address}\n`;
+                        template = `الطلب الجديد 📦
+`;
+                        template += `الاسم: ${name}
+`;
+                        template += `الهاتف: ${fullPhone}
+`;
+                        template += `العنوان: ${address}
+`;
                         if (location) {
-                            template += `الموقع: https://www.google.com/maps?q=${encodeURIComponent(location)}\n`;
+                            template += `الموقع: https://www.google.com/maps?q=${encodeURIComponent(location)}
+`;
                         }
-                        template += `\nالمنتجات:\n`;
+                        template += `
+المنتجات:
+`;
                         orderItems.forEach(item => {
                             const publisher = publishers.find(p => p.id === item.publisher_id);
                             const publisherDiscount = publisher ? publisher.discount : '';
                             const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
-                            template += `📖 ${item.title} x ${item.quantity || 1} - ${formatPrice(finalPrice, currentCurrency)}\n`;
+                            template += `📖 ${item.title} x ${item.quantity || 1} - ${formatPrice(finalPrice, currentCurrency)}
+`;
                         });
-                        template += `\nالمجموع: ${formatPrice(totalPrice, currentCurrency)}`;
+                        template += `
+المجموع: ${formatPrice(totalPrice, currentCurrency)}`;
                     } else {
-                        template = `Pesanan Baru 📦\n\n`;
-                        template += `Nama: ${name}\n`;
-                        template += `Telepon: ${fullPhone}\n`;
-                        template += `Alamat: ${address}\n`;
+                        template = `Pesanan Baru 📦
+`;
+                        template += `Nama: ${name}
+`;
+                        template += `Telepon: ${fullPhone}
+`;
+                        template += `Alamat: ${address}
+`;
                         if (location) {
-                            template += `Lokasi: https://www.google.com/maps?q=${encodeURIComponent(location)}\n`;
+                            template += `Lokasi: https://www.google.com/maps?q=${encodeURIComponent(location)}
+`;
                         }
-                        template += `\nProduk:\n`;
+                        template += `
+Produk:
+`;
                         orderItems.forEach(item => {
                             const publisher = publishers.find(p => p.id === item.publisher_id);
                             const publisherDiscount = publisher ? publisher.discount : '';
                             const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
-                            template += `📖 ${item.title} x ${item.quantity || 1} - ${formatPrice(finalPrice, currentCurrency)}\n`;
+                            template += `📖 ${item.title} x ${item.quantity || 1} - ${formatPrice(finalPrice, currentCurrency)}
+`;
                         });
-                        template += `\nTotal: ${formatPrice(totalPrice, currentCurrency)}`;
+                        template += `
+Total: ${formatPrice(totalPrice, currentCurrency)}`;
                     }
-
                     // Redirect ke WhatsApp
                     const finalWaNumber = isArab ? `+20${waArab}` : `+62${waIndonesia}`;
                     window.location.href = `https://wa.me/${finalWaNumber}?text=${encodeURIComponent(template)}`;
-
                     // Clear cart jika dari cart
                     if (orderItems === cart || JSON.stringify(orderItems) === JSON.stringify(cart)) {
                         cart = [];
                         localStorage.setItem('cart', JSON.stringify(cart));
                         updateCartBadge();
                     }
-
                 } catch (err) {
                     console.error('Error:', err);
                     alert('Terjadi kesalahan: ' + err.message);
                 }
             }
-
             // ==================== FUNGSI USER MODAL ====================
             function toggleUserModal() {
                 const userModal = document.getElementById('userModal');
                 userModal.classList.toggle('active');
             }
-
             function toggleUserFormMode() {
                 isLoginMode = !isLoginMode;
                 updateUserModalLanguage();
                 const registerFields = document.getElementById('registerFields');
                 const profilePictureUpload = document.getElementById('profilePictureUpload');
-
                 if (isLoginMode) {
                     registerFields.style.display = 'none';
                     profilePictureUpload.style.display = 'none';
@@ -3096,20 +2727,16 @@
                     profilePictureUpload.style.display = 'flex';
                 }
             }
-
             async function handleUserForm(e) {
                 e.preventDefault();
-                
                 const email = document.getElementById('userEmail').value;
                 const password = document.getElementById('userPassword').value;
-                
                 if (isLoginMode) {
                     // Login
                     const { data, error } = await supabase.auth.signInWithPassword({
                         email: email,
                         password: password
                     });
-                    
                     if (error) {
                         alert('Login gagal: ' + error.message);
                     } else {
@@ -3122,7 +2749,6 @@
                 } else {
                     // Daftar
                     const name = document.getElementById('registerName').value;
-                    
                     const { data, error } = await supabase.auth.signUp({
                         email: email,
                         password: password,
@@ -3132,66 +2758,53 @@
                             }
                         }
                     });
-                    
                     if (error) {
                         alert('Pendaftaran gagal: ' + error.message);
                     } else {
                         currentUser = data.user;
-                        
                         // Upload foto profil jika ada
                         if (profilePictureFile) {
                             await uploadProfilePicture();
                         }
-                        
                         alert('Pendaftaran berhasil! Silakan cek email untuk verifikasi.');
                         toggleUserModal();
                         updateUserInterface();
                     }
                 }
             }
-
             async function updateUserProfile() {
                 if (!currentUser) return;
-                
                 // Ambil data user dari database
                 const { data, error } = await supabase
                     .from('profiles')
                     .select('*')
                     .eq('id', currentUser.id)
                     .single();
-                
                 if (!error && data) {
                     currentUser.profile = data;
                 }
             }
-
             async function uploadProfilePicture() {
                 if (!profilePictureFile || !currentUser) return;
-                
                 const fileExt = profilePictureFile.name.split('.').pop();
                 const fileName = `${currentUser.id}-${Math.random()}.${fileExt}`;
                 const filePath = `profile-pictures/${fileName}`;
-                
                 const { error: uploadError } = await supabase.storage
                     .from('avatars')
                     .upload(filePath, profilePictureFile);
-                
                 if (uploadError) {
                     console.error('Error uploading profile picture:', uploadError);
                     return;
                 }
-                
                 // Dapatkan URL publik
                 const { data } = supabase.storage
                     .from('avatars')
                     .getPublicUrl(filePath);
-                
                 // Update profil user dengan URL foto
                 const { error: updateError } = await supabase
                     .from('profiles')
                     .update({ avatar_url: data.publicUrl })
                     .eq('id', currentUser.id);
-                
                 if (updateError) {
                     console.error('Error updating profile:', updateError);
                 } else {
@@ -3199,21 +2812,16 @@
                     updateUserInterface();
                 }
             }
-
             function updateUserInterface() {
                 const userProfile = document.getElementById('userProfile');
                 const userIcon = document.getElementById('userIcon');
-                
                 if (currentUser) {
                     userProfile.style.display = 'flex';
                     userIcon.style.display = 'none';
-                    
                     // Update nama dan foto profil
                     const userName = document.getElementById('userName');
                     const userAvatar = document.getElementById('userAvatar');
-                    
                     userName.textContent = currentUser.user_metadata?.full_name || currentUser.email;
-                    
                     if (currentUser.profile?.avatar_url) {
                         userAvatar.src = currentUser.profile.avatar_url;
                     } else {
@@ -3224,7 +2832,6 @@
                     userIcon.style.display = 'block';
                 }
             }
-
             async function logout() {
                 const { error } = await supabase.auth.signOut();
                 if (error) {
@@ -3235,26 +2842,21 @@
                     alert('Logout berhasil!');
                 }
             }
-
             // ==================== FUNGSI PROFILE MODAL ====================
             function toggleProfileModal() {
                 const profileModal = document.getElementById('profileModal');
-                
                 if (currentUser) {
                     // Update data profil di modal
                     document.getElementById('profileName').textContent = currentUser.user_metadata?.full_name || currentUser.email;
                     document.getElementById('profileEmail').textContent = currentUser.email;
-                    
                     if (currentUser.profile?.avatar_url) {
                         document.getElementById('profileAvatar').src = currentUser.profile.avatar_url;
                     } else {
                         document.getElementById('profileAvatar').src = 'https://via.placeholder.com/100';
                     }
-                    
                     profileModal.classList.toggle('active');
                 }
             }
-
             // ==================== FUNGSI HAPUS KERANJANG OTOMATIS ====================
             function setupCartAutoClear() {
                 // Event saat user meninggalkan halaman
@@ -3262,12 +2864,10 @@
                     // Simpan timestamp terakhir kali user mengunjungi situs
                     localStorage.setItem('lastVisit', Date.now().toString());
                 });
-
                 // Event saat halaman dimuat
                 window.addEventListener('load', function() {
                     const lastVisit = localStorage.getItem('lastVisit');
                     const currentTime = Date.now();
-                    
                     // Jika lebih dari 30 menit sejak kunjungan terakhir, hapus keranjang
                     if (lastVisit && (currentTime - parseInt(lastVisit)) > 30 * 60 * 1000) {
                         cart = [];
@@ -3275,20 +2875,17 @@
                         updateCartBadge();
                     }
                 });
-
                 // Event saat tab/window ditutup
                 window.addEventListener('unload', function() {
                     // Simpan timestamp terakhir kali user mengunjungi situs
                     localStorage.setItem('lastVisit', Date.now().toString());
                 });
             }
-
             // ==================== SCROLL HANDLER ====================
             function handleScroll() {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 const header = document.getElementById('header');
                 const floatingSearch = document.getElementById('floatingSearch');
-                
                 if (scrollTop > lastScrollTop && scrollTop > 100) {
                     header.classList.add('hidden');
                     floatingSearch.classList.add('visible');
@@ -3296,18 +2893,15 @@
                     header.classList.remove('hidden');
                     floatingSearch.classList.remove('visible');
                 }
-                
                 lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
                 ticking = false;
             }
-
             function requestTick() {
                 if (!ticking) {
                     window.requestAnimationFrame(handleScroll);
                     ticking = true;
                 }
             }
-
             // ==================== EVENT LISTENERS ====================
             const cartModal = document.getElementById('cartModal');
             const cartModalClose = document.getElementById('cartModalClose');
@@ -3330,19 +2924,15 @@
             const profileModalClose = document.getElementById('profileModalClose');
             const profilePictureInput = document.getElementById('profilePictureInput');
             const profilePreview = document.getElementById('profilePreview');
-
             window.addEventListener('scroll', requestTick);
-
             searchInput.addEventListener('input', (e) => {
                 floatingSearchInput.value = e.target.value;
                 handleSearchInput(e.target.value, 'searchDropdown');
             });
-
             floatingSearchInput.addEventListener('input', (e) => {
                 searchInput.value = e.target.value;
                 handleSearchInput(e.target.value, 'floatingSearchDropdown');
             });
-
             function handleSearchInput(searchTerm, dropdownId) {
                 if (searchTerm.length > 0) {
                     const filtered = allBooks.filter(book => 
@@ -3355,29 +2945,24 @@
                     document.getElementById(dropdownId).classList.remove('active');
                 }
             }
-
             document.addEventListener('click', (e) => {
                 if (!searchDropdown.contains(e.target) && e.target !== searchInput && !floatingSearchDropdown.contains(e.target) && e.target !== floatingSearchInput) {
                     searchDropdown.classList.remove('active');
                     floatingSearchDropdown.classList.remove('active');
                 }
             });
-
             cartModalClose.addEventListener('click', () => {
                 cartModal.classList.remove('active');
             });
-
             cartModal.addEventListener('click', (e) => {
                 if (e.target === cartModal) {
                     cartModal.classList.remove('active');
                 }
             });
-
             cartIcon.addEventListener('click', () => {
                 renderCart();
                 cartModal.classList.add('active');
             });
-
             checkoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 if (cart.length === 0) {
@@ -3388,11 +2973,8 @@
                 cartModal.classList.remove('active');
                 navigateToOrder();
             });
-
             detectLocationBtn.addEventListener('click', detectLocation);
-
             orderForm.addEventListener('submit', submitOrder);
-
             // User modal events
             userIcon.addEventListener('click', toggleUserModal);
             userModalClose.addEventListener('click', toggleUserModal);
@@ -3420,7 +3002,6 @@
                     toggleProfileModal();
                 }
             });
-
             // Profile picture upload
             profilePictureInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
@@ -3433,32 +3014,27 @@
                     reader.readAsDataURL(file);
                 }
             });
-
             // Validasi real-time
             document.getElementById('nameInput').addEventListener('input', function() {
                 if (this.value.trim()) {
                     document.getElementById('nameError').style.display = 'none';
                 }
             });
-
             document.getElementById('phoneInput').addEventListener('input', function() {
                 if (this.value.trim()) {
                     document.getElementById('phoneError').style.display = 'none';
                 }
             });
-
             document.getElementById('addressInput').addEventListener('input', function() {
                 if (this.value.trim()) {
                     document.getElementById('addressError').style.display = 'none';
                 }
             });
-
             document.getElementById('paymentMethod').addEventListener('change', function() {
                 if (this.value) {
                     document.getElementById('paymentError').style.display = 'none';
                 }
             });
-
             document.getElementById('currencySelect').addEventListener('change', (e) => {
                 currentCurrency = e.target.value;
                 filterAndRenderBooks(searchInput.value);
@@ -3472,51 +3048,42 @@
                     renderOrderItems();
                 }
             });
-
             document.getElementById('languageSelect').addEventListener('change', (e) => {
                 currentLanguage = e.target.value;
                 updateLanguage();
                 filterAndRenderBooks(searchInput.value);
             });
-
             document.getElementById('homeLink').addEventListener('click', (e) => {
                 e.preventDefault();
                 navigateToHome();
             });
-
             document.getElementById('breadcrumbHome').addEventListener('click', (e) => {
                 e.preventDefault();
                 navigateToHome();
             });
-
             document.getElementById('clearFilter').addEventListener('click', () => {
                 navigateToHome();
             });
-
             document.getElementById('prevPublisher').addEventListener('click', () => {
                 const slides = document.querySelectorAll('.publisher-slide');
                 const totalSlides = slides.length;
                 currentPublisherIndex = (currentPublisherIndex - 1 + totalSlides) % totalSlides;
                 updatePublisherSlider();
-                
                 if (publisherInterval) {
                     clearInterval(publisherInterval);
                     startPublisherSlider();
                 }
             });
-
             document.getElementById('nextPublisher').addEventListener('click', () => {
                 const slides = document.querySelectorAll('.publisher-slide');
                 const totalSlides = slides.length;
                 currentPublisherIndex = (currentPublisherIndex + 1) % totalSlides;
                 updatePublisherSlider();
-                
                 if (publisherInterval) {
                     clearInterval(publisherInterval);
                     startPublisherSlider();
                 }
             });
-
             // ==================== INISIALISASI APLIKASI ====================
             async function initializeApp() {
                 await fetchCurrency();
@@ -3527,7 +3094,6 @@
                 updateLanguage();
                 updateCartBadge();
                 setupCartAutoClear();
-                
                 // Cek status login saat aplikasi dimulai
                 const { data: { user } } = await supabase.auth.getUser();
                 if (user) {
@@ -3536,7 +3102,6 @@
                     updateUserInterface();
                 }
             }
-
             initializeApp();
         });
     </script>
