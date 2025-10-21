@@ -286,82 +286,6 @@
             display: block;
         }
 
-        /* User Profile */
-        .user-profile {
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--white);
-        }
-
-        .user-name {
-            color: var(--white);
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .user-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
-            min-width: 180px;
-            display: none;
-            z-index: 1000;
-            margin-top: 0.5rem;
-        }
-
-        .user-profile:hover .user-dropdown {
-            display: block;
-        }
-
-        .user-dropdown-item {
-            padding: 0.8rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            color: var(--text-dark);
-            transition: var(--transition);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .user-dropdown-item:last-child {
-            border-bottom: none;
-        }
-
-        .user-dropdown-item:hover {
-            background: var(--light-bg);
-        }
-
-        .user-dropdown-item.logout {
-            color: var(--danger-red);
-        }
-
-        /* User Icon */
-        .user-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--white);
-        }
-
-        .user-icon svg {
-            width: 24px;
-            height: 24px;
-        }
-
         /* === FLOATING SEARCH BAR === */
         .floating-search {
             position: fixed;
@@ -529,13 +453,9 @@
         }
 
         .publisher-book-count {
-            background-color: var(--primary-color);
-            color: var(--white);
-            border-radius: 20px;
-            padding: 0.2rem 0.8rem;
             font-size: 0.8rem;
-            margin-top: 0.5rem;
-            font-weight: 500;
+            color: var(--text-light);
+            margin-top: 0.3rem;
         }
 
         .discount-pin {
@@ -605,7 +525,6 @@
             text-decoration: none;
             color: var(--text-dark);
             cursor: pointer;
-            position: relative;
         }
 
         .category-card:hover {
@@ -626,12 +545,14 @@
             align-items: center;
             justify-content: center;
             background-color: var(--primary-color);
+            border: 1px solid var(--border-color); /* PERBAIKAN: Tambah border tipis */
         }
         
         .category-card-icon img {
             width: 50%;
             height: 50%;
             object-fit: contain;
+            border-radius: 50%; /* PERBAIKAN: Buat foto bulat */
         }
 
         .category-card h3 {
@@ -640,13 +561,9 @@
         }
 
         .category-book-count {
-            background-color: var(--primary-color);
-            color: var(--white);
-            border-radius: 20px;
-            padding: 0.2rem 0.8rem;
             font-size: 0.8rem;
-            margin-top: 0.5rem;
-            font-weight: 500;
+            color: var(--text-light);
+            margin-top: 0.3rem;
         }
 
         /* === PRODUCTS SECTION === */
@@ -869,18 +786,18 @@
         }
 
         .cart-item-remove {
-            color: var(--danger-red);
+            color: var(--white);
             cursor: pointer;
-            background: none;
+            background: var(--danger-red); /* PERBAIKAN: Tombol merah sederhana */
             border: none;
             font-size: 1rem;
-            padding: 0.5rem;
+            padding: 0.5rem 1rem;
             border-radius: 4px;
             transition: var(--transition);
         }
 
         .cart-item-remove:hover {
-            background-color: rgba(239, 68, 68, 0.1);
+            background-color: #DC2626;
         }
 
         .cart-total {
@@ -1224,215 +1141,42 @@
             flex: 1;
         }
 
-        /* === USER MODAL === */
-        .user-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-
-        .user-modal.active {
-            display: flex;
-        }
-
-        .user-modal-content {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            max-width: 400px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .user-modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--text-light);
-            background: none;
-            border: none;
-        }
-
-        .user-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .user-form input {
-            padding: 0.8rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--white);
-            color: var(--text-dark);
-        }
-
-        .user-form button {
-            padding: 0.8rem;
-            background-color: var(--primary-color);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .user-form button:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .user-form-toggle {
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .user-form-toggle a {
-            color: var(--primary-color);
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .user-form-toggle a:hover {
-            text-decoration: underline;
-        }
-
-        .profile-picture-upload {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .profile-preview {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary-color);
-        }
-
-        .profile-upload-btn {
-            background-color: var(--light-bg);
-            border: 1px dashed var(--border-color);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .profile-upload-btn:hover {
-            background-color: var(--border-color);
-        }
-
-        /* === PROFILE MODAL === */
-        .profile-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-
-        .profile-modal.active {
-            display: flex;
-        }
-
-        .profile-modal-content {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            max-width: 400px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .profile-modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--text-light);
-            background: none;
-            border: none;
-        }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--primary-color);
-        }
-
-        .profile-details {
-            text-align: center;
-        }
-
-        .profile-name {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .profile-email {
-            color: var(--text-light);
-            font-size: 1rem;
-        }
-
-        /* === PAYMENT METHODS === */
-        .payment-methods {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .payment-method {
-            width: 60px;
-            height: 40px;
-            object-fit: contain;
-        }
-
         /* === RESPONSIVE DESIGN (Mobile App-like) === */
         @media (max-width: 768px) {
             .navbar {
-                flex-direction: column;
-                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: space-between;
             }
             .search-bar {
+                width: 50%; /* PERBAIKAN: Kecilkan search bar agar muat */
+                order: 1;
+            }
+            .header-controls {
                 width: 100%;
+                justify-content: flex-end;
+                order: 2;
+                gap: 0.5rem;
+            }
+            .language-selector select, .currency-selector select {
+                padding: 0.3rem; /* PERBAIKAN: Ubah jadi icon-like, kecilkan */
+                width: 40px;
+                text-indent: -9999px; /* Sembunyikan text, tampil icon saja */
+                background-size: 20px;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            .language-selector select {
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA0VjIwTTQgMTJIMjAiPjwvcGF0aD48L3N2Zz4='); /* Icon bahasa */
+            }
+            .currency-selector select {
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMiA0VjIwTTQgMTJIMjAiPjwvcGF0aD48L3N2Zz4='); /* Icon mata uang */
+            }
+            .cart-icon {
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             .product-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1492,44 +1236,6 @@
             .phone-country {
                 flex: 1;
             }
-            
-            /* PERBAIKAN: Tampilan mobile untuk bahasa dan mata uang */
-            .currency-selector, .language-selector {
-                margin-left: 0;
-            }
-            
-            .currency-selector select, .language-selector select {
-                padding: 0.3rem 0.6rem;
-                font-size: 0.8rem;
-                width: 80px;
-            }
-            
-            /* PERBAIKAN: Form pencarian di header mobile */
-            .navbar {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-            
-            .logo-link {
-                flex: 0 0 auto;
-            }
-            
-            .search-bar {
-                order: 3;
-                width: 100%;
-                margin-top: 0.5rem;
-            }
-            
-            .header-controls {
-                flex: 1;
-                justify-content: flex-end;
-                gap: 0.5rem;
-            }
-
-            /* PERBAIKAN: Tampilan user profile di mobile */
-            .user-name {
-                display: none;
-            }
         }
 
         @media (max-width: 576px) {
@@ -1561,18 +1267,6 @@
             .banner-slider {
                 height: 150px;
             }
-            
-            /* PERBAIKAN: Tampilan mobile untuk bahasa dan mata uang */
-            .currency-selector, .language-selector {
-                display: flex;
-                align-items: center;
-            }
-            
-            .currency-selector select, .language-selector select {
-                padding: 0.2rem 0.4rem;
-                font-size: 0.7rem;
-                width: 70px;
-            }
         }
     </style>
 </head>
@@ -1591,44 +1285,17 @@
             <div class="header-controls">
                 <div class="language-selector">
                     <select id="languageSelect">
-                        <option value="id">ID</option>
-                        <option value="en">EN</option>
-                        <option value="ar">AR</option>
+                        <option value="id">Bahasa Indonesia</option>
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
                     </select>
                 </div>
                 <div class="currency-selector">
                     <select id="currencySelect">
-                        <option value="IDR">IDR</option>
-                        <option value="USD">USD</option>
-                        <option value="EGP">EGP</option>
+                        <option value="IDR">IDR (Rp)</option>
+                        <option value="USD">USD ($)</option>
+                        <option value="EGP">EGP (E£)</option>
                     </select>
-                </div>
-                <div class="user-profile" id="userProfile" style="display: none;">
-                    <img src="https://via.placeholder.com/36" alt="Profile" class="user-avatar" id="userAvatar">
-                    <span class="user-name" id="userName">User</span>
-                    <div class="user-dropdown">
-                        <a href="#" class="user-dropdown-item" id="profileBtn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M20 21C20 19.6044 20 18.9067 19.8278 18.3389C19.44 17.0605 18.4395 16.06 17.1611 15.6722C16.5933 15.5 15.8956 15.5 14.5 15.5H9.5C8.10444 15.5 7.40665 15.5 6.83886 15.6722C5.56045 16.06 4.56004 17.0605 4.17224 18.3389C4 18.9067 4 19.6044 4 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Profil Saya
-                        </a>
-                        <a href="#" class="user-dropdown-item logout" id="logoutBtn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Keluar
-                        </a>
-                    </div>
-                </div>
-                <div class="user-icon" id="userIcon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M20 21C20 19.6044 20 18.9067 19.8278 18.3389C19.44 17.0605 18.4395 16.06 17.1611 15.6722C16.5933 15.5 15.8956 15.5 14.5 15.5H9.5C8.10444 15.5 7.40665 15.5 6.83886 15.6722C5.56045 16.06 4.56004 17.0605 4.17224 18.3389C4 18.9067 4 19.6044 4 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
                 </div>
                 <div class="cart-icon" id="cartIcon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1734,7 +1401,7 @@
                         <p class="description" id="detailDescription"></p>
                         <div class="details-grid" id="detailGrid"></div>
                         <div style="margin-top: 2rem;">
-                            <button class="btn-buy" id="detailBuyBtn">🛒 Beli Sekarang</button>
+                            <button class="btn-buy" id="detailBackBtn">🔙 Kembali ke Beranda</button> <!-- PERBAIKAN: Ubah tombol beli jadi kembali -->
                             <button class="btn-add-to-cart" id="detailAddToCartBtn">➕ Tambah ke Keranjang</button>
                         </div>
                     </div>
@@ -1803,8 +1470,8 @@
                                 <label for="paymentMethod">Metode Pembayaran *</label>
                                 <select id="paymentMethod" required>
                                     <option value="">Pilih Metode Pembayaran</option>
-                                    <option value="id">WA Indonesia (085163682122)</option>
-                                    <option value="ar">WA Arab (01014006053)</option>
+                                    <option value="id">WA Indonesia (+6285163682122)</option>
+                                    <option value="ar">WA Arab (+201014006053)</option>
                                 </select>
                                 <div class="error-message" id="paymentError">Pilih metode pembayaran</div>
                             </div>
@@ -1836,71 +1503,6 @@
             <div id="cartItems"></div>
             <div class="cart-total" id="cartTotal"></div>
             <a href="#" class="btn-checkout" id="checkoutBtn" data-i18n="checkout">Checkout</a>
-        </div>
-    </div>
-
-    <!-- User Modal untuk Login/Daftar -->
-    <div id="userModal" class="user-modal">
-        <div class="user-modal-content">
-            <button id="userModalClose" class="user-modal-close">&times;</button>
-            <h2 id="userModalTitle">Login</h2>
-            
-            <div class="profile-picture-upload" id="profilePictureUpload" style="display: none;">
-                <img src="https://via.placeholder.com/100" alt="Profile Preview" class="profile-preview" id="profilePreview">
-                <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
-                <label for="profilePictureInput" class="profile-upload-btn">Pilih Foto Profil</label>
-            </div>
-            
-            <form id="userForm" class="user-form">
-                <div id="registerFields" style="display: none;">
-                    <input type="text" id="registerName" placeholder="Nama Lengkap">
-                </div>
-                <input type="email" id="userEmail" placeholder="Email" required>
-                <input type="password" id="userPassword" placeholder="Password" required>
-                <button type="submit" id="userSubmitBtn">Login</button>
-                <div class="user-form-toggle">
-                    <span id="userToggleText">Belum punya akun? </span>
-                    <a href="#" id="userToggleLink">Daftar di sini</a>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Profile Modal -->
-    <div id="profileModal" class="profile-modal">
-        <div class="profile-modal-content">
-            <button id="profileModalClose" class="profile-modal-close">&times;</button>
-            <div class="profile-info">
-                <img src="https://via.placeholder.com/100" alt="Profile" class="profile-avatar" id="profileAvatar">
-                <div class="profile-details">
-                    <h2 class="profile-name" id="profileName">Nama Pengguna</h2>
-                    <p class="profile-email" id="profileEmail">email@example.com</p>
-                </div>
-            </div>
-            <div style="text-align: center; margin-bottom: 1rem;">
-                <button class="btn-add-to-cart" id="editProfileBtn">Edit Profil</button>
-            </div>
-            <div style="text-align: center;">
-                <button class="btn-buy" id="changePictureBtn">Ubah Foto Profil</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Change Profile Picture Modal -->
-    <div id="changePictureModal" class="user-modal">
-        <div class="user-modal-content">
-            <button id="changePictureModalClose" class="user-modal-close">&times;</button>
-            <h2>Ubah Foto Profil</h2>
-            
-            <div class="profile-picture-upload">
-                <img src="https://via.placeholder.com/100" alt="Profile Preview" class="profile-preview" id="changePicturePreview">
-                <input type="file" id="changePictureInput" accept="image/*" style="display: none;">
-                <label for="changePictureInput" class="profile-upload-btn">Pilih Foto Baru</label>
-            </div>
-            
-            <div style="text-align: center; margin-top: 1rem;">
-                <button class="btn-buy" id="savePictureBtn">Simpan Foto</button>
-            </div>
         </div>
     </div>
 
@@ -1936,9 +1538,6 @@
             let lastScrollTop = 0;
             let ticking = false;
             let detectedLocation = null;
-            let isLoginMode = true; // true untuk login, false untuk daftar
-            let currentUser = null;
-            let profilePictureFile = null;
 
             // ==================== FUNGSI HELPER ====================
             function formatPrice(price, currency = 'IDR') {
@@ -2002,9 +1601,14 @@
                 window.location.href = url.toString();
             }
 
-            function navigateToOrder() {
+            function navigateToOrder(singleBook = null) {
                 const url = new URL(window.location);
                 url.searchParams.set('order', 'true');
+                if (singleBook) {
+                    url.searchParams.set('single', singleBook.id);
+                } else {
+                    url.searchParams.delete('single');
+                }
                 window.location.href = url.toString();
             }
 
@@ -2014,7 +1618,17 @@
                 
                 if (filterType) {
                     breadcrumb.style.display = 'block';
-                    breadcrumbCurrent.textContent = filterName;
+                    if (filterType === 'order') {
+                        if (currentBook && orderItems.length === 1) {
+                            breadcrumbCurrent.textContent = `${currentBook.title} > Form Pesanan`;
+                        } else {
+                            breadcrumbCurrent.textContent = 'Form Pemesanan';
+                        }
+                    } else if (filterType === 'product') {
+                        breadcrumbCurrent.textContent = filterName;
+                    } else {
+                        breadcrumbCurrent.textContent = filterName;
+                    }
                 } else {
                     breadcrumb.style.display = 'none';
                 }
@@ -2071,21 +1685,7 @@
                     total: "Total",
                     remove: "Hapus",
                     orderForm: "Form Pemesanan",
-                    orderNow: "Pesan Sekarang",
-                    login: "Login",
-                    register: "Daftar",
-                    loginTitle: "Login",
-                    registerTitle: "Daftar",
-                    loginButton: "Login",
-                    registerButton: "Daftar",
-                    noAccount: "Belum punya akun?",
-                    haveAccount: "Sudah punya akun?",
-                    registerHere: "Daftar di sini",
-                    loginHere: "Login di sini",
-                    fullName: "Nama Lengkap",
-                    email: "Email",
-                    password: "Password",
-                    chooseProfilePicture: "Pilih Foto Profil"
+                    orderNow: "Pesan Sekarang"
                 },
                 en: {
                     searchPlaceholder: "Search for book title or author...",
@@ -2119,21 +1719,7 @@
                     total: "Total",
                     remove: "Remove",
                     orderForm: "Order Form",
-                    orderNow: "Order Now",
-                    login: "Login",
-                    register: "Register",
-                    loginTitle: "Login",
-                    registerTitle: "Register",
-                    loginButton: "Login",
-                    registerButton: "Register",
-                    noAccount: "Don't have an account?",
-                    haveAccount: "Already have an account?",
-                    registerHere: "Register here",
-                    loginHere: "Login here",
-                    fullName: "Full Name",
-                    email: "Email",
-                    password: "Password",
-                    chooseProfilePicture: "Choose Profile Picture"
+                    orderNow: "Order Now"
                 },
                 ar: {
                     searchPlaceholder: "ابحث عن عنوان الكتاب أو المؤلف...",
@@ -2167,21 +1753,7 @@
                     total: "الإجمالي",
                     remove: "إزالة",
                     orderForm: "نموذج الطلب",
-                    orderNow: "اطلب الآن",
-                    login: "تسجيل الدخول",
-                    register: "تسجيل",
-                    loginTitle: "تسجيل الدخول",
-                    registerTitle: "تسجيل",
-                    loginButton: "تسجيل الدخول",
-                    registerButton: "تسجيل",
-                    noAccount: "ليس لديك حساب؟",
-                    haveAccount: "لديك حساب بالفعل؟",
-                    registerHere: "سجل هنا",
-                    loginHere: "تسجيل الدخول هنا",
-                    fullName: "الاسم الكامل",
-                    email: "البريد الإلكتروني",
-                    password: "كلمة المرور",
-                    chooseProfilePicture: "اختر صورة الملف الشخصي"
+                    orderNow: "اطلب الآن"
                 }
             };
 
@@ -2210,30 +1782,6 @@
                 if (document.getElementById('cartModal').classList.contains('active')) {
                     renderCart();
                 }
-                
-                // Update user modal language
-                updateUserModalLanguage();
-            }
-            
-            function updateUserModalLanguage() {
-                const t = translations[currentLanguage];
-                
-                if (isLoginMode) {
-                    document.getElementById('userModalTitle').textContent = t.loginTitle;
-                    document.getElementById('userSubmitBtn').textContent = t.loginButton;
-                    document.getElementById('userToggleText').textContent = t.noAccount + ' ';
-                    document.getElementById('userToggleLink').textContent = t.registerHere;
-                } else {
-                    document.getElementById('userModalTitle').textContent = t.registerTitle;
-                    document.getElementById('userSubmitBtn').textContent = t.registerButton;
-                    document.getElementById('userToggleText').textContent = t.haveAccount + ' ';
-                    document.getElementById('userToggleLink').textContent = t.loginHere;
-                }
-                
-                document.getElementById('registerName').placeholder = t.fullName;
-                document.getElementById('userEmail').placeholder = t.email;
-                document.getElementById('userPassword').placeholder = t.password;
-                document.querySelector('.profile-upload-btn').textContent = t.chooseProfilePicture;
             }
 
             // ==================== FUNGSI VALIDASI FORM ====================
@@ -2353,7 +1901,12 @@
                 const { data, error } = await supabase.from('categories').select('*');
                 if (!error && data) {
                     categories = data;
-                    renderCategories(data);
+                    // PERBAIKAN: Hitung jumlah buku per kategori
+                    for (let cat of categories) {
+                        const { count } = await supabase.from('books').select('id', { count: 'exact' }).eq('category_id', cat.id);
+                        cat.bookCount = count || 0;
+                    }
+                    renderCategories(categories);
                 } else {
                     document.getElementById('categoryGrid').innerHTML = '<p>Gagal memuat kategori.</p>';
                 }
@@ -2363,7 +1916,12 @@
                 const { data, error } = await supabase.from('publishers').select('*, discount');
                 if (!error && data) {
                     publishers = data;
-                    renderPublishers(data);
+                    // PERBAIKAN: Hitung jumlah buku per penerbit
+                    for (let pub of publishers) {
+                        const { count } = await supabase.from('books').select('id', { count: 'exact' }).eq('publisher_id', pub.id);
+                        pub.bookCount = count || 0;
+                    }
+                    renderPublishers(publishers);
                     startPublisherSlider();
                 } else {
                     document.getElementById('publisherTrack').innerHTML = '<p>Gagal memuat penerbit.</p>';
@@ -2408,27 +1966,15 @@
                     grid.innerHTML = '<p>Tidak ada kategori tersedia.</p>';
                     return;
                 }
-                
-                // Hitung jumlah buku per kategori
-                const categoryBookCounts = {};
-                allBooks.forEach(book => {
-                    if (book.category_id) {
-                        categoryBookCounts[book.category_id] = (categoryBookCounts[book.category_id] || 0) + 1;
-                    }
-                });
-                
-                grid.innerHTML = cats.map(cat => {
-                    const bookCount = categoryBookCounts[cat.id] || 0;
-                    return `
-                        <div class="category-card" data-category-id="${cat.id}" style="border-top: 5px solid ${cat.color};">
-                            <div class="category-card-icon" style="background-color: ${cat.color};">
-                                <img src="${cat.image_url || 'https://via.placeholder.com/40'}" alt="${cat.name_id}">
-                            </div>
-                            <h3>${cat.name_id}</h3>
-                            ${bookCount > 0 ? `<div class="category-book-count">${bookCount} buku</div>` : ''}
+                grid.innerHTML = cats.map(cat => `
+                    <div class="category-card" data-category-id="${cat.id}" style="border-top: 5px solid ${cat.color};">
+                        <div class="category-card-icon" style="background-color: ${cat.color};">
+                            <img src="${cat.image_url || 'https://via.placeholder.com/40'}" alt="${cat.name_id}">
                         </div>
-                    `;
-                }).join('');
+                        <h3>${cat.name_id}</h3>
+                        <p class="category-book-count">(${cat.bookCount} buku)</p>
+                    </div>
+                `).join('');
 
                 document.querySelectorAll('.category-card').forEach(card => {
                     card.addEventListener('click', () => {
@@ -2444,30 +1990,18 @@
                     track.innerHTML = '<p>Tidak ada penerbit tersedia.</p>';
                     return;
                 }
-                
-                // Hitung jumlah buku per penerbit
-                const publisherBookCounts = {};
-                allBooks.forEach(book => {
-                    if (book.publisher_id) {
-                        publisherBookCounts[book.publisher_id] = (publisherBookCounts[book.publisher_id] || 0) + 1;
-                    }
-                });
-                
-                track.innerHTML = pubs.map(pub => {
-                    const bookCount = publisherBookCounts[pub.id] || 0;
-                    return `
-                        <div class="publisher-slide">
-                            <div class="publisher-card" data-publisher-id="${pub.id}">
-                                <div class="publisher-card-icon">
-                                    <img src="${pub.logo_url || 'https://via.placeholder.com/80'}" alt="${pub.name}">
-                                </div>
-                                <h3>${pub.name}</h3>
-                                ${bookCount > 0 ? `<div class="publisher-book-count">${bookCount} buku</div>` : ''}
-                                ${pub.discount ? `<div class="discount-pin">${pub.discount}</div>` : ''}
+                track.innerHTML = pubs.map(pub => `
+                    <div class="publisher-slide">
+                        <div class="publisher-card" data-publisher-id="${pub.id}">
+                            <div class="publisher-card-icon">
+                                <img src="${pub.logo_url || 'https://via.placeholder.com/80'}" alt="${pub.name}">
                             </div>
+                            <h3>${pub.name}</h3>
+                            <p class="publisher-book-count">(${pub.bookCount} buku)</p> <!-- PERBAIKAN: Tambah jumlah buku per penerbit -->
+                            ${pub.discount ? `<div class="discount-pin">${pub.discount}</div>` : ''}
                         </div>
-                    `;
-                }).join('');
+                    </div>
+                `).join('');
 
                 document.querySelectorAll('.publisher-card').forEach(card => {
                     card.addEventListener('click', () => {
@@ -2508,6 +2042,7 @@
                 const publisherId = urlParams.get('publisher');
                 const productId = urlParams.get('product');
                 const isOrder = urlParams.get('order');
+                const singleBookId = urlParams.get('single');
                 
                 if (productId) {
                     const book = allBooks.find(b => b.id == productId);
@@ -2519,8 +2054,15 @@
                 }
                 
                 if (isOrder === 'true') {
-                    if (orderItems.length === 0 && cart.length > 0) {
+                    if (singleBookId) {
+                        const singleBook = allBooks.find(b => b.id == singleBookId);
+                        if (singleBook) {
+                            orderItems = [{ ...singleBook, quantity: 1 }];
+                            currentBook = singleBook;
+                        }
+                    } else if (orderItems.length === 0 && cart.length > 0) {
                         orderItems = [...cart.map(item => ({ ...item, quantity: item.quantity || 1 }))];
+                        currentBook = null;
                     }
                     showOrderPage();
                     return;
@@ -2596,7 +2138,7 @@
                                             <path d="M12 4V20M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </a>
-                                    <a href="#" class="btn-add-to-cart-card" data-book-id="${book.id}">
+                                    <a href="#" class="btn-buy-card" data-book-id="${book.id}"> <!-- PERBAIKAN: Ubah icon + jadi icon beli, fungsi beli sekarang -->
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M2 2H3.74001C4.82001 2 5.67 2.93 5.58 4L4.75 13.96C4.61 15.59 5.89 16.99 7.53 17H18.08C19.72 17 21 15.6 20.86 13.97L21.24 9.01001C21.36 7.41001 20.08 6.01001 18.44 6.01001H5.82M16.25 22C16.9404 22 17.5 21.4404 17.5 20.75C17.5 20.0596 16.9404 19.5 16.25 19.5C15.5596 19.5 15 20.0596 15 20.75C15 21.4404 15.5596 22 16.25 22ZM7.25 22C7.94036 22 8.5 21.4404 8.5 20.75C8.5 20.0596 7.94036 19.5 7.25 19.5C6.55964 19.5 6 20.0596 6 20.75C6 21.4404 6.55964 22 7.25 22Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
@@ -2609,20 +2151,10 @@
 
                 document.querySelectorAll('.product-card').forEach(card => {
                     card.addEventListener('click', (e) => {
-                        if (!e.target.closest('.btn-buy-card, .btn-add-to-cart-card')) {
+                        if (!e.target.closest('.btn-buy-card')) {
                             const bookId = card.dataset.bookId;
                             navigateToProductDetail(bookId);
                         }
-                    });
-                });
-
-                document.querySelectorAll('.btn-add-to-cart-card').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        const bookId = btn.dataset.bookId;
-                        const book = allBooks.find(b => b.id == bookId);
-                        addToCart(book);
                     });
                 });
 
@@ -2632,7 +2164,7 @@
                         e.stopPropagation();
                         const bookId = btn.dataset.bookId;
                         const book = allBooks.find(b => b.id == bookId);
-                        startOrder([book]);
+                        startOrder([book]); // PERBAIKAN: Fungsi beli sekarang untuk icon beli di card
                     });
                 });
             }
@@ -2728,6 +2260,7 @@
             }
 
             function renderProductDetail(book) {
+                currentBook = book;
                 const publisher = publishers.find(p => p.id === book.publisher_id);
                 const publisherDiscount = publisher ? publisher.discount : '';
                 const basePrice = book.base_price;
@@ -2767,18 +2300,18 @@
                     ${book.reviewer ? `<div class="detail-item"><strong>${t.reviewer}:</strong> ${book.reviewer}</div>` : ''}
                 `;
 
-                // PERBAIKAN: Event listener yang benar untuk tombol di halaman detail
-                const detailBuyBtn = document.getElementById('detailBuyBtn');
+                // PERBAIKAN: Event listener untuk tombol di halaman detail
+                const detailBackBtn = document.getElementById('detailBackBtn');
                 const detailAddToCartBtn = document.getElementById('detailAddToCartBtn');
 
                 // Hapus event listener lama jika ada
-                detailBuyBtn.replaceWith(detailBuyBtn.cloneNode(true));
+                detailBackBtn.replaceWith(detailBackBtn.cloneNode(true));
                 detailAddToCartBtn.replaceWith(detailAddToCartBtn.cloneNode(true));
 
                 // Tambah event listener baru
-                document.getElementById('detailBuyBtn').addEventListener('click', (e) => {
+                document.getElementById('detailBackBtn').addEventListener('click', (e) => {
                     e.preventDefault();
-                    startOrder([book]);
+                    navigateToHome(); // PERBAIKAN: Ubah fungsi jadi kembali ke beranda
                 });
 
                 document.getElementById('detailAddToCartBtn').addEventListener('click', (e) => {
@@ -2805,8 +2338,6 @@
                 const orderItemsDiv = document.getElementById('orderItems');
                 const t = translations[currentLanguage];
                 let totalPrice = 0;
-
-                console.log('Order Items:', orderItems);
 
                 if (orderItems.length === 0) {
                     orderItemsDiv.innerHTML = '<p>Tidak ada item. Silakan tambah item terlebih dahulu.</p>';
@@ -2864,25 +2395,19 @@
 
             // ==================== FUNGSI KERANJANG ====================
             function addToCart(book) {
-                // PERBAIKAN: Buat copyan buku, bukan referensi ke data asli
-                const bookCopy = JSON.parse(JSON.stringify(book));
-                bookCopy.isCartCopy = true; // Tandai sebagai copyan
-                bookCopy.cartId = Date.now(); // ID unik untuk item di keranjang
-                
-                const existingItem = cart.find(item => item.id === book.id && item.isCartCopy);
+                const existingItem = cart.find(item => item.id === book.id);
                 if (existingItem) {
                     existingItem.quantity += 1;
                 } else {
-                    cart.push({ ...bookCopy, quantity: 1 });
+                    cart.push({ ...book, quantity: 1 });
                 }
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCartBadge();
                 alert('Buku ditambahkan ke keranjang!');
             }
 
-            function removeFromCart(cartId) {
-                // PERBAIKAN: Hapus paksa berdasarkan cartId
-                cart = cart.filter(item => item.cartId !== cartId);
+            function removeFromCart(bookId) {
+                cart = cart.filter(item => item.id !== bookId);
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCartBadge();
                 renderCart();
@@ -2926,28 +2451,23 @@
                                 <p>${item.quantity} x ${formatPrice(finalPrice, currentCurrency)}</p>
                                 <p class="cart-item-price">${formatPrice(itemTotal, currentCurrency)}</p>
                             </div>
-                            <button class="cart-item-remove" data-cart-id="${item.cartId}">${t.remove}</button>
+                            <button class="cart-item-remove" data-book-id="${item.id}">${t.remove}</button>
                         </div>
                     `;
                 }).join('');
 
                 cartTotal.innerHTML = `${t.total}: ${formatPrice(totalPrice, currentCurrency)}`;
 
-                // PERBAIKAN: Event listener untuk hapus item di keranjang
-                document.querySelectorAll('.cart-item-remove').forEach(btn => {
-                    // Hapus event listener lama
-                    btn.replaceWith(btn.cloneNode(true));
-                });
+                // PERBAIKAN: Gunakan event delegation untuk hapus item agar selalu berfungsi
+                cartItems.removeEventListener('click', handleCartRemove); // Hapus listener lama
+                cartItems.addEventListener('click', handleCartRemove);
+            }
 
-                // Tambah event listener baru
-                document.querySelectorAll('.cart-item-remove').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        const cartId = parseInt(btn.dataset.cartId);
-                        removeFromCart(cartId);
-                    });
-                });
+            function handleCartRemove(e) {
+                if (e.target.classList.contains('cart-item-remove')) {
+                    const bookId = parseInt(e.target.dataset.bookId);
+                    removeFromCart(bookId);
+                }
             }
 
             // ==================== FUNGSI ORDER ====================
@@ -2966,15 +2486,20 @@
                     quantity: item.quantity || 1
                 }));
                 
+                if (items.length === 1) {
+                    currentBook = items[0];
+                } else {
+                    currentBook = null;
+                }
+                
                 console.log('Order items:', orderItems);
                 
-                navigateToOrder();
+                navigateToOrder(items.length === 1 ? items[0] : null);
             }
 
             async function submitOrder(e) {
                 e.preventDefault();
                 
-                // Validasi form sebelum submit
                 if (!validateForm()) {
                     alert('Mohon lengkapi semua field yang wajib diisi!');
                     return;
@@ -3046,6 +2571,7 @@
                     // Buat template WA berdasarkan pilihan user
                     const isArab = paymentMethod === 'ar';
                     const waNumber = isArab ? waArab : waIndonesia;
+                    const countryCode = isArab ? '+20' : '+62';
                     
                     let template = '';
                     
@@ -3087,8 +2613,8 @@
                     const finalWaNumber = isArab ? `+20${waArab}` : `+62${waIndonesia}`;
                     window.location.href = `https://wa.me/${finalWaNumber}?text=${encodeURIComponent(template)}`;
 
-                    // Clear cart jika dari cart
-                    if (orderItems === cart || JSON.stringify(orderItems) === JSON.stringify(cart)) {
+                    // Clear cart jika dari cart (tapi tidak jika single order)
+                    if (orderItems.length > 1 || JSON.stringify(orderItems) === JSON.stringify(cart)) {
                         cart = [];
                         localStorage.setItem('cart', JSON.stringify(cart));
                         updateCartBadge();
@@ -3098,235 +2624,6 @@
                     console.error('Error:', err);
                     alert('Terjadi kesalahan: ' + err.message);
                 }
-            }
-
-            // ==================== FUNGSI USER MODAL ====================
-            function toggleUserModal() {
-                const userModal = document.getElementById('userModal');
-                userModal.classList.toggle('active');
-            }
-
-            function toggleUserFormMode() {
-                isLoginMode = !isLoginMode;
-                updateUserModalLanguage();
-                const registerFields = document.getElementById('registerFields');
-                const profilePictureUpload = document.getElementById('profilePictureUpload');
-
-                if (isLoginMode) {
-                    registerFields.style.display = 'none';
-                    profilePictureUpload.style.display = 'none';
-                } else {
-                    registerFields.style.display = 'block';
-                    profilePictureUpload.style.display = 'flex';
-                }
-            }
-
-            async function handleUserForm(e) {
-                e.preventDefault();
-                
-                const email = document.getElementById('userEmail').value;
-                const password = document.getElementById('userPassword').value;
-                
-                if (isLoginMode) {
-                    // Login
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email: email,
-                        password: password
-                    });
-                    
-                    if (error) {
-                        alert('Login gagal: ' + error.message);
-                    } else {
-                        currentUser = data.user;
-                        await updateUserProfile();
-                        alert('Login berhasil!');
-                        toggleUserModal();
-                        updateUserInterface();
-                    }
-                } else {
-                    // Daftar
-                    const name = document.getElementById('registerName').value;
-                    
-                    const { data, error } = await supabase.auth.signUp({
-                        email: email,
-                        password: password,
-                        options: {
-                            data: {
-                                full_name: name
-                            }
-                        }
-                    });
-                    
-                    if (error) {
-                        alert('Pendaftaran gagal: ' + error.message);
-                    } else {
-                        currentUser = data.user;
-                        
-                        // Upload foto profil jika ada
-                        if (profilePictureFile) {
-                            await uploadProfilePicture();
-                        }
-                        
-                        alert('Pendaftaran berhasil! Silakan cek email untuk verifikasi.');
-                        toggleUserModal();
-                        updateUserInterface();
-                    }
-                }
-            }
-
-            async function updateUserProfile() {
-                if (!currentUser) return;
-                
-                // Ambil data user dari database
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', currentUser.id)
-                    .single();
-                
-                if (!error && data) {
-                    currentUser.profile = data;
-                }
-            }
-
-            async function uploadProfilePicture() {
-                if (!profilePictureFile || !currentUser) return;
-                
-                const fileExt = profilePictureFile.name.split('.').pop();
-                const fileName = `${currentUser.id}-${Math.random()}.${fileExt}`;
-                const filePath = `profile-pictures/${fileName}`;
-                
-                const { error: uploadError } = await supabase.storage
-                    .from('avatars')
-                    .upload(filePath, profilePictureFile);
-                
-                if (uploadError) {
-                    console.error('Error uploading profile picture:', uploadError);
-                    return;
-                }
-                
-                // Dapatkan URL publik
-                const { data } = supabase.storage
-                    .from('avatars')
-                    .getPublicUrl(filePath);
-                
-                // Update profil user dengan URL foto
-                const { error: updateError } = await supabase
-                    .from('profiles')
-                    .update({ avatar_url: data.publicUrl })
-                    .eq('id', currentUser.id);
-                
-                if (updateError) {
-                    console.error('Error updating profile:', updateError);
-                } else {
-                    currentUser.profile.avatar_url = data.publicUrl;
-                    updateUserInterface();
-                }
-            }
-
-            function updateUserInterface() {
-                const userProfile = document.getElementById('userProfile');
-                const userIcon = document.getElementById('userIcon');
-                
-                if (currentUser) {
-                    userProfile.style.display = 'flex';
-                    userIcon.style.display = 'none';
-                    
-                    // Update nama dan foto profil
-                    const userName = document.getElementById('userName');
-                    const userAvatar = document.getElementById('userAvatar');
-                    
-                    userName.textContent = currentUser.user_metadata?.full_name || currentUser.email;
-                    
-                    if (currentUser.profile?.avatar_url) {
-                        userAvatar.src = currentUser.profile.avatar_url;
-                    } else {
-                        userAvatar.src = 'https://via.placeholder.com/36';
-                    }
-                } else {
-                    userProfile.style.display = 'none';
-                    userIcon.style.display = 'block';
-                }
-            }
-
-            async function logout() {
-                const { error } = await supabase.auth.signOut();
-                if (error) {
-                    alert('Error saat logout: ' + error.message);
-                } else {
-                    currentUser = null;
-                    updateUserInterface();
-                    alert('Logout berhasil!');
-                }
-            }
-
-            // ==================== FUNGSI PROFILE MODAL ====================
-            function toggleProfileModal() {
-                const profileModal = document.getElementById('profileModal');
-                
-                if (currentUser) {
-                    // Update data profil di modal
-                    document.getElementById('profileName').textContent = currentUser.user_metadata?.full_name || currentUser.email;
-                    document.getElementById('profileEmail').textContent = currentUser.email;
-                    
-                    if (currentUser.profile?.avatar_url) {
-                        document.getElementById('profileAvatar').src = currentUser.profile.avatar_url;
-                    } else {
-                        document.getElementById('profileAvatar').src = 'https://via.placeholder.com/100';
-                    }
-                    
-                    profileModal.classList.toggle('active');
-                }
-            }
-
-            // ==================== FUNGSI UBAH FOTO PROFIL ====================
-            function toggleChangePictureModal() {
-                const changePictureModal = document.getElementById('changePictureModal');
-                changePictureModal.classList.toggle('active');
-            }
-
-            async function saveProfilePicture() {
-                if (!profilePictureFile || !currentUser) {
-                    alert('Pilih foto terlebih dahulu!');
-                    return;
-                }
-
-                try {
-                    await uploadProfilePicture();
-                    alert('Foto profil berhasil diubah!');
-                    toggleChangePictureModal();
-                    toggleProfileModal();
-                } catch (error) {
-                    alert('Gagal mengubah foto profil: ' + error.message);
-                }
-            }
-
-            // ==================== FUNGSI HAPUS KERANJANG OTOMATIS ====================
-            function setupCartAutoClear() {
-                // Event saat user meninggalkan halaman
-                window.addEventListener('beforeunload', function() {
-                    // Simpan timestamp terakhir kali user mengunjungi situs
-                    localStorage.setItem('lastVisit', Date.now().toString());
-                });
-
-                // Event saat halaman dimuat
-                window.addEventListener('load', function() {
-                    const lastVisit = localStorage.getItem('lastVisit');
-                    const currentTime = Date.now();
-                    
-                    // Jika lebih dari 30 menit sejak kunjungan terakhir, hapus keranjang
-                    if (lastVisit && (currentTime - parseInt(lastVisit)) > 30 * 60 * 1000) {
-                        cart = [];
-                        localStorage.setItem('cart', JSON.stringify(cart));
-                        updateCartBadge();
-                    }
-                });
-
-                // Event saat tab/window ditutup
-                window.addEventListener('unload', function() {
-                    // Simpan timestamp terakhir kali user mengunjungi situs
-                    localStorage.setItem('lastVisit', Date.now().toString());
-                });
             }
 
             // ==================== SCROLL HANDLER ====================
@@ -3365,23 +2662,6 @@
             const floatingSearchInput = document.getElementById('floatingSearchInput');
             const searchDropdown = document.getElementById('searchDropdown');
             const floatingSearchDropdown = document.getElementById('floatingSearchDropdown');
-            const userIcon = document.getElementById('userIcon');
-            const userModal = document.getElementById('userModal');
-            const userModalClose = document.getElementById('userModalClose');
-            const userForm = document.getElementById('userForm');
-            const userToggleLink = document.getElementById('userToggleLink');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const profileBtn = document.getElementById('profileBtn');
-            const profileModal = document.getElementById('profileModal');
-            const profileModalClose = document.getElementById('profileModalClose');
-            const changePictureBtn = document.getElementById('changePictureBtn');
-            const changePictureModal = document.getElementById('changePictureModal');
-            const changePictureModalClose = document.getElementById('changePictureModalClose');
-            const changePictureInput = document.getElementById('changePictureInput');
-            const changePicturePreview = document.getElementById('changePicturePreview');
-            const savePictureBtn = document.getElementById('savePictureBtn');
-            const profilePictureInput = document.getElementById('profilePictureInput');
-            const profilePreview = document.getElementById('profilePreview');
 
             window.addEventListener('scroll', requestTick);
 
@@ -3444,67 +2724,6 @@
             detectLocationBtn.addEventListener('click', detectLocation);
 
             orderForm.addEventListener('submit', submitOrder);
-
-            // User modal events
-            userIcon.addEventListener('click', toggleUserModal);
-            userModalClose.addEventListener('click', toggleUserModal);
-            userModal.addEventListener('click', (e) => {
-                if (e.target === userModal) {
-                    toggleUserModal();
-                }
-            });
-            userToggleLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                toggleUserFormMode();
-            });
-            userForm.addEventListener('submit', handleUserForm);
-            logoutBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                logout();
-            });
-            profileBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                toggleProfileModal();
-            });
-            profileModalClose.addEventListener('click', toggleProfileModal);
-            profileModal.addEventListener('click', (e) => {
-                if (e.target === profileModal) {
-                    toggleProfileModal();
-                }
-            });
-            changePictureBtn.addEventListener('click', toggleChangePictureModal);
-            changePictureModalClose.addEventListener('click', toggleChangePictureModal);
-            changePictureModal.addEventListener('click', (e) => {
-                if (e.target === changePictureModal) {
-                    toggleChangePictureModal();
-                }
-            });
-            savePictureBtn.addEventListener('click', saveProfilePicture);
-
-            // Profile picture upload events
-            profilePictureInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    profilePictureFile = file;
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        profilePreview.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            changePictureInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    profilePictureFile = file;
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        changePicturePreview.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
 
             // Validasi real-time
             document.getElementById('nameInput').addEventListener('input', function() {
@@ -3598,15 +2817,7 @@
                 fetchBooks();
                 updateLanguage();
                 updateCartBadge();
-                setupCartAutoClear();
-                
-                // Cek status login saat aplikasi dimulai
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    currentUser = user;
-                    await updateUserProfile();
-                    updateUserInterface();
-                }
+                checkUrlParams();
             }
 
             initializeApp();
