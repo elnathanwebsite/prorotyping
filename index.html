@@ -1661,7 +1661,7 @@
                         <p class="description" id="detailDescription"></p>
                         <div class="details-grid" id="detailGrid"></div>
                         <div style="margin-top: 2rem;">
-                            <button class="btn-buy" id="detailBuyBtn">🛒 Beli Sekarang</button>
+                         
                             <button class="btn-add-to-cart" id="detailAddToCartBtn">➕ Tambah ke Keranjang</button>
                         </div>
                     </div>
@@ -2591,18 +2591,14 @@
                 `;
 
                 // PERBAIKAN: Event listener yang benar untuk tombol di halaman detail
-                const detailBuyBtn = document.getElementById('detailBuyBtn');
+              
                 const detailAddToCartBtn = document.getElementById('detailAddToCartBtn');
 
                 // Hapus event listener lama jika ada
-                detailBuyBtn.replaceWith(detailBuyBtn.cloneNode(true));
+              
                 detailAddToCartBtn.replaceWith(detailAddToCartBtn.cloneNode(true));
 
-                // Tambah event listener baru
-                document.getElementById('detailBuyBtn').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    startOrder([book]);
-                });
+             
 
                 document.getElementById('detailAddToCartBtn').addEventListener('click', (e) => {
                     e.preventDefault();
