@@ -788,7 +788,7 @@
         .cart-item-remove {
             color: var(--white);
             cursor: pointer;
-            background: var(--danger-red); /* PERBAIKAN: Tombol merah sederhana */
+            background: var(--danger-red);
             border: none;
             font-size: 1rem;
             padding: 0.5rem 1rem;
@@ -1147,11 +1147,17 @@
                 flex-wrap: wrap;
                 justify-content: space-between;
             }
+            
+            .logo-link {
+                display: none; /* PERBAIKAN: Sembunyikan logo di mobile */
+            }
+            
             .search-bar {
                 width: 100%;
                 order: 1;
-                margin-top: 1rem;
+                margin-top: 0;
             }
+            
             .header-controls {
                 width: 100%;
                 justify-content: flex-end;
@@ -1159,84 +1165,106 @@
                 gap: 0.5rem;
                 margin-top: 0.5rem;
             }
+            
             .language-selector select, .currency-selector select {
                 padding: 0.3rem;
-                width: 40px;
-                height: 40px;
+                width: 35px;
+                height: 35px;
                 text-indent: -9999px;
-                background-size: 20px;
+                background-size: 16px;
                 background-position: center;
                 background-repeat: no-repeat;
                 border-radius: 50%;
+                font-size: 0.7rem;
             }
+            
             .language-selector select {
-                background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgNHYxNk00IDEyaDE2Ii8+PC9zdmc+');
-            }
-            .currency-selector select {
                 background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMnYyME0yIDEyaDIwIi8+PC9zdmc+');
             }
+            
+            .currency-selector select {
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgM3YxOG0zLTEzaC02Ii8+PC9zdmc+');
+            }
+            
             .cart-icon {
-                width: 40px;
-                height: 40px;
+                width: 35px;
+                height: 35px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
+            
             .product-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
             .section-title {
                 font-size: 1.8rem;
             }
+            
             .banner-slider {
                 height: 200px;
             }
+            
             .filter-info {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1rem;
             }
+            
             .publisher-slide {
                 flex: 0 0 20%; /* 5 kolom di mobile */
             }
+            
             .category-grid {
                 grid-template-columns: repeat(4, 1fr); /* 4 kolom di mobile */
                 gap: 0.5rem; /* Mengurangi gap agar tidak terpotong */
             }
+            
             .category-card {
                 padding: 0.6rem; /* Mengurangi padding agar tidak terpotong */
             }
+            
             .category-card-icon {
                 width: 40px;
                 height: 40px;
                 margin: 0 auto 0.5rem auto;
             }
+            
             .category-card h3 {
                 font-size: 0.75rem; /* Mengurangi ukuran font agar tidak terpotong */
                 line-height: 1.2;
             }
+            
             .header-controls {
                 flex-wrap: wrap;
                 justify-content: center;
             }
+            
             .publisher-slider-container {
                 padding: 1rem 2rem;
             }
+            
             body {
                 padding-bottom: 60px;
             }
+            
             .product-detail-container {
                 grid-template-columns: 1fr;
             }
+            
             .order-container {
                 grid-template-columns: 1fr;
             }
+            
             .recommended-grid {
                 grid-template-columns: 1fr;
             }
+            
             .phone-input-group {
                 flex-direction: column;
             }
+            
             .phone-country {
                 flex: 1;
             }
@@ -1246,28 +1274,35 @@
             .product-grid {
                 grid-template-columns: repeat(2, 1fr); /* 2 kolom untuk mobile kecil */
             }
+            
             .details-grid {
                 grid-template-columns: 1fr;
             }
+            
             .publisher-slide {
                 flex: 0 0 20%; /* Tetap 5 kolom */
             }
+            
             .category-grid {
                 grid-template-columns: repeat(4, 1fr); /* Tetap 4 kolom */
                 gap: 0.3rem; /* Mengurangi gap lebih kecil */
             }
+            
             .category-card {
                 padding: 0.4rem; /* Mengurangi padding lebih kecil */
             }
+            
             .category-card-icon {
                 width: 35px;
                 height: 35px;
                 margin: 0 auto 0.3rem auto;
             }
+            
             .category-card h3 {
                 font-size: 0.7rem; /* Mengurangi ukuran font lebih kecil */
                 line-height: 1.1;
             }
+            
             .banner-slider {
                 height: 150px;
             }
@@ -2473,15 +2508,12 @@
                 cartTotal.innerHTML = `${t.total}: ${formatPrice(totalPrice, currentCurrency)}`;
 
                 // PERBAIKAN: Gunakan event delegation untuk hapus item agar selalu berfungsi
-                cartItems.removeEventListener('click', handleCartRemove); // Hapus listener lama
-                cartItems.addEventListener('click', handleCartRemove);
-            }
-
-            function handleCartRemove(e) {
-                if (e.target.classList.contains('cart-item-remove')) {
-                    const bookId = parseInt(e.target.dataset.bookId);
-                    removeFromCart(bookId);
-                }
+                document.querySelectorAll('.cart-item-remove').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const bookId = parseInt(this.dataset.bookId);
+                        removeFromCart(bookId);
+                    });
+                });
             }
 
             // ==================== FUNGSI ORDER ====================
@@ -2585,7 +2617,6 @@
                     // Buat template WA berdasarkan pilihan user
                     const isArab = paymentMethod === 'ar';
                     const waNumber = isArab ? waArab : waIndonesia;
-                    const countryCode = isArab ? '+20' : '+62';
                     
                     let template = '';
                     
