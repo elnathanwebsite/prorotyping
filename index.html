@@ -545,12 +545,12 @@
             align-items: center;
             justify-content: center;
             background-color: var(--primary-color);
-            border: 1px solid var(--border-color); /* PERBAIKAN: Tambah border tipis */
+            /* PERBAIKAN: Hilangkan border tipis untuk mengecilkan bingkai */
         }
         
         .category-card-icon img {
-            width: 50%;
-            height: 50%;
+            width: 80%; /* PERBAIKAN: Besarkan gambar dari 50% ke 80% */
+            height: 80%;
             object-fit: contain;
             border-radius: 50%; /* PERBAIKAN: Buat foto bulat */
         }
@@ -1166,24 +1166,16 @@
                 margin-top: 0.5rem;
             }
             
+            /* PERBAIKAN: Hapus modifikasi icon-only untuk mata uang dan bahasa di mobile */
             .language-selector select, .currency-selector select {
-                padding: 0.3rem;
-                width: 35px;
-                height: 35px;
-                text-indent: -9999px;
-                background-size: 16px;
-                background-position: center;
-                background-repeat: no-repeat;
-                border-radius: 50%;
-                font-size: 0.7rem;
-            }
-            
-            .language-selector select {
-                background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMnYyME0yIDEyaDIwIi8+PC9zdmc+');
-            }
-            
-            .currency-selector select {
-                background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgM3YxOG0zLTEzaC02Ii8+PC9zdmc+');
+                padding: 0.5rem 1rem;
+                width: auto;
+                text-indent: 0;
+                background-size: auto;
+                background-position: auto;
+                background-repeat: auto;
+                border-radius: 50px;
+                font-size: 1rem;
             }
             
             .cart-icon {
@@ -1229,6 +1221,7 @@
                 width: 40px;
                 height: 40px;
                 margin: 0 auto 0.5rem auto;
+                /* PERBAIKAN: Hilangkan border di mobile juga */
             }
             
             .category-card h3 {
@@ -2221,7 +2214,38 @@
             function renderPagination(totalPages) {
                 const pagination = document.getElementById('pagination');
                 pagination.innerHTML = '';
-                for (let i = 1; i <= totalPages; i++) {
+
+                // PERBAIKAN: Tambah tombol prev
+                const prevBtn = document.createElement('button');
+                prevBtn.textContent = '<';
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        filterAndRenderBooks(document.getElementById('searchInput').value);
+                    }
+                });
+                pagination.appendChild(prevBtn);
+
+                // Tampilkan maksimal 5 halaman dengan ellipsis
+                const maxVisible = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+                if (endPage - startPage < maxVisible - 1) {
+                    startPage = Math.max(1, endPage - maxVisible + 1);
+                }
+
+                // Tambah ellipsis awal jika diperlukan
+                if (startPage > 1) {
+                    const ellipsis = document.createElement('button');
+                    ellipsis.textContent = '...';
+                    ellipsis.disabled = true;
+                    pagination.appendChild(ellipsis);
+                }
+
+                // Tambah tombol halaman
+                for (let i = startPage; i <= endPage; i++) {
                     const btn = document.createElement('button');
                     btn.textContent = i;
                     if (i === currentPage) btn.classList.add('active');
@@ -2231,6 +2255,26 @@
                     });
                     pagination.appendChild(btn);
                 }
+
+                // Tambah ellipsis akhir jika diperlukan
+                if (endPage < totalPages) {
+                    const ellipsis = document.createElement('button');
+                    ellipsis.textContent = '...';
+                    ellipsis.disabled = true;
+                    pagination.appendChild(ellipsis);
+                }
+
+                // PERBAIKAN: Tambah tombol next
+                const nextBtn = document.createElement('button');
+                nextBtn.textContent = '>';
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        filterAndRenderBooks(document.getElementById('searchInput').value);
+                    }
+                });
+                pagination.appendChild(nextBtn);
             }
 
             function renderSearchDropdown(books, dropdownId) {
