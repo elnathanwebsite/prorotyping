@@ -1338,6 +1338,79 @@
             background-color: var(--border-color);
         }
 
+        /* === PROFILE MODAL === */
+        .profile-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .profile-modal.active {
+            display: flex;
+        }
+
+        .profile-modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 400px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .profile-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-light);
+            background: none;
+            border: none;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
+
+        .profile-details {
+            text-align: center;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-email {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
         /* === PAYMENT METHODS === */
         .payment-methods {
             display: flex;
@@ -1534,7 +1607,7 @@
                     <img src="https://via.placeholder.com/36" alt="Profile" class="user-avatar" id="userAvatar">
                     <span class="user-name" id="userName">User</span>
                     <div class="user-dropdown">
-                        <a href="#" class="user-dropdown-item">
+                        <a href="#" class="user-dropdown-item" id="profileBtn">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M20 21C20 19.6044 20 18.9067 19.8278 18.3389C19.44 17.0605 18.4395 16.06 17.1611 15.6722C16.5933 15.5 15.8956 15.5 14.5 15.5H9.5C8.10444 15.5 7.40665 15.5 6.83886 15.6722C5.56045 16.06 4.56004 17.0605 4.17224 18.3389C4 18.9067 4 19.6044 4 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1661,7 +1734,7 @@
                         <p class="description" id="detailDescription"></p>
                         <div class="details-grid" id="detailGrid"></div>
                         <div style="margin-top: 2rem;">
-                         
+                            
                             <button class="btn-add-to-cart" id="detailAddToCartBtn">➕ Tambah ke Keranjang</button>
                         </div>
                     </div>
@@ -1790,6 +1863,23 @@
                     <a href="#" id="userToggleLink">Daftar di sini</a>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="profile-modal">
+        <div class="profile-modal-content">
+            <button id="profileModalClose" class="profile-modal-close">&times;</button>
+            <div class="profile-info">
+                <img src="https://via.placeholder.com/100" alt="Profile" class="profile-avatar" id="profileAvatar">
+                <div class="profile-details">
+                    <h2 class="profile-name" id="profileName">Nama Pengguna</h2>
+                    <p class="profile-email" id="profileEmail">email@example.com</p>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button class="btn-add-to-cart" id="editProfileBtn">Edit Profil</button>
+            </div>
         </div>
     </div>
 
@@ -1960,7 +2050,21 @@
                     total: "Total",
                     remove: "Hapus",
                     orderForm: "Form Pemesanan",
-                    orderNow: "Pesan Sekarang"
+                    orderNow: "Pesan Sekarang",
+                    login: "Login",
+                    register: "Daftar",
+                    loginTitle: "Login",
+                    registerTitle: "Daftar",
+                    loginButton: "Login",
+                    registerButton: "Daftar",
+                    noAccount: "Belum punya akun?",
+                    haveAccount: "Sudah punya akun?",
+                    registerHere: "Daftar di sini",
+                    loginHere: "Login di sini",
+                    fullName: "Nama Lengkap",
+                    email: "Email",
+                    password: "Password",
+                    chooseProfilePicture: "Pilih Foto Profil"
                 },
                 en: {
                     searchPlaceholder: "Search for book title or author...",
@@ -1994,7 +2098,21 @@
                     total: "Total",
                     remove: "Remove",
                     orderForm: "Order Form",
-                    orderNow: "Order Now"
+                    orderNow: "Order Now",
+                    login: "Login",
+                    register: "Register",
+                    loginTitle: "Login",
+                    registerTitle: "Register",
+                    loginButton: "Login",
+                    registerButton: "Register",
+                    noAccount: "Don't have an account?",
+                    haveAccount: "Already have an account?",
+                    registerHere: "Register here",
+                    loginHere: "Login here",
+                    fullName: "Full Name",
+                    email: "Email",
+                    password: "Password",
+                    chooseProfilePicture: "Choose Profile Picture"
                 },
                 ar: {
                     searchPlaceholder: "ابحث عن عنوان الكتاب أو المؤلف...",
@@ -2028,7 +2146,21 @@
                     total: "الإجمالي",
                     remove: "إزالة",
                     orderForm: "نموذج الطلب",
-                    orderNow: "اطلب الآن"
+                    orderNow: "اطلب الآن",
+                    login: "تسجيل الدخول",
+                    register: "تسجيل",
+                    loginTitle: "تسجيل الدخول",
+                    registerTitle: "تسجيل",
+                    loginButton: "تسجيل الدخول",
+                    registerButton: "تسجيل",
+                    noAccount: "ليس لديك حساب؟",
+                    haveAccount: "لديك حساب بالفعل؟",
+                    registerHere: "سجل هنا",
+                    loginHere: "تسجيل الدخول هنا",
+                    fullName: "الاسم الكامل",
+                    email: "البريد الإلكتروني",
+                    password: "كلمة المرور",
+                    chooseProfilePicture: "اختر صورة الملف الشخصي"
                 }
             };
 
@@ -2057,6 +2189,30 @@
                 if (document.getElementById('cartModal').classList.contains('active')) {
                     renderCart();
                 }
+                
+                // Update user modal language
+                updateUserModalLanguage();
+            }
+            
+            function updateUserModalLanguage() {
+                const t = translations[currentLanguage];
+                
+                if (isLoginMode) {
+                    document.getElementById('userModalTitle').textContent = t.loginTitle;
+                    document.getElementById('userSubmitBtn').textContent = t.loginButton;
+                    document.getElementById('userToggleText').textContent = t.noAccount + ' ';
+                    document.getElementById('userToggleLink').textContent = t.registerHere;
+                } else {
+                    document.getElementById('userModalTitle').textContent = t.registerTitle;
+                    document.getElementById('userSubmitBtn').textContent = t.registerButton;
+                    document.getElementById('userToggleText').textContent = t.haveAccount + ' ';
+                    document.getElementById('userToggleLink').textContent = t.loginHere;
+                }
+                
+                document.getElementById('registerName').placeholder = t.fullName;
+                document.getElementById('userEmail').placeholder = t.email;
+                document.getElementById('userPassword').placeholder = t.password;
+                document.querySelector('.profile-upload-btn').textContent = t.chooseProfilePicture;
             }
 
             // ==================== FUNGSI VALIDASI FORM ====================
@@ -2595,10 +2751,11 @@
                 const detailAddToCartBtn = document.getElementById('detailAddToCartBtn');
 
                 // Hapus event listener lama jika ada
-              
+                detailBuyBtn.replaceWith(detailBuyBtn.cloneNode(true));
                 detailAddToCartBtn.replaceWith(detailAddToCartBtn.cloneNode(true));
 
-             
+                // Tambah event listener baru
+            
 
                 document.getElementById('detailAddToCartBtn').addEventListener('click', (e) => {
                     e.preventDefault();
@@ -2927,25 +3084,14 @@
 
             function toggleUserFormMode() {
                 isLoginMode = !isLoginMode;
-                const userModalTitle = document.getElementById('userModalTitle');
-                const userSubmitBtn = document.getElementById('userSubmitBtn');
-                const userToggleText = document.getElementById('userToggleText');
-                const userToggleLink = document.getElementById('userToggleLink');
+                updateUserModalLanguage();
                 const registerFields = document.getElementById('registerFields');
                 const profilePictureUpload = document.getElementById('profilePictureUpload');
 
                 if (isLoginMode) {
-                    userModalTitle.textContent = 'Login';
-                    userSubmitBtn.textContent = 'Login';
-                    userToggleText.textContent = 'Belum punya akun? ';
-                    userToggleLink.textContent = 'Daftar di sini';
                     registerFields.style.display = 'none';
                     profilePictureUpload.style.display = 'none';
                 } else {
-                    userModalTitle.textContent = 'Daftar';
-                    userSubmitBtn.textContent = 'Daftar';
-                    userToggleText.textContent = 'Sudah punya akun? ';
-                    userToggleLink.textContent = 'Login di sini';
                     registerFields.style.display = 'block';
                     profilePictureUpload.style.display = 'flex';
                 }
@@ -3090,6 +3236,53 @@
                 }
             }
 
+            // ==================== FUNGSI PROFILE MODAL ====================
+            function toggleProfileModal() {
+                const profileModal = document.getElementById('profileModal');
+                
+                if (currentUser) {
+                    // Update data profil di modal
+                    document.getElementById('profileName').textContent = currentUser.user_metadata?.full_name || currentUser.email;
+                    document.getElementById('profileEmail').textContent = currentUser.email;
+                    
+                    if (currentUser.profile?.avatar_url) {
+                        document.getElementById('profileAvatar').src = currentUser.profile.avatar_url;
+                    } else {
+                        document.getElementById('profileAvatar').src = 'https://via.placeholder.com/100';
+                    }
+                    
+                    profileModal.classList.toggle('active');
+                }
+            }
+
+            // ==================== FUNGSI HAPUS KERANJANG OTOMATIS ====================
+            function setupCartAutoClear() {
+                // Event saat user meninggalkan halaman
+                window.addEventListener('beforeunload', function() {
+                    // Simpan timestamp terakhir kali user mengunjungi situs
+                    localStorage.setItem('lastVisit', Date.now().toString());
+                });
+
+                // Event saat halaman dimuat
+                window.addEventListener('load', function() {
+                    const lastVisit = localStorage.getItem('lastVisit');
+                    const currentTime = Date.now();
+                    
+                    // Jika lebih dari 30 menit sejak kunjungan terakhir, hapus keranjang
+                    if (lastVisit && (currentTime - parseInt(lastVisit)) > 30 * 60 * 1000) {
+                        cart = [];
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        updateCartBadge();
+                    }
+                });
+
+                // Event saat tab/window ditutup
+                window.addEventListener('unload', function() {
+                    // Simpan timestamp terakhir kali user mengunjungi situs
+                    localStorage.setItem('lastVisit', Date.now().toString());
+                });
+            }
+
             // ==================== SCROLL HANDLER ====================
             function handleScroll() {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -3132,6 +3325,9 @@
             const userForm = document.getElementById('userForm');
             const userToggleLink = document.getElementById('userToggleLink');
             const logoutBtn = document.getElementById('logoutBtn');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileModal = document.getElementById('profileModal');
+            const profileModalClose = document.getElementById('profileModalClose');
             const profilePictureInput = document.getElementById('profilePictureInput');
             const profilePreview = document.getElementById('profilePreview');
 
@@ -3213,6 +3409,16 @@
             logoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 logout();
+            });
+            profileBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleProfileModal();
+            });
+            profileModalClose.addEventListener('click', toggleProfileModal);
+            profileModal.addEventListener('click', (e) => {
+                if (e.target === profileModal) {
+                    toggleProfileModal();
+                }
             });
 
             // Profile picture upload
@@ -3320,6 +3526,7 @@
                 fetchBooks();
                 updateLanguage();
                 updateCartBadge();
+                setupCartAutoClear();
                 
                 // Cek status login saat aplikasi dimulai
                 const { data: { user } } = await supabase.auth.getUser();
