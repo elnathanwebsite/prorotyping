@@ -44,6 +44,7 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            padding-bottom: 60px; /* Space for bottom navbar */
         }
 
         .container {
@@ -619,6 +620,24 @@
         .product-author {
             color: var(--text-light);
             font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-publisher {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-year {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-pages {
+            color: var(--text-light);
+            font-size: 0.9rem;
             margin-bottom: 1rem;
         }
 
@@ -924,10 +943,20 @@
         .product-detail-info .author {
             font-size: 1.1rem;
             color: var(--text-light);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .product-detail-info .publisher {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-detail-info .year {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-detail-info .pages {
             font-size: 1rem;
             margin-bottom: 1rem;
         }
@@ -1141,6 +1170,57 @@
             flex: 1;
         }
 
+        /* === BOTTOM NAVBAR FOR MOBILE === */
+        .bottom-navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 60px;
+            z-index: 1000;
+            display: none; /* Hidden by default, shown on mobile */
+        }
+
+        .bottom-navbar a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.8rem;
+        }
+
+        .bottom-navbar svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 0.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .bottom-navbar {
+                display: flex;
+            }
+        }
+
+        /* === PAYMENT METHODS SECTION === */
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .payment-methods img {
+            height: 40px;
+            object-fit: contain;
+        }
+
         /* === RESPONSIVE DESIGN (Mobile App-like) === */
         @media (max-width: 768px) {
             .navbar {
@@ -1300,6 +1380,238 @@
                 height: 150px;
             }
         }
+        
+        /* === FOOTER === */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .footer-section p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .footer-links a::before {
+            content: "›";
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+
+        .contact-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+
+        .payment-methods-footer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .payment-method-footer {
+            width: 50px;
+            height: 30px;
+            object-fit: contain;
+            border-radius: 4px;
+            background: var(--white);
+            padding: 3px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        /* === PRODUCT DETAIL PAGE === */
+        .product-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-detail-image {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-detail-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .product-detail-info {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-detail-info h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-detail-info .author {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .product-detail-info .publisher {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-detail-info .pricing {
+            margin: 1.5rem 0;
+        }
+
+        .product-detail-info .description {
+            margin: 1rem 0;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-top: 1rem;
+            background: var(--light-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .detail-item {
+            font-size: 0.9rem;
+        }
+
+        .detail-item strong {
+            color: var(--text-dark);
+            margin-right: 0.5rem;
+        }
+        
+        .btn-buy, .btn-add-to-cart {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+            margin-right: 1rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-buy {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-buy:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-add-to-cart {
+            background-color: var(--success-green);
+            color: var(--white);
+        }
+
+        .btn-add-to-cart:hover {
+            background-color: #059669;
+        }
     </style>
 </head>
 <body>
@@ -1311,7 +1623,7 @@
             </a>
             <div class="search-bar">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="Cari judul atau penulis buku...">
+                <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder">
                 <div id="searchDropdown" class="search-dropdown"></div>
             </div>
             <div class="header-controls">
@@ -1344,7 +1656,7 @@
         <div class="container">
             <div class="search-bar">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="floatingSearchInput" placeholder="Cari judul atau penulis buku...">
+                <input type="text" id="floatingSearchInput" data-i18n-placeholder="searchPlaceholder">
                 <div id="floatingSearchDropdown" class="search-dropdown"></div>
             </div>
         </div>
@@ -1354,7 +1666,7 @@
     <div class="breadcrumb" id="breadcrumb" style="display: none;">
         <div class="container">
             <ul class="breadcrumb-list">
-                <li class="breadcrumb-item"><a href="#" id="breadcrumbHome">Beranda</a></li>
+                <li class="breadcrumb-item"><a href="#" id="breadcrumbHome" data-i18n="home">Beranda</a></li>
                 <li class="breadcrumb-item active" id="breadcrumbCurrent"></li>
             </ul>
         </div>
@@ -1427,14 +1739,16 @@
                     </div>
                     <div class="product-detail-info">
                         <h1 id="detailTitle"></h1>
-                        <p class="author" id="detailAuthor"></p>
-                        <p class="publisher" id="detailPublisher"></p>
+                        <p class="author" id="detailAuthor" data-i18n-prefix="by"></p>
+                        <p class="publisher" id="detailPublisher" data-i18n-prefix="publisher"></p>
+                        <p class="year" id="detailYear" data-i18n-prefix="year"></p>
+                        <p class="pages" id="detailPages" data-i18n-prefix="pages"></p>
                         <div class="pricing" id="detailPricing"></div>
                         <p class="description" id="detailDescription"></p>
                         <div class="details-grid" id="detailGrid"></div>
                         <div style="margin-top: 2rem;">
-                            <button class="btn-buy" id="detailBackBtn">🔙 Kembali ke Beranda</button>
-                            <button class="btn-add-to-cart" id="detailAddToCartBtn">➕ Tambah ke Keranjang</button>
+                            <button class="btn-buy" id="detailBackBtn" data-i18n="backToHome">🔙 Kembali ke Beranda</button>
+                            <button class="btn-add-to-cart" id="detailAddToCartBtn" data-i18n="addToCart">➕ Tambah ke Keranjang</button>
                         </div>
                     </div>
                 </div>
@@ -1450,13 +1764,13 @@
                         <div id="orderItems" class="order-items"></div>
                         <form id="orderForm" class="order-form">
                             <div class="form-group">
-                                <label for="nameInput">Nama Lengkap *</label>
-                                <input type="text" id="nameInput" placeholder="Nama Lengkap" required>
-                                <div class="error-message" id="nameError">Nama harus diisi</div>
+                                <label for="nameInput" data-i18n="fullName">Nama Lengkap *</label>
+                                <input type="text" id="nameInput" data-i18n-placeholder="fullNamePlaceholder" required>
+                                <div class="error-message" id="nameError" data-i18n="nameRequired">Nama harus diisi</div>
                             </div>
                             
                             <div class="form-group">
-                                <label for="phoneInput">Nomor Telepon *</label>
+                                <label for="phoneInput" data-i18n="phoneNumber">Nomor Telepon *</label>
                                 <div class="phone-input-group">
                                     <select id="phoneCountry" class="phone-country" required>
                                         <option value="+62">Indonesia (+62)</option>
@@ -1478,41 +1792,41 @@
                                         <option value="+63">Filipina (+63)</option>
                                         <option value="+66">Thailand (+66)</option>
                                     </select>
-                                    <input type="tel" id="phoneInput" class="phone-number" placeholder="81234567890" required>
+                                    <input type="tel" id="phoneInput" class="phone-number" data-i18n-placeholder="phonePlaceholder" required>
                                 </div>
-                                <div class="error-message" id="phoneError">Nomor telepon harus diisi</div>
+                                <div class="error-message" id="phoneError" data-i18n="phoneRequired">Nomor telepon harus diisi</div>
                             </div>
                             
                             <div class="form-group">
-                                <label for="addressInput">Alamat Lengkap *</label>
-                                <input type="text" id="addressInput" placeholder="Alamat lengkap (jalan, kota, provinsi)" required>
-                                <div class="error-message" id="addressError">Alamat harus diisi</div>
+                                <label for="addressInput" data-i18n="fullAddress">Alamat Lengkap *</label>
+                                <input type="text" id="addressInput" data-i18n-placeholder="addressPlaceholder" required>
+                                <div class="error-message" id="addressError" data-i18n="addressRequired">Alamat harus diisi</div>
                             </div>
                             
                             <div class="form-group">
-                                <label for="locationInput">Koordinat Lokasi (Opsional)</label>
-                                <input type="text" id="locationInput" placeholder="Koordinat lokasi akan terisi otomatis" readonly>
+                                <label for="locationInput" data-i18n="locationCoordinates">Koordinat Lokasi (Opsional)</label>
+                                <input type="text" id="locationInput" data-i18n-placeholder="locationPlaceholder" readonly>
                                 <div class="error-message" id="locationError"></div>
                             </div>
                             
-                            <button type="button" id="detectLocationBtn">📍 Deteksi Lokasi Otomatis</button>
-                            <button type="button" id="viewMapBtn" style="display: none;">🗺️ Lihat di Google Maps</button>
+                            <button type="button" id="detectLocationBtn" data-i18n="detectLocation">📍 Deteksi Lokasi Otomatis</button>
+                            <button type="button" id="viewMapBtn" style="display: none;" data-i18n="viewMap">🗺️ Lihat di Google Maps</button>
                             
                             <div class="form-group">
-                                <label for="paymentMethod">Metode Pembayaran *</label>
+                                <label for="paymentMethod" data-i18n="paymentMethod">Metode Pembayaran *</label>
                                 <select id="paymentMethod" required>
-                                    <option value="">Pilih Metode Pembayaran</option>
-                                    <option value="id">WA Indonesia (85163682122)</option>
-                                    <option value="ar">WA Arab (1014006053)</option>
+                                    <option value="" data-i18n="selectPayment">Pilih Metode Pembayaran</option>
+                                    <option value="id" data-i18n="waIndonesia">WA Indonesia (85163682122)</option>
+                                    <option value="ar" data-i18n="waArab">WA Arab (1014006053)</option>
                                 </select>
-                                <div class="error-message" id="paymentError">Pilih metode pembayaran</div>
+                                <div class="error-message" id="paymentError" data-i18n="paymentRequired">Pilih metode pembayaran</div>
                             </div>
                             
                             <button type="submit" data-i18n="orderNow">📦 Pesan Sekarang</button>
                         </form>
                     </div>
                     <div class="recommended-products">
-                        <h2>Produk Rekomendasi</h2>
+                        <h2 data-i18n="recommendedProducts">Produk Rekomendasi</h2>
                         <div id="recommendedGrid" class="recommended-grid">
                             <!-- Produk rekomendasi akan dimuat di sini -->
                         </div>
@@ -1524,7 +1838,78 @@
     
     <footer>
         <div class="container">
-            <p>&copy; 2025 Toko Buku Islam. <span data-i18n="copyright">Hak Cipta Dilindungi</span>.</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Tentang Kami</h3>
+                    <p>Toko buku Islam terpercaya yang menyediakan berbagai buku warisan Islam berkualitas. Kami mengirimkan pembelian Anda ke seluruh dunia.</p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="contact-icon">🕒</span>
+                            <span>Jam Kerja: 11:00 - 21:00</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <span>القطاع الرقم - طباعة الزهراء - شارع البطار</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <span>daralamamaiqrafy@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">🌐</span>
+                            <span>www.daralagrafy.com</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Tautan Cepat</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Beranda</a></li>
+                        <li><a href="#">Kategori</a></li>
+                        <li><a href="#">Buku</a></li>
+                        <li><a href="#">Tafsir</a></li>
+                        <li><a href="#">Penerbit</a></li>
+                        <li><a href="#">Fiqh</a></li>
+                        <li><a href="#">Kontak</a></li>
+                        <li><a href="#">Aqidah</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Kategori Buku</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Al-Quran & Tafsir</a></li>
+                        <li><a href="#">Hadits</a></li>
+                        <li><a href="#">Fiqh</a></li>
+                        <li><a href="#">Aqidah</a></li>
+                        <li><a href="#">Sejarah Islam</a></li>
+                        <li><a href="#">Bahasa Arab</a></li>
+                        <li><a href="#">Keluarga & Pendidikan</a></li>
+                        <li><a href="#">Buku Anak</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Metode Pembayaran</h3>
+                    <div class="payment-methods-footer">
+                        <img src="https://www.bayarind.id/wp-content/themes/bayarind/assets/img/logo-all-pg.webp" alt="Metode Pembayaran" class="payment-method-footer">
+                        <img src="https://t4.ftcdn.net/jpg/15/48/74/35/360_F_1548743528_v3ubiVNmUg02qcXnCLwIyB7njRV1Qkfg.jpg" alt="Metode Pembayaran" class="payment-method-footer">
+                        <img src="https://play-lh.googleusercontent.com/Pv1p8v-KJq4Z_LLOjQjBZpK8DNJg4Zb5aNOQY7WfoiHR4Gfs165Z1TTNMThZ883Yfg=w240-h480-rw" alt="Metode Pembayaran" class="payment-method-footer">
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">📘</a>
+                        <a href="#" class="social-link">📷</a>
+                        <a href="#" class="social-link">🐦</a>
+                        <a href="#" class="social-link">📹</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 Dar Al-Iman Al-Qarafi. All rights reserved.</p>
+                <p>Toko Buku Islam - Menyebarkan Ilmu, Menebar Manfaat</p>
+            </div>
         </div>
     </footer>
 
@@ -1538,6 +1923,36 @@
         </div>
     </div>
 
+    <!-- Bottom Navbar for Mobile -->
+    <nav class="bottom-navbar">
+        <a href="#" id="bottomHome">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span data-i18n="home">Beranda</span>
+        </a>
+        <a href="#" id="bottomSearch">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span data-i18n="search">Cari</span>
+        </a>
+        <a href="#" id="bottomCart">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 2H3.74001C4.82001 2 5.67 2.93 5.58 4L4.75 13.96C4.61 15.59 5.89 16.99 7.53 17H18.08C19.72 17 21 15.6 20.86 13.97L21.24 9.01001C21.36 7.41001 20.08 6.01001 18.44 6.01001H5.82M16.25 22C16.9404 22 17.5 21.4404 17.5 20.75C17.5 20.0596 16.9404 19.5 16.25 19.5C15.5596 19.5 15 20.0596 15 20.75C15 21.4404 15.5596 22 16.25 22ZM7.25 22C7.94036 22 8.5 21.4404 8.5 20.75C8.5 20.0596 7.94036 19.5 7.25 19.5C6.55964 19.5 6 20.0596 6 20.75C6 21.4404 6.55964 22 7.25 22Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span data-i18n="cart">Keranjang</span>
+        </a>
+        <a href="#" id="bottomPayment">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 6h20v12H2V6z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 10h20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span data-i18n="payment">Pembayaran</span>
+        </a>
+    </nav>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1547,8 +1962,8 @@
             const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
             // Nomor WA - SESUAI PERMINTAAN
-            const waIndonesia = '6285163682122'; // Nomor Indonesia tanpa +62
-            const waArab = '201014006053'; // Nomor Arab tanpa +20
+            const waIndonesia = '85163682122'; // Nomor Indonesia tanpa +62
+            const waArab = '1014006053'; // Nomor Arab tanpa +20
 
             // ==================== VARIABEL GLOBAL & STATE ====================
             let allBooks = [];
@@ -1557,8 +1972,8 @@
             let currencySettings = { usd_rate: 16000, egp_rate: 50 };
             let currentBannerIndex = 0;
             let currentPublisherIndex = 0;
-            let currentCurrency = 'IDR';
-            let currentLanguage = 'id';
+            let currentCurrency = localStorage.getItem('currentCurrency') || 'IDR';
+            let currentLanguage = localStorage.getItem('currentLanguage') || 'id';
             let selectedCategory = null;
             let selectedPublisher = null;
             let currentPage = 1;
@@ -1652,9 +2067,9 @@
                     breadcrumb.style.display = 'block';
                     if (filterType === 'order') {
                         if (currentBook && orderItems.length === 1) {
-                            breadcrumbCurrent.textContent = `${currentBook.title} > Form Pesanan`;
+                            breadcrumbCurrent.textContent = `${currentBook.title} > ${translations[currentLanguage].orderForm}`;
                         } else {
-                            breadcrumbCurrent.textContent = 'Form Pemesanan';
+                            breadcrumbCurrent.textContent = translations[currentLanguage].orderForm;
                         }
                     } else if (filterType === 'product') {
                         breadcrumbCurrent.textContent = filterName;
@@ -1676,10 +2091,10 @@
                     filterInfo.style.display = 'flex';
                     filterTitle.textContent = filterName;
                     filterDescription.textContent = description;
-                    productsTitle.textContent = `Buku ${filterName}`;
+                    productsTitle.textContent = `${translations[currentLanguage].books} ${filterName}`;
                 } else {
                     filterInfo.style.display = 'none';
-                    productsTitle.textContent = 'Koleksi Buku Terbaru';
+                    productsTitle.textContent = translations[currentLanguage].newCollection;
                 }
             }
 
@@ -1695,20 +2110,8 @@
                     copyright: "Hak Cipta Dilindungi",
                     by: "oleh",
                     publisher: "Penerbit",
-                    pages: "Halaman",
                     year: "Tahun Terbit",
-                    weight: "Berat",
-                    coverType: "Jenis Cover",
-                    paperType: "Jenis Kertas",
-                    volumes: "Jumlah Jilid",
-                    textColor: "Warna Tulisan",
-                    printCount: "Cetakan Ke",
-                    editor: "Editor",
-                    isbn: "ISBN",
-                    dimensions: "Dimensi",
-                    language: "Bahasa",
-                    translator: "Penerjemah",
-                    reviewer: "Peninjau",
+                    pages: "Halaman",
                     buyNow: "Beli",
                     addToCart: "Keranjang",
                     noDescription: "Tidak ada deskripsi tersedia.",
@@ -1717,7 +2120,32 @@
                     total: "Total",
                     remove: "Hapus",
                     orderForm: "Form Pemesanan",
-                    orderNow: "Pesan Sekarang"
+                    orderNow: "Pesan Sekarang",
+                    fullName: "Nama Lengkap",
+                    fullNamePlaceholder: "Nama Lengkap",
+                    nameRequired: "Nama harus diisi",
+                    phoneNumber: "Nomor Telepon",
+                    phonePlaceholder: "81234567890",
+                    phoneRequired: "Nomor telepon harus diisi",
+                    fullAddress: "Alamat Lengkap",
+                    addressPlaceholder: "Alamat lengkap (jalan, kota, provinsi)",
+                    addressRequired: "Alamat harus diisi",
+                    locationCoordinates: "Koordinat Lokasi (Opsional)",
+                    locationPlaceholder: "Koordinat lokasi akan terisi otomatis",
+                    detectLocation: "📍 Deteksi Lokasi Otomatis",
+                    viewMap: "🗺️ Lihat di Google Maps",
+                    paymentMethod: "Metode Pembayaran",
+                    selectPayment: "Pilih Metode Pembayaran",
+                    waIndonesia: "WA Indonesia (85163682122)",
+                    waArab: "WA Arab (1014006053)",
+                    paymentRequired: "Pilih metode pembayaran",
+                    recommendedProducts: "Produk Rekomendasi",
+                    home: "Beranda",
+                    search: "Cari",
+                    cartShort: "Keranjang",
+                    payment: "Pembayaran",
+                    backToHome: "🔙 Kembali ke Beranda",
+                    books: "Buku"
                 },
                 en: {
                     searchPlaceholder: "Search for book title or author...",
@@ -1729,20 +2157,8 @@
                     copyright: "Copyright Protected",
                     by: "by",
                     publisher: "Publisher",
-                    pages: "Pages",
                     year: "Publication Year",
-                    weight: "Weight",
-                    coverType: "Cover Type",
-                    paperType: "Paper Type",
-                    volumes: "Number of Volumes",
-                    textColor: "Text Color",
-                    printCount: "Print Count",
-                    editor: "Editor",
-                    isbn: "ISBN",
-                    dimensions: "Dimensions",
-                    language: "Language",
-                    translator: "Translator",
-                    reviewer: "Reviewer",
+                    pages: "Pages",
                     buyNow: "Buy",
                     addToCart: "Cart",
                     noDescription: "No description available.",
@@ -1751,7 +2167,32 @@
                     total: "Total",
                     remove: "Remove",
                     orderForm: "Order Form",
-                    orderNow: "Order Now"
+                    orderNow: "Order Now",
+                    fullName: "Full Name",
+                    fullNamePlaceholder: "Full Name",
+                    nameRequired: "Name is required",
+                    phoneNumber: "Phone Number",
+                    phonePlaceholder: "81234567890",
+                    phoneRequired: "Phone number is required",
+                    fullAddress: "Full Address",
+                    addressPlaceholder: "Full address (street, city, province)",
+                    addressRequired: "Address is required",
+                    locationCoordinates: "Location Coordinates (Optional)",
+                    locationPlaceholder: "Location coordinates will be filled automatically",
+                    detectLocation: "📍 Detect Location Automatically",
+                    viewMap: "🗺️ View on Google Maps",
+                    paymentMethod: "Payment Method",
+                    selectPayment: "Select Payment Method",
+                    waIndonesia: "WA Indonesia (85163682122)",
+                    waArab: "WA Arab (1014006053)",
+                    paymentRequired: "Select payment method",
+                    recommendedProducts: "Recommended Products",
+                    home: "Home",
+                    search: "Search",
+                    cartShort: "Cart",
+                    payment: "Payment",
+                    backToHome: "🔙 Back to Home",
+                    books: "Books"
                 },
                 ar: {
                     searchPlaceholder: "ابحث عن عنوان الكتاب أو المؤلف...",
@@ -1763,20 +2204,8 @@
                     copyright: "جميع الحقوق محفوظة",
                     by: "بواسطة",
                     publisher: "الناشر",
-                    pages: "الصفحات",
                     year: "سنة النشر",
-                    weight: "الوزن",
-                    coverType: "نوع الغلاف",
-                    paperType: "نوع الورق",
-                    volumes: "عدد المجلدات",
-                    textColor: "لون النص",
-                    printCount: "رقم الطبعة",
-                    editor: "المحرر",
-                    isbn: "الرقم الدولي",
-                    dimensions: "الأبعاد",
-                    language: "اللغة",
-                    translator: "المترجم",
-                    reviewer: "المُراجع",
+                    pages: "الصفحات",
                     buyNow: "اشتري",
                     addToCart: "السلة",
                     noDescription: "لا يوجد وصف متاح.",
@@ -1785,7 +2214,32 @@
                     total: "الإجمالي",
                     remove: "إزالة",
                     orderForm: "نموذج الطلب",
-                    orderNow: "اطلب الآن"
+                    orderNow: "اطلب الآن",
+                    fullName: "الاسم الكامل",
+                    fullNamePlaceholder: "الاسم الكامل",
+                    nameRequired: "الاسم مطلوب",
+                    phoneNumber: "رقم الهاتف",
+                    phonePlaceholder: "81234567890",
+                    phoneRequired: "رقم الهاتف مطلوب",
+                    fullAddress: "العنوان الكامل",
+                    addressPlaceholder: "العنوان الكامل (الشارع، المدينة، المقاطعة)",
+                    addressRequired: "العنوان مطلوب",
+                    locationCoordinates: "إحداثيات الموقع (اختياري)",
+                    locationPlaceholder: "سيتم ملء إحداثيات الموقع تلقائيًا",
+                    detectLocation: "📍 الكشف عن الموقع تلقائيًا",
+                    viewMap: "🗺️ عرض على خرائط جوجل",
+                    paymentMethod: "طريقة الدفع",
+                    selectPayment: "اختر طريقة الدفع",
+                    waIndonesia: "WA إندونيسيا (85163682122)",
+                    waArab: "WA عربي (1014006053)",
+                    paymentRequired: "اختر طريقة الدفع",
+                    recommendedProducts: "المنتجات الموصى بها",
+                    home: "الرئيسية",
+                    search: "بحث",
+                    cartShort: "السلة",
+                    payment: "الدفع",
+                    backToHome: "🔙 العودة إلى الرئيسية",
+                    books: "كتب"
                 }
             };
 
@@ -1800,6 +2254,22 @@
                     }
                 });
                 
+                document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                    const key = element.getAttribute('data-i18n-placeholder');
+                    if (t[key]) {
+                        element.placeholder = t[key];
+                    }
+                });
+                
+                document.querySelectorAll('[data-i18n-prefix]').forEach(element => {
+                    const prefixKey = element.getAttribute('data-i18n-prefix');
+                    const originalText = element.textContent.trim().replace(t[prefixKey] + ' ', '');
+                    if (t[prefixKey]) {
+                        element.textContent = t[prefixKey] + ' ' + originalText;
+                    }
+                });
+                
+                // Update placeholders and labels
                 document.getElementById('searchInput').placeholder = t.searchPlaceholder;
                 document.getElementById('floatingSearchInput').placeholder = t.searchPlaceholder;
                 
@@ -1814,6 +2284,20 @@
                 if (document.getElementById('cartModal').classList.contains('active')) {
                     renderCart();
                 }
+
+                // Update select options
+                const paymentSelect = document.getElementById('paymentMethod');
+                if (paymentSelect) {
+                    paymentSelect.options[0].textContent = t.selectPayment;
+                    paymentSelect.options[1].textContent = t.waIndonesia;
+                    paymentSelect.options[2].textContent = t.waArab;
+                }
+
+                // Update bottom navbar
+                document.getElementById('bottomHome').querySelector('span').textContent = t.home;
+                document.getElementById('bottomSearch').querySelector('span').textContent = t.search;
+                document.getElementById('bottomCart').querySelector('span').textContent = t.cartShort;
+                document.getElementById('bottomPayment').querySelector('span').textContent = t.payment;
             }
 
             // ==================== FUNGSI VALIDASI FORM ====================
@@ -1859,7 +2343,7 @@
             // ==================== FUNGSI DETEKSI LOKASI ====================
             function detectLocation() {
                 if (navigator.geolocation) {
-                    document.getElementById('detectLocationBtn').textContent = 'Mendeteksi lokasi...';
+                    document.getElementById('detectLocationBtn').textContent = translations[currentLanguage].detectLocation.replace('📍 ', '') + '...';
                     document.getElementById('detectLocationBtn').disabled = true;
                     
                     navigator.geolocation.getCurrentPosition(
@@ -1874,6 +2358,7 @@
                             // Show view map button
                             const viewMapBtn = document.getElementById('viewMapBtn');
                             viewMapBtn.style.display = 'block';
+                            viewMapBtn.textContent = translations[currentLanguage].viewMap;
                             viewMapBtn.onclick = () => {
                                 window.open(`https://www.google.com/maps?q=${lat},${long}`, '_blank');
                             };
@@ -1893,12 +2378,12 @@
                                 console.log('Tidak bisa mendapatkan alamat dari koordinat');
                             }
                             
-                            document.getElementById('detectLocationBtn').textContent = '📍 Deteksi Lokasi Otomatis';
+                            document.getElementById('detectLocationBtn').textContent = translations[currentLanguage].detectLocation;
                             document.getElementById('detectLocationBtn').disabled = false;
                         },
                         (error) => {
-                            alert('Gagal mendeteksi lokasi: ' + error.message);
-                            document.getElementById('detectLocationBtn').textContent = '📍 Deteksi Lokasi Otomatis';
+                            alert(translations[currentLanguage].locationError || 'Gagal mendeteksi lokasi: ' + error.message);
+                            document.getElementById('detectLocationBtn').textContent = translations[currentLanguage].detectLocation;
                             document.getElementById('detectLocationBtn').disabled = false;
                         },
                         {
@@ -1908,7 +2393,7 @@
                         }
                     );
                 } else {
-                    alert('Geolocation tidak didukung oleh browser ini.');
+                    alert(translations[currentLanguage].geolocationNotSupported || 'Geolocation tidak didukung oleh browser ini.');
                 }
             }
 
@@ -1925,7 +2410,7 @@
                 if (!error && data) {
                     renderBanners(data);
                 } else {
-                    document.getElementById('bannerSlider').innerHTML = '<p>Gagal memuat banner.</p>';
+                    document.getElementById('bannerSlider').innerHTML = `<p>${translations[currentLanguage].noBanners || 'Gagal memuat banner.'}</p>`;
                 }
             }
             
@@ -1933,14 +2418,13 @@
                 const { data, error } = await supabase.from('categories').select('*');
                 if (!error && data) {
                     categories = data;
-                    // PERBAIKAN: Hitung jumlah buku per kategori
                     for (let cat of categories) {
                         const { count } = await supabase.from('books').select('id', { count: 'exact' }).eq('category_id', cat.id);
                         cat.bookCount = count || 0;
                     }
                     renderCategories(categories);
                 } else {
-                    document.getElementById('categoryGrid').innerHTML = '<p>Gagal memuat kategori.</p>';
+                    document.getElementById('categoryGrid').innerHTML = `<p>${translations[currentLanguage].noCategories || 'Gagal memuat kategori.'}</p>`;
                 }
             }
 
@@ -1948,7 +2432,6 @@
                 const { data, error } = await supabase.from('publishers').select('*, discount');
                 if (!error && data) {
                     publishers = data;
-                    // PERBAIKAN: Hitung jumlah buku per penerbit
                     for (let pub of publishers) {
                         const { count } = await supabase.from('books').select('id', { count: 'exact' }).eq('publisher_id', pub.id);
                         pub.bookCount = count || 0;
@@ -1956,7 +2439,7 @@
                     renderPublishers(publishers);
                     startPublisherSlider();
                 } else {
-                    document.getElementById('publisherTrack').innerHTML = '<p>Gagal memuat penerbit.</p>';
+                    document.getElementById('publisherTrack').innerHTML = `<p>${translations[currentLanguage].noPublishers || 'Gagal memuat penerbit.'}</p>`;
                 }
             }
 
@@ -1966,7 +2449,7 @@
                     allBooks = data;
                     checkUrlParams();
                 } else {
-                    document.getElementById('productGrid').innerHTML = '<p>Gagal memuat data buku.</p>';
+                    document.getElementById('productGrid').innerHTML = `<p>${translations[currentLanguage].noBooksFound}</p>`;
                 }
             }
             
@@ -1974,7 +2457,7 @@
             function renderBanners(banners) {
                 const slider = document.getElementById('bannerSlider');
                 if (!banners || banners.length === 0) {
-                    slider.innerHTML = '<p>Tidak ada banner tersedia.</p>';
+                    slider.innerHTML = `<p>${translations[currentLanguage].noBanners || 'Tidak ada banner tersedia.'}</p>`;
                     return;
                 }
                 
@@ -1995,7 +2478,7 @@
             function renderCategories(cats) {
                 const grid = document.getElementById('categoryGrid');
                 if (!cats || cats.length === 0) {
-                    grid.innerHTML = '<p>Tidak ada kategori tersedia.</p>';
+                    grid.innerHTML = `<p>${translations[currentLanguage].noCategories || 'Tidak ada kategori tersedia.'}</p>`;
                     return;
                 }
                 grid.innerHTML = cats.map(cat => `
@@ -2004,7 +2487,7 @@
                             <img src="${cat.image_url || 'https://via.placeholder.com/40'}" alt="${cat.name_id}">
                         </div>
                         <h3>${cat.name_id}</h3>
-                        <p class="category-book-count">(${cat.bookCount} buku)</p>
+                        <p class="category-book-count">(${cat.bookCount} ${translations[currentLanguage].books})</p>
                     </div>
                 `).join('');
 
@@ -2019,7 +2502,7 @@
             function renderPublishers(pubs) {
                 const track = document.getElementById('publisherTrack');
                 if (!pubs || pubs.length === 0) {
-                    track.innerHTML = '<p>Tidak ada penerbit tersedia.</p>';
+                    track.innerHTML = `<p>${translations[currentLanguage].noPublishers || 'Tidak ada penerbit tersedia.'}</p>`;
                     return;
                 }
                 track.innerHTML = pubs.map(pub => `
@@ -2029,7 +2512,7 @@
                                 <img src="${pub.logo_url || 'https://via.placeholder.com/80'}" alt="${pub.name}">
                             </div>
                             <h3>${pub.name}</h3>
-                            <p class="publisher-book-count">(${pub.bookCount} buku)</p>
+                            <p class="publisher-book-count">(${pub.bookCount} ${translations[currentLanguage].books})</p>
                             ${pub.discount ? `<div class="discount-pin">${pub.discount}</div>` : ''}
                         </div>
                     </div>
@@ -2105,14 +2588,14 @@
                     if (category) {
                         selectedCategory = categoryId;
                         updateBreadcrumb('category', category.name_id);
-                        updateFilterInfo('category', category.name_id, `Menampilkan buku dari kategori ${category.name_id}`);
+                        updateFilterInfo('category', category.name_id, `${translations[currentLanguage].showingBooksFromCategory || 'Menampilkan buku dari kategori'} ${category.name_id}`);
                     }
                 } else if (publisherId) {
                     const publisher = publishers.find(p => p.id == publisherId);
                     if (publisher) {
                         selectedPublisher = publisherId;
                         updateBreadcrumb('publisher', publisher.name);
-                        updateFilterInfo('publisher', publisher.name, `Menampilkan buku dari penerbit ${publisher.name}`);
+                        updateFilterInfo('publisher', publisher.name, `${translations[currentLanguage].showingBooksFromPublisher || 'Menampilkan buku dari penerbit'} ${publisher.name}`);
                     }
                 }
                 
@@ -2159,6 +2642,9 @@
                             <div class="product-info">
                                 <h3 class="product-title">${book.title}</h3>
                                 <p class="product-author">${t.by} ${book.author}</p>
+                                <p class="product-publisher">${t.publisher}: ${publisher ? publisher.name : 'N/A'}</p>
+                                <p class="product-year">${t.year}: ${book.year || 'N/A'}</p>
+                                <p class="product-pages">${t.pages}: ${book.pages || 'N/A'}</p>
                                 <div class="product-pricing">
                                     <span class="final-price">${formatPrice(finalPrice, currentCurrency)}</span>
                                     ${discountPercent > 0 || originalPrice > basePrice ? `<span class="original-price">${formatPrice(originalPrice, currentCurrency)}</span>` : ''}
@@ -2281,7 +2767,7 @@
                 const dropdown = document.getElementById(dropdownId);
                 const t = translations[currentLanguage];
                 if (books.length === 0) {
-                    dropdown.innerHTML = '<p style="padding: 1rem; text-align: center;">Tidak ada hasil.</p>';
+                    dropdown.innerHTML = '<p style="padding: 1rem; text-align: center;">' + t.noBooksFound + '</p>';
                     return;
                 }
                 dropdown.innerHTML = books.map(book => {
@@ -2365,7 +2851,9 @@
                 document.getElementById('detailImage').src = book.cover_image_url || 'https://via.placeholder.com/300x400.png?text=No+Image';
                 document.getElementById('detailTitle').textContent = book.title;
                 document.getElementById('detailAuthor').textContent = `${t.by} ${book.author}`;
-                document.getElementById('detailPublisher').textContent = `${t.publisher}: ${book.publishers ? book.publishers.name : 'N/A'}`;
+                document.getElementById('detailPublisher').textContent = `${t.publisher}: ${publisher ? publisher.name : 'N/A'}`;
+                document.getElementById('detailYear').textContent = `${t.year}: ${book.year || 'N/A'}`;
+                document.getElementById('detailPages').textContent = `${t.pages}: ${book.pages || 'N/A'}`;
                 
                 document.getElementById('detailPricing').innerHTML = `
                     <span class="final-price">${formatPrice(finalPrice, currentCurrency)}</span>
@@ -2377,8 +2865,6 @@
                 
                 const detailsGrid = document.getElementById('detailGrid');
                 detailsGrid.innerHTML = `
-                    ${book.pages ? `<div class="detail-item"><strong>${t.pages}:</strong> ${book.pages}</div>` : ''}
-                    ${book.year ? `<div class="detail-item"><strong>${t.year}:</strong> ${book.year}</div>` : ''}
                     ${book.weight_value ? `<div class="detail-item"><strong>${t.weight}:</strong> ${book.weight_value} ${book.weight_unit}</div>` : ''}
                     ${book.cover_type ? `<div class="detail-item"><strong>${t.coverType}:</strong> ${book.cover_type}</div>` : ''}
                     ${book.paper_type ? `<div class="detail-item"><strong>${t.paperType}:</strong> ${book.paper_type}</div>` : ''}
@@ -2392,6 +2878,10 @@
                     ${book.translator ? `<div class="detail-item"><strong>${t.translator}:</strong> ${book.translator}</div>` : ''}
                     ${book.reviewer ? `<div class="detail-item"><strong>${t.reviewer}:</strong> ${book.reviewer}</div>` : ''}
                 `;
+
+                // Update buttons
+                document.getElementById('detailBackBtn').textContent = t.backToHome;
+                document.getElementById('detailAddToCartBtn').textContent = t.addToCart;
 
                 // PERBAIKAN: Event listener untuk tombol di halaman detail
                 const detailBackBtn = document.getElementById('detailBackBtn');
@@ -2433,11 +2923,11 @@
                 let totalPrice = 0;
 
                 if (orderItems.length === 0) {
-                    orderItemsDiv.innerHTML = '<p>Tidak ada item. Silakan tambah item terlebih dahulu.</p>';
+                    orderItemsDiv.innerHTML = '<p>' + t.noItems || 'Tidak ada item. Silakan tambah item terlebih dahulu.' + '</p>';
                     return;
                 }
 
-                orderItemsDiv.innerHTML = '<h3>Item Pemesanan:</h3>' + orderItems.map(item => {
+                orderItemsDiv.innerHTML = '<h3>' + t.orderItems || 'Item Pemesanan:' + '</h3>' + orderItems.map(item => {
                     const publisher = publishers.find(p => p.id === item.publisher_id);
                     const publisherDiscount = publisher ? publisher.discount : '';
                     const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
@@ -2454,7 +2944,7 @@
                             </div>
                         </div>
                     `;
-                }).join('') + `<p><strong>Total: ${formatPrice(totalPrice, currentCurrency)}</strong></p>`;
+                }).join('') + `<p><strong>${t.total}: ${formatPrice(totalPrice, currentCurrency)}</strong></p>`;
             }
 
             function loadRecommendedProducts() {
@@ -2496,7 +2986,7 @@
                 }
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCartBadge();
-                alert('Buku ditambahkan ke keranjang!');
+                alert(translations[currentLanguage].addedToCart || 'Buku ditambahkan ke keranjang!');
             }
 
             function removeFromCart(bookId) {
@@ -2524,7 +3014,7 @@
                 let totalPrice = 0;
 
                 if (cart.length === 0) {
-                    cartItems.innerHTML = '<p>Keranjang kosong.</p>';
+                    cartItems.innerHTML = '<p>' + t.emptyCart || 'Keranjang kosong.' + '</p>';
                     cartTotal.innerHTML = '';
                     return;
                 }
@@ -2572,7 +3062,7 @@
                     if (cart.length > 0) {
                         items = [...cart];
                     } else {
-                        alert('Tidak ada item untuk dipesan.');
+                        alert(translations[currentLanguage].noItemsToOrder || 'Tidak ada item untuk dipesan.');
                         return;
                     }
                 }
@@ -2597,7 +3087,7 @@
                 e.preventDefault();
                 
                 if (!validateForm()) {
-                    alert('Mohon lengkapi semua field yang wajib diisi!');
+                    alert(translations[currentLanguage].fillRequiredFields || 'Mohon lengkapi semua field yang wajib diisi!');
                     return;
                 }
 
@@ -2610,7 +3100,7 @@
                 const paymentMethod = document.getElementById('paymentMethod').value;
 
                 if (orderItems.length === 0) {
-                    alert('Tidak ada item untuk dipesan.');
+                    alert(translations[currentLanguage].noItemsToOrder || 'Tidak ada item untuk dipesan.');
                     return;
                 }
 
@@ -2658,7 +3148,7 @@
 
                     if (error) {
                         console.error('Error dari Supabase:', error);
-                        alert('Gagal menyimpan order: ' + error.message);
+                        alert(translations[currentLanguage].orderSaveFailed || 'Gagal menyimpan order: ' + error.message);
                         return;
                     }
 
@@ -2675,33 +3165,47 @@
                         template += `الاسم: ${name}\n`;
                         template += `الهاتف: ${fullPhone}\n`;
                         template += `العنوان: ${address}\n`;
+                        template += `رابط العنوان على غوغل مابس: https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}\n`;
                         if (location) {
                             template += `الموقع: https://www.google.com/maps?q=${encodeURIComponent(location)}\n`;
                         }
                         template += `\nالمنتجات:\n`;
-                        orderItems.forEach(item => {
+                        orderItems.forEach((item, index) => {
                             const publisher = publishers.find(p => p.id === item.publisher_id);
                             const publisherDiscount = publisher ? publisher.discount : '';
                             const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
-                            template += `📖 ${item.title} x ${item.quantity || 1} - ${formatPrice(finalPrice, currentCurrency)}\n`;
+                            template += `${index + 1}. 📖 العنوان: ${item.title}\n`;
+                            template += `   الكاتب: ${item.author}\n`;
+                            template += `   الكمية: ${item.quantity || 1}\n`;
+                            template += `   السعر للوحدة: ${formatPrice(finalPrice, currentCurrency)}\n`;
+                            template += `   الإجمالي للعنصر: ${formatPrice(finalPrice * (item.quantity || 1), currentCurrency)}\n\n`;
                         });
-                        template += `\nالمجموع: ${formatPrice(totalPrice, currentCurrency)}`;
+                        template += `المجموع الكلي: ${formatPrice(totalPrice, currentCurrency)}\n`;
+                        template += `العملة: ${currentCurrency}\n`;
+                        template += `اللغة: ${currentLanguage.toUpperCase()}`;
                     } else {
                         template = `Pesanan Baru 📦\n\n`;
                         template += `Nama: ${name}\n`;
                         template += `Telepon: ${fullPhone}\n`;
                         template += `Alamat: ${address}\n`;
+                        template += `Link Alamat di Google Maps: https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}\n`;
                         if (location) {
                             template += `Lokasi: https://www.google.com/maps?q=${encodeURIComponent(location)}\n`;
                         }
                         template += `\nProduk:\n`;
-                        orderItems.forEach(item => {
+                        orderItems.forEach((item, index) => {
                             const publisher = publishers.find(p => p.id === item.publisher_id);
                             const publisherDiscount = publisher ? publisher.discount : '';
                             const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
-                            template += `📖 ${item.title} x ${item.quantity || 1} - ${formatPrice(finalPrice, currentCurrency)}\n`;
+                            template += `${index + 1}. 📖 Judul: ${item.title}\n`;
+                            template += `   Penulis: ${item.author}\n`;
+                            template += `   Kuantitas: ${item.quantity || 1}\n`;
+                            template += `   Harga per Unit: ${formatPrice(finalPrice, currentCurrency)}\n`;
+                            template += `   Total per Item: ${formatPrice(finalPrice * (item.quantity || 1), currentCurrency)}\n\n`;
                         });
-                        template += `\nTotal: ${formatPrice(totalPrice, currentCurrency)}`;
+                        template += `Total Keseluruhan: ${formatPrice(totalPrice, currentCurrency)}\n`;
+                        template += `Mata Uang: ${currentCurrency}\n`;
+                        template += `Bahasa: ${currentLanguage.toUpperCase()}`;
                     }
 
                     // Redirect ke WhatsApp
@@ -2716,7 +3220,7 @@
 
                 } catch (err) {
                     console.error('Error:', err);
-                    alert('Terjadi kesalahan: ' + err.message);
+                    alert(translations[currentLanguage].errorOccurred || 'Terjadi kesalahan: ' + err.message);
                 }
             }
 
@@ -2807,7 +3311,7 @@
             checkoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 if (cart.length === 0) {
-                    alert('Keranjang kosong.');
+                    alert(translations[currentLanguage].emptyCart);
                     return;
                 }
                 orderItems = [...cart];
@@ -2846,6 +3350,7 @@
 
             document.getElementById('currencySelect').addEventListener('change', (e) => {
                 currentCurrency = e.target.value;
+                localStorage.setItem('currentCurrency', currentCurrency);
                 filterAndRenderBooks(searchInput.value);
                 if (document.getElementById('productDetailPage').style.display !== 'none') {
                     renderProductDetail(currentBook);
@@ -2860,7 +3365,10 @@
 
             document.getElementById('languageSelect').addEventListener('change', (e) => {
                 currentLanguage = e.target.value;
+                localStorage.setItem('currentLanguage', currentLanguage);
                 updateLanguage();
+                fetchCategories(); // Re-render categories with new language
+                fetchPublishers(); // Re-render publishers
                 filterAndRenderBooks(searchInput.value);
             });
 
@@ -2902,6 +3410,29 @@
                 }
             });
 
+            // Bottom Navbar Event Listeners
+            document.getElementById('bottomHome').addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateToHome();
+            });
+
+            document.getElementById('bottomSearch').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            });
+
+            document.getElementById('bottomCart').addEventListener('click', (e) => {
+                e.preventDefault();
+                renderCart();
+                cartModal.classList.add('active');
+            });
+
+            document.getElementById('bottomPayment').addEventListener('click', (e) => {
+                e.preventDefault();
+                // Navigate to order or payment page
+                navigateToOrder();
+            });
+
             // ==================== INISIALISASI APLIKASI ====================
             async function initializeApp() {
                 await fetchCurrency();
@@ -2912,6 +3443,8 @@
                 updateLanguage();
                 updateCartBadge();
                 checkUrlParams();
+                document.getElementById('languageSelect').value = currentLanguage;
+                document.getElementById('currencySelect').value = currentCurrency;
             }
 
             initializeApp();
