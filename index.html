@@ -2721,86 +2721,88 @@
                 });
             }
 
-            // ==================== FUNGSI KERANJANG ====================
-            function addToCart(book) {
-                const existingItem = cart.find(item => item.id === book.id);
-                if (existingItem) {
-                    existingItem.quantity += 1;
-                } else {
-                    cart.push({ ...book, quantity: 1 });
-                }
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartBadge();
-                alert(translations[currentLanguage].addedToCart || 'Ditambahakan Ke Keranjang');
-            }
+         // ==================== FUNGSI KERANJANG ====================
+function addToCart(book) {
+    const existingItem = cart.find(item => item.id === book.id);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ ...book, quantity: 1 });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartBadge();
+    alert(translations[currentLanguage].addedToCart || 'Buku ditambahkan ke keranjang!');
+}
 
-            function removeFromCart(bookId) {
-                cart = cart.filter(item => item.id !== bookId);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartBadge();
-                renderCart();
-            }
+function removeFromCart(bookId) {
+    cart = cart.filter(item => item.id !== bookId);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartBadge();
+    renderCart(); // Memanggil renderCart untuk menggambar ulang
+}
 
-            function updateCartBadge() {
-                const badge = document.getElementById('cartBadge');
-                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-                if (totalItems > 0) {
-                    badge.textContent = totalItems;
-                    badge.classList.add('active');
-                } else {
-                    badge.classList.remove('active');
-                }
-            }
+function updateCartBadge() {
+    const badge = document.getElementById('cartBadge');
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    if (totalItems > 0) {
+        badge.textContent = totalItems;
+        badge.classList.add('active');
+    } else {
+        badge.classList.remove('active');
+    }
+}
 
-            function renderCart() {
-                const cartItems = document.getElementById('cartItems');
-                const cartTotal = document.getElementById('cartTotal');
-                const t = translations[currentLanguage];
-                let totalPrice = 0;
+function renderCart() {
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const t = translations[currentLanguage];
+    let totalPrice = 0;
 
-                if (cart.length === 0) {
-                    cartItems.innerHTML = '<p>' + (t.emptyCart || 'Keranjang kosong.') + '</p>';
-                    cartTotal.innerHTML = '';
-                    return;
-                }
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<p>' + (t.emptyCart || 'Keranjang kosong.') + '</p>';
+        cartTotal.innerHTML = '';
+        return;
+    }
 
-                cartItems.innerHTML = cart.map(item => {
-                    const publisher = publishers.find(p => p.id === item.publisher_id);
-                    const publisherDiscount = publisher ? publisher.discount : '';
-                    const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
-                    const itemTotal = finalPrice * item.quantity;
-                    totalPrice += itemTotal;
+    cartItems.innerHTML = cart.map(item => {
+        const publisher = publishers.find(p => p.id === item.publisher_id);
+        const publisherDiscount = publisher ? publisher.discount : '';
+        const finalPrice = calculateDiscountedPrice(item.base_price, item.discount, publisherDiscount);
+        const itemTotal = finalPrice * item.quantity;
+        totalPrice += itemTotal;
 
-                    return `
-                        <div class="cart-item">
-                            <img src="${item.cover_image_url || 'https://via.placeholder.com/80x120.png?text=No+Image'}" alt="${item.title}">
-                            <div class="cart-item-info">
-                                <h3 class="cart-item-title">${item.title}</h3>
-                                <p>${item.quantity} x ${formatPrice(finalPrice, currentCurrency)}</p>
-                                <p class="cart-item-price">${formatPrice(itemTotal, currentCurrency)}</p>
-                            </div>
-                            <button class="cart-item-remove" data-book-id="${item.id}">${t.remove}</button>
-                        </div>
-                    `;
-                }).join('');
+        return `
+            <div class="cart-item">
+                <img src="${item.cover_image_url || 'https://via.placeholder.com/80x120.png?text=No+Image'}" alt="${item.title}">
+                <div class="cart-item-info">
+                    <h3 class="cart-item-title">${item.title}</h3>
+                    <p>${item.quantity} x ${formatPrice(finalPrice, currentCurrency)}</p>
+                    <p class="cart-item-price">${formatPrice(itemTotal, currentCurrency)}</p>
+                </div>
+                <button class="cart-item-remove" data-book-id="${item.id}">${t.remove}</button>
+            </div>
+        `;
+    }).join('');
 
-                cartTotal.innerHTML = `${t.total}: ${formatPrice(totalPrice, currentCurrency)}`;
+    cartTotal.innerHTML = `${t.total}: ${formatPrice(totalPrice, currentCurrency)}`;
+    
+    // TIDAK PERLU BLOK PERBAIKAN DI SINI LAGI
+}
 
-                // PERBAIKAN: Event delegation untuk tombol hapus
-                document.querySelectorAll('.cart-item-remove').forEach(button => {
-                    // Hapus event listener lama
-                    button.replaceWith(button.cloneNode(true));
-                });
-
-                // Tambah event listener baru
-                document.querySelectorAll('.cart-item-remove').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const bookId = parseInt(this.getAttribute('data-book-id'));
-                        removeFromCart(bookId);
-                    });
-                });
-            }
-
+// ===========================================================
+// PERBAIKAN: EVENT DELEGATION UNTUK TOMBOL HAPUS (DITARUH DI SINI)
+// ===========================================================
+document.getElementById('cartItems').addEventListener('click', function(event) {
+    // Cek apakah elemen yang diklik memiliki class 'cart-item-remove'
+    if (event.target.classList.contains('cart-item-remove')) {
+        
+        // Ambil ID buku dari atribut data-book-id
+        const bookId = parseInt(event.target.getAttribute('data-book-id'));
+        
+        // Panggil fungsi hapus
+        removeFromCart(bookId);
+    }
+});
             // ==================== FUNGSI ORDER ====================
             function startOrder(items) {
                 if (!items || items.length === 0) {
