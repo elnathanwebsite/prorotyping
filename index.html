@@ -1984,7 +1984,6 @@
                     reviewer: "المراجع",
                     orderItems: "عناصر الطلب",
                     noItems: "لا توجد عناصر. يرجى إضافة عناصر أولاً."
-                    addedToCart: "تمت إضافة الكتاب إلى السلة!",
                 }
             };
 
@@ -2731,7 +2730,7 @@
                 }
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCartBadge();
-                alert(translations[currentLanguage].addedToCart || 'Ditambahakan Ke Keranjang');
+                alert(translations[currentLanguage].addedToCart || 'Buku ditambahkan ke keranjang!');
             }
 
             function removeFromCart(bookId) {
