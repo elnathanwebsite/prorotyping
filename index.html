@@ -1984,6 +1984,7 @@
                     reviewer: "المراجع",
                     orderItems: "عناصر الطلب",
                     noItems: "لا توجد عناصر. يرجى إضافة عناصر أولاً."
+                    addedToCart: "تمت إضافة الكتاب إلى السلة!",
                 }
             };
 
@@ -2730,7 +2731,7 @@
                 }
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCartBadge();
-                alert(translations[currentLanguage].addedToCart || 'تمت إضافة الكتاب إلى سلة التسوق!');
+                alert(translations[currentLanguage].addedToCart || 'Ditambahakan Ke Keranjang');
             }
 
             function removeFromCart(bookId) {
