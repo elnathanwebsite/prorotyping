@@ -342,6 +342,7 @@
             gap: 10px;
             margin-top: 15px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .camera-btn {
@@ -351,6 +352,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
 
         .camera-btn.start {
@@ -363,9 +365,62 @@
             color: white;
         }
 
+        .camera-btn.switch {
+            background: var(--info-color);
+            color: white;
+        }
+
+        .camera-btn.upload {
+            background: var(--warning-color);
+            color: var(--dark-color);
+        }
+
         .camera-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--primary-color);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(201, 48, 44, 0.05);
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            background: rgba(201, 48, 44, 0.1);
+            border-color: #8b1a1a;
+        }
+
+        .upload-area.dragover {
+            background: rgba(201, 48, 44, 0.2);
+            border-color: #8b1a1a;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .upload-text {
+            color: var(--dark-color);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .upload-hint {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        #fileInput {
+            display: none;
         }
 
         /* Membership Tiers */
@@ -819,9 +874,20 @@
                         <p>Klik tombol scan untuk membuka kamera</p>
                     </div>
                     <div class="camera-controls" id="cameraControls" style="display: none;">
-                        <button class="camera-btn start" onclick="startCameraScanner()">Mulai Scan</button>
-                        <button class="camera-btn stop" onclick="stopCameraScanner()">Stop</button>
+                        <button class="camera-btn start" onclick="startCameraScanner()">📷 Scan</button>
+                        <button class="camera-btn switch" onclick="switchCamera()">🔄 Switch</button>
+                        <button class="camera-btn stop" onclick="stopCameraScanner()">⏹️ Stop</button>
+                        <button class="camera-btn upload" onclick="document.getElementById('fileInput').click()">📁 Upload</button>
                     </div>
+                    
+                    <!-- Upload Area -->
+                    <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()" 
+                         ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Klik atau拖拽 QR Code di sini</div>
+                        <div class="upload-hint">Support: JPG, PNG, GIF</div>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(event)" style="display: none;">
                 </div>
             </div>
 
@@ -971,6 +1037,8 @@
         let html5QrCode = null;
         let isScanning = false;
         let currentTab = 'home';
+        let currentCameraId = null;
+        let cameras = [];
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
@@ -1079,6 +1147,7 @@
                 'welcome': '🎉',
                 'registration': '👤',
                 'qr_scan': '📷',
+                'qr_upload': '📁',
                 'checkin': '📍',
                 'review': '⭐',
                 'birthday': '🎂',
@@ -1147,21 +1216,22 @@
 
             document.getElementById('scanPlaceholder').style.display = 'none';
             document.getElementById('cameraControls').style.display = 'flex';
+            document.getElementById('uploadArea').style.display = 'none';
 
             html5QrCode = new Html5Qrcode("qr-reader");
             
             Html5Qrcode.getCameras().then(devices => {
                 if (devices && devices.length) {
-                    const cameraId = devices[0].id;
+                    cameras = devices;
+                    currentCameraId = devices[0].id;
                     
                     html5QrCode.start(
-                        cameraId,
+                        currentCameraId,
                         {
                             fps: 10,
                             qrbox: { width: 250, height: 250 }
                         },
                         (decodedText, decodedResult) => {
-                            // QR Code scanned successfully
                             handleQRScanSuccess(decodedText);
                         },
                         (errorMessage) => {
@@ -1182,6 +1252,36 @@
             });
         }
 
+        // Switch Camera
+        function switchCamera() {
+            if (!isScanning || cameras.length < 2) {
+                showToast('Hanya ada satu kamera tersedia', '📷');
+                return;
+            }
+
+            const currentIndex = cameras.findIndex(cam => cam.id === currentCameraId);
+            const nextIndex = (currentIndex + 1) % cameras.length;
+            currentCameraId = cameras[nextIndex].id;
+
+            html5QrCode.stop().then(() => {
+                html5QrCode.start(
+                    currentCameraId,
+                    {
+                        fps: 10,
+                        qrbox: { width: 250, height: 250 }
+                    },
+                    (decodedText, decodedResult) => {
+                        handleQRScanSuccess(decodedText);
+                    },
+                    (errorMessage) => {
+                        // Handle scan error silently
+                    }
+                ).then(() => {
+                    showToast(`Kamera di-switch ke ${nextIndex === 0 ? 'Belakang' : 'Depan'}`, '🔄');
+                });
+            });
+        }
+
         // Stop Camera Scanner
         function stopCameraScanner() {
             if (html5QrCode && isScanning) {
@@ -1189,6 +1289,7 @@
                     isScanning = false;
                     document.getElementById('scanPlaceholder').style.display = 'block';
                     document.getElementById('cameraControls').style.display = 'none';
+                    document.getElementById('uploadArea').style.display = 'block';
                     document.getElementById('qr-reader').innerHTML = '';
                     showToast('Scanner dimatikan', '📷');
                 }).catch((err) => {
@@ -1197,20 +1298,74 @@
             }
         }
 
+        // Handle File Select
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                scanImageFile(file);
+            }
+        }
+
+        // Handle Drag and Drop
+        function handleDrop(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadArea').classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                scanImageFile(files[0]);
+            }
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadArea').classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadArea').classList.remove('dragover');
+        }
+
+        // Scan Image File
+        function scanImageFile(file) {
+            if (userData.name === 'Guest User') {
+                showToast('Silakan daftar terlebih dahulu!', '⚠️');
+                document.getElementById('registrationModal').classList.add('active');
+                return;
+            }
+
+            const html5QrCode = new Html5Qrcode("qr-reader");
+            
+            html5QrCode.scanFile(file, true)
+                .then(decodedText => {
+                    handleQRScanSuccess(decodedText, 'upload');
+                })
+                .catch(err => {
+                    console.error(`Error scanning file: ${err}`);
+                    showToast('Gagal memindai QR Code dari gambar', '❌');
+                });
+        }
+
         // Handle QR Scan Success
-        function handleQRScanSuccess(decodedText) {
+        function handleQRScanSuccess(decodedText, source = 'camera') {
             try {
                 const qrData = JSON.parse(decodedText);
                 
                 // Validate QR data
                 if (qrData.type === 'nathan_points' && qrData.points) {
-                    stopCameraScanner();
+                    if (source === 'camera') {
+                        stopCameraScanner();
+                    }
                     
                     const points = qrData.points;
                     userData.points += points;
                     
                     userData.history.push({
-                        type: 'qr_scan',
+                        type: source === 'upload' ? 'qr_upload' : 'qr_scan',
                         description: `Scan QR Code - ${qrData.location || 'Nathan Restaurant'}`,
                         points: points,
                         date: new Date()
