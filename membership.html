@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nathan Restaurant - Membership App</title>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -320,36 +321,51 @@
             justify-content: center;
         }
 
-        #qrCode {
-            margin: 20px 0;
-        }
-
-        .scan-animation {
-            width: 200px;
-            height: 200px;
-            border: 3px solid var(--primary-color);
-            border-radius: 15px;
-            position: relative;
-            overflow: hidden;
-            margin: 20px auto;
-        }
-
-        .scan-line {
-            position: absolute;
+        #qr-reader {
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
-            animation: scan 2s linear infinite;
+            max-width: 300px;
+            margin: 0 auto;
         }
 
-        @keyframes scan {
-            0% { top: 0; }
-            100% { top: 100%; }
+        #qr-reader video {
+            border-radius: 15px !important;
         }
 
         .scan-placeholder {
             color: #6c757d;
             text-align: center;
+        }
+
+        /* Camera Controls */
+        .camera-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .camera-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .camera-btn.start {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .camera-btn.stop {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .camera-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* Membership Tiers */
@@ -684,40 +700,28 @@
             font-size: 1.2rem;
         }
 
-        /* Pull to Refresh */
-        .pull-to-refresh {
-            position: absolute;
-            top: -60px;
-            left: 0;
-            right: 0;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,255,255,0.9);
-            color: var(--primary-color);
+        /* Scan Result Modal */
+        .scan-result {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .scan-result-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .scan-result-title {
+            font-size: 1.5rem;
             font-weight: bold;
-            transition: transform 0.3s;
+            margin-bottom: 10px;
         }
 
-        .pull-to-refresh.active {
-            transform: translateY(60px);
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .scan-result-points {
+            font-size: 2rem;
+            color: var(--success-color);
+            font-weight: bold;
+            margin-bottom: 20px;
         }
 
         /* Responsive */
@@ -736,11 +740,6 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Pull to Refresh -->
-        <div class="pull-to-refresh" id="pullToRefresh">
-            <span>↻ Lepaskan untuk refresh</span>
-        </div>
-
         <!-- Mobile Header -->
         <header class="mobile-header">
             <div class="header-top">
@@ -786,10 +785,10 @@
         <main class="main-content" id="mainContent">
             <!-- Quick Actions -->
             <div class="quick-actions">
-                <div class="action-card" onclick="showQRScanner()">
+                <div class="action-card" onclick="startCameraScanner()">
                     <div class="action-icon">📷</div>
                     <div class="action-title">Scan QR</div>
-                    <div class="action-desc">Dapatkan poin</div>
+                    <div class="action-desc">Buka kamera</div>
                 </div>
                 <div class="action-card" onclick="checkIn()">
                     <div class="action-icon">📍</div>
@@ -812,17 +811,17 @@
             <div class="qr-section">
                 <div class="qr-header">
                     <h3 class="qr-title">QR Scanner</h3>
-                    <button class="btn btn-sm" onclick="generateQR()">Generate QR</button>
                 </div>
-                <div class="qr-code-container" id="qrContainer">
-                    <div class="scan-animation" id="scanAnimation" style="display: none;">
-                        <div class="scan-line"></div>
-                    </div>
+                <div class="qr-code-container">
+                    <div id="qr-reader"></div>
                     <div class="scan-placeholder" id="scanPlaceholder">
                         <div style="font-size: 3rem; margin-bottom: 10px;">📷</div>
-                        <p>Klik tombol scan untuk memulai</p>
+                        <p>Klik tombol scan untuk membuka kamera</p>
                     </div>
-                    <div id="qrCode"></div>
+                    <div class="camera-controls" id="cameraControls" style="display: none;">
+                        <button class="camera-btn start" onclick="startCameraScanner()">Mulai Scan</button>
+                        <button class="camera-btn stop" onclick="stopCameraScanner()">Stop</button>
+                    </div>
                 </div>
             </div>
 
@@ -917,27 +916,26 @@
                         <label for="birthday">Tanggal Lahir</label>
                         <input type="date" id="birthday" required>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; border-radius: 10px;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; border-radius: 10px; background: var(--primary-color); color: white; border: none; font-weight: bold;">
                         Daftar Sekarang
                     </button>
                 </form>
             </div>
         </div>
 
-        <!-- QR Scanner Modal -->
-        <div class="modal" id="qrScannerModal">
+        <!-- Scan Result Modal -->
+        <div class="modal" id="scanResultModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title">Scan QR Code</h2>
-                    <button class="modal-close" onclick="closeModal('qrScannerModal')">&times;</button>
+                    <h2 class="modal-title">Scan Berhasil!</h2>
+                    <button class="modal-close" onclick="closeModal('scanResultModal')">&times;</button>
                 </div>
-                <div style="text-align: center; padding: 20px;">
-                    <div class="scan-animation">
-                        <div class="scan-line"></div>
-                    </div>
-                    <p style="margin-top: 20px;">Arahkan kamera ke QR Code</p>
-                    <button class="btn btn-primary" style="margin-top: 20px; width: 100%;" onclick="simulateQRScan()">
-                        Simulasi Scan QR
+                <div class="scan-result">
+                    <div class="scan-result-icon">✅</div>
+                    <div class="scan-result-title">Poin Berhasil Ditambahkan</div>
+                    <div class="scan-result-points" id="scanResultPoints">+0</div>
+                    <button class="btn btn-primary" style="width: 100%; padding: 15px; border-radius: 10px; background: var(--primary-color); color: white; border: none; font-weight: bold;" onclick="closeModal('scanResultModal')">
+                        OK
                     </button>
                 </div>
             </div>
@@ -950,9 +948,6 @@
         </div>
     </div>
 
-    <!-- QR Code Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
     <script>
         // State Management
         let userData = {
@@ -973,15 +968,13 @@
             notifications: 3
         };
 
+        let html5QrCode = null;
+        let isScanning = false;
         let currentTab = 'home';
-        let isPulling = false;
-        let startY = 0;
-        let currentY = 0;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadData();
-            initializePullToRefresh();
             updateUserInterface();
         });
 
@@ -1126,7 +1119,7 @@
                     location.reload();
                     break;
                 case 'qr':
-                    showQRScanner();
+                    startCameraScanner();
                     break;
                 case 'rewards':
                     showRewards();
@@ -1140,60 +1133,104 @@
             }
         }
 
-        // Show QR Scanner
-        function showQRScanner() {
+        // Start Camera Scanner
+        function startCameraScanner() {
             if (userData.name === 'Guest User') {
                 showToast('Silakan daftar terlebih dahulu!', '⚠️');
                 document.getElementById('registrationModal').classList.add('active');
                 return;
             }
-            document.getElementById('qrScannerModal').classList.add('active');
-        }
 
-        // Generate QR Code
-        function generateQR() {
-            const qrContainer = document.getElementById('qrCode');
-            qrContainer.innerHTML = '';
+            if (isScanning) {
+                return;
+            }
+
+            document.getElementById('scanPlaceholder').style.display = 'none';
+            document.getElementById('cameraControls').style.display = 'flex';
+
+            html5QrCode = new Html5Qrcode("qr-reader");
             
-            const qrData = {
-                userId: userData.email || 'guest',
-                timestamp: new Date().getTime(),
-                points: Math.floor(Math.random() * 100) + 50
-            };
-            
-            new QRCode(qrContainer, {
-                text: JSON.stringify(qrData),
-                width: 200,
-                height: 200,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
+            Html5Qrcode.getCameras().then(devices => {
+                if (devices && devices.length) {
+                    const cameraId = devices[0].id;
+                    
+                    html5QrCode.start(
+                        cameraId,
+                        {
+                            fps: 10,
+                            qrbox: { width: 250, height: 250 }
+                        },
+                        (decodedText, decodedResult) => {
+                            // QR Code scanned successfully
+                            handleQRScanSuccess(decodedText);
+                        },
+                        (errorMessage) => {
+                            // Handle scan error silently
+                        }
+                    ).then(() => {
+                        isScanning = true;
+                        showToast('Kamera aktif, arahkan ke QR code', '📷');
+                    }).catch((err) => {
+                        console.error(`Unable to start scanning: ${err}`);
+                        showToast('Gagal membuka kamera', '❌');
+                        stopCameraScanner();
+                    });
+                }
+            }).catch(err => {
+                console.error(`Error getting cameras: ${err}`);
+                showToast('Tidak dapat mengakses kamera', '❌');
             });
-            
-            showToast('QR Code berhasil dibuat!', '✓');
         }
 
-        // Simulate QR Scan
-        function simulateQRScan() {
-            closeModal('qrScannerModal');
-            
-            // Simulate scanning delay
-            setTimeout(() => {
-                const points = Math.floor(Math.random() * 100) + 50;
-                userData.points += points;
-                
-                userData.history.push({
-                    type: 'qr_scan',
-                    description: 'Scan QR Code di restoran',
-                    points: points,
-                    date: new Date()
+        // Stop Camera Scanner
+        function stopCameraScanner() {
+            if (html5QrCode && isScanning) {
+                html5QrCode.stop().then(() => {
+                    isScanning = false;
+                    document.getElementById('scanPlaceholder').style.display = 'block';
+                    document.getElementById('cameraControls').style.display = 'none';
+                    document.getElementById('qr-reader').innerHTML = '';
+                    showToast('Scanner dimatikan', '📷');
+                }).catch((err) => {
+                    console.error(`Failed to stop scanning: ${err}`);
                 });
+            }
+        }
+
+        // Handle QR Scan Success
+        function handleQRScanSuccess(decodedText) {
+            try {
+                const qrData = JSON.parse(decodedText);
                 
-                checkMembershipUpgrade();
-                saveData();
-                updateUserInterface();
-                showToast(`+${points} poin dari QR scan!`, '📷');
-            }, 1000);
+                // Validate QR data
+                if (qrData.type === 'nathan_points' && qrData.points) {
+                    stopCameraScanner();
+                    
+                    const points = qrData.points;
+                    userData.points += points;
+                    
+                    userData.history.push({
+                        type: 'qr_scan',
+                        description: `Scan QR Code - ${qrData.location || 'Nathan Restaurant'}`,
+                        points: points,
+                        date: new Date()
+                    });
+                    
+                    checkMembershipUpgrade();
+                    saveData();
+                    updateUserInterface();
+                    
+                    // Show success modal
+                    document.getElementById('scanResultPoints').textContent = `+${points}`;
+                    document.getElementById('scanResultModal').classList.add('active');
+                    
+                    showToast(`+${points} poin berhasil ditambahkan!`, '✅');
+                } else {
+                    showToast('QR Code tidak valid', '❌');
+                }
+            } catch (error) {
+                showToast('QR Code tidak valid', '❌');
+            }
         }
 
         // Check-in
@@ -1348,62 +1385,6 @@
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
-        }
-
-        // Pull to refresh
-        function initializePullToRefresh() {
-            const mainContent = document.getElementById('mainContent');
-            const pullToRefresh = document.getElementById('pullToRefresh');
-            
-            mainContent.addEventListener('touchstart', (e) => {
-                if (window.scrollY === 0) {
-                    isPulling = true;
-                    startY = e.touches[0].clientY;
-                }
-            });
-            
-            mainContent.addEventListener('touchmove', (e) => {
-                if (!isPulling) return;
-                
-                currentY = e.touches[0].clientY;
-                const diff = currentY - startY;
-                
-                if (diff > 0 && diff < 150) {
-                    pullToRefresh.style.transform = `translateY(${diff}px)`;
-                }
-            });
-            
-            mainContent.addEventListener('touchend', () => {
-                if (!isPulling) return;
-                
-                const diff = currentY - startY;
-                
-                if (diff > 100) {
-                    pullToRefresh.classList.add('active');
-                    refreshData();
-                    
-                    setTimeout(() => {
-                        pullToRefresh.classList.remove('active');
-                        pullToRefresh.style.transform = 'translateY(0)';
-                    }, 1500);
-                } else {
-                    pullToRefresh.style.transform = 'translateY(0)';
-                }
-                
-                isPulling = false;
-                startY = 0;
-                currentY = 0;
-            });
-        }
-
-        // Refresh data
-        function refreshData() {
-            showToast('Memperbarui data...', '↻');
-            
-            setTimeout(() => {
-                updateUserInterface();
-                showToast('Data diperbarui!', '✓');
-            }, 1000);
         }
 
         // Close modal when clicking outside
