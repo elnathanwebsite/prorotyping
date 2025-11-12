@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nathan Restaurant - Membership App</title>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary-color: #c9302c;
+            --secondary-color: #f8f9fa;
+            --dark-color: #212529;
+            --gold-color: #ffc107;
+            --silver-color: #6c757d;
+            --bronze-color: #964b00;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --light-color: #f8f9fa;
+            --bottom-nav-height: 70px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark-color);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* App Container */
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: #f5f5f5;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.2);
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            background: linear-gradient(135deg, var(--primary-color), #8b1a1a);
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 35px;
+            height: 35px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .notification-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+            padding: 5px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* User Status Card */
+        .user-status-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin: -10px 20px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--bronze-color), var(--silver-color), var(--gold-color));
+        }
+
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .user-details {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), #8b1a1a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .user-text h3 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .membership-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .points-display {
+            text-align: right;
+        }
+
+        .points-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .points-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 15px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), #8b1a1a);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 0 20px 100px;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card:active {
+            transform: scale(0.95);
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.3));
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .action-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .action-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .action-desc {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        /* QR Scanner Section */
+        .qr-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .qr-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .qr-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .qr-code-container {
+            background: white;
+            border: 2px dashed #dee2e6;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #qr-reader {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        #qr-reader video {
+            border-radius: 15px !important;
+        }
+
+        .scan-placeholder {
+            color: #6c757d;
+            text-align: center;
+        }
+
+        /* Camera Controls */
+        .camera-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .camera-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .camera-btn.start {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .camera-btn.stop {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .camera-btn.switch {
+            background: var(--info-color);
+            color: white;
+        }
+
+        .camera-btn.upload {
+            background: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .camera-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--primary-color);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(201, 48, 44, 0.05);
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            background: rgba(201, 48, 44, 0.1);
+            border-color: #8b1a1a;
+        }
+
+        .upload-area.dragover {
+            background: rgba(201, 48, 44, 0.2);
+            border-color: #8b1a1a;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .upload-text {
+            color: var(--dark-color);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .upload-hint {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        /* Membership Tiers */
+        .tiers-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .tier-cards {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tier-cards::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .tier-cards::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .tier-cards::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .tier-card {
+            min-width: 140px;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .tier-card.current {
+            border: 2px solid var(--success-color);
+            background: linear-gradient(135deg, #fff, #f0fff4);
+        }
+
+        .tier-card.current::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--success-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .tier-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .tier-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .tier-points {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        /* Recent Activity */
+        .activity-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .activity-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .activity-icon.positive {
+            background: #d4edda;
+            color: var(--success-color);
+        }
+
+        .activity-icon.negative {
+            background: #f8d7da;
+            color: var(--danger-color);
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .activity-points {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .activity-points.positive {
+            color: var(--success-color);
+        }
+
+        .activity-points.negative {
+            color: var(--danger-color);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #6c757d;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+            margin-bottom: 3px;
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), #8b1a1a);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .fab:active {
+            transform: scale(0.9);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(201, 48, 44, 0.1);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--dark-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 3000;
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Scan Result Modal */
+        .scan-result {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .scan-result-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .scan-result-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .scan-result-points {
+            font-size: 2rem;
+            color: var(--success-color);
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .app-container {
+                margin: 20px auto;
+                border-radius: 20px;
+                overflow: hidden;
+            }
+            
+            .bottom-nav {
+                border-radius: 0 0 20px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="header-top">
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <div class="logo">
+                    <div class="logo-icon">🍽️</div>
+                    <div class="logo-text">Nathan</div>
+                </div>
+                <button class="notification-btn" onclick="showNotifications()">
+                    🔔
+                    <span class="notification-badge" id="notificationBadge">3</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- User Status Card -->
+        <div class="user-status-card">
+            <div class="user-info">
+                <div class="user-details">
+                    <div class="user-avatar" id="userAvatar">?</div>
+                    <div class="user-text">
+                        <h3 id="userName">Guest User</h3>
+                        <span class="membership-badge bronze" id="membershipBadge">Bronze</span>
+                    </div>
+                </div>
+                <div class="points-display">
+                    <div class="points-number" id="pointsNumber">0</div>
+                    <div class="points-label">Poin</div>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span id="progressLabel">Progress ke Silver</span>
+                    <span id="progressText">0 / 500</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="action-card" onclick="startCameraScanner()">
+                    <div class="action-icon">📷</div>
+                    <div class="action-title">Scan QR</div>
+                    <div class="action-desc">Buka kamera</div>
+                </div>
+                <div class="action-card" onclick="checkIn()">
+                    <div class="action-icon">📍</div>
+                    <div class="action-title">Check-in</div>
+                    <div class="action-desc">Kunjungi restoran</div>
+                </div>
+                <div class="action-card" onclick="showRewards()">
+                    <div class="action-icon">🎁</div>
+                    <div class="action-title">Rewards</div>
+                    <div class="action-desc">Tukar poin</div>
+                </div>
+                <div class="action-card" onclick="showVouchers()">
+                    <div class="action-icon">🎫</div>
+                    <div class="action-title">Voucher</div>
+                    <div class="action-desc">Diskon spesial</div>
+                </div>
+            </div>
+
+            <!-- QR Scanner Section -->
+            <div class="qr-section">
+                <div class="qr-header">
+                    <h3 class="qr-title">QR Scanner</h3>
+                </div>
+                <div class="qr-code-container">
+                    <div id="qr-reader"></div>
+                    <div class="scan-placeholder" id="scanPlaceholder">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">📷</div>
+                        <p>Klik tombol scan untuk membuka kamera</p>
+                    </div>
+                    <div class="camera-controls" id="cameraControls" style="display: none;">
+                        <button class="camera-btn start" onclick="startCameraScanner()">📷 Scan</button>
+                        <button class="camera-btn switch" onclick="switchCamera()">🔄 Switch</button>
+                        <button class="camera-btn stop" onclick="stopCameraScanner()">⏹️ Stop</button>
+                        <button class="camera-btn upload" onclick="document.getElementById('fileInput').click()">📁 Upload</button>
+                    </div>
+                    
+                    <!-- Upload Area -->
+                    <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()" 
+                         ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Klik atau拖拽 QR Code di sini</div>
+                        <div class="upload-hint">Support: JPG, PNG, GIF</div>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(event)" style="display: none;">
+                </div>
+            </div>
+
+            <!-- Membership Tiers -->
+            <div class="tiers-section">
+                <h3 class="section-title">Membership Tiers</h3>
+                <div class="tier-cards">
+                    <div class="tier-card current" id="bronzeTier">
+                        <div class="tier-icon">🥉</div>
+                        <div class="tier-name">Bronze</div>
+                        <div class="tier-points">0-499 poin</div>
+                    </div>
+                    <div class="tier-card" id="silverTier">
+                        <div class="tier-icon">🥈</div>
+                        <div class="tier-name">Silver</div>
+                        <div class="tier-points">500-1499 poin</div>
+                    </div>
+                    <div class="tier-card" id="goldTier">
+                        <div class="tier-icon">🥇</div>
+                        <div class="tier-name">Gold</div>
+                        <div class="tier-points">1500+ poin</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <h3 class="section-title">Aktivitas Terbaru</h3>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-item">
+                        <div class="activity-icon positive">🎉</div>
+                        <div class="activity-details">
+                            <div class="activity-title">Selamat Datang!</div>
+                            <div class="activity-time">Baru saja</div>
+                        </div>
+                        <div class="activity-points positive">+50</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('home', this)">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Beranda</div>
+            </div>
+            <div class="nav-item" onclick="switchTab('qr', this)">
+                <div class="nav-icon">📷</div>
+                <div class="nav-label">Scan</div>
+            </div>
+            <div class="nav-item" onclick="switchTab('rewards', this)">
+                <div class="nav-icon">🎁</div>
+                <div class="nav-label">Reward</div>
+            </div>
+            <div class="nav-item" onclick="switchTab('history', this)">
+                <div class="nav-icon">📊</div>
+                <div class="nav-label">Riwayat</div>
+            </div>
+            <div class="nav-item" onclick="switchTab('profile', this)">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Profil</div>
+            </div>
+        </nav>
+
+        <!-- Floating Action Button -->
+        <button class="fab" onclick="showQuickActions()">
+            <span>+</span>
+        </button>
+
+        <!-- Registration Modal -->
+        <div class="modal" id="registrationModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Daftar Membership</h2>
+                    <button class="modal-close" onclick="closeModal('registrationModal')">&times;</button>
+                </div>
+                <form id="registrationForm" onsubmit="registerUser(event)">
+                    <div class="form-group">
+                        <label for="fullName">Nama Lengkap</label>
+                        <input type="text" id="fullName" required placeholder="Masukkan nama lengkap">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Nomor Telepon</label>
+                        <input type="tel" id="phone" required placeholder="08123456789">
+                    </div>
+                    <div class="form-group">
+                        <label for="birthday">Tanggal Lahir</label>
+                        <input type="date" id="birthday" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; border-radius: 10px; background: var(--primary-color); color: white; border: none; font-weight: bold;">
+                        Daftar Sekarang
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Scan Result Modal -->
+        <div class="modal" id="scanResultModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Scan Berhasil!</h2>
+                    <button class="modal-close" onclick="closeModal('scanResultModal')">&times;</button>
+                </div>
+                <div class="scan-result">
+                    <div class="scan-result-icon">✅</div>
+                    <div class="scan-result-title">Poin Berhasil Ditambahkan</div>
+                    <div class="scan-result-points" id="scanResultPoints">+0</div>
+                    <button class="btn btn-primary" style="width: 100%; padding: 15px; border-radius: 10px; background: var(--primary-color); color: white; border: none; font-weight: bold;" onclick="closeModal('scanResultModal')">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast">
+            <span class="toast-icon" id="toastIcon">✓</span>
+            <span id="toastMessage">Notification</span>
+        </div>
+    </div>
+
+    <script>
+        // State Management
+        let userData = {
+            name: 'Guest User',
+            email: '',
+            phone: '',
+            birthday: '',
+            membership: 'bronze',
+            points: 50,
+            history: [
+                {
+                    type: 'welcome',
+                    description: 'Selamat Datang di Nathan Restaurant',
+                    points: 50,
+                    date: new Date()
+                }
+            ],
+            notifications: 3
+        };
+
+        let html5QrCode = null;
+        let isScanning = false;
+        let currentTab = 'home';
+        let currentCameraId = null;
+        let cameras = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            updateUserInterface();
+        });
+
+        // Load data from localStorage
+        function loadData() {
+            const savedData = localStorage.getItem('nathanMembership');
+            if (savedData) {
+                userData = JSON.parse(savedData);
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('nathanMembership', JSON.stringify(userData));
+        }
+
+        // Update UI
+        function updateUserInterface() {
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('pointsNumber').textContent = userData.points;
+            document.getElementById('userAvatar').textContent = userData.name.charAt(0).toUpperCase();
+            
+            // Update membership badge
+            const badge = document.getElementById('membershipBadge');
+            badge.textContent = userData.membership.charAt(0).toUpperCase() + userData.membership.slice(1);
+            badge.className = 'membership-badge ' + userData.membership;
+            
+            // Update tier cards
+            document.querySelectorAll('.tier-card').forEach(card => {
+                card.classList.remove('current');
+            });
+            document.getElementById(userData.membership + 'Tier').classList.add('current');
+            
+            // Update progress bar
+            updateProgressBar();
+            
+            // Update activity list
+            updateActivityList();
+            
+            // Update notification badge
+            const badgeElement = document.getElementById('notificationBadge');
+            if (userData.notifications > 0) {
+                badgeElement.textContent = userData.notifications;
+                badgeElement.style.display = 'flex';
+            } else {
+                badgeElement.style.display = 'none';
+            }
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            let nextTier = '';
+            let requiredPoints = 0;
+            
+            if (userData.membership === 'bronze') {
+                nextTier = 'Silver';
+                requiredPoints = 500;
+            } else if (userData.membership === 'silver') {
+                nextTier = 'Gold';
+                requiredPoints = 1500;
+            } else {
+                document.querySelector('.progress-container').style.display = 'none';
+                return;
+            }
+            
+            const progress = Math.min((userData.points / requiredPoints) * 100, 100);
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `${userData.points} / ${requiredPoints}`;
+            document.getElementById('progressLabel').textContent = `Progress ke ${nextTier}`;
+        }
+
+        // Update activity list
+        function updateActivityList() {
+            const activityList = document.getElementById('activityList');
+            activityList.innerHTML = '';
+            
+            userData.history.slice().reverse().slice(0, 5).forEach(item => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                
+                const isPositive = item.points >= 0;
+                const iconClass = isPositive ? 'positive' : 'negative';
+                const pointsClass = isPositive ? 'positive' : 'negative';
+                const icon = getActivityIcon(item.type);
+                
+                activityItem.innerHTML = `
+                    <div class="activity-icon ${iconClass}">${icon}</div>
+                    <div class="activity-details">
+                        <div class="activity-title">${item.description}</div>
+                        <div class="activity-time">${formatTime(item.date)}</div>
+                    </div>
+                    <div class="activity-points ${pointsClass}">${isPositive ? '+' : ''}${item.points}</div>
+                `;
+                
+                activityList.appendChild(activityItem);
+            });
+        }
+
+        // Get activity icon
+        function getActivityIcon(type) {
+            const icons = {
+                'welcome': '🎉',
+                'registration': '👤',
+                'qr_scan': '📷',
+                'qr_upload': '📁',
+                'checkin': '📍',
+                'review': '⭐',
+                'birthday': '🎂',
+                'redeem': '🎁',
+                'upgrade': '⬆️'
+            };
+            return icons[type] || '📌';
+        }
+
+        // Format time
+        function formatTime(date) {
+            const now = new Date();
+            const diff = now - new Date(date);
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'Baru saja';
+            if (minutes < 60) return `${minutes} menit lalu`;
+            if (hours < 24) return `${hours} jam lalu`;
+            if (days < 7) return `${days} hari lalu`;
+            return new Date(date).toLocaleDateString('id-ID');
+        }
+
+        // Switch tab
+        function switchTab(tab, element) {
+            currentTab = tab;
+            
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            element.classList.add('active');
+            
+            // Handle tab content
+            switch(tab) {
+                case 'home':
+                    location.reload();
+                    break;
+                case 'qr':
+                    startCameraScanner();
+                    break;
+                case 'rewards':
+                    showRewards();
+                    break;
+                case 'history':
+                    showHistory();
+                    break;
+                case 'profile':
+                    showProfile();
+                    break;
+            }
+        }
+
+        // Start Camera Scanner
+        function startCameraScanner() {
+            if (userData.name === 'Guest User') {
+                showToast('Silakan daftar terlebih dahulu!', '⚠️');
+                document.getElementById('registrationModal').classList.add('active');
+                return;
+            }
+
+            if (isScanning) {
+                return;
+            }
+
+            document.getElementById('scanPlaceholder').style.display = 'none';
+            document.getElementById('cameraControls').style.display = 'flex';
+            document.getElementById('uploadArea').style.display = 'none';
+
+            html5QrCode = new Html5Qrcode("qr-reader");
+            
+            Html5Qrcode.getCameras().then(devices => {
+                if (devices && devices.length) {
+                    cameras = devices;
+                    currentCameraId = devices[0].id;
+                    
+                    html5QrCode.start(
+                        currentCameraId,
+                        {
+                            fps: 10,
+                            qrbox: { width: 250, height: 250 }
+                        },
+                        (decodedText, decodedResult) => {
+                            handleQRScanSuccess(decodedText);
+                        },
+                        (errorMessage) => {
+                            // Handle scan error silently
+                        }
+                    ).then(() => {
+                        isScanning = true;
+                        showToast('Kamera aktif, arahkan ke QR code', '📷');
+                    }).catch((err) => {
+                        console.error(`Unable to start scanning: ${err}`);
+                        showToast('Gagal membuka kamera', '❌');
+                        stopCameraScanner();
+                    });
+                }
+            }).catch(err => {
+                console.error(`Error getting cameras: ${err}`);
+                showToast('Tidak dapat mengakses kamera', '❌');
+            });
+        }
+
+        // Switch Camera
+        function switchCamera() {
+            if (!isScanning || cameras.length < 2) {
+                showToast('Hanya ada satu kamera tersedia', '📷');
+                return;
+            }
+
+            const currentIndex = cameras.findIndex(cam => cam.id === currentCameraId);
+            const nextIndex = (currentIndex + 1) % cameras.length;
+            currentCameraId = cameras[nextIndex].id;
+
+            html5QrCode.stop().then(() => {
+                html5QrCode.start(
+                    currentCameraId,
+                    {
+                        fps: 10,
+                        qrbox: { width: 250, height: 250 }
+                    },
+                    (decodedText, decodedResult) => {
+                        handleQRScanSuccess(decodedText);
+                    },
+                    (errorMessage) => {
+                        // Handle scan error silently
+                    }
+                ).then(() => {
+                    showToast(`Kamera di-switch ke ${nextIndex === 0 ? 'Belakang' : 'Depan'}`, '🔄');
+                });
+            });
+        }
+
+        // Stop Camera Scanner
+        function stopCameraScanner() {
+            if (html5QrCode && isScanning) {
+                html5QrCode.stop().then(() => {
+                    isScanning = false;
+                    document.getElementById('scanPlaceholder').style.display = 'block';
+                    document.getElementById('cameraControls').style.display = 'none';
+                    document.getElementById('uploadArea').style.display = 'block';
+                    document.getElementById('qr-reader').innerHTML = '';
+                    showToast('Scanner dimatikan', '📷');
+                }).catch((err) => {
+                    console.error(`Failed to stop scanning: ${err}`);
+                });
+            }
+        }
+
+        // Handle File Select
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                scanImageFile(file);
+            }
+        }
+
+        // Handle Drag and Drop
+        function handleDrop(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadArea').classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                scanImageFile(files[0]);
+            }
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadArea').classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('uploadArea').classList.remove('dragover');
+        }
+
+        // Scan Image File
+        function scanImageFile(file) {
+            if (userData.name === 'Guest User') {
+                showToast('Silakan daftar terlebih dahulu!', '⚠️');
+                document.getElementById('registrationModal').classList.add('active');
+                return;
+            }
+
+            const html5QrCode = new Html5Qrcode("qr-reader");
+            
+            html5QrCode.scanFile(file, true)
+                .then(decodedText => {
+                    handleQRScanSuccess(decodedText, 'upload');
+                })
+                .catch(err => {
+                    console.error(`Error scanning file: ${err}`);
+                    showToast('Gagal memindai QR Code dari gambar', '❌');
+                });
+        }
+
+        // Handle QR Scan Success
+        function handleQRScanSuccess(decodedText, source = 'camera') {
+            try {
+                const qrData = JSON.parse(decodedText);
+                
+                // Validate QR data
+                if (qrData.type === 'nathan_points' && qrData.points) {
+                    if (source === 'camera') {
+                        stopCameraScanner();
+                    }
+                    
+                    const points = qrData.points;
+                    userData.points += points;
+                    
+                    userData.history.push({
+                        type: source === 'upload' ? 'qr_upload' : 'qr_scan',
+                        description: `Scan QR Code - ${qrData.location || 'Nathan Restaurant'}`,
+                        points: points,
+                        date: new Date()
+                    });
+                    
+                    checkMembershipUpgrade();
+                    saveData();
+                    updateUserInterface();
+                    
+                    // Show success modal
+                    document.getElementById('scanResultPoints').textContent = `+${points}`;
+                    document.getElementById('scanResultModal').classList.add('active');
+                    
+                    showToast(`+${points} poin berhasil ditambahkan!`, '✅');
+                } else {
+                    showToast('QR Code tidak valid', '❌');
+                }
+            } catch (error) {
+                showToast('QR Code tidak valid', '❌');
+            }
+        }
+
+        // Check-in
+        function checkIn() {
+            if (userData.name === 'Guest User') {
+                showToast('Silakan daftar terlebih dahulu!', '⚠️');
+                document.getElementById('registrationModal').classList.add('active');
+                return;
+            }
+            
+            const points = Math.floor(Math.random() * 30) + 10;
+            userData.points += points;
+            
+            userData.history.push({
+                type: 'checkin',
+                description: 'Check-in di Nathan Restaurant',
+                points: points,
+                date: new Date()
+            });
+            
+            checkMembershipUpgrade();
+            saveData();
+            updateUserInterface();
+            showToast(`+${points} poin dari check-in!`, '📍');
+        }
+
+        // Show rewards
+        function showRewards() {
+            if (userData.name === 'Guest User') {
+                showToast('Silakan daftar terlebih dahulu!', '⚠️');
+                document.getElementById('registrationModal').classList.add('active');
+                return;
+            }
+            
+            if (userData.points < 100) {
+                showToast('Poin tidak mencukupi! Minimal 100 poin', '⚠️');
+                return;
+            }
+            
+            const rewardPoints = 100;
+            userData.points -= rewardPoints;
+            
+            userData.history.push({
+                type: 'redeem',
+                description: 'Tukar reward',
+                points: -rewardPoints,
+                date: new Date()
+            });
+            
+            saveData();
+            updateUserInterface();
+            showToast('Reward berhasil ditukar!', '🎁');
+        }
+
+        // Show vouchers
+        function showVouchers() {
+            showToast('Voucher akan segera tersedia!', '🎫');
+        }
+
+        // Show notifications
+        function showNotifications() {
+            userData.notifications = 0;
+            saveData();
+            updateUserInterface();
+            showToast('Tidak ada notifikasi baru', '🔔');
+        }
+
+        // Show profile
+        function showProfile() {
+            if (userData.name === 'Guest User') {
+                document.getElementById('registrationModal').classList.add('active');
+            } else {
+                showToast(`Halo, ${userData.name}!`, '👤');
+            }
+        }
+
+        // Show history
+        function showHistory() {
+            showToast('Fitur riwayat lengkap segera hadir!', '📊');
+        }
+
+        // Show quick actions
+        function showQuickActions() {
+            showToast('Quick actions menu', '+');
+        }
+
+        // Register user
+        function registerUser(event) {
+            event.preventDefault();
+            
+            userData.name = document.getElementById('fullName').value;
+            userData.email = document.getElementById('email').value;
+            userData.phone = document.getElementById('phone').value;
+            userData.birthday = document.getElementById('birthday').value;
+            userData.membership = 'bronze';
+            
+            userData.history.push({
+                type: 'registration',
+                description: 'Pendaftaran membership berhasil',
+                points: 0,
+                date: new Date()
+            });
+            
+            saveData();
+            updateUserInterface();
+            closeModal('registrationModal');
+            showToast(`Selamat datang, ${userData.name}!`, '🎉');
+        }
+
+        // Check membership upgrade
+        function checkMembershipUpgrade() {
+            let newMembership = userData.membership;
+            
+            if (userData.points >= 1500 && userData.membership !== 'gold') {
+                newMembership = 'gold';
+            } else if (userData.points >= 500 && userData.membership === 'bronze') {
+                newMembership = 'silver';
+            }
+            
+            if (newMembership !== userData.membership) {
+                userData.membership = newMembership;
+                userData.history.push({
+                    type: 'upgrade',
+                    description: `Upgrade ke ${newMembership.charAt(0).toUpperCase() + newMembership.slice(1)} Member`,
+                    points: 0,
+                    date: new Date()
+                });
+                showToast(`Selamat! Upgrade ke ${newMembership} Member!`, '⬆️');
+            }
+        }
+
+        // Toggle menu
+        function toggleMenu() {
+            showToast('Menu sidebar segera hadir!', '☰');
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Show toast
+        function showToast(message, icon = '✓') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+            
+            toastMessage.textContent = message;
+            toastIcon.textContent = icon;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
